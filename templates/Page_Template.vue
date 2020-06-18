@@ -1,8 +1,19 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="px-0 py-0">
     <v-row no-gutters>
       <v-col cols="12">
-        <router-view />
+        <v-card flat>
+          <v-container>
+            <!-- Page Title -->
+            <v-row no-gutters>
+              <h5 class="headline">Page Title</h5>
+            </v-row>
+            <v-divider class="mt-1"></v-divider>
+
+            <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
+            <v-row> </v-row>
+          </v-container>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -36,9 +47,7 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({
-    //
-  }),
+  data: () => ({}),
 
   // Custom Methods and Functions
   methods: {},
