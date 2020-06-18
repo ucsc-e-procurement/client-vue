@@ -54,6 +54,20 @@
             <!-- General Grid Set Up -->
             <v-container>
               <v-row>
+                <v-col>
+                  <v-card>Card 1</v-card>
+                  <v-card>
+                    <v-text-field
+                      label="Append outer"
+                      append-outer-icon="mdi-map-marker"
+                    ></v-text-field>
+                  </v-card>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col> </v-col>
+              </v-row>
+              <v-row>
                 <v-col> </v-col>
               </v-row>
             </v-container>
