@@ -5,6 +5,11 @@ import VueRouter from "vue-router";
 import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
 
+// Director
+import Director from "../views/director/Director.vue";
+import Director_Dashboard from "../views/director/Dashboard.vue";
+import Director_Procurements from "../views/director/Procurements.vue"
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 import Example_Form from "../../templates/Example_Form.vue";
@@ -39,6 +44,26 @@ const routes = [
       }
     ]
   },
+
+  // Director
+  {
+    path: "/director",
+    name: "director",
+    component: Director,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Director_Dashboard
+      },
+      {
+        path: "procurements",
+        name: "d_proc",
+        component: Director_Procurements
+      }
+    ]
+  },
+
 
   // Development Perposes Only - Remove these routes before final Production Deployment
   {

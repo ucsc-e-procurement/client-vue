@@ -9,12 +9,24 @@
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item link to="/director/procurements">
         <v-list-item-action>
           <v-icon>mdi-email</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>Procurements</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link>
+        <v-list-item-action>
+          <!-- <v-tab> -->
+            <v-badge color="blue" content="1">
+              <v-icon>mdi-import</v-icon>
+            </v-badge>
+          <!-- </v-tab>  -->
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Requests</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
