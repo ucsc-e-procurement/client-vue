@@ -14,7 +14,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-card class="mx-auto" min-width=1500>
+      <v-card class="mx-auto" min-width=1000>
         <!-- <v-card-title class="text-center justify-center py-6">
           <h1 class="font-weight-bold display-3 basil--text">BASiL</h1>
         </v-card-title> -->
@@ -26,17 +26,49 @@
           grow
         >
           <v-tab
-            v-for="item in items"
-            :key="item"
+            v-for="tab in tabs"
+            :key="tab"
           >
-            {{ item }}
+            {{ tab }}
           </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card flat>
-              <v-card-text>New</v-card-text>
+              <v-list two-line>
+                <v-list-item-group
+                    v-model="selected"
+                >
+                    <template v-for="(item) in newprocs">
+                    <v-divider :key="item.tenderNo"></v-divider>
+                    <v-card :key="item.tenderNo"
+                        class="mx-auto"
+                        max-width="800"
+                        flat
+                    >
+                        <v-card-text>
+                        <div>Tender Number : {{item.tenderNo}}</div>
+                        <p class="text-h6">
+                            {{item.category}}
+                        </p>
+                        <!-- <p>adjective</p> -->
+                        <div class="text--primary">
+                            Published Date : {{item.publishedDate}}
+                        </div>
+                        </v-card-text>
+                        <v-card-actions>
+                        <v-btn
+                            text
+                            color="indigo darken-4"
+                        >
+                            View
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </template>
+                </v-list-item-group>
+              </v-list>
             </v-card>
           </v-tab-item>
           <v-tab-item>
@@ -86,9 +118,13 @@ export default {
   data: () => ({
     //
     tab: null,
-    items: [
-        'New', 'On-Going', 'Completed'
+    tabs: [
+        'New Requests', 'On-Going', 'Completed'
     ],
+    newprocs: [
+        {tenderNo: '1', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumable'},
+        {tenderNo: '2', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
+    ]
   }),
 
   // Custom Methods and Functions
