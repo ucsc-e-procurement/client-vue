@@ -8,6 +8,7 @@ import Admin_Dashboard from "../views/admin/Dashboard.vue";
 //Supplier
 import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
+import Supplier_Procurements from "../views/supplier/Procurements.vue"
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -44,7 +45,7 @@ const routes = [
     ]
   },
 
-  //supplier route
+  //supplier routes
   {
     path: "/supplier",
     name: "supplier",
@@ -54,6 +55,11 @@ const routes = [
         path: "",
         name: "default",
         component: Supplier_Dashboard
+      },
+      {
+        path: "procurements",
+        name: "procurements",
+        component: Supplier_Procurements
       }
     ]
   },
