@@ -5,6 +5,10 @@ import VueRouter from "vue-router";
 import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
 
+//Supplier
+import Supplier from "../views/supplier/Supplier.vue";
+import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 import Example_Form from "../../templates/Example_Form.vue";
@@ -36,6 +40,20 @@ const routes = [
         path: "",
         name: "default",
         component: Admin_Dashboard
+      }
+    ]
+  },
+
+  //supplier route
+  {
+    path: "/supplier",
+    name: "supplier",
+    component: Supplier,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Supplier_Dashboard
       }
     ]
   },
