@@ -1,5 +1,5 @@
 <template>
-  <v-footer absolute class="font-weight-medium" app padless>
+  <v-footer absolute class="font-weight-medium" color="#FAFAFA" app padless>
     <v-col class="text-center" cols="12">
       {{ new Date().getFullYear() }} — <strong>Group31@UCSC</strong>
     </v-col>

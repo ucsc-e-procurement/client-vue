@@ -5,16 +5,16 @@
         <v-card flat>
           <v-container>
             <!-- Page Title -->
-            <v-row no-gutters>
+            <!-- <v-row no-gutters>
               <h5 class="headline">Procurements</h5>
             </v-row>
-            <v-divider class="mt-1"></v-divider>
+            <v-divider class="mt-1"></v-divider> -->
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
 
             <v-row class="justify-space-between">
                 <v-col cols="12">
-                    <v-card>
+                    <!-- <v-card>
                         <v-card-title>
                             <v-text-field
                                 v-model="search"
@@ -29,6 +29,54 @@
                         :items="desserts"
                         :search="search"
                         ></v-data-table>
+                    </v-card> -->
+                    <v-card>
+                      <v-card-title class="text-center justify-center py-6">
+                        <h4 class="font-weight-bold ">PROCUREMENTS</h4>
+                      </v-card-title>
+
+                      <v-tabs
+                        v-model="tab"
+                        background-color="transparent"
+                        grow
+                      >
+                        <v-tab
+                          v-for="item in items"
+                          :key="item"
+                        >
+                          {{ item }}
+                        </v-tab>
+                      </v-tabs>
+
+                      <v-tabs-items v-model="tab">
+                        <v-tab-item
+                          v-for="item in items"
+                          :key="item"
+                        >
+                          <v-card>
+                            <v-card-title>
+                                <v-text-field
+                                    v-model="search"
+                                    
+                                    label="Search"
+                                    single-line
+                                    hide-details
+                                ></v-text-field>
+                            </v-card-title>
+                            <v-data-table
+                            :headers="headers"
+                            :items="procurements"
+                            :search="search"
+                            >
+                              <template v-slot:item.controls="props">
+                                <v-btn class="mx-2" small color="primary" @click="onButtonClick(props.item)">
+                                  VIEW
+                                </v-btn>
+                              </template>
+                            </v-data-table>
+                          </v-card>
+                        </v-tab-item>
+                      </v-tabs-items>
                     </v-card>
                 </v-col>
             </v-row>
@@ -69,105 +117,74 @@ export default {
   // Data Variables and Values
   data: () => ({
     search: '',
+    tab: null,
+    items: [
+      'Ongoing', 'Completed', 'Terminated',
+    ],
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     headers: [
         {
-        text: 'Dessert (100g serving)',
+        text: 'Procurement ID',
         align: 'start',
         filterable: true,
-        value: 'name',
+        value: 'id',
         },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Iron (%)', value: 'iron' },
+        { text: 'Status', value: 'status' },
+        { text: 'Date Initiated', value: 'init_date' },
+        { text: 'Date Completed', value: 'comp_date' },
+        { text: 'Supplier', value: 'supplier' },
+        { text: "Actions", value: "controls", sortable: false }
     ],
-    desserts: [
+    procurements: [
         {
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: '1%',
+        id: 'UCSC/NCB/W/ENG/2020/0001',
+        status: 'Completed',
+        init_date: '01-01-2020',
+        comp_date: '01-01-2020',
+        supplier: 'John Keells Holdings',
+        actions: '1%',
         },
         {
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: '1%',
+        id: 'UCSC/NCB/W/ENG/2020/0002',
+        status: 'Completed',
+        init_date: '01-01-2020',
+        comp_date: '01-01-2020',
+        supplier: 'John Keells Holdings',
+        actions: '1%',
         },
         {
-        name: 'Eclair',
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: '7%',
+        id: 'UCSC/NCB/W/ENG/2020/0003',
+        status: 'Completed',
+        init_date: '01-01-2020',
+        comp_date: '01-01-2020',
+        supplier: 'John Keells Holdings',
+        actions: '1%',
         },
         {
-        name: 'Cupcake',
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: '8%',
+        id: 'UCSC/NCB/W/ENG/2020/0004',
+        status: 'Completed',
+        init_date: '01-01-2020',
+        comp_date: '01-01-2020',
+        supplier: 'John Keells Holdings',
+        actions: '1%',
         },
         {
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: '16%',
-        },
-        {
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: '0%',
-        },
-        {
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: '2%',
-        },
-        {
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: '45%',
-        },
-        {
-        name: 'Donut',
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: '22%',
-        },
-        {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
+        id: 'UCSC/NCB/W/ENG/2020/0005',
+        status: 'Completed',
+        init_date: '01-01-2020',
+        comp_date: '01-01-2020',
+        supplier: 'John Keells Holdings',
+        actions: '1%',
         },
     ],
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    onButtonClick: function (event) {
+      console.log(event.id)
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},

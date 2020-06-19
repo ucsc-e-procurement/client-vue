@@ -8,7 +8,8 @@ import Admin_Dashboard from "../views/admin/Dashboard.vue";
 // Director
 import Director from "../views/director/Director.vue";
 import Director_Dashboard from "../views/director/Dashboard.vue";
-import Director_Procurements from "../views/director/Procurements.vue"
+import Director_Procurements from "../views/director/Procurements.vue";
+import Director_Requests from "../views/director/Requests.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -60,6 +61,11 @@ const routes = [
         path: "procurements",
         name: "d_proc",
         component: Director_Procurements
+      },
+      {
+        path: "requests",
+        name: "d_req",
+        component: Director_Requests
       }
     ]
   },
