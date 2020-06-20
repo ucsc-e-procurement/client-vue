@@ -36,39 +36,32 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card flat>
-              <v-list two-line>
-                <v-list-item-group
-                    v-model="selected"
+              <template v-for="(item) in newRequests">
+                <v-divider :key="item.tenderNo"></v-divider>
+                <v-card :key="item.tenderNo"
+                    class="mx-auto"
+                    max-width="800"
+                    flat
                 >
-                    <template v-for="(item) in newRequests">
-                    <v-divider :key="item.tenderNo"></v-divider>
-                    <v-card :key="item.tenderNo"
-                        class="mx-auto"
-                        max-width="800"
-                        flat
-                    >
-                        <v-card-text>
-                        <div>Tender Number : {{item.tenderNo}}</div>
-                        <p class="text-h6">
-                            {{item.category}}
-                        </p>
-                        <!-- <p>adjective</p> -->
-                        <div class="text--primary">
-                            Published Date : {{item.publishedDate}}
-                        </div>
-                        </v-card-text>
-                        <v-card-actions>
-                        <v-btn
-                            text
-                            color="blue darken-3"
-                        >
-                            View
-                        </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                    </template>
-                </v-list-item-group>
-              </v-list>
+                    <v-card-text>
+                      <div>Tender Number : {{item.tenderNo}}</div>
+                      <p class="text-h6">
+                          {{item.category}}
+                      </p>
+                      <div class="text--primary">
+                          Published Date : {{item.publishedDate}}
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                          text
+                          color="blue darken-3"
+                      >
+                        View
+                      </v-btn>
+                    </v-card-actions>
+                </v-card>
+              </template>
             </v-card>
           </v-tab-item>
           <v-tab-item>
@@ -119,11 +112,14 @@ export default {
     //
     tab: null,
     tabs: [
-        'New Requests', 'On-Going', 'Completed'
+      'New Requests', 'On-Going', 'Completed'
     ],
     newRequests: [
-        {tenderNo: 'UCSC/NCB/W/ENG/2020/0001', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumable'},
-        {tenderNo: 'UCSC/NCB/W/ENG/2020/0002', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0001', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumable'},
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0002', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
+    ],
+    ongoingProcurements: [
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0001', publishedDate: '20-06-2020', category: 'Stationeries and Office Consumable', status: 'Bid sent'},
     ],
   }),
 
