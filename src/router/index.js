@@ -5,6 +5,11 @@ import VueRouter from "vue-router";
 import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
 
+// Head of department
+import HOD from "../views/head_of_department/Head_Of_Department.vue";
+import HOD_Dashboard from "../views/head_of_department/Dashboard.vue";
+import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 import Example_Form from "../../templates/Example_Form.vue";
@@ -15,7 +20,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home"
+    name: "Home",
     // component:
   },
   // {
@@ -35,9 +40,27 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Admin_Dashboard
-      }
-    ]
+        component: Admin_Dashboard,
+      },
+    ],
+  },
+
+  {
+    path: "/hod",
+    name: "head of department",
+    component: HOD,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: HOD_Dashboard,
+      },
+      {
+        path: "newproc",
+        name: "New Procurement",
+        component: HOD_New_Proc,
+      },
+    ],
   },
 
   // Development Perposes Only - Remove these routes before final Production Deployment
@@ -49,21 +72,21 @@ const routes = [
       {
         path: "example_form",
         name: "form page",
-        component: Example_Form
+        component: Example_Form,
       },
       {
         path: "grid_system",
         name: "grid page",
-        component: Grid_System
-      }
-    ]
-  }
+        component: Grid_System,
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

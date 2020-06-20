@@ -2,9 +2,7 @@
   <v-app>
     <nav_drawer_internal :drawer="navDrawerInternal" />
     <v-app-bar app color="indigo" dark dense clipped-left>
-      <v-app-bar-nav-icon
-        @click.stop="navDrawerInternal = !navDrawerInternal"
-      ></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="navDrawerInternal = !navDrawerInternal"></v-app-bar-nav-icon>
       <v-toolbar-title>UCSC E-Procurement</v-toolbar-title>
     </v-app-bar>
     <v-main>
