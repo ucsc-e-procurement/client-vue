@@ -40,7 +40,7 @@
                 <v-list-item-group
                     v-model="selected"
                 >
-                    <template v-for="(item) in newprocs">
+                    <template v-for="(item) in newRequests">
                     <v-divider :key="item.tenderNo"></v-divider>
                     <v-card :key="item.tenderNo"
                         class="mx-auto"
@@ -60,7 +60,7 @@
                         <v-card-actions>
                         <v-btn
                             text
-                            color="indigo darken-4"
+                            color="blue darken-3"
                         >
                             View
                         </v-btn>
@@ -121,10 +121,10 @@ export default {
     tabs: [
         'New Requests', 'On-Going', 'Completed'
     ],
-    newprocs: [
-        {tenderNo: '1', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumable'},
-        {tenderNo: '2', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
-    ]
+    newRequests: [
+        {tenderNo: 'UCSC/NCB/W/ENG/2020/0001', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumable'},
+        {tenderNo: 'UCSC/NCB/W/ENG/2020/0002', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
+    ],
   }),
 
   // Custom Methods and Functions
