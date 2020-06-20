@@ -39,23 +39,23 @@
               <template v-for="(item) in newRequests">
                 <v-divider :key="item.tenderNo"></v-divider>
                 <v-card :key="item.tenderNo"
-                    class="mx-auto"
-                    max-width="800"
-                    flat
+                  class="mx-auto"
+                  max-width="800"
+                  flat
                 >
                     <v-card-text>
                       <div>Tender Number : {{item.tenderNo}}</div>
                       <p class="text-h6">
-                          {{item.category}}
+                        {{item.category}}
                       </p>
                       <div class="text--primary">
-                          Published Date : {{item.publishedDate}}
+                        Published Date : {{item.publishedDate}}
                       </div>
                     </v-card-text>
                     <v-card-actions>
                       <v-btn
-                          text
-                          color="blue darken-3"
+                        text
+                        color="blue darken-3"
                       >
                         View
                       </v-btn>
@@ -66,7 +66,35 @@
           </v-tab-item>
           <v-tab-item>
             <v-card flat>
-              <v-card-text>On Going</v-card-text>
+              <template v-for="(item) in ongoingProcurements">
+                <v-divider :key="item.tenderNo"></v-divider>
+                <v-card :key="item.tenderNo"
+                  class="mx-auto"
+                  max-width="800"
+                  flat
+                >
+                    <v-card-text>
+                      <div>Tender Number : {{item.tenderNo}}</div>
+                      <p class="text-h6">
+                        {{item.category}}
+                      </p>
+                      <div class="text--primary">
+                        Published Date : {{item.publishedDate}}
+                      </div>
+                      <div class="text--primary">
+                        Status : {{item.status}}
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                        text
+                        color="blue darken-3"
+                      >
+                        View
+                      </v-btn>
+                    </v-card-actions>
+                </v-card>
+              </template>
             </v-card>
           </v-tab-item>
           <v-tab-item>
@@ -115,11 +143,11 @@ export default {
       'New Requests', 'On-Going', 'Completed'
     ],
     newRequests: [
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0001', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumable'},
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0002', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0005', publishedDate: '18-06-2020', category: 'Stationeries and Office Consumables'},
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0006', publishedDate: '18-06-2020', category: 'Supply of Refreshment and Foods'}
     ],
     ongoingProcurements: [
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0001', publishedDate: '20-06-2020', category: 'Stationeries and Office Consumable', status: 'Bid sent'},
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0004', publishedDate: '20-06-2020', category: 'Stationeries and Office Consumables', status: 'Bid sent'},
     ],
   }),
 
