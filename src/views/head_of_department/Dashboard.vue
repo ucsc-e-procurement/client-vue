@@ -8,7 +8,7 @@
             <v-row class="justify-space-between" no-gutters>
               <h5 class="headline">{{deptName}}</h5>
               <v-col class="text-center" cols="12" sm="2">
-                <v-btn to="hod/newproc" outlined color="green">New Request +</v-btn>
+                <v-btn to="hod/newproc" outlined color="green">New Request</v-btn>
               </v-col>
             </v-row>
             <v-divider class="mt-1"></v-divider>
@@ -17,22 +17,22 @@
 
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
-              <v-col cols="3">
+              <v-col cols="6">
                 <v-card height="100">
                   <v-card-title>Ongoing</v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="6">
                 <v-card height="100">
                   <v-card-title>Terminated</v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="6">
                 <v-card height="100">
                   <v-card-title>Completed</v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="6">
                 <v-card height="100">
                   <v-card-title>Other</v-card-title>
                 </v-card>
@@ -76,7 +76,7 @@ export default {
   // Data Variables and Values
   data() {
     return {
-      deptName: "Devision Name"
+      deptName: "Division Name"
     };
   },
   // Custom Methods and Functions

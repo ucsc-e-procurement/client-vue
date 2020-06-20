@@ -7,8 +7,8 @@
             <!-- Page Title -->
             <v-row class="justify-space-between" no-gutters>
               <h5 class="headline">{{pageTitle}}</h5>
-              <v-col class="text-center" cols="12" sm="2">
-                <v-btn to="/hod" outlined color="red">Cancel X</v-btn>
+              <v-col class="text-center" cols="12" sm="1">
+                <v-btn to="/hod" outlined color="red">Cancel</v-btn>
               </v-col>
             </v-row>
             <v-divider class="mt-1"></v-divider>
