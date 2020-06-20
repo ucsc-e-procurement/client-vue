@@ -150,7 +150,6 @@
           <span class="headline">Tender Number : {{completedProcurements[procurement].tenderNo}}</span>
         </v-card-title>
         <v-card-text>
-          <div>Tender Number : {{completedProcurements[procurement].tenderNo}}</div>
           <p class="text-h6">
             {{completedProcurements[procurement].category}}
           </p>
