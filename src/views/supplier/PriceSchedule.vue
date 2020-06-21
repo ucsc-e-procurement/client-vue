@@ -320,7 +320,7 @@ export default {
     font-size: 12px;
   }
 
-  table.v-text-field {
+  table .v-text-field {
     font-size: 12px;
   }
 </style>
