@@ -143,34 +143,24 @@
 
             <v-btn class="primary" v-show="!editIndex" @click="add">Add Item</v-btn>
 
-            <v-card class="my-2">
-              <div class="col-3">
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Grand Total without VAT (Rs.)</span>
-                  </div>
-                  <input
-                    class="form-control form-control-sm text-right"
-                    disabled
-                    :value="this.allSubTotal | money"
-                  />
-                </div>
-
-                <div class="input-group input-group-lg mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Grand Total with VAT (Rs.)</span>
-                  </div>
-                  <input
-                    class="form-control form-control-sm text-right"
-                    disabled
-                    :value="this.total | money"
-                  />
-                </div>
-              </div>
-            </v-card>
-
-            <v-row class="mt-2">
+            <v-row no-gutters class="my-2">
               <v-col cols="12" sm="6">
+                <v-card class="px-3 py-3">
+                  <v-text-field
+                    :value="this.subTotal | money"
+                    label="Grand Total with VAT (Rs.)"
+                    readonly
+                  ></v-text-field>
+                  <v-text-field
+                    class="mt-4"
+                    :value="this.total | money"
+                    label="Grand Total with VAT (Rs.)"
+                    readonly
+                  ></v-text-field>
+                </v-card>
+              </v-col>
+
+              <v-col cols="12" sm="5" class="ml-6">
                 <v-text-field
                   v-model="vatNo"
                   label="Vat Registration No."
@@ -178,8 +168,6 @@
                   outlined
                   dense
                 />
-              </v-col>
-              <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="authorizedName"
                   label="Authorized Person"
@@ -214,9 +202,9 @@ export default {
 
   filters: {
     money: value =>
-      new Intl.NumberFormat("id-ID", {
+      new Intl.NumberFormat("sl-SL", {
         style: "currency",
-        currency: "IDR"
+        currency: "LKR"
       }).format(value)
   },
 
@@ -280,9 +268,11 @@ export default {
     },
 
     subtotal(item) {
-      return (
-        item.qty * item.price - (item.qty * item.price * item.discount) / 100
-      );
+      return ( item.qty * item.figures );
+    },
+
+    subtotalVAT(item) {
+      return ( item.qty * (item.figures + item.vat) );
     }
   },
 
@@ -298,22 +288,21 @@ export default {
 
   // Computed Properties
   computed: {
-    allSubTotal() {
+    subTotal() {
       return this.items
         .map(item => this.subtotal(item))
         .reduce((a, b) => a + b, 0);
     },
 
     total() {
-      return this.tax
-        ? this.allSubTotal + this.allSubTotal * (this.tax / 100)
-        : this.allSubTotal;
+      return this.items
+        .map(item => this.subtotalVAT(item))
+        .reduce((a, b) => a + b, 0);
     }
   }
 };
 </script>
 
-// Custom CSS Rules and Classes
 <style scoped>
   input[type="number"] {
     text-align: right;
@@ -331,7 +320,7 @@ export default {
     font-size: 12px;
   }
 
-  .v-text-field {
+  table.v-text-field {
     font-size: 12px;
   }
 </style>
