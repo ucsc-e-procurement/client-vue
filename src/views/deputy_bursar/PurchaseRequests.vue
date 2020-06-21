@@ -1,10 +1,10 @@
 <template>
-<v-container>
-      <v-card class="scroll" color="white" width="90%">
+    <v-container width="90%">
         <v-toolbar flat color="blue">
           <v-toolbar-title>Purchase Requests List</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
+        <v-card class="scroll" color="white">
         <v-card-text>
           <v-row>
             <v-col cols="9" class="ml-4 mt-4"><label> Request Number  : 01 </label><br/><label> Date  : 21/06/2020 </label></v-col>
@@ -101,7 +101,7 @@ export default {
 <style scoped>
 .scroll {
   background-color: lightblue;
-  height: 600px;
+  height: 500px;
   overflow: scroll;
 }
 </style>
