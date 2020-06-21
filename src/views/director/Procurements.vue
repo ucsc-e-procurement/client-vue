@@ -49,7 +49,7 @@
                       </v-tabs>
 
                       <v-tabs-items v-model="tab">
-                        <v-tab-item
+                        <!-- <v-tab-item
                           v-for="item in items"
                           :key="item"
                         >
@@ -66,6 +66,76 @@
                             <v-data-table
                             :headers="headers"
                             :items="procurements"
+                            :search="search"
+                            >
+                              <template v-slot:item.controls="props">
+                                <v-btn class="mx-2" small color="primary" @click="onButtonClick(props.item)">
+                                  VIEW
+                                </v-btn>
+                              </template>
+                            </v-data-table>
+                          </v-card>
+                        </v-tab-item> -->
+
+                        <v-tab-item>
+                          <v-card>
+                            <v-card-title>
+                                <v-text-field
+                                    v-model="search"
+                                    label="Search"
+                                    single-line
+                                    hide-details
+                                ></v-text-field>
+                            </v-card-title>
+                            <v-data-table
+                            :headers="headers"
+                            :items="ongoingProcurements"
+                            :search="search"
+                            >
+                              <template v-slot:item.controls="props">
+                                <v-btn class="mx-2" small color="primary" @click="onButtonClick(props.item)">
+                                  VIEW
+                                </v-btn>
+                              </template>
+                            </v-data-table>
+                          </v-card>
+                        </v-tab-item>
+                        <v-tab-item>
+                          <v-card>
+                            <v-card-title>
+                                <v-text-field
+                                    v-model="search"
+                                    label="Search"
+                                    single-line
+                                    hide-details
+                                ></v-text-field>
+                            </v-card-title>
+                            <v-data-table
+                            :headers="headers"
+                            :items="completedProcurements"
+                            :search="search"
+                            >
+                              <template v-slot:item.controls="props">
+                                <v-btn class="mx-2" small color="primary" @click="onButtonClick(props.item)">
+                                  VIEW
+                                </v-btn>
+                              </template>
+                            </v-data-table>
+                          </v-card>
+                        </v-tab-item>
+                        <v-tab-item>
+                          <v-card>
+                            <v-card-title>
+                                <v-text-field
+                                    v-model="search"
+                                    label="Search"
+                                    single-line
+                                    hide-details
+                                ></v-text-field>
+                            </v-card-title>
+                            <v-data-table
+                            :headers="headers"
+                            :items="terminatedProcurements"
                             :search="search"
                             >
                               <template v-slot:item.controls="props">
@@ -135,31 +205,33 @@ export default {
         { text: 'Supplier', value: 'supplier' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    procurements: [
+    ongoingProcurements: [
         {
         id: 'UCSC/NCB/W/ENG/2020/0001',
-        status: 'Completed',
+        status: 'Bid Open',
         init_date: '01-01-2020',
-        comp_date: '01-01-2020',
+        comp_date: 'Pending',
         supplier: 'John Keells Holdings',
         actions: '1%',
         },
         {
         id: 'UCSC/NCB/W/ENG/2020/0002',
-        status: 'Completed',
+        status: 'Pending PO',
         init_date: '01-01-2020',
-        comp_date: '01-01-2020',
-        supplier: 'John Keells Holdings',
+        comp_date: 'Pending',
+        supplier: 'ABC Technologies',
         actions: '1%',
         },
         {
         id: 'UCSC/NCB/W/ENG/2020/0003',
-        status: 'Completed',
+        status: 'Pending TEC Report',
         init_date: '01-01-2020',
-        comp_date: '01-01-2020',
-        supplier: 'John Keells Holdings',
+        comp_date: 'pending',
+        supplier: 'Techzone',
         actions: '1%',
         },
+    ],
+    completedProcurements: [
         {
         id: 'UCSC/NCB/W/ENG/2020/0004',
         status: 'Completed',
@@ -171,12 +243,30 @@ export default {
         {
         id: 'UCSC/NCB/W/ENG/2020/0005',
         status: 'Completed',
+        init_date: '01-02-2020',
+        comp_date: '01-02-2020',
+        supplier: 'SLT',
+        actions: '1%',
+        },
+    ],
+    terminatedProcurements: [
+        {
+        id: 'UCSC/NCB/W/ENG/2020/0004',
+        status: 'Terminated',
         init_date: '01-01-2020',
         comp_date: '01-01-2020',
         supplier: 'John Keells Holdings',
         actions: '1%',
         },
-    ],
+        {
+        id: 'UCSC/NCB/W/ENG/2020/0005',
+        status: 'Terminated',
+        init_date: '01-01-2020',
+        comp_date: '01-01-2020',
+        supplier: 'John Keells Holdings',
+        actions: '1%',
+        },
+    ]
   }),
 
   // Custom Methods and Functions

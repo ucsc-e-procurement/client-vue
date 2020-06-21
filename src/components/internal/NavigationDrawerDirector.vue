@@ -43,7 +43,7 @@
           <v-list-item-title>Requests</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/">
+      <v-list-item link to="/statistics">
         <v-list-item-action>
           <v-icon>mdi-file-chart</v-icon>
         </v-list-item-action>
@@ -54,7 +54,7 @@
     </v-list>
     <template v-slot:append>
         <v-list>
-            <v-list-item link to="/">
+            <v-list-item link to="/logout">
                 <v-list-item-action>
                     <v-icon>mdi-logout-variant</v-icon>
                 </v-list-item-action>

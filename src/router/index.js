@@ -10,6 +10,7 @@ import Director from "../views/director/Director.vue";
 import Director_Dashboard from "../views/director/Dashboard.vue";
 import Director_Procurements from "../views/director/Procurements.vue";
 import Director_Requests from "../views/director/Requests.vue";
+import Requisitions from "../views/director/Requisitions.vue"
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -66,6 +67,11 @@ const routes = [
         path: "requests",
         name: "d_req",
         component: Director_Requests
+      },
+      {
+        path: "requisitions/:id",
+        name: "d_reqi",
+        component: Requisitions
       }
     ]
   },

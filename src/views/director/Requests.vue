@@ -33,6 +33,7 @@
                             <v-btn
                                 color="info"
                                 outlined
+                                link to="requisitions/UCSCNCBWENG20200004"
                             >
                                 VIEW
                             </v-btn>
