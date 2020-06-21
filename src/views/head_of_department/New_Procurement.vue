@@ -18,6 +18,12 @@
             <!-- Info Card Row -->
             <v-col col="12">
               <RequestForm />
+              <v-divider class="mt-1"></v-divider>
+              <v-row class no-gutters>
+                <div class="my-2">
+                  <Submit />
+                </div>
+              </v-row>
             </v-col>
           </v-container>
         </v-card>
@@ -29,7 +35,7 @@
 <script>
 // Componenets
 import RequestForm from "./RequestForm";
-
+import Submit from "./Submit";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -53,7 +59,8 @@ export default {
 
   // Imported Components
   components: {
-    RequestForm
+    RequestForm,
+    Submit
   },
 
   // Data Variables and Values

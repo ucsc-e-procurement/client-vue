@@ -18,23 +18,27 @@
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
               <v-col cols="6">
-                <v-card height="100">
-                  <v-card-title>Ongoing</v-card-title>
+                <!--initialized-->
+                <v-card height="100" color="warning">
+                  <v-card-title>Initialized</v-card-title>
                 </v-card>
               </v-col>
               <v-col cols="6">
-                <v-card height="100">
-                  <v-card-title>Terminated</v-card-title>
+                <!--approved-->
+                <v-card height="100" color="primary">
+                  <v-card-title>Approved</v-card-title>
                 </v-card>
               </v-col>
               <v-col cols="6">
-                <v-card height="100">
+                <!--completed-->
+                <v-card height="100" color="success">
                   <v-card-title>Completed</v-card-title>
                 </v-card>
               </v-col>
               <v-col cols="6">
-                <v-card height="100">
-                  <v-card-title>Other</v-card-title>
+                <!--terminated-->
+                <v-card height="100" color="error">
+                  <v-card-title>Terminated</v-card-title>
                 </v-card>
               </v-col>
             </v-row>
