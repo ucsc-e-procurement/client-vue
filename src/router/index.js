@@ -7,6 +7,12 @@ import Admin_Dashboard from "../views/admin/Dashboard.vue";
 
 // Director
 
+// Deputy Bursar
+import Deputy_Bursar from "../views/deputy_bursar/Deputy_Bursar"
+import View_Purchase_Request from "../views/deputy_bursar/ViewPurchaseRequest"
+import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard"
+import Purchase_Requests from "../views/deputy_bursar/PurchaseRequests"
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 import Example_Form from "../../templates/Example_Form.vue";
@@ -38,6 +44,26 @@ const routes = [
         path: "",
         name: "default",
         component: Admin_Dashboard
+      },
+    ]
+  },
+  {
+    path: "/deputy_bursar",
+    name: "deputy_bursar",
+    component: Deputy_Bursar,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Deputy_Bursar_Dashboard
+      },
+      {
+        path: "/view_purchase_request",
+        component: View_Purchase_Request
+      },
+      {
+        path: "/purchase_requests",
+        component: Purchase_Requests
       }
     ]
   },
