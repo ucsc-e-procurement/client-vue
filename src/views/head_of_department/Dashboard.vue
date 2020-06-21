@@ -6,9 +6,11 @@
           <v-container>
             <!-- Page Title -->
             <v-row class="justify-space-between" no-gutters>
-              <h5 class="headline">{{deptName}}</h5>
+              <h5 class="headline">{{ deptName }}</h5>
               <v-col class="text-center" cols="12" sm="2">
-                <v-btn to="hod/newproc" outlined color="green">New Request</v-btn>
+                <v-btn to="hod/newproc" outlined color="green"
+                  >New Request</v-btn
+                >
               </v-col>
             </v-row>
             <v-divider class="mt-1"></v-divider>
@@ -19,25 +21,23 @@
             <v-row class="justify-space-between">
               <v-col cols="6">
                 <!--initialized-->
-                <v-card height="100" color="warning">
-                  <v-card-title>Initialized</v-card-title>
-                </v-card>
+                <InitProc />
               </v-col>
               <v-col cols="6">
                 <!--approved-->
-                <v-card height="100" color="primary">
+                <v-card height="300" color="primary">
                   <v-card-title>Approved</v-card-title>
                 </v-card>
               </v-col>
               <v-col cols="6">
                 <!--completed-->
-                <v-card height="100" color="success">
+                <v-card height="300" color="success">
                   <v-card-title>Completed</v-card-title>
                 </v-card>
               </v-col>
               <v-col cols="6">
                 <!--terminated-->
-                <v-card height="100" color="error">
+                <v-card height="300" color="error">
                   <v-card-title>Terminated</v-card-title>
                 </v-card>
               </v-col>
@@ -51,7 +51,7 @@
 
 <script>
 // Componenets
-
+import InitProc from "./InitProc";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -75,12 +75,12 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: { InitProc },
 
   // Data Variables and Values
   data() {
     return {
-      deptName: "Division Name"
+      deptName: "Division Name",
     };
   },
   // Custom Methods and Functions
@@ -92,7 +92,7 @@ export default {
       if (event) {
         alert(event.target.tagName);
       }
-    }
+    },
   },
 
   // Life Cycle Hooks
@@ -106,7 +106,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {}
+  computed: {},
 };
 </script>
 

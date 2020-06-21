@@ -154,12 +154,12 @@ export default {
   },
 
   methods: {
+    submit() {
+      this.$refs.observer.validate();
+    },
     save() {
       this.isEditing = !this.isEditing;
       this.hasSaved = true;
-    },
-    submit() {
-      this.$refs.observer.validate();
     },
   },
 };
