@@ -8,6 +8,7 @@ import Admin_Procurements_Ongoing from "../views/admin/Procurements_Ongoing.vue"
 import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminated.vue";
 import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
+import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
 
 // Director
 
@@ -64,6 +65,12 @@ const routes = [
         path: "pending_approvals",
         name: "pending approvals",
         component: Admin_Pending_Approvals
+      },
+      {
+        path: "procurement_overview/:encodedProcurementId",
+        name: "procurement overview",
+        component: Admin_Procurement_Overview,
+        props: true
       }
     ]
   },

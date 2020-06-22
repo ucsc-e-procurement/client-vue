@@ -12,7 +12,7 @@
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row>
-              <v-col v-if="procurements.length == 0" cols="12">
+              <v-col v-if="pendingApprovals.length == 0" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Pending Approvals Available
                 </v-alert>
@@ -20,20 +20,16 @@
               <v-col v-else cols="12">
                 <v-data-table
                   :headers="headers"
-                  :items="procurements"
+                  :items="pendingApprovals"
                   :search="search"
                   :items-per-page="10"
-                  @click:row="onclickTableRowTeacher"
+                  @click:row="onclickTableRowPendingApprovals"
                   no-data-text="Please Add Items"
                 >
-                  <template v-slot:item.action="{ item }">
-                    <v-icon
-                      small
-                      color="red"
-                      @click="deleteMaterial(item.path, item.id)"
+                  <template v-slot:item.actions="{ item }">
+                    <v-btn small color="" @click="gotoProcurement(item)"
+                      >Review</v-btn
                     >
-                      mdi-delete
-                    </v-icon>
                   </template>
                 </v-data-table>
               </v-col>
@@ -85,50 +81,65 @@ export default {
         groupable: true
       },
       {
-        text: "Description / Title",
-        value: "cat1",
-        sortable: false,
-        align: "start",
-        divider: true,
-        groupable: true
-      },
-      {
         text: "Tender No.",
-        value: "cat1",
+        value: "procurementId",
         sortable: false,
         align: "start",
         divider: true,
         groupable: true
       },
       {
-        text: "Date Started",
-        value: "cat2",
+        text: "Description / Title",
+        value: "description",
+        sortable: false,
+        align: "start",
+        divider: true,
+        groupable: true
+      },
+
+      {
+        text: "Date Created",
+        value: "dateCreated",
         sortable: false,
         align: "center",
         divider: true,
         groupable: true
       },
-      {
-        text: "Procurement Method",
-        value: "subject",
-        sortable: false,
-        align: "center",
-        divider: true
-      },
+
       {
         text: "Actions",
-        value: "",
+        value: "actions",
         sortable: false,
         align: "center",
         divider: true
       }
     ],
-    procurements: [],
+    pendingApprovals: [
+      {
+        no: 1,
+        procurementId: "UCSC/NCB/G/ENG/2020/0001",
+        description: "This a Small Description about Procurement",
+        dateCreated: "2020-06-01",
+        actions: ""
+      }
+    ],
     search: ""
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    gotoProcurement(procurement) {
+      console.log(
+        "Encoded Procurement ID: ",
+        btoa(procurement.procurementId),
+        procurement.procurementId
+      );
+      this.$router.push(
+        "/admin/procurement_overview/" + btoa(procurement.procurementId)
+      );
+    },
+    onclickTableRowPendingApprovals() {}
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
