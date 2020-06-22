@@ -17,14 +17,18 @@ import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue"
 import Example_Form from "../../templates/Example_Form.vue";
 import Grid_System from "../../templates/Grid_System.vue";
 
+// Login
+import Login from "../views/login/Login.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home"
-    // component:
+    path: "/login",
+    name: "login",
+    component: Login
   },
+
   // {
   //   path: "/about",
   //   name: "About",

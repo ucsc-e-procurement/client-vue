@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="isLoggedIn">
     <!-- ------------------------------------------------------------- Navigation Bars ------------------------------------------------------------ -->
     <!-- Internal -->
     <nav_drawer_internal v-if="isInternal" :drawer="navDrawerInternal" />
@@ -63,6 +63,13 @@
     <!-- Footer -->
     <app_footer />
   </v-app>
+
+  <!-- ---------------------------------------------------------- Login Page ---------------------------------------------------------------------- -->
+  <v-app v-else>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -90,7 +97,8 @@ export default {
     navDrawerExternal: true,
 
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
-    isInternal: true
+    isInternal: true,
+    isLoggedIn: false
   })
 };
 </script>
