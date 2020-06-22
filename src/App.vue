@@ -13,6 +13,38 @@
         @click.stop="navDrawerInternal = !navDrawerInternal"
       ></v-app-bar-nav-icon>
       <v-toolbar-title>UCSC E-Procurement (Internal)</v-toolbar-title>
+      <v-spacer />
+
+      <v-menu transition="slide-x-transition" bottom right offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar size="35" v-bind="attrs" v-on="on">
+            <v-img :src="require('./assets/user.png')"> </v-img>
+          </v-avatar>
+        </template>
+
+        <v-list dense>
+          <v-list-item-group color="primary">
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-circle</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Profile</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-bell-outline</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Notifications</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <!-- External -->
