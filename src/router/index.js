@@ -4,6 +4,10 @@ import VueRouter from "vue-router";
 // Admin
 import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
+import Admin_Procurements_Ongoing from "../views/admin/Procurements_Ongoing.vue";
+import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminated.vue";
+import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
+import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 
 // Director
 
@@ -29,6 +33,8 @@ const routes = [
   //   component: () =>
   //     import(/* webpackChunkName: "about" */ "../views/About.vue")
   // },
+
+  // Admin
   {
     path: "/admin",
     name: "admin",
@@ -38,9 +44,31 @@ const routes = [
         path: "",
         name: "default",
         component: Admin_Dashboard
+      },
+      {
+        path: "ongoing_procurements",
+        name: "ongoing procurements",
+        component: Admin_Procurements_Ongoing
+      },
+      {
+        path: "terminated_procurements",
+        name: "terminated procurements",
+        component: Admin_Procurements_Terminated
+      },
+      {
+        path: "completed_procurements",
+        name: "completed procurements",
+        component: Admin_Procurements_Completed
+      },
+      {
+        path: "pending_approvals",
+        name: "pending approvals",
+        component: Admin_Pending_Approvals
       }
     ]
   },
+
+  // Head of Department
 
   // Development Perposes Only - Remove these routes before final Production Deployment
   {

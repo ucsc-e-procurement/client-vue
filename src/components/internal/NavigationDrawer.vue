@@ -1,6 +1,63 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app clipped dark>
-    <v-list dense>
+  <v-navigation-drawer v-model="drawer" app clipped>
+    <!-- Admin Navigation Items -->
+    <v-list shaped v-if="role == 'admin'" dense>
+      <v-list-item-group v-model="listNaviagation" color="primary">
+        <v-list-item link @click="$router.push('/admin')">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- <v-divider class="my-0" /> -->
+        <v-list-item link @click="$router.push('/admin/ongoing_procurements')">
+          <v-list-item-action>
+            <v-icon>mdi-timeline-clock-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Ongoing</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- <v-divider class="my-0" /> -->
+        <v-list-item
+          link
+          @click="$router.push('/admin/terminated_procurements')"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-alert-octagon-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Terminated</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- <v-divider class="my-0" /> -->
+        <v-list-item
+          link
+          @click="$router.push('/admin/completed_procurements')"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-check-circle-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Completed</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- <v-divider class="my-0" /> -->
+        <v-list-item link @click="$router.push('/admin/pending_approvals')">
+          <v-list-item-action>
+            <v-icon>mdi-file-clock-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Pending Approvals</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+
+    <!-- Deputy Bursar Navigation Items -->
+    <v-list v-else-if="role == 'deputy_bursar'" dense>
       <v-list-item link>
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
@@ -9,6 +66,7 @@
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-divider class="my-0" />
       <v-list-item link>
         <v-list-item-action>
           <v-icon>mdi-email</v-icon>
@@ -18,6 +76,12 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <v-divider />
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn block>Logout</v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
@@ -51,6 +115,8 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    listNaviagation: 0,
+    role: "admin"
   }),
 
   // Custom Methods and Functions
