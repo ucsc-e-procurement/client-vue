@@ -69,6 +69,8 @@
     <v-main>
       <router-view />
     </v-main>
+    <!-- Footer -->
+    <app_footer />
   </v-app>
 </template>
 

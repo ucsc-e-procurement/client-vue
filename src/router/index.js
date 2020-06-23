@@ -19,10 +19,16 @@ import Grid_System from "../../templates/Grid_System.vue";
 
 // Login
 import Login from "../views/login/Login.vue";
+import Home from "../views/home/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "",
+    name: "home",
+    component: Home
+  },
   {
     path: "/login",
     name: "login",

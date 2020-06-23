@@ -1,15 +1,23 @@
 <template>
   <v-container class="fill-height" fluid>
+    <!-- Page's Background Image -->
+    <div class="bg"></div>
+
+    <!-- App Bar -->
+    <v-app-bar app color="primary" dark>
+      <v-avatar tile>
+        <v-img :src="require('../../assets/UCSC_Logo.png')"></v-img>
+      </v-avatar>
+      <v-toolbar-title class="pl-5">E-Procurement Login</v-toolbar-title>
+      <v-spacer />
+      <v-btn outlined>Register As a Supplier</v-btn>
+    </v-app-bar>
+
+    <!-- Centered Card with Login Form -->
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
         <v-card class="elevation-12">
-          <v-toolbar color="primary" dark flat>
-            <v-avatar tile>
-              <v-img :src="require('../../assets/UCSC_Logo.png')"></v-img>
-            </v-avatar>
-            <v-toolbar-title class="pl-5">E-Procurement Login</v-toolbar-title>
-            <v-spacer></v-spacer>
-          </v-toolbar>
+          <v-card-title>Login Portal</v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-5">
             <v-form>
@@ -33,7 +41,6 @@
           </v-card-text>
 
           <v-card-actions class="pl-2">
-            <!-- <v-card-subtitle>Forget Password ?</v-card-subtitle> -->
             <v-btn small text>Forget Password ?</v-btn>
             <v-spacer></v-spacer>
             <v-btn color="primary">Login</v-btn>
@@ -45,8 +52,6 @@
 </template>
 
 <script>
-// Componenets
-
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -93,4 +98,16 @@ export default {
 </script>
 
 // Custom CSS Rules and Classes
-<style scoped></style>
+<style scoped>
+.bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../../assets/ucsc.jpg") no-repeat center center;
+  background-size: cover;
+
+  transform: scale(1);
+}
+</style>
