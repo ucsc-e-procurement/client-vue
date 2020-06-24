@@ -6,6 +6,7 @@ import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
 
 // Supplier
+import Registration from "../views/supplier/Registration.vue";
 import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
 import Price_Schedule from "../views/supplier/PriceSchedule.vue";
@@ -24,6 +25,11 @@ const routes = [
     path: "/",
     name: "Home"
     // component:
+  },
+  {
+    path: "/registration",
+    name: "Registration",
+    component: Registration
   },
   // {
   //   path: "/about",
