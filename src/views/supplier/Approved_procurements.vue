@@ -1,34 +1,43 @@
 <template>
   <v-container>
         <v-card flat>
-            <template v-for="(item,key) in completedProcurements">
-                <v-divider :key="key"></v-divider>
-                <v-card :key="item.tenderNo"
-                  class="mx-auto"
-                  max-width="800"
-                  flat
-                >
-                    <v-card-text>
-                      <div>Tender Number : {{item.tenderNo}}</div>
-                      <p class="text-h6">
-                        {{item.category}}
-                      </p>
-                      <div class="text--primary">
-                        Published Date : {{item.publishedDate}}
-                      </div>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn
-                        text
-                        color="blue darken-3"
-                        @click="openDialog(key)"
-                      >
-                        View
-                      </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </template>
+          <template v-for="(item,key) in completedProcurements">
+            <v-card :key="item.tenderNo"
+              class="mx-auto"
+              max-width="800"
+              flat
+            >
+                <v-card-text>
+                  <div>Tender Number : {{item.tenderNo}}</div>
+                  <p class="text-h6">
+                    {{item.category}}
+                  </p>
+                  <div class="text--primary">
+                    Published Date : {{item.publishedDate}}
+                  </div>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+                    text
+                    color="blue darken-3"
+                    @click="openDialog(key)"
+                  >
+                    View
+                  </v-btn>
+                </v-card-actions>
+            </v-card>
+            <v-divider :key="key" v-if="key != allCompletedProcurements.length - 1"></v-divider>
+          </template>
         </v-card>
+        <template>
+          <div class="text-center">
+            <v-pagination
+              v-model="page"
+              :length="Math.ceil(allCompletedProcurements.length / perPage)"
+              circle
+            ></v-pagination>
+          </div>
+        </template>
         <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
             <!-- <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -100,7 +109,9 @@ export default {
     tab: null,
     dialog: false,
     procurement: null,
-    completedProcurements: [
+    page: 1,
+    perPage: 10,
+    allCompletedProcurements: [
       {tenderNo: 'UCSC/DIM/G/ENG/2020/0001', publishedDate: '20-01-2020', category: 'Janitorial Items/ Essential Items', completedDate: '30-01-2020'},
       {tenderNo: 'UCSC/DIM/G/ENG/2020/0002', publishedDate: '02-04-2020', category: 'Supply of Refreshment and Foods', completedDate: '18-04-2020'},
     ],
@@ -126,7 +137,11 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {}
+  computed: {
+    completedProcurements () {
+      return this.allCompletedProcurements.slice((this.page - 1)* this.perPage, this.page* this.perPage)
+    }
+  }
 };
 </script>
 

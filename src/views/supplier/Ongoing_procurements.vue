@@ -2,7 +2,6 @@
   <v-container>
         <v-card flat>
             <template v-for="(item,key) in ongoingProcurements">
-                <v-divider :key="key"></v-divider>
                 <v-card :key="item.tenderNo"
                   class="mx-auto"
                   max-width="800"
@@ -41,6 +40,7 @@
                       </v-btn>
                     </v-card-actions>
                 </v-card>
+                <v-divider :key="key" v-if="key != ongoingProcurements.length - 1"></v-divider>
             </template>
         </v-card>
         <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
@@ -124,7 +124,7 @@ export default {
     ],
     ongoingProcurements: [
       {tenderNo: 'UCSC/DIM/G/ENG/2020/0004', publishedDate: '05-06-2020', category: 'Stationeries and Office Consumables', status: 'Quotations Sent', bidOpeningDate: '30-06-2020'},
-    {tenderNo: 'UCSC/DIM/G/ENG/2020/0005', publishedDate: '05-06-2020', category: 'Stationeries and Office Consumables', status: 'Bid Approved', bidOpeningDate: '30-06-2020'},
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0005', publishedDate: '05-06-2020', category: 'Stationeries and Office Consumables', status: 'Bid Approved', bidOpeningDate: '30-06-2020'},
     ],
   }),
 

@@ -15,10 +15,6 @@
     </v-row>
     <v-row>
       <v-card class="mx-auto" min-width=1000>
-        <!-- <v-card-title class="text-center justify-center py-6">
-          <h1 class="font-weight-bold display-3 basil--text">BASiL</h1>
-        </v-card-title> -->
-
         <v-tabs
           v-model="tab"
           background-color="transparent"
@@ -32,7 +28,7 @@
             {{ tab }}
           </v-tab>
         </v-tabs>
-
+        <v-divider></v-divider>
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <NewRequests />

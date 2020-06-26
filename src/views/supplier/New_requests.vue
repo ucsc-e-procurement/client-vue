@@ -2,7 +2,6 @@
   <v-container>
         <v-card flat>
             <template v-for="(item,key) in newRequests">
-                <v-divider :key="key"></v-divider>
                 <v-card :key="item.tenderNo"
                   class="mx-auto"
                   max-width="800"
@@ -30,6 +29,7 @@
                       </v-btn>
                     </v-card-actions>
                 </v-card>
+                <v-divider :key="key" v-if="key != newRequests.length - 1"></v-divider>
             </template>
         </v-card>
         <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="710px">
@@ -75,7 +75,8 @@
                 
                 <p class="text--primary">
                     [[The duly completed quotation should be sent by under registered post or dropped into the tender Box at the Finance Branch 4th floor of the University of Colombo School of Computing No 35, Reid Avenue, Colombo 00700. on or before 2.30 PM Closing Date. 
-                    It is required to mention as “Tender Name & Tender Number. in the top left hand corner of the envelope.]] 
+                    It is required to mention as “Tender Name & Tender Number. in the top left hand corner of the envelope.]] <br/>
+                    The duly completed quotation should be submitted through the website on or before 2.30 PM {{newRequests[procurement].expiryDate}}
                 </p> 
                 <p class="text--primary">
                     NOTE: PLEASE QUOTE MOST COMPETITIVE ITEM AND OPTIONS ARE NOT ALLOWED. <br/>
@@ -137,7 +138,7 @@ export default {
       'New Requests', 'On-Going', 'Completed'
     ],
     newRequests: [
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0006', publishedDate: '18-06-2020', category: 'Sports Goods', expiryDate: '01-07-202'},
+      {tenderNo: 'UCSC/DIM/G/ENG/2020/0006', publishedDate: '18-06-2020', category: 'Sports Goods', expiryDate: '01-07-2020'},
     ],
   }),
 
