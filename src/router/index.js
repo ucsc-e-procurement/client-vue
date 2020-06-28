@@ -10,6 +10,11 @@ import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
 import Supplier_Procurements from "../views/supplier/Procurements.vue"
 
+//Employee
+import Employee from "../views/employee/Employee.vue"
+import Employee_Dashboard from "../views/employee/Dashboard.vue"
+import Employee_Tec_team from "../views/employee/Tec_team.vue"
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 import Example_Form from "../../templates/Example_Form.vue";
@@ -60,6 +65,25 @@ const routes = [
         path: "procurements",
         name: "procurements",
         component: Supplier_Procurements
+      }
+    ]
+  },
+
+  //employee routes
+  {
+    path: "/employee",
+    name: "employee",
+    component: Employee,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Employee_Dashboard
+      },
+      {
+        path: "tecteam",
+        name: "default",
+        component: Employee_Tec_team
       }
     ]
   },

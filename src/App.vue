@@ -20,7 +20,7 @@
       <v-app-bar-nav-icon
         @click.stop="navDrawerExternal = !navDrawerExternal"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title>UCSC E-Procurement (External)</v-toolbar-title>
+      <v-toolbar-title>UCSC E-Procurement (Supplier)</v-toolbar-title>
     </v-app-bar>
 
     <!-- ----------------------------------------- Main Content (Pages Render into This Router View) ---------------------------------------------- -->
@@ -38,7 +38,8 @@
 import Footer from "./components/common/Footer";
 
 // For Internal Parties
-import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
+//import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
+import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee"
 import NavigationDrawer_External from "./components/external/NavigationDrawer";
 
 export default {
@@ -47,7 +48,8 @@ export default {
   // Components Registration
   components: {
     app_footer: Footer,
-    nav_drawer_internal: NavigationDrawer_Internal,
+    //nav_drawer_internal: NavigationDrawer_Internal,
+    nav_drawer_internal: NavigationDrawer_Employee,
     nav_drawer_external: NavigationDrawer_External
   },
 
@@ -58,7 +60,7 @@ export default {
     navDrawerExternal: true,
 
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
-    isInternal: false
+    isInternal: true
   })
 };
 </script>
