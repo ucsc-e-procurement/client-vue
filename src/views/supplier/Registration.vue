@@ -28,6 +28,15 @@
                         v-model="email"
                         required
                     ></v-text-field>
+                    <v-select
+                      v-model="cat_selection"
+                      :items="categories"
+                      label="Select categories"
+                      multiple
+                      chips
+                      hint="Applying categories of Goods/Services"
+                      persistent-hint
+                    ></v-select>
                     <v-text-field
                         label="Contact Number"
                         v-model="contact"
@@ -38,6 +47,7 @@
                         label="Address"
                         v-model="address"
                         auto-grow
+                        row-height="6"
                         required
                     ></v-textarea>
                     <v-text-field
@@ -67,68 +77,57 @@
 </template>
 
 <script>
-// import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-/*
+  export default {
 
-// Validation Library - Vuelidate
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
+    // Props Received
+    props: [],
 
-*/
+    // Imported Components
+    components: {},
 
-/* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
-export default {
-  // Mixins
-  // mixins: [validationMixin],
+    // Data Variables and Values
+    data: () => ({
+      cat_selection: [],
+      show: false,
+      categories: [
+          'Stationery', 'Computers', 'Services',
+        ],
+      password: 'Password',
+      rules: {
+        min: v => v.length >= 8 || 'Min 8 characters',
+      },
+    }),
 
-  // Form Validations
-  // validations: {},
+    // Custom Methods and Functions
+    methods: {},
 
-  // Props Received
-  props: [],
+    // Life Cycle Hooks
+    beforeCreate() {},
+    created() {},
+    beforeMount() {},
+    mounted() {},
+    beforeUpdate() {},
+    updated() {},
+    beforeDestroy() {},
+    destroyed() {},
 
-  // Imported Components
-  components: {},
-
-  // Data Variables and Values
-  data: () => ({
-        show: false,
-        password: 'Password',
-        rules: {
-          min: v => v.length >= 8 || 'Min 8 characters',
-        },
-  }),
-
-  // Custom Methods and Functions
-  methods: {},
-
-  // Life Cycle Hooks
-  beforeCreate() {},
-  created() {},
-  beforeMount() {},
-  mounted() {},
-  beforeUpdate() {},
-  updated() {},
-  beforeDestroy() {},
-  destroyed() {},
-
-  // Computed Properties
-  computed: {}
-};
+    // Computed Properties
+    computed: {}
+  };
 </script>
 
 // Custom CSS Rules and Classes
 <style scoped>
-.bg {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: url("../../assets/ucsc.jpg") no-repeat center center;
-  background-size: cover;
+  .bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url("../../assets/ucsc.jpg") no-repeat center center;
+    background-size: cover;
 
-  transform: scale(1);
-}
+    transform: scale(1);
+  }
 </style>
