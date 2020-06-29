@@ -10,7 +10,8 @@ import Director from "../views/director/Director.vue";
 import Director_Dashboard from "../views/director/Dashboard.vue";
 import Director_Procurements from "../views/director/Procurements.vue";
 import Director_Requests from "../views/director/Requests.vue";
-import Requisitions from "../views/director/Requisitions.vue"
+import Requisitions from "../views/director/Requisitions.vue";
+import Director_Procurement_Stepper from '../views/director/ProcurementStepper.vue'
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -61,7 +62,12 @@ const routes = [
       {
         path: "procurements",
         name: "d_proc",
-        component: Director_Procurements
+        component: Director_Procurements,
+      },
+      {
+        path: "procurements/:id",
+        name: "d_proc_stepper",
+        component: Director_Procurement_Stepper
       },
       {
         path: "requests",

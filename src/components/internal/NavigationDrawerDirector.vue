@@ -15,7 +15,7 @@
 
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link to="/">
+      <v-list-item link to="/director">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
@@ -100,7 +100,9 @@ export default {
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},

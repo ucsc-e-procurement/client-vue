@@ -188,6 +188,9 @@ export default {
   data: () => ({
     search: '',
     tab: null,
+    ongoingProcurements: [],
+    completedProcurements: [],
+    terminatedProcurements: [],
     items: [
       'Ongoing', 'Completed', 'Terminated',
     ],
@@ -196,83 +199,39 @@ export default {
         {
         text: 'Procurement ID',
         align: 'start',
-        filterable: true,
-        value: 'id',
+        value: 'procurement_id',
         },
         { text: 'Status', value: 'status' },
-        { text: 'Date Initiated', value: 'init_date' },
-        { text: 'Date Completed', value: 'comp_date' },
-        { text: 'Supplier', value: 'supplier' },
+        { text: 'Description', value: 'description' },
+        { text: 'Procurement Method', value: 'procurement_method' },
+        { text: 'Bid Opening Date', value: 'bid_opening_date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    ongoingProcurements: [
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0001',
-        status: 'Bid Open',
-        init_date: '01-01-2020',
-        comp_date: 'Pending',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0002',
-        status: 'Pending PO',
-        init_date: '01-01-2020',
-        comp_date: 'Pending',
-        supplier: 'ABC Technologies',
-        actions: '1%',
-        },
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0003',
-        status: 'Pending TEC Report',
-        init_date: '01-01-2020',
-        comp_date: 'pending',
-        supplier: 'Techzone',
-        actions: '1%',
-        },
-    ],
-    completedProcurements: [
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0004',
-        status: 'Completed',
-        init_date: '01-01-2020',
-        comp_date: '01-01-2020',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0005',
-        status: 'Completed',
-        init_date: '01-02-2020',
-        comp_date: '01-02-2020',
-        supplier: 'SLT',
-        actions: '1%',
-        },
-    ],
-    terminatedProcurements: [
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0004',
-        status: 'Terminated',
-        init_date: '01-01-2020',
-        comp_date: '01-01-2020',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-        {
-        id: 'UCSC/NCB/W/ENG/2020/0005',
-        status: 'Terminated',
-        init_date: '01-01-2020',
-        comp_date: '01-01-2020',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-    ]
   }),
 
   // Custom Methods and Functions
   methods: {
     onButtonClick: function (event) {
-      console.log(event.id)
+
+      var proc_id = event.procurement_id;
+
+      this.$router.push({ path: `procurements/${proc_id.replace(/[/]/g, '')}` , query:{
+        proc_id: event.procurement_id
+      }})
+    },
+
+    getProcurements(){
+      this.$http
+        .get("/api/director/procurements")
+        .then(response => {
+          // console.log(response);
+          this.ongoingProcurements = response.data.filter(item => item.status == 'on-going');
+          this.completedProcurements = response.data.filter(item => item.status == 'completed');
+          this.terminatedProcurements = response.data.filter(item => item.status == 'oterminated');
+        })
+        .catch(err => {
+          console.log(err);
+        })
     }
   },
 
@@ -280,7 +239,9 @@ export default {
   beforeCreate() {},
   created() {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.getProcurements();
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},

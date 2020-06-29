@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Dashboard</h5>
+              <h5 class="headline">This Month</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -15,45 +15,130 @@
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
               <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Ongoing </v-card-title>
+                <v-card height="100" color="deep-purple lighten-3">
+                  <v-card-title></v-card-title>
+                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
+                      Purchase Requisitions
+                      <v-chip
+                        class="ma-2"
+                        color="deep-purple lighten-2"
+                      >
+                        12
+                      </v-chip>
+                  </v-card-text>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Terminated</v-card-title>
+                <v-card height="100" color="orange lighten-3">
+                  <v-card-title></v-card-title>
+                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
+                    Ongoing Procurements
+                    <v-chip
+                      class="ma-2"
+                      color="orange lighten-2"
+                    >
+                      04
+                    </v-chip>
+                  </v-card-text>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Completed</v-card-title>
+                <v-card height="100" color="green lighten-3">
+                  <v-card-title></v-card-title>
+                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
+                    Completed Procurements
+                    <v-chip
+                      class="ma-2"
+                      color="green lighten-2"
+                    >
+                      08
+                    </v-chip>
+                  </v-card-text>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Other</v-card-title>
+                <v-card height="100" color="red lighten-3">
+                  <v-card-title></v-card-title>
+                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
+                    Terminated Procurements
+                    <v-chip
+                      class="ma-2"
+                      color="red lighten-2"
+                    >
+                      02
+                    </v-chip>
+                  </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
-
             <v-row>
               <v-col cols="6">
-                <v-card>
-                  <v-sparkline
-                    :value="value"
-                    :gradient="gradient"
-                    :smooth="radius || false"
-                    :padding="padding"
-                    :line-width="width"
-                    :stroke-linecap="lineCap"
-                    :gradient-direction="gradientDirection"
-                    :fill="fill"
-                    :type="type"
-                    :auto-line-width="autoLineWidth"
-                    auto-draw
-                    height="150"
-                  ></v-sparkline>
-                </v-card>
+                <v-card
+                  class="mx-auto text-center"
+                  color="blue"
+                  dark
+                >
+                <v-card-text>
+                  <v-sheet color="rgba(0, 0, 0, .12)">
+                    <v-sparkline
+                      :value="value"
+                      color="rgba(255, 255, 255, .7)"
+                      height="100"
+                      padding="24"
+                      stroke-linecap="round"
+                      smooth
+                    >
+                      <template v-slot:label="item">
+                        ${{ item.value }}
+                      </template>
+                    </v-sparkline>
+                  </v-sheet>
+                </v-card-text>
+
+                <v-card-text>
+                  <div class="display-1 font-weight-thin">Sales Last 24h</div>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions class="justify-center">
+                  <v-btn block text>Go to Report</v-btn>
+                </v-card-actions>
+              </v-card>
+              </v-col>
+              <v-col cols="6">
+                <v-card
+                  class="mx-auto text-center"
+                  color="blue"
+                  dark
+                >
+                <v-card-text>
+                  <v-sheet color="rgba(0, 0, 0, .12)">
+                    <v-sparkline
+                      :value="values"
+                      color="rgba(255, 255, 255, .7)"
+                      height="100"
+                      padding="24"
+                      stroke-linecap="round"
+                      smooth
+                    >
+                      <template v-slot:label="item">
+                        ${{ item.value }}
+                      </template>
+                    </v-sparkline>
+                  </v-sheet>
+                </v-card-text>
+
+                <v-card-text>
+                  <div class="display-1 font-weight-thin">Sales Last 24h</div>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions class="justify-center">
+                  <v-btn block text>Go to Report</v-btn>
+                </v-card-actions>
+              </v-card>
               </v-col>
             </v-row>
           </v-container>
@@ -112,7 +197,16 @@ export default {
     gradients,
     fill: false,
     type: "trend",
-    autoLineWidth: false
+    autoLineWidth: false,
+    values: [
+        423,
+        446,
+        675,
+        510,
+        590,
+        610,
+        760,
+      ],
   }),
 
   // Custom Methods and Functions

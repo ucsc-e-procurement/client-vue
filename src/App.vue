@@ -60,7 +60,7 @@ export default {
     navDrawerExternal: true,
 
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
-    isInternal: false
+    isInternal: true
   })
 };
 </script>
