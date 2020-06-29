@@ -8,15 +8,15 @@
                   flat
                 >
                     <v-card-text>
-                      <div>Tender Number : {{item.tenderNo}}</div>
+                      <div>Tender Number : {{item.procurement_id}}</div>
                       <p class="text-h6">
                         {{item.category}}
                       </p>
                       <div class="text--primary">
-                        Published Date : {{item.publishedDate}}
+                        Published Date : {{item.date}}
                       </div>
                       <div class="text--primary">
-                        Expiry Date : {{item.expiryDate}}
+                        Expiry Date : {{item.deadline}}
                       </div>
                     </v-card-text>
                     <v-card-actions>
@@ -32,10 +32,10 @@
                 <v-divider :key="key" v-if="key != newRequests.length - 1"></v-divider>
             </template>
         </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="710px">
+        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="750px">
             <v-card>
-                <v-card-title>
-                <span class="headline">INVITATION OF QUOTATIONS : {{newRequests[procurement].tenderNo}}</span>
+                <v-card-title class="justify-center">
+                <p class="headline">INVITATION OF QUOTATIONS</p>
                 </v-card-title>
                 <v-card-text>
                 <!-- <p class="text-h6">
@@ -51,10 +51,10 @@
                     --- other details ---
                 </div> -->
                 <p class="text--primary">
-                    {{newRequests[procurement].publishedDate}}
+                    {{newRequests[procurement].date}}
                 </p>
                 <p class="text--primary">
-                    Quotation No: {{newRequests[procurement].tenderNo}}
+                    Quotation No: {{newRequests[procurement].procurement_id}}
                 </p>
                 <p class="text--primary">
                     The Manager, <br/>
@@ -65,18 +65,36 @@
                     Dear Sir,
                 </p> 
                 <p class="text--primary text-decoration-underline">
-                    INVITATION OF QUOTATIONS FOR – {{newRequests[procurement].tenderNo}} ({{newRequests[procurement].category}}).
+                    INVITATION OF QUOTATIONS FOR – {{newRequests[procurement].procurement_id}} ({{newRequests[procurement].category}}).
                 </p> 
                 <p class="text--primary">
                     The University of Colombo School of Computing hereby requests sealed quotations for Supply & Delivery of {{newRequests[procurement].category}} & Quantity.
                 </p> 
 
-                [[Items & Quantity]]
+                <p class="text--primary text-decoration-underline text-center">
+                    Items and Quantity
+                </p>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">Item</th>
+                        <th class="text-left">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in JSON.parse(newRequests[procurement].products)" :key="item.name">
+                        <td>{{ item.product_name }}</td>
+                        <td>{{ item.qty }}</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
                 
                 <p class="text--primary">
                     [[The duly completed quotation should be sent by under registered post or dropped into the tender Box at the Finance Branch 4th floor of the University of Colombo School of Computing No 35, Reid Avenue, Colombo 00700. on or before 2.30 PM Closing Date. 
                     It is required to mention as “Tender Name & Tender Number. in the top left hand corner of the envelope.]] <br/>
-                    The duly completed quotation should be submitted through the website on or before 2.30 PM {{newRequests[procurement].expiryDate}}
+                    The duly completed quotation should be submitted through the website on or before 2.30 PM {{newRequests[procurement].deadline}}
                 </p> 
                 <p class="text--primary">
                     NOTE: PLEASE QUOTE MOST COMPETITIVE ITEM AND OPTIONS ARE NOT ALLOWED. <br/>
@@ -138,8 +156,15 @@ export default {
       'New Requests', 'On-Going', 'Completed'
     ],
     newRequests: [
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0006', publishedDate: '18-06-2020', category: 'Sports Goods', expiryDate: '01-07-2020'},
+      {
+        tenderNo: 'UCSC/DIM/G/ENG/2020/0006', 
+        publishedDate: '18-06-2020', 
+        category: 'Sports Goods', 
+        expiryDate: '01-07-2020',
+        items: [{name: 'Bats', qty: '5'}, {name: 'Balls', qty: '5'}]
+      },
     ],
+    //fetched: null,
   }),
 
   // Custom Methods and Functions
@@ -148,14 +173,34 @@ export default {
       this.procurement = key
       this.dialog = true
       console.log(key)
+    },
+
+    fetchRequests(supplier_id) {
+      this.$http.get('/api/supplier/get_new_requests', {
+        params: {
+          id: supplier_id
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.newRequests = response.data
+        console.log('fetched',JSON.parse(this.newRequests[0].products))
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    //this.fetchRequests('s0001')
+  },
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.fetchRequests('s0001')
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},

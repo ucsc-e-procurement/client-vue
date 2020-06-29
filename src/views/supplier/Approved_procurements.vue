@@ -8,12 +8,18 @@
               flat
             >
                 <v-card-text>
-                  <div>Tender Number : {{item.tenderNo}}</div>
+                  <div>Tender Number : {{item.procurement_id}}</div>
                   <p class="text-h6">
                     {{item.category}}
                   </p>
                   <div class="text--primary">
-                    Published Date : {{item.publishedDate}}
+                    Published Date : {{item.date}}
+                  </div>
+                  <div class="text--primary">
+                    Completed Date : {{item.completed_date}}
+                  </div>
+                  <div class="text--primary">
+                    Status : {{item.procurement_status}}
                   </div>
                 </v-card-text>
                 <v-card-actions>
@@ -51,24 +57,52 @@
             </template> -->
             <v-card>
                 <v-card-title>
-                <span class="headline">Tender Number : {{completedProcurements[procurement].tenderNo}}</span>
+                <span class="headline">Tender Number : {{completedProcurements[procurement].procurement_id}}</span>
                 </v-card-title>
                 <v-card-text>
                 <p class="text-h6">
                     {{completedProcurements[procurement].category}}
                 </p>
                 <div class="text--primary">
-                    Published Date : {{completedProcurements[procurement].publishedDate}}
+                    Published Date : {{completedProcurements[procurement].date}}
                 </div>
                 <div class="text--primary">
-                    Completed Date : {{completedProcurements[procurement].completedDate}}
+                    Bid Opening Date : {{completedProcurements[procurement].bid_opening_date}}
                 </div>
                 <div class="text--primary">
-                    --- other details ---
+                    Completed Date : {{completedProcurements[procurement].completed_date}}
                 </div>
+                <div class="text--primary">
+                    Status : {{completedProcurements[procurement].procurement_status}}
+                </div>
+                <p class="text--primary text-decoration-underline text-center">
+                    Submitted Bid
+                </p>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">Item</th>
+                        <th class="text-left">Quantity</th>
+                        <th class="text-left">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in JSON.parse(completedProcurements[procurement].bids)" :key="item.name">
+                        <td>{{ item.product_name }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>{{ item.price }}</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+                <p class="text--primary text-center">
+                    Total Amount(LKR): {{completedProcurements[procurement].quotation}}
+                </p>
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn color="green darken-3" text @click="dialog = false">View Purchase Order</v-btn>
                 <v-btn color="blue darken-3" text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
@@ -112,8 +146,22 @@ export default {
     page: 1,
     perPage: 10,
     allCompletedProcurements: [
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0001', publishedDate: '20-01-2020', category: 'Janitorial Items/ Essential Items', completedDate: '30-01-2020'},
-      {tenderNo: 'UCSC/DIM/G/ENG/2020/0002', publishedDate: '02-04-2020', category: 'Supply of Refreshment and Foods', completedDate: '18-04-2020'},
+      {
+        tenderNo: 'UCSC/DIM/G/ENG/2020/0001', 
+        publishedDate: '20-01-2020', 
+        category: 'Janitorial Items/ Essential Items', 
+        completedDate: '30-01-2020',
+        status: 'Delivered',
+        items: [{name: 'Soap', qty: '20', price: '1500.00'}, {name: 'Hand Sanitizer', qty: '10', price: '1000.00'}]
+      },
+      {
+        tenderNo: 'UCSC/DIM/G/ENG/2020/0002', 
+        publishedDate: '02-04-2020', 
+        category: 'Supply of Refreshment and Foods', 
+        completedDate: '18-04-2020',
+        status: 'Not Delivered',
+        items: [{name: 'Biscuits', qty: '20', price: '1500.00'}]
+      },
     ],
   }),
 
@@ -123,6 +171,22 @@ export default {
       this.procurement = key
       this.dialog = true
       console.log(key)
+    },
+
+    fetchCompletedProcurements(supplier_id) {
+      this.$http.get('/api/supplier/get_completed_procurements', {
+        params: {
+          id: supplier_id
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.allCompletedProcurements = response.data
+        console.log('fetched',JSON.parse(this.allCompletedProcurements[0].bids))
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   },
 
@@ -130,7 +194,9 @@ export default {
   beforeCreate() {},
   created() {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.fetchCompletedProcurements('s0001')
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},
