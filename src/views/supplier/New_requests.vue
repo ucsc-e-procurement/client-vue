@@ -58,8 +58,8 @@
                 </p>
                 <p class="text--primary">
                     The Manager, <br/>
-                    [Company Name] <br/>
-                    [Address] 
+                    {{this.supplier.name}}<br/>
+                    {{this.supplier.address}}
                 </p>
                 <p class="text--primary">
                     Dear Sir,
@@ -92,8 +92,7 @@
                 </v-simple-table>
                 
                 <p class="text--primary">
-                    [[The duly completed quotation should be sent by under registered post or dropped into the tender Box at the Finance Branch 4th floor of the University of Colombo School of Computing No 35, Reid Avenue, Colombo 00700. on or before 2.30 PM Closing Date. 
-                    It is required to mention as “Tender Name & Tender Number. in the top left hand corner of the envelope.]] <br/>
+                    <br/>
                     The duly completed quotation should be submitted through the website on or before 2.30 PM {{newRequests[procurement].deadline}}
                 </p> 
                 <p class="text--primary">
@@ -141,7 +140,7 @@ export default {
   // validations: {},
 
   // Props Received
-  props: [],
+  props: ['supplier'],
 
   // Imported Components
   components: {},
@@ -185,6 +184,7 @@ export default {
         console.log(response.data);
         this.newRequests = response.data
         console.log('fetched',JSON.parse(this.newRequests[0].products))
+        console.log('supplier', this.supplier)
       })
       .catch(error => {
         console.log(error);

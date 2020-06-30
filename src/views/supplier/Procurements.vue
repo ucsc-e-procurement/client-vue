@@ -31,7 +31,7 @@
         <v-divider></v-divider>
         <v-tabs-items v-model="tab">
           <v-tab-item>
-            <NewRequests />
+            <NewRequests v-if="supplier" v-bind:supplier="supplier[0]"/>
           </v-tab-item>
           <v-tab-item>
             <OngoingProcurements />
@@ -84,16 +84,34 @@ export default {
     tabs: [
       'New Requests', 'On-Going', 'Completed'
     ],
+    supplier: null
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    getSupplier(supplier_id) {
+      this.$http.get('/api/supplier/get_supplier', {
+        params: {
+          id: supplier_id
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.supplier = response.data
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.getSupplier('s0001')
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},

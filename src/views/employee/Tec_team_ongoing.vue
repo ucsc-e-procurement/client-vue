@@ -22,41 +22,59 @@
             </v-data-table>
         </v-card>
         <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
-            <!-- <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                >
-                Open Dialog
-                </v-btn>
-            </template> -->
             <v-card>
                 
                 <v-card-title>
-                <span class="headline">Tender Number : {{procurement.tenderNo}}</span>
+                <span class="headline">Tender Number : {{procurement.procurement_id}}</span>
                 </v-card-title>
                 <v-card-text>
                 <p class="text-h6">
                     {{procurement.category}}
                 </p>
                 <div class="text--primary">
-                    Initialized Date : {{procurement.init_date}}
+                    Initialized Date : {{procurement.date}}
                 </div>
                 <div class="text--primary">
-                    Supplier : {{procurement.supplier}}
+                    Bid Opening Date : {{procurement.bid_opening_date}}
                 </div>
                 <div class="text--primary">
-                    Status : {{procurement.status}}
+                    Status : {{procurement.procurement_status}}
                 </div>
-                <div class="text--primary">
-                    [submitted price schedule]
+                <br/>
+                <v-divider></v-divider>
+                <br/>
+                <p class="text-h6 text-decoration-underline text-center">
+                    Submitted Bids
+                </p>
+                <div v-if="procurement.bids">
+                <template v-for="(product,key) in Object.values(procurement.bids)">
+                    <div :key="product[0].product_id" class="text--primary">
+                        Item : {{product[0].product_name}}
+                    </div>
+                    <v-simple-table :key="key">
+                    <template v-slot:default>
+                        <thead>
+                        <tr>
+                            <th class="text-left">Supplier</th>
+                            <th class="text-left">Quantity</th>
+                            <th class="text-left">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="bid in product" :key="bid.supplier_id">
+                            <td>{{ bid.supplier_name }}</td>
+                            <td>{{ bid.qty }}</td>
+                            <td>{{ bid.price }}</td>
+                        </tr>
+                        </tbody>
+                    </template>
+                    </v-simple-table>
+                    <br :key="product[0].product_name"/>
+                </template>
                 </div>
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn v-if="procurement.status == 'Pending TEC Report'" color="green darken-3" text @click="dialog = false">Tec Report</v-btn>
                 <v-btn color="blue darken-3" text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
@@ -99,10 +117,10 @@ export default {
     procurement: null,
     search: '',
     ongoingHeaders: [
-        { text: 'Procurement ID', align: 'start', filterable: true, value: 'tenderNo'},
+        { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
         { text: 'Category', value: 'category' },
-        { text: 'Status', value: 'status' },
-        { text: 'Date Initiated', value: 'init_date' },
+        { text: 'Status', value: 'procurement_status' },
+        { text: 'Date Initiated', value: 'date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
     ongoingProcurements: [
@@ -133,6 +151,34 @@ export default {
       this.procurement = item
       this.dialog = true
       console.log(item)
+    },
+
+    fetchOngoingProcurements(employee_id) {
+      this.$http.get('/api/tec_team/get_ongoing_procurements', {
+        params: {
+          id: employee_id
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.ongoingProcurements = response.data
+        this.ongoingProcurements.forEach(element => {
+            if(element.bids) {
+                element.bids = JSON.parse(element.bids)
+                element.bids = element.bids.reduce((r, a) => {
+                    console.log("a", a);
+                    console.log('r', r);
+                    r[a.product_id] = [...r[a.product_id] || [], a];
+                    return r;
+                }, {})
+            }
+        });
+        console.log(this.ongoingProcurements)
+        //console.log(Object.values(this.ongoingProcurements[0].bids))
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   },
 
@@ -140,7 +186,9 @@ export default {
   beforeCreate() {},
   created() {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+      this.fetchOngoingProcurements('e0001')
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},
