@@ -30,7 +30,7 @@
                         :search="search"
                         ></v-data-table>
                     </v-card> -->
-                    <v-card>
+                    <v-card v-if="isMounted">
                       <v-card-title class="text-center justify-center py-6">
                         <h4 class="font-weight-bold ">PROCUREMENTS</h4>
                       </v-card-title>
@@ -187,6 +187,7 @@ export default {
   // Data Variables and Values
   data: () => ({
     search: '',
+    isMounted: false,
     tab: null,
     ongoingProcurements: [],
     completedProcurements: [],
@@ -216,7 +217,8 @@ export default {
       var proc_id = event.procurement_id;
 
       this.$router.push({ path: `procurements/${proc_id.replace(/[/]/g, '')}` , query:{
-        proc_id: event.procurement_id
+        proc_id: event.procurement_id,
+        stepper: event.stepper
       }})
     },
 
@@ -228,6 +230,7 @@ export default {
           this.ongoingProcurements = response.data.filter(item => item.status == 'on-going');
           this.completedProcurements = response.data.filter(item => item.status == 'completed');
           this.terminatedProcurements = response.data.filter(item => item.status == 'oterminated');
+          this.isMounted = true;
         })
         .catch(err => {
           console.log(err);
@@ -237,10 +240,14 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
-  beforeMount() {},
-  mounted() {
+  created() {
     this.getProcurements();
+  },
+  beforeMount() {
+    // this.getProcurements();
+  },
+  mounted() {
+    // this.getProcurements();
   },
   beforeUpdate() {},
   updated() {},

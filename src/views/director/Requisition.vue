@@ -5,28 +5,51 @@
             <v-row>
                 <v-col cols="12" sm="6">
                 <v-text-field
-                    value="UCSC/NCB/W/ENG/2020/0004"
-                    label="Procurement ID"
+                    :value="this.requisitionData.requisition_id"
+                    label="Requisition ID"
                     outlined
                     readonly
                 ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                 <v-text-field
-                    value="Goods"
-                    label="Procurement Type"
+                    :value="this.requisitionData.name"
+                    label="Requester"
                     outlined
                     readonly
                 ></v-text-field>
                 </v-col>
-
-                <v-col cols="12" sm="12">
+                <v-col cols="12" sm="6">
                 <v-text-field
-                    value="Description"
-                    label="Procurement Description"
+                    :value="this.requisitionData.department"
+                    label="Department"
                     outlined
                     readonly
                 ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                <v-text-field
+                    :value="this.requisitionData.date"
+                    label="Date Requested"
+                    outlined
+                    readonly
+                ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12">
+                <v-text-field
+                    :value="this.requisitionData.description"
+                    label="Product Description"
+                    outlined
+                    readonly
+                ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12">
+                    <v-data-table
+                        :headers="headers"
+                        :items="JSON.parse(requisitionData.products)"
+                        :items-per-page="5"
+                        class="elevation-1"
+                    ></v-data-table>
                 </v-col>
                 
             </v-row>
@@ -60,7 +83,7 @@
             <v-row>
                 <v-col cols="12" sm="12">
                 <v-text-field
-                    :value="requisitionId"
+                    value="requisitionId"
                     label="Derector Remarks"
                     outlined
                     readonly
@@ -89,39 +112,54 @@ export default {
 
   // Props Received
   name: 'Requisition',
-  props: ['requisitionId'],
+  props: ['requisitionData'],
 
   // Imported Components
   components: {},
 
   // Data Variables and Values
   data: () => ({
-    requisitionId: this.requisitionId,
+    // reqId: this.requisitionId,
     requisition: [],
+    products: '',
+    headers: [
+        {
+        text: 'Product Name',
+        align: 'start',
+        sortable: false,
+        value: 'product_name',
+        },
+        { text: 'Description', value: 'prod_desc' },
+    ],
   }),
 
   // Custom Methods and Functions
   methods: {
-      getRequisitions(requisitionId){
-      this.$http
-        .get(`/api/director/requisitions/${requisitionId.replace(/[/]/g, '')}?reqId=${requisitionId}`)
-        .then(response => {
-          console.log(response);
-          this.requisition = response.data
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    }
+    //   getRequisitions(){
+    //   this.$http
+    //     .get(`/api/director/requisitions/${this.requisitionId.replace(/[/]/g, '')}?reqId=${this.requisitionId}`)
+    //     .then(response => {
+    //       console.log(response);
+    //       this.requisition = response.data
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     })
+    // }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-      this.getRequisitions(this.requisitionId)
+    // this.getRequisitions()
+    // console.log('crt', this.requisitionData);
+    this.products = JSON.parse(this.requisitionData.products);
   },
-  beforeMount() {},
-  mounted() {},
+  beforeMount() {
+  },
+  mounted() {
+    //   console.log('mont', this.requisitionId)
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},
