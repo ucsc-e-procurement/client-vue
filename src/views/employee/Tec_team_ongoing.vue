@@ -18,6 +18,9 @@
                 <v-btn class="mx-2" small color="primary" @click="openDialog(props.item)">
                     VIEW
                 </v-btn>
+                <v-btn :disabled="!props.item.bids" class="mx-2" small color="primary" @click="openTecReport(props.item)">
+                    TEC-Report
+                </v-btn>
                 </template>
             </v-data-table>
         </v-card>
@@ -38,12 +41,13 @@
                     Bid Opening Date : {{procurement.bid_opening_date}}
                 </div>
                 <div class="text--primary">
-                    Status : {{procurement.procurement_status}}
+                    <!-- include sub-status here instead -->
+                    Status : {{procurement.procurement_status}} 
                 </div>
                 <br/>
                 <v-divider></v-divider>
                 <br/>
-                <p class="text-h6 text-decoration-underline text-center">
+                <p v-if="procurement.bids" class="text-h6 text-decoration-underline text-center">
                     Submitted Bids
                 </p>
                 <div v-if="procurement.bids">
@@ -79,6 +83,31 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="tecReport" fullscreen hide-overlay transition="dialog-bottom-transition">
+            <!-- <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                >
+                Open Dialog
+                </v-btn>
+            </template> -->
+            <v-card>
+                <v-toolbar dark color="primary">
+                <v-btn icon dark @click="tecReport = false">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-toolbar-title>TEC Report</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                    <v-btn dark text @click="tecReport = false">Save</v-btn>
+                </v-toolbar-items>
+                </v-toolbar>
+                <TecReport v-if="procurement" v-bind:procurement="procurement" v-bind:requisition_id="procurement.requisition_id" v-bind:tec_team_id="procurement.tec_team_id"/>
+            </v-card>
+        </v-dialog>
   </v-container>
 </template>
 
@@ -86,6 +115,8 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+
+import TecReport from "./Tec_Report"
 
 /*
 
@@ -107,13 +138,14 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: { TecReport },
 
   // Data Variables and Values
   data: () => ({
     //
     tab: null,
     dialog: false,
+    tecReport: false,
     procurement: null,
     search: '',
     ongoingHeaders: [
@@ -150,6 +182,12 @@ export default {
     openDialog: function (item) {
       this.procurement = item
       this.dialog = true
+      console.log(item)
+    },
+
+    openTecReport: function (item) {
+      this.procurement = item
+      this.tecReport = true
       console.log(item)
     },
 

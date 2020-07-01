@@ -14,6 +14,7 @@ import Supplier_Procurements from "../views/supplier/Procurements.vue"
 import Employee from "../views/employee/Employee.vue"
 import Employee_Dashboard from "../views/employee/Dashboard.vue"
 import Employee_Tec_team from "../views/employee/Tec_team.vue"
+import Employee_Tec_Report from "../views/employee/Tec_Report.vue"
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -84,6 +85,11 @@ const routes = [
         path: "tecteam",
         name: "default",
         component: Employee_Tec_team
+      },
+      {
+        path: "tecteam/tecreport",
+        name: "default",
+        component: Employee_Tec_Report
       }
     ]
   },
