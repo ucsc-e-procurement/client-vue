@@ -31,20 +31,23 @@
                         <v-stepper-step :complete="procurementState >= 3" step="3" :editable="true" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Tech Team</v-stepper-step>
 
                         <v-stepper-content step="3">
-                            <AppointTechTeam :requisitionData = 'this.requisitionData' :stepper = 3 @update="techTeamAppointed" v-if="isMounted && this.requisitionData.tec_team_id == null" />
+                            <AppointTechTeam :requisitionData = 'this.requisitionData' :stepper = 3 @tecTeamUpdated="childUpdated" v-if="isMounted && this.requisitionData.tec_team_id == null" />
                             <TechTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.tec_team_id != null"/>
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Bid Opening Team</v-stepper-step>
                         <v-stepper-content step="4">
-                            <AppointBidOpeningTeam :requisitionData = 'this.requisitionData' :stepper = 3 v-if="isMounted && this.requisitionData.bid_opening_team_id == null"/>
+                            <AppointBidOpeningTeam :requisitionData = 'this.requisitionData' :stepper = 3 @bidTeamAppointed="childUpdated" v-if="isMounted && this.requisitionData.bid_opening_team_id == null"/>
+                            <BidOpeningTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.bid_opening_team_id != null" />
                         </v-stepper-content>
-                        <v-stepper-step step="5">Request Quotations</v-stepper-step>
+
+                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Request Quotations</v-stepper-step>
                         <v-stepper-content step="5">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
                             <v-btn text>Cancel</v-btn>
                         </v-stepper-content>
+
                     </v-stepper>
                 </v-col>
             </v-row>
@@ -62,8 +65,9 @@
     import Requisition from "./Requisition"
     import ProcurementMethod from './ProcurementMethod'
     import AppointTechTeam from './AppointTechTeam'
-    import BidOpeningTeam from './AppointBidOpeningTeam'
+    import AppointBidOpeningTeam from './AppointBidOpeningTeam'
     import TechTeam from './TechTeam'
+    import BidOpeningTeam from './BidOpeningTeam'
 /*
 
 // Validation Library - Vuelidate
@@ -87,9 +91,10 @@ export default {
   components: {
       requisition: Requisition,
       AppointTechTeam: AppointTechTeam,
-      AppointBidOpeningTeam: BidOpeningTeam,
+      AppointBidOpeningTeam: AppointBidOpeningTeam,
       ProcurementMethod: ProcurementMethod,
       TechTeam: TechTeam,
+      BidOpeningTeam: BidOpeningTeam,
   },
 
   // Data Variables and Values
@@ -110,8 +115,11 @@ export default {
         .then(response => {
           this.requisitionData = response.data[0];
           this.procurementState = response.data[0].stepper;
-          this.stepperValue = response.data[0].stepper;
+          this.stepperValue = 1;
           this.isMounted = true;
+          if(response.data[0].stepper == 3 || response.data[0].stepper == 4){
+            this.stepperValue = response.data[0].stepper;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -120,7 +128,7 @@ export default {
     editIcon(event) {
       console.log(event)
     },
-    techTeamAppointed(stepVal){
+    childUpdated(stepVal){
       this.test = stepVal;
       this.isMounted = false;
       this.getRequisition();

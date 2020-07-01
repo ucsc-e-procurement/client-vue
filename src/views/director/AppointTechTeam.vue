@@ -269,7 +269,7 @@ export default {
                 console.log(err);
         })
         this.dialog=false;
-        this.$emit('update', 4);
+        this.$emit('tecTeamUpdated', 4);
         
     }
   },

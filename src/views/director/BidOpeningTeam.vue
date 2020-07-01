@@ -4,7 +4,7 @@
         <v-form>    
             <v-row>
                 <v-col cols="12" sm="6">
-                    <h5>Bid Opening Team</h5>
+                    <h3>Bid Opening Team Members</h3>
                 </v-col>
                 <v-col cols="12">
                     <v-list>
@@ -72,29 +72,15 @@ export default {
   // Custom Methods and Functions
   methods: {
     getEmployees(){
-        if(this.techTeamId == null){
-            this.$http
-                .get(`/api/director/getemployees`)
-                .then(response => {
-                    console.log(response);
-                    this.people = response.data;
-                })
-                .catch(err => {
-                    console.log(err);
+        this.$http
+            .get(`/api/director/get_bid_opening_team?bidOpeningTeamId=${this.bidOpeningTeamId}`)
+            .then(response => {
+                console.log(response);
+                this.team = response.data;
             })
-        }else{
-            this.$http
-                .get(`/api/director/get_tec_team?techTeamId=${this.techTeamId}`)
-                .then(response => {
-                    console.log(response);
-                    this.selectedMemberCount = response.data.length;
-                    this.team = response.data;
-                })
-                .catch(err => {
-                    console.log(err);
-            })
-        }
-        
+            .catch(err => {
+                console.log(err);
+        })
     }
   },
 
@@ -102,7 +88,7 @@ export default {
   beforeCreate() {},
   created() {
       this.procurementId = this.requisitionData.procurement_id;
-      this.techTeamId = this.requisitionData.tec_team_id;
+      this.bidOpeningTeamId = this.requisitionData.bid_opening_team_id;
       this.getEmployees();
   },
   beforeMount() {},

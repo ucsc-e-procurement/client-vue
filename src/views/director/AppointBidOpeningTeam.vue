@@ -7,13 +7,13 @@
                     <v-autocomplete
                         v-model="team"
                         :disabled="isUpdating"
-                        :items="people"
+                        :items="filterTeam"
                         filled
                         chips
                         color="blue-grey lighten-2"
                         label="Team Members"
                         item-text="name"
-                        item-value="name"
+                        item-value="employee_id"
                         multiple
                     >
                     <template v-slot:selection="data">
@@ -24,8 +24,8 @@
                         @click="data.select"
                         @click:close="removeTeam(data.item)"
                         >
-                        <v-avatar left>
-                            <v-img :src="data.item.avatar"></v-img>
+                        <v-avatar left color="blue">
+                            <span class="white--text headline">{{data.item.name[0]}}</span>
                         </v-avatar>
                         {{ data.item.name }}
                         </v-chip>
@@ -35,8 +35,8 @@
                         <v-list-item-content v-text="data.item"></v-list-item-content>
                         </template>
                         <template v-else>
-                        <v-list-item-avatar>
-                            <img :src="data.item.avatar">
+                        <v-list-item-avatar color="blue">
+                            <span class="white--text headline">{{data.item.name[0]}}</span>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title v-html="data.item.name"></v-list-item-title>
@@ -47,15 +47,50 @@
                     </v-autocomplete>
                 </v-col>
             </v-row>
-            <v-row>
+        </v-form>  
+        <v-row justify="center">
+            <v-dialog v-model="dialog" persistent max-width="600px">
+            <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                    color="success"
-                    class="mr-4 ml-4"    
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
                 >
-                    Assign
+                Assign
                 </v-btn>
-            </v-row>
-        </v-form>   
+            </template>
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Confirm Bid Opening Team?</span>
+                    </v-card-title>
+                    <v-card-text>
+                    <v-container>
+                        <v-col cols="12" sm="12">
+                            <v-list>
+                                <v-list-item
+                                    v-for="item in team"
+                                    :key="item"
+                                >
+                                    <v-text-field
+                                        :value="people.filter(i => i.employee_id == item)[0].name"
+                                        outlined
+                                        readonly
+                                    ></v-text-field>
+                                </v-list-item>
+                            </v-list>
+
+                        </v-col>
+                    </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                    <v-btn color="blue darken-1" text @click="this.assignBidOpeningTeam">Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>  
         </v-container>
     </v-card>
 </template>
@@ -82,7 +117,7 @@ export default {
   // validations: {},
 
   // Props Received
-  props: [],
+  props: ['requisitionData'],
 
   // Imported Components
   components: {},
@@ -91,6 +126,7 @@ export default {
   data: () => ({
     
     autoUpdate: true,
+    dialog: '',
     team: [],
     isUpdating: false,
     people: [
@@ -99,6 +135,8 @@ export default {
         { name: 'Trevor Hansen', group: 'Group 1', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
         { name: 'Tucker Smith', group: 'Group 1', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
     ],
+    procurementId: '',
+    tecTeamId: ''
 
   }),
 
@@ -113,15 +151,48 @@ export default {
   // Custom Methods and Functions
   methods: {
     removeTeam (item) {
-        const index = this.team.indexOf(item.name)
+        const index = this.team.indexOf(item.employee_id)
         if (index >= 0) this.team.splice(index, 1)
     },
-
+    getEmployeesNotInTecTeam(){
+        this.$http
+            .get(`/api/director/get_employees_not_in_tec_team?tecTeamId=${this.tecTeamId}`)
+            .then(response => {
+                console.log(response);
+                this.people = response.data;
+            })
+            .catch(err => {
+                console.log(err);
+        })
+    },
+    assignBidOpeningTeam(){
+        this.$http
+            .post(`/api/director/procurements/appointBidOpeningTeam`,{
+                bidOpeningTeamId: 'bot10',
+                procurementId: this.procurementId,
+                directorId: 'e0004',
+                member_1: this.team[0],
+                member_2: this.team[1]
+            })
+            .then(response => {
+                console.log(response);
+                this.people = response.data;
+            })
+            .catch(err => {
+                console.log(err);
+        })
+        this.dialog=false;
+        this.$emit('bidTeamAppointed', 5);
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+      this.procurementId = this.requisitionData.procurement_id;
+      this.tecTeamId = this.requisitionData.tec_team_id;
+      this.getEmployeesNotInTecTeam();
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
@@ -132,7 +203,12 @@ export default {
   // Computed Properties
   computed: {
       filterTeam(){
-          return this.people.filter(item => !this.team.includes(item.name))
+          if(this.team.length == 2){
+              return this.people.filter(item => this.team.includes(item.employee_id))
+          }else{
+              return this.people
+          }
+          
       },
   }
 };
