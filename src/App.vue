@@ -1,14 +1,24 @@
 <template>
-  <v-app v-if="isLoggedIn">
+  <v-app v-if="$store.getters.isLoggedIn">
     <!-- ------------------------------------------------------------- Navigation Bars ------------------------------------------------------------ -->
     <!-- Internal -->
-    <nav_drawer_internal v-if="isInternal" :drawer="navDrawerInternal" />
+    <nav_drawer_internal
+      v-if="$store.getters.isInternal"
+      :drawer="navDrawerInternal"
+    />
     <!-- External -->
     <nav_drawer_external v-else :drawer="navDrawerExternal" />
 
     <!-- ------------------------------------------------------------------ App Bars -------------------------------------------------------------- -->
     <!-- Internal -->
-    <v-app-bar v-if="isInternal" app color="indigo" dark dense clipped-left>
+    <v-app-bar
+      v-if="$store.getters.isInternal"
+      app
+      color="indigo"
+      dark
+      dense
+      clipped-left
+    >
       <v-app-bar-nav-icon
         @click.stop="navDrawerInternal = !navDrawerInternal"
       ></v-app-bar-nav-icon>
@@ -96,11 +106,19 @@ export default {
   data: () => ({
     //
     navDrawerInternal: true,
-    navDrawerExternal: true,
+    navDrawerExternal: false
 
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
-    isInternal: true,
-    isLoggedIn: false
-  })
+  }),
+  created() {
+    this.$http.interceptors.response.use(undefined, err => {
+      return new Promise(() => {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch("logout");
+        }
+        throw err;
+      });
+    });
+  }
 };
 </script>

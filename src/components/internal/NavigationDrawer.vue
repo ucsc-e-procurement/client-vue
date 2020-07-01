@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped>
     <!-- Admin Navigation Items -->
-    <v-list shaped v-if="role == 'admin'" dense>
+    <v-list shaped v-if="$store.getters.userRole == 'admin'" dense>
       <v-list-item-group v-model="listNaviagation" color="primary">
         <v-list-item link @click="$router.push('/admin')">
           <v-list-item-action>
@@ -57,7 +57,7 @@
     </v-list>
 
     <!-- Deputy Bursar Navigation Items -->
-    <v-list v-else-if="role == 'deputy_bursar'" dense>
+    <v-list v-else-if="$store.getters.userRole == 'deputy_bursar'" dense>
       <v-list-item link>
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
@@ -79,7 +79,7 @@
     <v-divider />
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block>Logout</v-btn>
+        <v-btn @click="logout" block>Logout</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -116,17 +116,26 @@ export default {
   data: () => ({
     //
     listNaviagation: 0,
-    role: "admin"
+    role: ""
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    console.log("Navigation Drawer => Role: ", this.$store.state);
+    this.role = this.$store.getters.userRole;
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},

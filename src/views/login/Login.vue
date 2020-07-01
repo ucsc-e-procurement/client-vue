@@ -22,7 +22,8 @@
           <v-card-text class="mt-5">
             <v-form>
               <v-text-field
-                label="User Email"
+                v-model="email"
+                label="Email"
                 name="login"
                 append-icon="mdi-account"
                 outlined
@@ -30,6 +31,7 @@
               ></v-text-field>
 
               <v-text-field
+                v-model="password"
                 id="password"
                 label="Password"
                 name="password"
@@ -43,7 +45,7 @@
           <v-card-actions class="pl-2">
             <v-btn small text>Forget Password ?</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="primary">Login</v-btn>
+            <v-btn @click="login" color="primary">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -77,10 +79,45 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({}),
+  data: () => ({
+    email: "",
+    password: ""
+  }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    getData() {
+      // http://localhost:3000/api/get/get_uers
+      this.$http
+        .get("/api/get_users")
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    login() {
+      let username = this.email;
+      let password = this.password;
+      this.$store
+        .dispatch("login", { username, password })
+        .then(role => {
+          console.log("I'm Here");
+          // Navigate to the Pages Based on User Role
+          switch (role) {
+            case "admin":
+              this.$router.push("/admin");
+
+              break;
+
+            default:
+              break;
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},

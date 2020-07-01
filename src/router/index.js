@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
 
 // Admin
 import Admin from "../views/admin/Admin.vue";
@@ -54,7 +55,10 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Admin_Dashboard
+        component: Admin_Dashboard,
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: "ongoing_procurements",
@@ -96,7 +100,10 @@ const routes = [
       {
         path: "example_form",
         name: "form page",
-        component: Example_Form
+        component: Example_Form,
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: "grid_system",
@@ -111,6 +118,18 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next();
+      return;
+    }
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;
