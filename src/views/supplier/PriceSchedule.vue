@@ -182,7 +182,7 @@
 
             <v-row class="mt-4" no-gutters>
               <v-btn class="mr-2 secondary">Cancel</v-btn>
-              <v-btn class="success">Review & Submit</v-btn>
+              <v-btn class="success" @click="submitSchedule">Review & Submit</v-btn>
             </v-row>
           </v-container>
       </v-col>
@@ -273,6 +273,13 @@ export default {
 
     subtotalVAT(item) {
       return ( item.qty * (item.figures + item.vat) );
+    },
+
+    submitSchedule() {
+      this.$http.post('/api/supplier/price_schedule', this.items)
+        .then(res => {
+          console.log(res);
+        });
     }
   },
 
