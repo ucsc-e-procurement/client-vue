@@ -8,10 +8,10 @@ import Admin_Dashboard from "../views/admin/Dashboard.vue";
 // Director
 
 // Deputy Bursar
-import Deputy_Bursar from "../views/deputy_bursar/Deputy_Bursar"
-import View_Purchase_Request from "../views/deputy_bursar/ViewPurchaseRequest"
+import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar"
+import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition"
 import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard"
-import Purchase_Requests from "../views/deputy_bursar/PurchaseRequests"
+import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions"
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -58,12 +58,13 @@ const routes = [
         component: Deputy_Bursar_Dashboard
       },
       {
-        path: "/view_purchase_request",
-        component: View_Purchase_Request
+        path: "/product_requisitions",
+        component: Product_Requisitions
       },
       {
-        path: "/purchase_requests",
-        component: Purchase_Requests
+        path: "/view_product_requisition/:id",
+        component: View_Product_Requisition,
+        props: true
       }
     ]
   },
