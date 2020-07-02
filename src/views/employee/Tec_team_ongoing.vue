@@ -105,7 +105,7 @@
                     <v-btn dark text @click="tecReport = false">Save</v-btn>
                 </v-toolbar-items>
                 </v-toolbar>
-                <TecReport v-if="procurement" v-bind:procurement="procurement" v-bind:requisition_id="procurement.requisition_id" v-bind:tec_team_id="procurement.tec_team_id"/>
+                <TecReport v-if="procurement" v-bind:procurement="procurement" v-bind:requisition="requisition" v-bind:tec_team="tec_team"/>
             </v-card>
         </v-dialog>
   </v-container>
@@ -147,6 +147,8 @@ export default {
     dialog: false,
     tecReport: false,
     procurement: null,
+    requisition: null,
+    tec_team: null,
     search: '',
     ongoingHeaders: [
         { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
@@ -187,6 +189,8 @@ export default {
 
     openTecReport: function (item) {
       this.procurement = item
+      this.fetchRequisition(this.procurement.requisition_id)
+      this.fetchTecTeam(this.procurement.tec_team_id)
       this.tecReport = true
       console.log(item)
     },
@@ -203,6 +207,10 @@ export default {
         this.ongoingProcurements.forEach(element => {
             if(element.bids) {
                 element.bids = JSON.parse(element.bids)
+                element.supplier_bids = element.bids.reduce((r, a) => {
+                    r[a.supplier_id] = [...r[a.supplier_id] || [], a];
+                    return r;
+                }, {})
                 element.bids = element.bids.reduce((r, a) => {
                     console.log("a", a);
                     console.log('r', r);
@@ -217,7 +225,43 @@ export default {
       .catch(error => {
         console.log(error);
       });
-    }
+    },
+
+    fetchRequisition(requisition_id) {
+      this.$http.get('/api/tec_team/get_requisition', {
+        params: {
+          id: requisition_id
+        }
+      })
+      .then(response => {
+        console.log('requisition', response.data);
+        this.requisition = response.data[0]
+        this.requisition.products = JSON.parse(this.requisition.products)
+        console.log(this.requisition)
+        //console.log(Object.values(this.ongoingProcurements[0].bids))
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+
+    fetchTecTeam(tec_team_id) {
+      this.$http.get('/api/tec_team/get_tec_team', {
+        params: {
+          id: tec_team_id
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.tec_team = response.data[0]
+        this.tec_team = JSON.parse(this.tec_team.team)
+        console.log(this.tec_team)
+        //console.log(Object.values(this.ongoingProcurements[0].bids))
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
   },
 
   // Life Cycle Hooks
