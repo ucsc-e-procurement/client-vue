@@ -237,7 +237,7 @@ export default {
           // console.log(response);
           this.ongoingProcurements = response.data.filter(item => item.status == 'on-going');
           this.completedProcurements = response.data.filter(item => item.status == 'completed');
-          this.terminatedProcurements = response.data.filter(item => item.status == 'oterminated');
+          this.terminatedProcurements = response.data.filter(item => item.status == 'terminated');
           this.isMounted = true;
         })
         .catch(err => {

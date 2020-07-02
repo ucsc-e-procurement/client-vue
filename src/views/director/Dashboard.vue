@@ -23,7 +23,7 @@
                         class="ma-2"
                         color="deep-purple lighten-2"
                       >
-                        12
+                        {{this.requisitionCount}}
                       </v-chip>
                   </v-card-text>
                 </v-card>
@@ -37,7 +37,7 @@
                       class="ma-2"
                       color="orange lighten-2"
                     >
-                      04
+                      {{ongoingProcurementCount}}
                     </v-chip>
                   </v-card-text>
                 </v-card>
@@ -51,7 +51,7 @@
                       class="ma-2"
                       color="green lighten-2"
                     >
-                      08
+                      {{completedProcurementCount}}
                     </v-chip>
                   </v-card-text>
                 </v-card>
@@ -65,7 +65,7 @@
                       class="ma-2"
                       color="red lighten-2"
                     >
-                      02
+                      {{terminatedProcurementCount}}
                     </v-chip>
                   </v-card-text>
                 </v-card>
@@ -78,7 +78,7 @@
                       <h4 class="font-weight-bold ">Approved Requisitions</h4>
                   </v-card-title>
                   <v-card-text>
-                    <v-banner two-line>
+                    <v-banner two-line :key="item.requisition_id" v-for="item in this.approvedRequisitions">
                       <v-avatar
                         slot="icon"
                         color="deep-purple accent-4"
@@ -91,29 +91,9 @@
                           mdi-lock
                         </v-icon>
                       </v-avatar>
-                        Product: <br/>
-                        Department: <br/>
-                        Date Approced:
-                      <template v-slot:actions>
-                        <v-btn text color="deep-purple accent-4">View</v-btn>
-                      </template>
-                    </v-banner>
-                    <v-banner two-line>
-                      <v-avatar
-                        slot="icon"
-                        color="deep-purple accent-4"
-                        size="40"
-                      >
-                        <v-icon
-                          icon="mdi-lock"
-                          color="white"
-                        >
-                          mdi-lock
-                        </v-icon>
-                      </v-avatar>
-                        Product: <br/>
-                        Department: <br/>
-                        Date Approced:
+                        Description: {{item.description}} <br/>
+                        Department: {{item.department}} <br/>
+                        Date Approced: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
                       <template v-slot:actions>
                         <v-btn text color="deep-purple accent-4">View</v-btn>
                       </template>
@@ -221,15 +201,51 @@ export default {
         590,
         610,
         760,
-      ],
+    ],
+    requisitionCount: '',
+    ongoingProcurementCount: '',
+    completedProcurementCount: '',
+    terminatedProcurementCount: '',
+    approvedRequisitions: [],
+    isMounted: false,
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    getProcurements(){
+      this.$http
+        .get("/api/director/procurements")
+        .then(response => {
+          // console.log(response);
+          this.ongoingProcurementCount = response.data.filter(item => item.status == 'on-going').length;
+          this.completedProcurementCount = response.data.filter(item => item.status == 'completed').length;
+          this.terminatedProcurementCount = response.data.filter(item => item.status == 'terminated').length;
+          this.requisitionCount = response.data.filter(item => new Date(item.date).getMonth() == new Date().getMonth() && new Date(item.date).getFullYear() == new Date().getFullYear()).length;
+          this.isMounted = true;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },
+
+    getApprovedRequisitions(){
+      this.$http
+        .get("/api/director/get_approved_requisitions")
+        .then(response => {
+          // console.log(response)
+          this.approvedRequisitions = response.data;
+        }).catch(err => {
+          console.log(err)
+        })
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.getProcurements();
+    this.getApprovedRequisitions();
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

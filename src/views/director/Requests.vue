@@ -18,7 +18,7 @@
                         <h4 class="font-weight-bold ">Requisition Approval Requests</h4>
                     </v-card-title>
                     <v-card-text>
-                      <v-banner two-line>
+                      <v-banner two-line v-for="request in this.requisitionRequests" :key="request.requisition_id">
                         <v-avatar
                           slot="icon"
                           color="indigo lighten-1"
@@ -31,9 +31,9 @@
                             mdi-alert-circle
                           </v-icon>
                         </v-avatar>
-
-                        Three line text string example with two actions. One to two lines is preferable. Three lines should be considered the maximum string length on desktop in order to keep messages short and actionable.
-
+                        Description: {{request.description}} <br/>
+                        Department: {{request.department}} <br/>
+                        Date Approced: {{new Date(request.date).getDate() + '/' + new Date(request.date).getMonth() + '/' + new Date(request.date).getFullYear()}}    
                         <template v-slot:actions>
                           <v-btn text color="blue accent-4">View</v-btn>
                         </template>
@@ -60,9 +60,9 @@
                             mdi-alert-circle
                           </v-icon>
                         </v-avatar>
-
-                        Three line text string example with two actions. One to two lines is preferable. Three lines should be considered the maximum string length on desktop in order to keep messages short and actionable.
-
+                        Description:  <br/>
+                        Department: <br/>
+                        Date Approced:  
                         <template v-slot:actions>
                           <v-btn text color="blue accent-4">View</v-btn>
                         </template>
@@ -106,14 +106,41 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({}),
+  data: () => ({
+    requisitionRequests: [],
+    POApprovalRequests: [],
+  }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    getRequisitionRequests(){
+      this.$http
+        .get("/api/director/get_requisition_requests")
+        .then(response => {
+          // console.log(response)
+          this.requisitionRequests = response.data;
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    // getPOApprovalRequests(){
+    //   this.$http
+    //     .get("/api/director/get_po_approval_requests")
+    //     .then(response => {
+    //       // console.log(response)
+    //       this.POApprovalRequests = response.data;
+    //     }).catch(err => {
+    //       console.log(err)
+    //     })
+    // }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.getRequisitionRequests();
+    // this.getPOApprovalRequests();
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
