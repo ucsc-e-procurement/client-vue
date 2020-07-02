@@ -25,23 +25,18 @@
               </v-col>
               <v-col cols="6">
                 <!--approved-->
-                <v-card height="300" color="primary">
-                  <v-card-title>Approved</v-card-title>
-                </v-card>
+                <ApprProc />
               </v-col>
               <v-col cols="6">
                 <!--completed-->
-                <v-card height="300" color="success">
-                  <v-card-title>Completed</v-card-title>
-                </v-card>
+                <CompProc />
               </v-col>
               <v-col cols="6">
                 <!--terminated-->
-                <v-card height="300" color="error">
-                  <v-card-title>Terminated</v-card-title>
-                </v-card>
+                <TermProc />
               </v-col>
             </v-row>
+            <v-row class="justify-space-between"></v-row>
           </v-container>
         </v-card>
       </v-col>
@@ -52,6 +47,9 @@
 <script>
 // Componenets
 import InitProc from "./InitProc";
+import ApprProc from "./ApprProc";
+import CompProc from "./CompProc";
+import TermProc from "./TermProc";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -75,12 +73,12 @@ export default {
   props: [],
 
   // Imported Components
-  components: { InitProc },
+  components: { InitProc, ApprProc, CompProc, TermProc },
 
   // Data Variables and Values
   data() {
     return {
-      deptName: "Division Name",
+      deptName: "Engineering Division", //needs to be retrieved from store
     };
   },
   // Custom Methods and Functions

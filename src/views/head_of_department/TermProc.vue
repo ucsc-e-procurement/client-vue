@@ -1,6 +1,6 @@
 <template>
-  <v-card color="warning">
-    <v-card-title>Initialized</v-card-title>
+  <v-card color="error">
+    <v-card-title>Terminated</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
@@ -41,7 +41,7 @@ export default {
   },
   created() {
     axios
-      .get(`http://localhost:5001/api/hod/init/${this.empid}`)
+      .get(`http://localhost:5001/api/hod/terminated/${this.empid}`)
       .then((response) => {
         this.procs = response.data;
       })

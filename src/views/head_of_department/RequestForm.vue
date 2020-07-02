@@ -2,7 +2,7 @@
   <ValidationObserver ref="observer" v-slot="{}">
     <form>
       <v-card class="overflow-hidden" color="grey lighten-1" dark>
-        <v-toolbar flat color="grey darken-3">
+        <v-toolbar flat outlined color="primary" font="balck">
           <v-icon>mdi-cards-variant</v-icon>
           <v-toolbar-title class="font-weight-light"
             >Request Form</v-toolbar-title
