@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Procurement</h5>
+              <h5 class="headline">Procurement {{this.procurementId}}</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -41,7 +41,7 @@
                             <BidOpeningTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.bid_opening_team_id != null" />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Request Quotations</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request Quotations</v-stepper-step>
                         <v-stepper-content step="5">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
