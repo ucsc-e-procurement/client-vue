@@ -12,84 +12,64 @@
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row class="justify-space-between container"> 
-                <v-col cols="12">
-                    <v-alert
-                        text
-                        color="info"
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title class="text-center justify-center py-6">
+                        <h4 class="font-weight-bold ">Requisition Approval Requests</h4>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-banner two-line>
+                        <v-avatar
+                          slot="icon"
+                          color="indigo lighten-1"
+                          size="40"
                         >
-                        <h3 class="headline">New Product Requisition Request</h3>
-                        <v-divider
-                            class="my-4 info"
-                            style="opacity: 0.22"
-                        ></v-divider>
+                          <v-icon
+                            icon="mdi-alert-circle"
+                            color="white"
+                          >
+                            mdi-alert-circle
+                          </v-icon>
+                        </v-avatar>
 
-                        <v-row
-                            align="center"
-                            no-gutters
-                        >
-                            <v-col class="grow">Requisition details</v-col>
-                            <v-spacer></v-spacer>
-                            <v-col class="shrink">
-                            <v-btn
-                                color="info"
-                                outlined
-                                link to="requisitions/UCSCNCBWENG20200004"
-                            >
-                                VIEW
-                            </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-alert>
+                        Three line text string example with two actions. One to two lines is preferable. Three lines should be considered the maximum string length on desktop in order to keep messages short and actionable.
+
+                        <template v-slot:actions>
+                          <v-btn text color="blue accent-4">View</v-btn>
+                        </template>
+                      </v-banner>
+                    </v-card-text>
+                  </v-card>
                 </v-col>
-                <v-col cols="12">
-                    <v-alert
-                        text
-                        color="deep-orange"
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title class="text-center justify-center py-6">
+                        <h4 class="font-weight-bold ">Purchase Order Approval Requests</h4>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-banner two-line>
+                        <v-avatar
+                          slot="icon"
+                          color="red lighten-1"
+                          size="40"
                         >
-                        <h3 class="headline">New PO Approval Request</h3>
-                        <v-divider
-                            class="my-4 info"
-                            style="opacity: 0.22"
-                        ></v-divider>
+                          <v-icon
+                            icon="mdi-alert-circle"
+                            color="white"
+                          >
+                            mdi-alert-circle
+                          </v-icon>
+                        </v-avatar>
 
-                        <v-row
-                            align="center"
-                            no-gutters
-                        >
-                            <v-col class="grow">Procurement Details</v-col>
-                            <v-spacer></v-spacer>
-                            <v-col class="shrink">
-                            <v-btn
-                                color="deep-orange"
-                                outlined
-                            >
-                                VIEW
-                            </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-alert>
+                        Three line text string example with two actions. One to two lines is preferable. Three lines should be considered the maximum string length on desktop in order to keep messages short and actionable.
+
+                        <template v-slot:actions>
+                          <v-btn text color="blue accent-4">View</v-btn>
+                        </template>
+                      </v-banner>
+                    </v-card-text>
+                  </v-card>
                 </v-col>
-                <v-banner two-line>
-                  <v-avatar
-                    slot="icon"
-                    color="deep-purple accent-4"
-                    size="40"
-                  >
-                    <v-icon
-                      icon="mdi-lock"
-                      color="white"
-                    >
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
-
-                  Three line text string example with two actions. One to two lines is preferable. Three lines should be considered the maximum string length on desktop in order to keep messages short and actionable.
-
-                  <template v-slot:actions>
-                    <v-btn text color="deep-purple accent-4">Action</v-btn>
-                    <v-btn text color="deep-purple accent-4">Action</v-btn>
-                  </template>
-                </v-banner>
             </v-row>
           </v-container>
         </v-card>

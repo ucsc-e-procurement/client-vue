@@ -28,12 +28,12 @@
                             <ProcurementMethod />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState >= 3" step="3" :editable="true" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 3" step="3" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="3">
 
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Bid Evaluation</v-stepper-step>
+                        <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 4 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Bid Evaluation</v-stepper-step>
                         <v-stepper-content step="4">
             
                         </v-stepper-content>
@@ -126,9 +126,9 @@ export default {
           this.procurementState = response.data[0].stepper;
           this.stepperValue = 1;
           this.isMounted = true;
-          if(response.data[0].stepper == 3 || response.data[0].stepper == 4){
-            this.stepperValue = response.data[0].stepper;
-          }
+          // if(response.data[0].stepper == 3 || response.data[0].stepper == 4){
+          //   this.stepperValue = response.data[0].stepper;
+          // }
         })
         .catch(err => {
           console.log(err);

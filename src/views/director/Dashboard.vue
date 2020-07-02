@@ -73,38 +73,53 @@
             </v-row>
             <v-row>
               <v-col cols="6">
-                <v-card
-                  class="mx-auto text-center"
-                  color="blue"
-                  dark
-                >
-                <v-card-text>
-                  <v-sheet color="rgba(0, 0, 0, .12)">
-                    <v-sparkline
-                      :value="value"
-                      color="rgba(255, 255, 255, .7)"
-                      height="100"
-                      padding="24"
-                      stroke-linecap="round"
-                      smooth
-                    >
-                      <template v-slot:label="item">
-                        ${{ item.value }}
+                <v-card class="scroll" height="450px">
+                  <v-card-title class="text-center justify-center py-6">
+                      <h4 class="font-weight-bold ">Approved Requisitions</h4>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-banner two-line>
+                      <v-avatar
+                        slot="icon"
+                        color="deep-purple accent-4"
+                        size="40"
+                      >
+                        <v-icon
+                          icon="mdi-lock"
+                          color="white"
+                        >
+                          mdi-lock
+                        </v-icon>
+                      </v-avatar>
+                        Product: <br/>
+                        Department: <br/>
+                        Date Approced:
+                      <template v-slot:actions>
+                        <v-btn text color="deep-purple accent-4">View</v-btn>
                       </template>
-                    </v-sparkline>
-                  </v-sheet>
-                </v-card-text>
-
-                <v-card-text>
-                  <div class="display-1 font-weight-thin">Sales Last 24h</div>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions class="justify-center">
-                  <v-btn block text>Go to Report</v-btn>
-                </v-card-actions>
-              </v-card>
+                    </v-banner>
+                    <v-banner two-line>
+                      <v-avatar
+                        slot="icon"
+                        color="deep-purple accent-4"
+                        size="40"
+                      >
+                        <v-icon
+                          icon="mdi-lock"
+                          color="white"
+                        >
+                          mdi-lock
+                        </v-icon>
+                      </v-avatar>
+                        Product: <br/>
+                        Department: <br/>
+                        Date Approced:
+                      <template v-slot:actions>
+                        <v-btn text color="deep-purple accent-4">View</v-btn>
+                      </template>
+                    </v-banner>
+                  </v-card-text>
+                </v-card>
               </v-col>
               <v-col cols="6">
                 <v-card
@@ -228,4 +243,8 @@ export default {
 </script>
 
 // Custom CSS Rules and Classes
-<style scoped></style>
+<style scoped>
+  .scroll {
+    overflow-y: scroll
+  }
+</style>
