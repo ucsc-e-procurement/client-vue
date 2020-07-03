@@ -11,15 +11,15 @@ import HOD_Dashboard from "../views/head_of_department/Dashboard.vue";
 import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
 
 // Deputy Bursar
-import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar"
-import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition"
-import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard"
-import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions"
+import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar";
+import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition";
+import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
+import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
-import Example_Form from "../../templates/Example_Form.vue";
-import Grid_System from "../../templates/Grid_System.vue";
+//import Example_Form from "../../templates/Example_Form.vue";
+//import Grid_System from "../../templates/Grid_System.vue";
 
 Vue.use(VueRouter);
 
@@ -74,20 +74,26 @@ const routes = [
     path: "/deputy_bursar",
     name: "deputy_bursar",
     component: Deputy_Bursar,
-    component: Deputy_Bursar_Dashboard
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Deputy_Bursar_Dashboard,
+      },
+      {
+        path: "/product_requisitions",
+        component: Product_Requisitions,
+      },
+      {
+        path: "/view_product_requisition/:id",
+        component: View_Product_Requisition,
+        props: true,
+      },
+    ],
   },
-  {
-    path: "/product_requisitions",
-    component: Product_Requisitions
-  },
-  {
-    path: "/view_product_requisition/:id",
-    component: View_Product_Requisition,
-    props: true
-  }
-],
+];
 
-  // Development Perposes Only - Remove these routes before final Production Deployment
+// Development Perposes Only - Remove these routes before final Production Deployment
 //   {
 //     path: "/dev",
 //     name: "admin",
