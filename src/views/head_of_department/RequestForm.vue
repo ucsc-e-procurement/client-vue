@@ -98,7 +98,7 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-import axios from "axios";
+//import axios from "axios";
 
 setInteractionMode("eager");
 
@@ -130,17 +130,22 @@ export default {
 
   methods: {
     submit() {
-      this.$refs.observer.validate();
-      axios
-        .post("http://localhost:5001/api/hod/create_req", {
-          //body
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.$refs.observer.validate().then((success) => {
+        if (!success) {
+          return;
+        }
+        window.location.href = "http://localhost:8080/hod";
+        // axios
+        //   .post("http://localhost:5001/api/hod/create_req", {
+        //     //body
+        //   })
+        //   .then((response) => {
+        //     console.log(response);
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+      });
     },
   },
 };
