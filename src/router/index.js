@@ -11,12 +11,21 @@ import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
 
-// Director
+// Head of department
+import HOD from "../views/head_of_department/Head_Of_Department.vue";
+import HOD_Dashboard from "../views/head_of_department/Dashboard.vue";
+import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
+
+// Deputy Bursar
+import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar";
+import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition";
+import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
+import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
-import Example_Form from "../../templates/Example_Form.vue";
-import Grid_System from "../../templates/Grid_System.vue";
+// import Example_Form from "../../templates/Example_Form.vue";
+// import Grid_System from "../../templates/Grid_System.vue";
 
 // Login
 import Login from "../views/login/Login.vue";
@@ -87,7 +96,7 @@ const routes = [
         props: true
       },
       // TODO Redirect to Page Not Found Or Dashborad
-      { path: '*', redirect: '/' }
+      { path: "*", redirect: "/" }
     ]
   },
 
@@ -95,27 +104,65 @@ const routes = [
 
   // Development Perposes Only - Remove these routes before final Production Deployment
   {
-    path: "/dev",
-    name: "admin",
-    component: Admin,
+    path: "/hod",
+    name: "head of department",
+    component: HOD,
     children: [
       {
-        path: "example_form",
-        name: "form page",
-        component: Example_Form,
-        meta: {
-          requiresAuth: true
-        }
+        path: "",
+        name: "default",
+        component: HOD_Dashboard
       },
       {
-        path: "grid_system",
-        name: "grid page",
-        component: Grid_System
+        path: "newproc",
+        name: "New Procurement",
+        component: HOD_New_Proc
       }
     ]
   },
-  { path: '*', redirect: '/' }
+
+  {
+    path: "/deputy_bursar",
+    name: "deputy_bursar",
+    component: Deputy_Bursar,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Deputy_Bursar_Dashboard
+      },
+      {
+        path: "/product_requisitions",
+        component: Product_Requisitions
+      },
+      {
+        path: "/view_product_requisition/:id",
+        component: View_Product_Requisition,
+        props: true
+      }
+    ]
+  }
 ];
+
+// Development Perposes Only - Remove these routes before final Production Deployment
+//   {
+//     path: "/dev",
+//     name: "admin",
+//     component: Admin,
+//     children: [
+//       {
+//         path: "example_form",
+//         name: "form page",
+//         component: Example_Form,
+//       },
+//       {
+//         path: "grid_system",
+//         name: "grid page",
+//         component: Grid_System,
+//       },
+//     ],
+//   },
+// ];
 
 const router = new VueRouter({
   mode: "history",
