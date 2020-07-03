@@ -1,6 +1,6 @@
 <template>
-  <ValidationObserver ref="observer" v-slot="{}">
-    <form id="request-form">
+  <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+    <form id="request-form" @submit.prevent="handleSubmit(onSubmit)">
       <v-card class="overflow-hidden" color="grey lighten-1" dark>
         <v-toolbar flat outlined color="primary" font="balck">
           <v-icon>mdi-cards-variant</v-icon>
@@ -75,12 +75,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn
-                class="mr-4"
-                color="green darken-1"
-                text
-                @click="submit"
-                to="/hod"
+              <v-btn type="submit" color="green darken-1" text @click="submit"
                 >Proceed</v-btn
               >
 

@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row class="justify-space-between" no-gutters>
-              <h5 class="headline">{{pageTitle}}</h5>
+              <h5 class="headline">{{ pageTitle }}</h5>
               <v-col class="text-center" cols="12" sm="1">
                 <v-btn to="/hod" outlined color="red">Cancel</v-btn>
               </v-col>
@@ -52,7 +52,7 @@ export default {
 
   // Imported Components
   components: {
-    RequestForm
+    RequestForm,
   },
 
   // Data Variables and Values
@@ -60,7 +60,7 @@ export default {
     return {
       deptName: "Department Name",
       pageTitle: "New Purchase Request",
-      dialog: false
+      dialog: false,
     };
   },
   // Custom Methods and Functions
@@ -77,7 +77,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {}
+  computed: {},
 };
 </script>
 
