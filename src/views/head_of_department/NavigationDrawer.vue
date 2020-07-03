@@ -57,7 +57,7 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-view-dashboard", link: "/hod" },
-      { title: "Photos", icon: "mdi-image", link: "#" },
+      { title: "Calender", icon: "mdi-calendar", link: "#" },
     ],
   }),
 
