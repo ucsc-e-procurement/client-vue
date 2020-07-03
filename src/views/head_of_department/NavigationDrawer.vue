@@ -13,12 +13,13 @@
       </v-list-item>
       <v-divider></v-divider>
 
-      <v-list-item link>
-        <v-list-item-action>
-          <v-icon>mdi-home</v-icon>
-        </v-list-item-action>
+      <v-list-item v-for="item in items" :key="item.title" :to="item.link" link>
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
         <v-list-item-content>
-          <v-list-item-title>Dashboard</v-list-item-title>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -54,7 +55,10 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    //
+    items: [
+      { title: "Dashboard", icon: "mdi-view-dashboard", link: "/hod" },
+      { title: "Photos", icon: "mdi-image", link: "#" },
+    ],
   }),
 
   // Custom Methods and Functions
