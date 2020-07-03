@@ -95,11 +95,35 @@
                         Department: {{item.department}} <br/>
                         Date Approced: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
                       <template v-slot:actions>
-                        <v-btn text color="deep-purple accent-4">View</v-btn>
+                        <v-btn text color="deep-purple accent-4" @click="OpenApprovedRequisitionsDialog(item)">View</v-btn>
                       </template>
                     </v-banner>
                   </v-card-text>
                 </v-card>
+                <v-dialog
+                  v-model="approvedRequisitionsDialog"
+                  max-width="600px"
+                >
+                  <v-card>
+                    <v-card-title class="headline">Product Requisition</v-card-title>
+
+                    <v-card-text>
+                      <requisition :requisitionData = 'this.approvedRequisition' v-if="isMounted"/>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="approvedRequisitionsDialog = false"
+                      >
+                        Close
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </v-col>
               <v-col cols="6">
                 <v-card
@@ -147,6 +171,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+  import Requisition from "./Requisition"
 
 /*
 
@@ -177,7 +202,9 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    requisition: Requisition,
+  },
 
   // Data Variables and Values
   data: () => ({
@@ -208,6 +235,8 @@ export default {
     terminatedProcurementCount: '',
     approvedRequisitions: [],
     isMounted: false,
+    approvedRequisitionsDialog: false,
+    approvedRequisition: '',
   }),
 
   // Custom Methods and Functions
@@ -221,7 +250,7 @@ export default {
           this.completedProcurementCount = response.data.filter(item => item.status == 'completed').length;
           this.terminatedProcurementCount = response.data.filter(item => item.status == 'terminated').length;
           this.requisitionCount = response.data.filter(item => new Date(item.date).getMonth() == new Date().getMonth() && new Date(item.date).getFullYear() == new Date().getFullYear()).length;
-          this.isMounted = true;
+          // this.isMounted = true;
         })
         .catch(err => {
           console.log(err);
@@ -237,6 +266,12 @@ export default {
         }).catch(err => {
           console.log(err)
         })
+    },
+
+    OpenApprovedRequisitionsDialog(item){
+      this.approvedRequisition = item;
+      this.isMounted = true;
+      this.approvedRequisitionsDialog = true;
     }
   },
 
