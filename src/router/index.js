@@ -22,6 +22,15 @@ import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisit
 import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
 import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
+// Director
+import Director from "../views/director/Director.vue";
+import Director_Dashboard from "../views/director/Dashboard.vue";
+import Director_Procurements from "../views/director/Procurements.vue";
+import Director_Requests from "../views/director/Requests.vue";
+import Requisitions from "../views/director/Requisitions.vue";
+import Director_Shopping_Procurement_Stepper from '../views/director/ProcurementStepperShopping.vue'
+import Director_Direct_Procurement_Stepper from '../views/director/ProcurementStepperDirect.vue'
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 // import Example_Form from "../../templates/Example_Form.vue";
@@ -100,9 +109,47 @@ const routes = [
     ],
   },
 
-  // Head of Department
+  // Director
+  {
+    path: "/director",
+    name: "director",
+    component: Director,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Director_Dashboard
+      },
+      {
+        path: "procurements",
+        name: "d_proc",
+        component: Director_Procurements,
+      },
+      {
+        path: "procurements/shopping/:id",
+        name: "d_proc_stepper_shopping",
+        component: Director_Shopping_Procurement_Stepper
+      },
+      {
+        path: "procurements/direct/:id",
+        name: "d_proc_stepper_direct",
+        component: Director_Direct_Procurement_Stepper
+      },
+      {
+        path: "requests",
+        name: "d_req",
+        component: Director_Requests
+      },
+      {
+        path: "requisitions/:id",
+        name: "d_reqi",
+        component: Requisitions
+      },
+      
+    ]
+  },
 
-  // Development Perposes Only - Remove these routes before final Production Deployment
+  // Head of Department
   {
     path: "/hod",
     name: "head of department",
