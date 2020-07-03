@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 
 // Global Axios Configurations
 Vue.prototype.$http = Axios.create({
-  baseURL: "http://localhost:3000"
+  baseURL: "http://localhost:5001",
 });
 
 // Event Bus
@@ -19,5 +19,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

@@ -1,30 +1,12 @@
 <template>
   <v-app>
-    <!-- ------------------------------------------------------------- Navigation Bars ------------------------------------------------------------ -->
-    <!-- Internal -->
-    <nav_drawer_internal v-if="isInternal" :drawer="navDrawerInternal" />
-    <!-- External -->
-    <nav_drawer_external v-else :drawer="navDrawerExternal" />
-
-    <!-- ------------------------------------------------------------------ App Bars -------------------------------------------------------------- -->
-    <!-- Internal -->
-    <v-app-bar v-if="isInternal" app color="indigo" dark dense clipped-left>
-      <v-app-bar-nav-icon
-        @click.stop="navDrawerInternal = !navDrawerInternal"
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title>UCSC E-Procurement (Internal)</v-toolbar-title>
-    </v-app-bar>
-
-    <!-- External -->
-    <v-app-bar v-else app color="blue darken-2" dark dense clipped-left>
-      <v-app-bar-nav-icon
-        @click.stop="navDrawerExternal = !navDrawerExternal"
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title>UCSC E-Procurement (External)</v-toolbar-title>
-    </v-app-bar>
-
-    <!-- ----------------------------------------- Main Content (Pages Render into This Router View) ---------------------------------------------- -->
     <v-main>
+      <v-app-bar app color="indigo" dark dense clipped-left>
+        <v-app-bar-nav-icon
+          @click.stop="navDrawerInternal = !navDrawerInternal"
+        ></v-app-bar-nav-icon>
+        <v-toolbar-title>UCSC E-Procurement</v-toolbar-title>
+      </v-app-bar>
       <router-view />
     </v-main>
 
@@ -38,8 +20,7 @@
 import Footer from "./components/common/Footer";
 
 // For Internal Parties
-import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
-import NavigationDrawer_External from "./components/external/NavigationDrawer";
+//import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
 
 export default {
   name: "App",
@@ -47,18 +28,13 @@ export default {
   // Components Registration
   components: {
     app_footer: Footer,
-    nav_drawer_internal: NavigationDrawer_Internal,
-    nav_drawer_external: NavigationDrawer_External
+    //nav_drawer_internal: NavigationDrawer_Internal,
   },
 
   // Data Variables
   data: () => ({
     //
-    navDrawerInternal: true,
-    navDrawerExternal: true,
-
-    // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
-    isInternal: false
-  })
+    //navDrawerInternal: true,
+  }),
 };
 </script>
