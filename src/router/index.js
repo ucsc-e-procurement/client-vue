@@ -10,6 +10,12 @@ import HOD from "../views/head_of_department/Head_Of_Department.vue";
 import HOD_Dashboard from "../views/head_of_department/Dashboard.vue";
 import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
 
+// Deputy Bursar
+import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar"
+import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition"
+import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard"
+import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions"
+
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
 import Example_Form from "../../templates/Example_Form.vue";
@@ -23,6 +29,7 @@ const routes = [
     name: "Home",
     // component:
   },
+
   // {
   //   path: "/about",
   //   name: "About",
@@ -63,25 +70,42 @@ const routes = [
     ],
   },
 
-  // Development Perposes Only - Remove these routes before final Production Deployment
   {
-    path: "/dev",
-    name: "admin",
-    component: Admin,
-    children: [
-      {
-        path: "example_form",
-        name: "form page",
-        component: Example_Form,
-      },
-      {
-        path: "grid_system",
-        name: "grid page",
-        component: Grid_System,
-      },
-    ],
+    path: "/deputy_bursar",
+    name: "deputy_bursar",
+    component: Deputy_Bursar,
+    component: Deputy_Bursar_Dashboard
   },
-];
+  {
+    path: "/product_requisitions",
+    component: Product_Requisitions
+  },
+  {
+    path: "/view_product_requisition/:id",
+    component: View_Product_Requisition,
+    props: true
+  }
+],
+
+  // Development Perposes Only - Remove these routes before final Production Deployment
+//   {
+//     path: "/dev",
+//     name: "admin",
+//     component: Admin,
+//     children: [
+//       {
+//         path: "example_form",
+//         name: "form page",
+//         component: Example_Form,
+//       },
+//       {
+//         path: "grid_system",
+//         name: "grid page",
+//         component: Grid_System,
+//       },
+//     ],
+//   },
+// ];
 
 const router = new VueRouter({
   mode: "history",

@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Dashboard</h5>
+              <h5 class="headline">Deputy Bursar Dashboard</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -58,6 +58,9 @@
             </v-row>
           </v-container>
         </v-card>
+        <v-container>
+          <v-btn color="primary" to="/purchase_requests">View Purchase Requests</v-btn>
+        </v-container>
       </v-col>
     </v-row>
   </v-container>
@@ -97,7 +100,9 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+
+  },
 
   // Data Variables and Values
   data: () => ({
@@ -116,7 +121,11 @@ export default {
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    // viewPurchaseRequests:function(){
+
+    // }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
