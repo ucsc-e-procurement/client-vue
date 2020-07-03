@@ -6,15 +6,19 @@ import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
 
 //Supplier
+import Registration from "../views/supplier/Registration.vue";
 import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
 import Supplier_Procurements from "../views/supplier/Procurements.vue"
+import Price_Schedule from "../views/supplier/PriceSchedule.vue";
 
 //Employee
 import Employee from "../views/employee/Employee.vue"
 import Employee_Dashboard from "../views/employee/Dashboard.vue"
 import Employee_Tec_team from "../views/employee/Tec_team.vue"
 import Employee_Tec_Report from "../views/employee/Tec_Report.vue"
+
+// Director
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -28,6 +32,11 @@ const routes = [
     path: "/",
     name: "Home"
     // component:
+  },
+  {
+    path: "/registration",
+    name: "Registration",
+    component: Registration
   },
   // {
   //   path: "/about",
@@ -50,8 +59,6 @@ const routes = [
       }
     ]
   },
-
-  //supplier routes
   {
     path: "/supplier",
     name: "supplier",
@@ -63,9 +70,17 @@ const routes = [
         component: Supplier_Dashboard
       },
       {
+        path: "price_schedule",
+        name: "price_schedule",
+        component: Price_Schedule
+      },
+      {
         path: "procurements",
         name: "procurements",
-        component: Supplier_Procurements
+        component: Supplier_Procurements,
+        children: [
+          
+        ]
       }
     ]
   },
