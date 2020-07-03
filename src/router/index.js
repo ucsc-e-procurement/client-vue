@@ -85,7 +85,9 @@ const routes = [
         name: "procurement overview",
         component: Admin_Procurement_Overview,
         props: true
-      }
+      },
+      // TODO Redirect to Page Not Found Or Dashborad
+      { path: '*', redirect: '/' }
     ]
   },
 
@@ -111,7 +113,8 @@ const routes = [
         component: Grid_System
       }
     ]
-  }
+  },
+  { path: '*', redirect: '/' }
 ];
 
 const router = new VueRouter({
