@@ -22,6 +22,19 @@ import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisit
 import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
 import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
+//Supplier
+import Registration from "../views/supplier/Registration.vue";
+import Supplier from "../views/supplier/Supplier.vue";
+import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
+import Supplier_Procurements from "../views/supplier/Procurements.vue"
+import Price_Schedule from "../views/supplier/PriceSchedule.vue";
+
+//Employee
+import Employee from "../views/employee/Employee.vue"
+import Employee_Dashboard from "../views/employee/Dashboard.vue"
+import Employee_Tec_team from "../views/employee/Tec_team.vue"
+import Employee_Tec_Report from "../views/employee/Tec_Report.vue"
+
 // Director
 import Director from "../views/director/Director.vue";
 import Director_Dashboard from "../views/director/Dashboard.vue";
@@ -53,7 +66,11 @@ const routes = [
     name: "login",
     component: Login
   },
-
+  {
+    path: "/registration",
+    name: "Registration",
+    component: Registration
+  },
   // {
   //   path: "/about",
   //   name: "About",
@@ -164,6 +181,55 @@ const routes = [
         path: "newproc",
         name: "New Procurement",
         component: HOD_New_Proc
+      }
+    ]
+  },
+  {
+    path: "/supplier",
+    name: "supplier",
+    component: Supplier,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Supplier_Dashboard
+      },
+      {
+        path: "price_schedule",
+        name: "price_schedule",
+        component: Price_Schedule
+      },
+      {
+        path: "procurements",
+        name: "procurements",
+        component: Supplier_Procurements,
+        children: [
+          
+        ]
+      }
+    ]
+  },
+
+  //employee routes
+  {
+    path: "/employee",
+    name: "employee",
+    component: Employee,
+    children: [
+      {
+        path: "",
+        name: "default",
+        component: Employee_Dashboard
+      },
+      {
+        path: "tecteam",
+        name: "default",
+        component: Employee_Tec_team
+      },
+      {
+        path: "tecteam/tecreport",
+        name: "default",
+        component: Employee_Tec_Report
       }
     ]
   },
