@@ -1,6 +1,18 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped dark>
     <v-list dense>
+      <v-list-item two-line :class="miniVariant && 'px-0'">
+        <v-list-item-avatar>
+          <v-icon dark>mdi-account-circle</v-icon>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>MR M M P W MUDANNAYAKE</v-list-item-title>
+          <v-list-item-subtitle>Division head</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+
       <v-list-item link>
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
