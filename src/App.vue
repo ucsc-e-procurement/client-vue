@@ -40,8 +40,6 @@ import Footer from "./components/common/Footer";
 // For Internal Parties
 // import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
 
-// For Director
-import NavigationDrawer_Internal_Director from "./components/internal/NavigationDrawerDirector";
 
 export default {
   name: "App",
@@ -49,8 +47,7 @@ export default {
   // Components Registration
   components: {
     app_footer: Footer,
-    // nav_drawer_internal: NavigationDrawer_Internal
-    nav_drawer_internal: NavigationDrawer_Internal_Director
+
   },
 
   // Data Variables
