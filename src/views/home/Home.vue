@@ -1,16 +1,10 @@
 <template>
-  <v-footer
-    absolute
-    class="font-weight-medium"
-    app
-    padless
-    color="primary"
-    dark
-  >
-    <v-col class="text-center" cols="12">
-      {{ new Date().getFullYear() }} — <strong>Group31@UCSC</strong>
-    </v-col>
-  </v-footer>
+  <v-container class="fill-height" fluid>
+    <v-app-bar app>sadasd</v-app-bar>
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="4"> </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -41,9 +35,7 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({
-    //
-  }),
+  data: () => ({}),
 
   // Custom Methods and Functions
   methods: {},

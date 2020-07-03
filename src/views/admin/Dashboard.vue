@@ -17,8 +17,6 @@
               <v-col cols="3">
                 <v-card height="100">
                   <v-card-title>Ongoing </v-card-title>
-
-                  <v-btn @click="$router.push('admin/add_tec')">Test</v-btn>
                 </v-card>
               </v-col>
               <v-col cols="3">
