@@ -1,40 +1,38 @@
 <template>
+<!-- <ValidationObserver ref="observer" v-slot="{}"> -->
   <v-container>
     <v-form>
       <v-card class="overflow-hidden" color="white">
-        <v-toolbar flat color="blue">
+        <v-toolbar flat color="primary">
           <v-toolbar-title>Product Requisition Form</v-toolbar-title>
         </v-toolbar>
         <v-card-text style="margin-top:50px">
-            <v-col cols="12">
-              <v-text-field :readonly="true" label="Procurement Name" placeholder=" " outlined></v-text-field>
+          <v-text-field :readonly="true" label="Procurement Name" placeholder=" " outlined v-model="name"></v-text-field>
+          <v-row>
+            <v-col cols="4" >
+              <v-text-field :readonly="true" label="Date" placeholder=" " outlined v-model="date"></v-text-field>
             </v-col>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field :readonly="true" label="Date" placeholder=" " outlined v-model="date"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field :readonly="true" label="Procurement Type" placeholder=" " outlined v-model="procurement_type"></v-text-field>
-              </v-col>
-            </v-row>
-            <v-col cols="12">
-              <v-textarea :readonly="true" label="Procurement Description" placeholder=" " outlined v-model="description" height="500"></v-textarea>
+            <v-col cols="8" >
+              <v-text-field :readonly="true" label="Procurement Type" placeholder=" " outlined v-model="procurement_type"></v-text-field>
             </v-col>
-            <v-col cols="12">
-              <v-autocomplete
-                v-model="selectedFundType"
-                :items="FundType"
-                :filter="customFilter"
-                item-text="fund"
-                label="Enter the Type of Fund"
-                required
-                outlined>
-              </v-autocomplete>
-            </v-col>    
+          </v-row>
+          <v-textarea :readonly="true" label="Procurement Description" placeholder=" " outlined v-model="description" height="500"></v-textarea>
+          <!-- <ValidationProvider v-slot="{ errors }" name="Fund Type" rules="required"> -->
+          <v-autocomplete
+            v-model="selectedFundType"
+            :items="FundType"
+            :filter="customFilter"
+            :error-messages="errors"
+            item-text="fund"
+            label="Enter the Type of Fund"
+            required
+            outlined>
+          </v-autocomplete>  
+          <!-- </ValidationProvider>           -->
         </v-card-text>
-        <v-row justify="center" class="mb-10">
-          <v-btn color="primary" width="30%" @click="dialog1 = true" :disabled="denied">Approve</v-btn>
-          <v-btn color="secondary" class="ml-5" width="30%" @click.once="dialog2 = true" :disabled="submitted" >Deny</v-btn>
+        <v-row justify="center" class="mb-8">
+          <v-btn color="primary" width="30%" x-large @click="dialog1 = true" :disabled="denied">Approve</v-btn>
+          <v-btn color="secondary" class="ml-5" width="30%" x-large @click.once="dialog2 = true" :disabled="submitted" >Deny</v-btn>
         </v-row>
         <v-dialog v-model="dialog1" width="500">
         <v-card>
@@ -46,7 +44,7 @@
               @click.once="approveRequisition();
               dialog1 = false;
               alert1 = true;
-              submitted=true">Yes
+              submitted=true;">Yes
             </v-btn>
             <v-btn color="secondary" @click="dialog1 = false">No</v-btn>
           </v-card-actions>
@@ -73,9 +71,19 @@
       </v-card>
     </v-form>
   </v-container>
+<!-- </ValidationObserver> -->
 </template>
 
 <script>
+  // import { required } from 'vee-validate/dist/rules'
+  // import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
+  // setInteractionMode('eager')
+
+  // extend('required', {
+  //   ...required,
+  //   message: '{_field_} can not be empty',
+  // })
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
@@ -100,7 +108,10 @@ export default {
   props: ["id"],
 
   // Imported Components
-  components: {},
+  components: {
+    // ValidationProvider,
+    // ValidationObserver,
+},
 
   // Data Variables and Values
   data: () => ({
@@ -127,23 +138,13 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-    // get product requisition list
-    getList(){
-      this.$http
-        .get(`/api/deputy_bursar/product_requisition`)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     // get product requisition form
     getData(){
       this.$http
         .get(`/api/deputy_bursar/product_requisition/details?requisitionId=${this.id}`)
         .then(response => {
           let resultsArray = response.data;
+          this.name = resultsArray[0].procurement_name;
           this.description = resultsArray[0].description;
           this.date = resultsArray[0].date;
           this.procurement_type = resultsArray[0].procurement_type;
@@ -177,6 +178,9 @@ export default {
         });
         this.remarks = " "
     },
+    // checkMandatoryField(){
+    //   this.$refs.observer.validate()
+    // }
   },
 
   // Life Cycle Hooks

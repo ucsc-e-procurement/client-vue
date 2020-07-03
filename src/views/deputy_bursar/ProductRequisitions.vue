@@ -1,18 +1,24 @@
 <template>
   <v-container width="90%">
-    <v-toolbar flat color="blue">
-      <v-toolbar-title>Product Requisition List</v-toolbar-title>
+    <v-toolbar flat color="primary" class="mt-4">
+      <v-toolbar-title>Product Requisitions</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-card class="scroll"> 
-      <v-row class="ml-16 mt-4">         
-        <v-col cols="9"><label> Request Number  : 01 </label><br/><label> Date  : 21/06/2020 </label></v-col>
-        <v-col cols="1"><v-btn color="primary" @click="gotoViewRequisition('req1')">View</v-btn></v-col>
-      </v-row>
-      <v-row class="ml-16 mt-4">
-        <v-col cols="9"><label> Request Number  : 02 </label><br/><label> Date  : 21/06/2020 </label></v-col>
-        <v-col cols="1"><v-btn color="primary" to="/view_purchase_request">View</v-btn></v-col>
-      </v-row>
+    <v-card color="#f2f4f2" class="scroll mt-5"> 
+      <v-col v-for="result in resultsArray" :key="result" cols="12">
+        <v-card color="white">
+          <div class="d-flex flex-no-wrap justify-space-between">
+            <v-col cols="6" class="ml-4">
+              <v-card-title class="headline" v-text="result.procurement_name">
+              </v-card-title>
+              <v-card-subtitle v-text="result.date"></v-card-subtitle>
+            </v-col>
+            <v-col cols="3" class="mr-6">
+              <v-btn class="mr-3 mt-4" color="primary" x-large width="80%" @click="gotoViewRequisition(result.requisition_id)">View</v-btn>
+            </v-col>
+          </div>
+        </v-card>
+      </v-col>
     </v-card>
   </v-container>
 </template>
@@ -45,7 +51,8 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({
+  data: () => ({ 
+    resultsArray:[]    
   }),
 
   // Custom Methods and Functions
@@ -53,12 +60,27 @@ export default {
     gotoViewRequisition(id){
       this.$router
       .push(`/view_product_requisition/${id}`);
-    }
+    },
+
+    // get product requisition list
+    getList(){
+      this.$http
+        .get(`/api/deputy_bursar/product_requisition`)
+        .then(response => {
+          this.resultsArray = response.data;
+          console.log(response);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.getList()
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
@@ -74,7 +96,7 @@ export default {
 // Custom CSS Rules and Classes
 <style scoped>
 .scroll {
-  height: 500px;
+  height: 700px;
   overflow: scroll;
 }
 </style>
