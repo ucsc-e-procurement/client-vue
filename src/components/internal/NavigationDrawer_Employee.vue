@@ -1,34 +1,42 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped dark>
     <template v-slot:prepend>
-      <v-list-item two-line>
-        <v-list-item-avatar>
-        <img src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png">
-        </v-list-item-avatar>
+        <v-list-item two-line>
+            <v-list-item-avatar>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png">
+            </v-list-item-avatar>
 
-        <v-list-item-content>
-        <v-list-item-title>{{user.name}}</v-list-item-title>
-        <v-list-item-subtitle>Supplier</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+            <v-list-item-content>
+            <v-list-item-title>Employee Name</v-list-item-title>
+            <v-list-item-subtitle>Employee</v-list-item-subtitle>
+            </v-list-item-content>
+        </v-list-item>
     </template>
 
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link to="/">
+      <v-list-item link>
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Dashboard External</v-list-item-title>
+          <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/supplier/procurements">
+      <v-list-item link to="/employee/tecteam">
         <v-list-item-action>
-          <v-icon>mdi-email</v-icon>
+          <v-icon>mdi-account-group</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Procurements External</v-list-item-title>
+          <v-list-item-title>TEC Team</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link>
+        <v-list-item-action>
+          <v-icon>mdi-account-multiple</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Bid-Opening Team</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item link>
@@ -86,7 +94,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    user: {name: 'Supplier Name'}
+    //
   }),
 
   // Custom Methods and Functions
