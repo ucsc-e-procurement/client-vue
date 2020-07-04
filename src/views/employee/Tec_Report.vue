@@ -107,14 +107,14 @@
                             <tr>
                                 <th class="text-h6 text-left" width="300px">Supplier</th>
                                 <th class="text-h6 text-left" width="250px">Quantity</th>
-                                <th class="text-h6 text-left" width="250px">Price</th>
+                                <th class="text-h6 text-left" width="250px">Unit Price</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="bid in product" :key="bid.supplier_id">
                                 <td>{{ bid.supplier_name }}</td>
                                 <td>{{ bid.qty }}</td>
-                                <td>{{ bid.price }}</td>
+                                <td>{{ bid.unit_price }}</td>
                             </tr>
                             </tbody>
                         </template>
@@ -167,7 +167,7 @@
                     <tbody>
                       <tr v-for="(item) in rejected_bids" :key="item.name">
                         <td>{{ item[0].supplier_name }}</td>
-                        <td>{{ item[0].amount }}</td>
+                        <td>{{ item[0].total_with_vat }}</td>
                       </tr>
                     </tbody>
                   </template>
@@ -187,13 +187,13 @@
                     <thead>
                       <tr>
                         <th class="text-h6 text-left" width="500px">Supplier</th>
-                        <th class="text-h6 text-left" width="250px">Total Amount</th>
+                        <th class="text-h6 text-left" width="250px">Total with VAT</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item) in responsive_bids" :key="item.name">
                         <td>{{ item[0].supplier_name }}</td>
-                        <td>{{ item[0].amount }}</td>
+                        <td>{{ item[0].total_with_vat }}</td>
                       </tr>
                     </tbody>
                   </template>
@@ -245,7 +245,7 @@
                       <tr v-for="(item) in recommended_bids" :key="item.name">
                         <td>{{ item[0].supplier_name }}</td>
                         <td>{{ item[0].supplier_address }}</td>
-                        <td>{{ item[0].amount }}</td>
+                        <td>{{ item[0].total_with_vat }}</td>
                       </tr>
                     </tbody>
                   </template>
@@ -346,6 +346,7 @@ export default {
     //requisition: this.requisition,
     //tec_team: this.tec_team,
     user: "e0001",
+    //user: this.$store.getters.user.employee_id,
     items: [{product_name:'prod 1', qty: '5'}],
     team: [{name: 'name1', designation: 'designation 1', capasity: 'chairman'}, {name: 'name2', designation: 'designation 2', capasity: 'member'}],
     rejected: [],

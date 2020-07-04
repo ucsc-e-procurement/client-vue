@@ -61,14 +61,14 @@
                         <tr>
                             <th class="text-left">Supplier</th>
                             <th class="text-left">Quantity</th>
-                            <th class="text-left">Price</th>
+                            <th class="text-left">Unit Price</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="bid in product" :key="bid.supplier_id">
                             <td>{{ bid.supplier_name }}</td>
                             <td>{{ bid.qty }}</td>
-                            <td>{{ bid.price }}</td>
+                            <td>{{ bid.unit_price }}</td>
                         </tr>
                         </tbody>
                     </template>
@@ -270,6 +270,7 @@ export default {
   beforeMount() {},
   mounted() {
       this.fetchOngoingProcurements('e0001')
+      //this.fetchOngoingProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

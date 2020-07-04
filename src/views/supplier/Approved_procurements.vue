@@ -10,7 +10,7 @@
                 <v-card-text>
                   <div>Tender Number : {{item.procurement_id}}</div>
                   <p class="text-h6">
-                    {{item.category}}
+                    {{item.catagory}}
                   </p>
                   <div class="text--primary">
                     Published Date : {{item.date}}
@@ -61,7 +61,7 @@
                 </v-card-title>
                 <v-card-text>
                 <p class="text-h6">
-                    {{completedProcurements[procurement].category}}
+                    {{completedProcurements[procurement].catagory}}
                 </p>
                 <div class="text--primary">
                     Published Date : {{completedProcurements[procurement].date}}
@@ -84,20 +84,20 @@
                       <tr>
                         <th class="text-left">Item</th>
                         <th class="text-left">Quantity</th>
-                        <th class="text-left">Price</th>
+                        <th class="text-left">Unit Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="item in JSON.parse(completedProcurements[procurement].bids)" :key="item.name">
                         <td>{{ item.product_name }}</td>
                         <td>{{ item.qty }}</td>
-                        <td>{{ item.price }}</td>
+                        <td>{{ item.unit_price }}</td>
                       </tr>
                     </tbody>
                   </template>
                 </v-simple-table>
                 <p class="text--primary text-center">
-                    Total Amount(LKR): {{completedProcurements[procurement].quotation}}
+                    Total with VAT(LKR): {{completedProcurements[procurement].total_with_vat}}
                 </p>
                 </v-card-text>
                 <v-card-actions>
@@ -196,6 +196,7 @@ export default {
   beforeMount() {},
   mounted() {
     this.fetchCompletedProcurements('s0001')
+    //this.fetchCompletedProcurements(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
   updated() {},

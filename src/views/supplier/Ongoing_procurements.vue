@@ -24,7 +24,7 @@
                     <v-card-text>
                       <div>Tender Number : {{item.procurement_id}}</div>
                       <p class="text-h6">
-                        {{item.category}}
+                        {{item.catagory}}
                       </p>
                       <div class="text--primary">
                         Status : {{item.bid_status}}
@@ -64,7 +64,7 @@
                 </v-card-title>
                 <v-card-text>
                 <p class="text-h6">
-                    {{ongoingProcurements[procurement].category}}
+                    {{ongoingProcurements[procurement].catagory}}
                 </p>
                 <div class="text--primary">
                     Published Date : {{ongoingProcurements[procurement].date}}
@@ -84,20 +84,20 @@
                       <tr>
                         <th class="text-left">Item</th>
                         <th class="text-left">Quantity</th>
-                        <th class="text-left">Price</th>
+                        <th class="text-left">Unit Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="item in JSON.parse(ongoingProcurements[procurement].bids)" :key="item.name">
                         <td>{{ item.product_name }}</td>
                         <td>{{ item.qty }}</td>
-                        <td>{{ item.price }}</td>
+                        <td>{{ item.unit_price }}</td>
                       </tr>
                     </tbody>
                   </template>
                 </v-simple-table>
                 <p class="text--primary text-center">
-                    Total Amount(LKR): {{ongoingProcurements[procurement].quotation}}
+                    Total with VAT(LKR): {{ongoingProcurements[procurement].total_with_vat}}
                 </p>
                 </v-card-text>
                 <v-card-actions>
@@ -196,6 +196,7 @@ export default {
   beforeMount() {},
   mounted() {
     this.fetchOngoingProcurements('s0001')
+    //this.fetchOngoingProcurements(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
   updated() {},

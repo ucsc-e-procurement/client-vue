@@ -111,6 +111,7 @@ export default {
   beforeMount() {},
   mounted() {
     this.getSupplier('s0001')
+    //this.getSupplier(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
   updated() {},

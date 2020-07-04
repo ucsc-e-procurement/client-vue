@@ -56,14 +56,14 @@
                         <tr>
                             <th class="text-left">Supplier</th>
                             <th class="text-left">Quantity</th>
-                            <th class="text-left">Price</th>
+                            <th class="text-left">Unit Price</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="bid in product" :key="bid.supplier_id">
                             <td>{{ bid.supplier_name }}</td>
                             <td>{{ bid.qty }}</td>
-                            <td>{{ bid.price }}</td>
+                            <td>{{ bid.unit_price }}</td>
                         </tr>
                         </tbody>
                     </template>
@@ -71,7 +71,7 @@
                     <br :key="product[0].product_name"/>
                 </template>
                 <!-- <p class="text--primary text-center">
-                    Total Amount(LKR): {{completedProcurements[procurement].amount}}
+                    Total Amount(LKR): {{completedProcurements[procurement].total_with_vat}}
                 </p> -->
                 </v-card-text>
                 <v-card-actions>
@@ -187,6 +187,7 @@ export default {
   beforeMount() {},
   mounted() {
       this.fetchCompletedProcurements('e0001')
+      //this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},
