@@ -10,15 +10,6 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
-          <ValidationProvider v-slot="{ errors }" name="Name" rules="required">
-            <v-text-field
-              v-model="name"
-              color="black"
-              label="Procurement Name"
-              required
-              :error-messages="errors"
-            ></v-text-field>
-          </ValidationProvider>
           <ValidationProvider v-slot="{ errors }" name="Type" rules="required">
             <v-autocomplete
               v-model="selectProcType"
@@ -112,7 +103,6 @@ export default {
 
   data() {
     return {
-      name: "",
       selectProcType: null,
       descript: "",
       dialog: false,

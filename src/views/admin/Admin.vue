@@ -2,6 +2,7 @@
   <v-container fluid>
     <v-row no-gutters>
       <v-col cols="12">
+        <navigationDrawer />
         <router-view />
       </v-col>
     </v-row>
@@ -12,6 +13,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+import NavigationDrawer from "../../components/internal/NavigationDrawer_Admin";
 
 /*
 
@@ -33,7 +35,9 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    navigationDrawer: NavigationDrawer
+  },
 
   // Data Variables and Values
   data: () => ({

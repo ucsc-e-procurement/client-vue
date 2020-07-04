@@ -1,27 +1,18 @@
 <template>
   <v-app v-if="$store.getters.isLoggedIn">
-    <!-- ------------------------------------------------------------- Navigation Bars ------------------------------------------------------------ -->
-    <!-- Internal -->
-    <nav_drawer_internal
-      v-if="$store.getters.isInternal"
-      :drawer="navDrawerInternal"
-    />
-    <!-- External -->
-    <nav_drawer_external v-else :drawer="navDrawerExternal" />
-
     <!-- ------------------------------------------------------------------ App Bars -------------------------------------------------------------- -->
     <!-- Internal -->
     <v-app-bar
       v-if="$store.getters.isInternal"
       app
-      color="indigo"
+      color="blue"
       dark
       dense
       clipped-left
     >
-      <v-app-bar-nav-icon
+      <!-- <v-app-bar-nav-icon
         @click.stop="navDrawerInternal = !navDrawerInternal"
-      ></v-app-bar-nav-icon>
+      ></v-app-bar-nav-icon> -->
       <v-toolbar-title>UCSC E-Procurement (Internal)</v-toolbar-title>
       <v-spacer />
 
@@ -59,20 +50,14 @@
 
     <!-- External -->
     <v-app-bar v-else app color="blue darken-2" dark dense clipped-left>
-      <v-app-bar-nav-icon
+      <!-- <v-app-bar-nav-icon
         @click.stop="navDrawerExternal = !navDrawerExternal"
-      ></v-app-bar-nav-icon>
+      ></v-app-bar-nav-icon> -->
       <v-toolbar-title>UCSC E-Procurement (Supplier)</v-toolbar-title>
     </v-app-bar>
 
     <!-- ----------------------------------------- Main Content (Pages Render into This Router View) ---------------------------------------------- -->
     <v-main>
-      <v-app-bar app color="indigo" dark dense clipped-left>
-        <v-app-bar-nav-icon
-          @click.stop="navDrawerInternal = !navDrawerInternal"
-        ></v-app-bar-nav-icon>
-        <v-toolbar-title>UCSC E-Procurement</v-toolbar-title>
-      </v-app-bar>
       <router-view />
     </v-main>
 
@@ -83,6 +68,12 @@
   <!-- ---------------------------------------------------------- Login Page ---------------------------------------------------------------------- -->
   <v-app v-else>
     <v-main>
+      <v-app-bar app color="indigo" dark dense clipped-left>
+        <v-app-bar-nav-icon
+          @click.stop="navDrawerInternal = !navDrawerInternal"
+        ></v-app-bar-nav-icon>
+        <v-toolbar-title>UCSC E-Procurement</v-toolbar-title>
+      </v-app-bar>
       <router-view />
     </v-main>
     <!-- Footer -->
@@ -96,8 +87,8 @@ import Footer from "./components/common/Footer";
 
 // For Internal Parties
 //import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
-import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
-import NavigationDrawer_External from "./components/external/NavigationDrawer";
+//import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
+//import NavigationDrawer_External from "./components/external/NavigationDrawer";
 
 export default {
   name: "App",
@@ -106,8 +97,8 @@ export default {
   components: {
     app_footer: Footer,
     //nav_drawer_internal: NavigationDrawer_Internal,
-    nav_drawer_internal: NavigationDrawer_Employee,
-    nav_drawer_external: NavigationDrawer_External
+    //nav_drawer_internal: NavigationDrawer_Employee,
+    //nav_drawer_external: NavigationDrawer_External
   },
 
   // Data Variables
@@ -118,7 +109,7 @@ export default {
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
   }),
   created() {
-    this.$http.interceptors.response.use(undefined, err => {
+    this.$http.interceptors.response.use(undefined, (err) => {
       return new Promise(() => {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("logout");
@@ -126,6 +117,6 @@ export default {
         throw err;
       });
     });
-  }
+  },
 };
 </script>

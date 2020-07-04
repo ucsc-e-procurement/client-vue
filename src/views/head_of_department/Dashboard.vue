@@ -21,19 +21,19 @@
             <v-row class="justify-space-between">
               <v-col cols="6">
                 <!--initialized-->
-                <InitProc />
+                <InitReq />
               </v-col>
               <v-col cols="6">
                 <!--approved-->
-                <ApprProc />
+                <ApprReq />
               </v-col>
               <v-col cols="6">
                 <!--completed-->
-                <CompProc />
+                <CompReq />
               </v-col>
               <v-col cols="6">
                 <!--terminated-->
-                <TermProc />
+                <TermReq />
               </v-col>
             </v-row>
             <v-row class="justify-space-between"></v-row>
@@ -46,10 +46,10 @@
 
 <script>
 // Componenets
-import InitProc from "./InitProc";
-import ApprProc from "./ApprProc";
-import CompProc from "./CompProc";
-import TermProc from "./TermProc";
+import InitReq from "./InitReq";
+import ApprReq from "./ApprReq";
+import CompReq from "./CompReq";
+import TermReq from "./TermReq";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -73,7 +73,7 @@ export default {
   props: [],
 
   // Imported Components
-  components: { InitProc, ApprProc, CompProc, TermProc },
+  components: { InitReq, ApprReq, CompReq, TermReq },
 
   // Data Variables and Values
   data() {

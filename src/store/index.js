@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 
 Vue.use(Vuex);
 
-const baseURL = "http://localhost:5000";
+const baseURL = "http://localhost:5001";
 
 export default new Vuex.Store({
   state: {
@@ -127,6 +127,8 @@ export default new Vuex.Store({
     authStatus: state => state.status,
     userRole: state => state.user.user_role,
     isInternal: state => state.internal,
-    userId: state => state.user.user_id
+    userId: state => state.user.user_id,
+    employeeId: state => state.user.employee_id,
+    user: state => state.user
   }
 });
