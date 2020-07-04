@@ -1,5 +1,5 @@
 <template>
-  <v-card color="warning">
+  <v-card color="purple">
     <v-card-title>Initialized Requests</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
