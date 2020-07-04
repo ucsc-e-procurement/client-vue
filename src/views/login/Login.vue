@@ -10,7 +10,7 @@
       </v-avatar>
       <v-toolbar-title class="pl-5">E-Procurement Login</v-toolbar-title>
       <v-spacer />
-      <v-btn outlined>Register As a Supplier</v-btn>
+      <v-btn outlined @click="routeToRegister">Register As a Supplier</v-btn>
     </v-app-bar>
 
     <!-- Centered Card with Login Form -->
