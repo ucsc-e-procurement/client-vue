@@ -10,7 +10,7 @@
       </v-avatar>
       <v-toolbar-title class="pl-5">E-Procurement Login</v-toolbar-title>
       <v-spacer />
-      <v-btn outlined @click="routeToRegister">Register As a Supplier</v-btn>
+      <v-btn outlined>Register As a Supplier</v-btn>
     </v-app-bar>
 
     <!-- Centered Card with Login Form -->
@@ -87,7 +87,7 @@ export default {
   // Form Validations
   validations: {
     email: { required, email },
-    password: { required }
+    password: { required },
   },
 
   // Props Received
@@ -101,7 +101,7 @@ export default {
     email: "",
     password: "",
     loaderLogin: false,
-    isLoginError: false
+    isLoginError: false,
   }),
 
   // Custom Methods and Functions
@@ -110,10 +110,10 @@ export default {
       // http://localhost:3000/api/get/get_uers
       this.$http
         .get("/api/get_users")
-        .then(response => {
+        .then((response) => {
           console.log(response);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -125,23 +125,23 @@ export default {
         let password = this.password;
         this.$store
           .dispatch("login", { email, password })
-          .then(role => {
+          .then((role) => {
             console.log("I'm Here");
             // Navigate to the Pages Based on User Role
             switch (role) {
-              case "admin":
+              case "AB":
                 this.$router.push("/admin");
                 break;
-              case "head_of_department":
-                this.$router.push("/head_of_department");
+              case "HOD":
+                this.$router.push("/hod");
                 break;
-              case "deputy_bursar":
+              case "DB":
                 this.$router.push("/deputy_bursar");
                 break;
-              case "director":
+              case "DIR":
                 this.$router.push("/director");
                 break;
-              case "supplier":
+              case "SUP":
                 this.$router.push("/supplier");
                 break;
               case "tec_team":
@@ -153,13 +153,13 @@ export default {
             }
             this.loaderLogin = false;
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
             this.loaderLogin = false;
             this.isLoginError = true;
           });
       }
-    }
+    },
   },
 
   // Life Cycle Hooks
@@ -189,8 +189,8 @@ export default {
       !this.$v.password.required && errors.push("Password is required.");
 
       return errors;
-    }
-  }
+    },
+  },
 };
 </script>
 
