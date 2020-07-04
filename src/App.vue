@@ -87,8 +87,8 @@ import Footer from "./components/common/Footer";
 
 // For Internal Parties
 //import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
-import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
-import NavigationDrawer_External from "./components/external/NavigationDrawer";
+//import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
+//import NavigationDrawer_External from "./components/external/NavigationDrawer";
 
 export default {
   name: "App",
@@ -97,8 +97,8 @@ export default {
   components: {
     app_footer: Footer,
     //nav_drawer_internal: NavigationDrawer_Internal,
-    nav_drawer_internal: NavigationDrawer_Employee,
-    nav_drawer_external: NavigationDrawer_External
+    //nav_drawer_internal: NavigationDrawer_Employee,
+    //nav_drawer_external: NavigationDrawer_External
   },
 
   // Data Variables
@@ -109,7 +109,7 @@ export default {
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
   }),
   created() {
-    this.$http.interceptors.response.use(undefined, err => {
+    this.$http.interceptors.response.use(undefined, (err) => {
       return new Promise(() => {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("logout");
@@ -117,6 +117,6 @@ export default {
         throw err;
       });
     });
-  }
+  },
 };
 </script>
