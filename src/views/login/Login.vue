@@ -10,7 +10,7 @@
       </v-avatar>
       <v-toolbar-title class="pl-5">E-Procurement Login</v-toolbar-title>
       <v-spacer />
-      <v-btn outlined @click="routeToRegister">Register As a Supplier</v-btn>
+      <v-btn outlined>Register As a Supplier</v-btn>
     </v-app-bar>
 
     <!-- Centered Card with Login Form -->
@@ -129,19 +129,19 @@ export default {
             console.log("I'm Here");
             // Navigate to the Pages Based on User Role
             switch (role) {
-              case "admin":
+              case "AB":
                 this.$router.push("/admin");
                 break;
               case "HOD":
                 this.$router.push("/hod");
                 break;
-              case "deputy_bursar":
+              case "DB":
                 this.$router.push("/deputy_bursar");
                 break;
               case "DIR":
                 this.$router.push("/director");
                 break;
-              case "supplier":
+              case "SUP":
                 this.$router.push("/supplier");
                 break;
               case "tec_team":
