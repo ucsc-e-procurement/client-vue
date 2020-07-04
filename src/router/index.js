@@ -10,6 +10,8 @@ import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminate
 import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
+import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
+import Admin_View_Users from "../views/admin/View_Users.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -26,14 +28,14 @@ import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 import Registration from "../views/supplier/Registration.vue";
 import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
-import Supplier_Procurements from "../views/supplier/Procurements.vue"
+import Supplier_Procurements from "../views/supplier/Procurements.vue";
 import Price_Schedule from "../views/supplier/PriceSchedule.vue";
 
 //Employee
-import Employee from "../views/employee/Employee.vue"
-import Employee_Dashboard from "../views/employee/Dashboard.vue"
-import Employee_Tec_team from "../views/employee/Tec_team.vue"
-import Employee_Tec_Report from "../views/employee/Tec_Report.vue"
+import Employee from "../views/employee/Employee.vue";
+import Employee_Dashboard from "../views/employee/Dashboard.vue";
+import Employee_Tec_team from "../views/employee/Tec_team.vue";
+import Employee_Tec_Report from "../views/employee/Tec_Report.vue";
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -41,8 +43,8 @@ import Director_Dashboard from "../views/director/Dashboard.vue";
 import Director_Procurements from "../views/director/Procurements.vue";
 import Director_Requests from "../views/director/Requests.vue";
 import Requisitions from "../views/director/Requisitions.vue";
-import Director_Shopping_Procurement_Stepper from '../views/director/ProcurementStepperShopping.vue'
-import Director_Direct_Procurement_Stepper from '../views/director/ProcurementStepperDirect.vue'
+import Director_Shopping_Procurement_Stepper from "../views/director/ProcurementStepperShopping.vue";
+import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -121,6 +123,18 @@ const routes = [
         component: Admin_Procurement_Overview,
         props: true,
       },
+      {
+        path: "suppliers",
+        name: "view all suppliers",
+        component: Admin_View_Suppliers,
+        props: true
+      },
+      {
+        path: "users",
+        name: "view all users",
+        component: Admin_View_Users,
+        props: true
+      },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" },
     ],
@@ -140,7 +154,7 @@ const routes = [
       {
         path: "procurements",
         name: "d_proc",
-        component: Director_Procurements,
+        component: Director_Procurements
       },
       {
         path: "procurements/shopping/:id",
@@ -161,8 +175,7 @@ const routes = [
         path: "requisitions/:id",
         name: "d_reqi",
         component: Requisitions
-      },
-      
+      }
     ]
   },
 
@@ -203,9 +216,7 @@ const routes = [
         path: "procurements",
         name: "procurements",
         component: Supplier_Procurements,
-        children: [
-          
-        ]
+        children: []
       }
     ]
   },
