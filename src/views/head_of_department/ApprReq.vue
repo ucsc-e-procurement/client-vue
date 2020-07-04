@@ -1,5 +1,5 @@
 <template>
-  <v-card color="primary">
+  <v-card color="warning">
     <v-card-title>Deputy Bursar Approved</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field

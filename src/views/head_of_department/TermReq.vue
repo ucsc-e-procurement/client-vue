@@ -1,6 +1,6 @@
 <template>
   <v-card color="error">
-    <v-card-title>Rejected requests </v-card-title>
+    <v-card-title>Rejected Requests </v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
