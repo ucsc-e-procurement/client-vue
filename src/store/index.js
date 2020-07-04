@@ -126,6 +126,7 @@ export default new Vuex.Store({
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     userRole: state => state.user.user_role,
-    isInternal: state => state.internal
+    isInternal: state => state.internal,
+    userId: state => state.user.user_id
   }
 });

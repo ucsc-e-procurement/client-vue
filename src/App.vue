@@ -96,7 +96,7 @@ import Footer from "./components/common/Footer";
 
 // For Internal Parties
 //import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
-import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee"
+import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
 import NavigationDrawer_External from "./components/external/NavigationDrawer";
 
 export default {
@@ -115,7 +115,6 @@ export default {
     //
     // navDrawerInternal: true,
     // navDrawerExternal: false
-
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
   }),
   created() {

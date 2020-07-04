@@ -1,5 +1,19 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped dark>
+    <template v-slot:prepend>
+        <v-list-item two-line>
+            <v-list-item-avatar>
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png">
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+            <v-list-item-title>Employee Name</v-list-item-title>
+            <v-list-item-subtitle>Employee</v-list-item-subtitle>
+            </v-list-item-content>
+        </v-list-item>
+    </template>
+
+    <v-divider></v-divider>
     <v-list dense>
       <v-list-item link>
         <v-list-item-action>
