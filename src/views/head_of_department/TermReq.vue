@@ -1,6 +1,6 @@
 <template>
   <v-card color="error">
-    <v-card-title>Terminated</v-card-title>
+    <v-card-title>Rejected requests </v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
@@ -27,12 +27,11 @@ export default {
       search: "",
       headers: [
         {
-          text: "Procurement Id",
+          text: "Request Id",
           align: "start",
           sortable: false,
           value: "requisition_id",
         },
-        { text: "Procurement Name", value: "procurement_name" },
         { text: "Description", value: "description" },
         { text: "Date", value: "date" },
       ],

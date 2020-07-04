@@ -1,6 +1,6 @@
 <template>
-  <v-card color="warning">
-    <v-card-title>Initialized</v-card-title>
+  <v-card color="primary">
+    <v-card-title>Deputy Bursar Approved</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
@@ -27,12 +27,11 @@ export default {
       search: "",
       headers: [
         {
-          text: "Procurement Id",
+          text: "Request Id",
           align: "start",
           sortable: false,
           value: "requisition_id",
         },
-        { text: "Procurement Name", value: "procurement_name" },
         { text: "Description", value: "description" },
         { text: "Date", value: "date" },
       ],
@@ -41,7 +40,7 @@ export default {
   },
   created() {
     axios
-      .get(`http://localhost:5001/api/hod/init/${this.empid}`)
+      .get(`http://localhost:5001/api/hod/approved/${this.empid}`)
       .then((response) => {
         this.procs = response.data;
       })

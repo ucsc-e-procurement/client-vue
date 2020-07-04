@@ -13,7 +13,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-import NavigationDrawer_Internal from "../head_of_department/NavigationDrawer";
+import NavigationDrawer_Internal from "../../components/internal/NavigationDrawer_hod";
 /*
 
 // Validation Library - Vuelidate

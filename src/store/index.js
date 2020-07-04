@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 
 Vue.use(Vuex);
 
-const baseURL = "http://localhost:5000";
+const baseURL = "http://localhost:5001";
 
 export default new Vuex.Store({
   state: {
