@@ -60,7 +60,7 @@
             <v-row>
                 <v-col cols="12" sm="12">
                 <v-text-field
-                    value="Remarks"
+                    :value="this.requisitionData.deputy_bursar_remarks"
                     label="Deputy Bursar Remarks"
                     outlined
                     readonly
@@ -68,7 +68,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                 <v-text-field
-                    value="Recommended"
+                    :value="this.requisitionData.deputy_bursar_recommendation"
                     label="Deputy Bursar Recommendation"
                     outlined
                     readonly
@@ -83,15 +83,15 @@
             <v-row>
                 <v-col cols="12" sm="12">
                 <v-text-field
-                    value="requisitionId"
-                    label="Derector Remarks"
+                    :value="this.requisitionData.director_remarks"
+                    label="Director Remarks"
                     outlined
                     readonly
                 ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                 <v-text-field
-                    value="Approved"
+                    :value="this.requisitionData.director_recommendation"
                     label="Derector Approval"
                     outlined
                     readonly
@@ -130,6 +130,7 @@ export default {
         value: 'product_name',
         },
         { text: 'Description', value: 'prod_desc' },
+        { text: 'Quantity', value: 'prod_qty' },
     ],
   }),
 

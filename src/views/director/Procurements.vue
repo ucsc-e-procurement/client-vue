@@ -91,6 +91,7 @@
                             :headers="headers"
                             :items="ongoingProcurements"
                             :search="search"
+                            v-if="isMounted"
                             >
                               <template v-slot:item.controls="props">
                                 <v-btn class="mx-2" small color="primary" @click="onButtonClick(props.item)">
@@ -216,7 +217,7 @@ export default {
 
       var proc_id = event.procurement_id;
 
-      if(event.procurement_method == 'shopping'){
+      if(event.procurement_method == 'NCB'){
         this.$router.push({ path: `procurements/shopping/${proc_id.replace(/[/]/g, '')}` , query:{
           proc_id: event.procurement_id,
           stepper: event.stepper
