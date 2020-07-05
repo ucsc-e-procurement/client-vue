@@ -35,7 +35,7 @@
                         Department: {{request.department}} <br/>
                         Date Requested: {{new Date(request.date).getDate() + '/' + new Date(request.date).getMonth() + '/' + new Date(request.date).getFullYear()}}    
                         <template v-slot:actions>
-                          <v-btn text color="blue accent-4">View</v-btn>
+                          <v-btn text color="blue accent-4" @click="viewRequisitionRequest(request)">View</v-btn>
                         </template>
                       </v-banner>
                     </v-card-text>
@@ -122,6 +122,13 @@ export default {
         }).catch(err => {
           console.log(err)
         })
+    },
+    viewRequisitionRequest: function (event) {
+      console.log(event);
+      this.$router.push({ path: `requisition/view` , query:{
+        requisition: event,
+      }})
+      
     },
     // getPOApprovalRequests(){
     //   this.$http
