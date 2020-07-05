@@ -29,7 +29,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                 <v-text-field
-                    :value="new Date(this.requisitionData.date).getDate() + '-' + new Date(this.requisitionData.date).getMonth() + '-' + new Date(this.requisitionData.date).getFullYear()"
+                    :value="new Date(this.requisitionData.date).getDate() + ' - ' + new Date(this.requisitionData.date).getMonth() + ' - ' + new Date(this.requisitionData.date).getFullYear()"
                     label="Date Requested"
                     outlined
                     readonly
@@ -136,17 +136,7 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-    //   getRequisitions(){
-    //   this.$http
-    //     .get(`/api/director/requisitions/${this.requisitionId.replace(/[/]/g, '')}?reqId=${this.requisitionId}`)
-    //     .then(response => {
-    //       console.log(response);
-    //       this.requisition = response.data
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     })
-    // }
+
   },
 
   // Life Cycle Hooks
