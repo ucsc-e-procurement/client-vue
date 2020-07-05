@@ -7,7 +7,7 @@
           <v-toolbar-title>Product Requisition Form</v-toolbar-title>
         </v-toolbar>
         <v-card-text style="margin-top:50px">
-          <v-text-field :readonly="true" label="Procurement Name" placeholder=" " outlined v-model="name"></v-text-field>
+          <v-text-field :readonly="true" label="Division" placeholder=" " outlined v-model="division"></v-text-field>
           <v-row>
             <v-col cols="4" >
               <v-text-field :readonly="true" label="Date" placeholder=" " outlined v-model="date"></v-text-field>
@@ -140,14 +140,17 @@ export default {
   methods: {
     // get product requisition form
     getData(){
+      console.log("test1:",this.$route.query.id)
       this.$http
-        .get(`/api/deputy_bursar/product_requisition/details?requisitionId=${this.id}`)
+        .get(`/api/deputy_bursar/product_requisition/details?requisitionId=${this.$route.query.id}`)
         .then(response => {
+          console.log(this.id)
           let resultsArray = response.data;
-          this.name = resultsArray[0].procurement_name;
+          this.division = resultsArray[0].division;
           this.description = resultsArray[0].description;
           this.date = resultsArray[0].date;
-          this.procurement_type = resultsArray[0].procurement_type;
+          this.procurement_type = resultsArray[0].procuremnet_type;
+          console.log(response)
         })
         .catch(err => {
           console.log(err);
@@ -157,7 +160,7 @@ export default {
     // approve the product requisition
     approveRequisition(){
       this.$http
-        .post(`/api/deputy_bursar/product_requisition/approve?requisitionId=${this.id}&selectedFundType=${this.selectedFundType}`)
+        .post(`/api/deputy_bursar/product_requisition/approve?requisitionId=${this.$route.query.id}&selectedFundType=${this.selectedFundType}`)
         .then(response => {
           console.log(response);
         })
@@ -169,7 +172,7 @@ export default {
     // deny the product requisition
     denyRequisition(){
       this.$http
-        .post(`/api/deputy_bursar/product_requisition/deny?requisitionId=${this.id}&remarks=${this.remarks}`)
+        .post(`/api/deputy_bursar/product_requisition/deny?requisitionId=${this.$route.query.id}&remarks=${this.remarks}`)
         .then(response => {
           console.log(response,this.remarks);
         })

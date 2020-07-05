@@ -22,7 +22,7 @@
             <v-divider></v-divider>
             <v-stepper-step :complete="step > 3" step="3">Business</v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step step="4">Business</v-stepper-step>
+            <v-stepper-step step="4">Payment</v-stepper-step>
           </v-stepper-header>
           <v-stepper-items>
             <v-stepper-content step="1">
@@ -184,15 +184,21 @@
             </v-stepper-content>
             <v-stepper-content step="4">
               <v-form ref="form4" v-model="valid">
+                <v-radio-group v-model="formdata.payment_type" row>
+                  <v-radio label="Paid from Bank" value="bank"></v-radio>
+                  <v-radio label="Paid to the Shroff counter" value="shroff"></v-radio>
+                </v-radio-group>
                 <v-text-field
-                  label="Name of Bank and Branch ( if you paid through bank )"
+                  v-if="formdata.payment_type == 'bank'"
+                  label="Name of Bank and Branch"
                   v-model="formdata.payment_bank"
-                  :rules="rules.name"
+                  :rules="[rules.name]"
                 ></v-text-field>
                 <v-text-field
-                  label="Shroff receipt Number ( if you paid through Shroff counter )"
+                  v-if="formdata.payment_type == 'shroff'"
+                  label="Shroff receipt Number"
                   v-model="formdata.shroff"
-                  :rules="rules.name"
+                  :rules="[rules.name]"
                 ></v-text-field>
                 <v-row>
                   <v-col cols="6">
@@ -223,7 +229,7 @@
                     <v-text-field
                       label="Amount(Rs.)"
                       v-model="formdata.amount"
-                      :rules="rules.name"
+                      :rules="[rules.name]"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -237,90 +243,12 @@
                 ></v-file-input>
               </v-form>
               <v-btn color="primary float-right" @click="registerUser">Submit</v-btn>
-              <v-btn text @click.native="step = 3">Back</v-btn>
+              <v-btn text @click.native="step = 3" v-if="user_state == 'new'">Back</v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
       </v-col>
     </v-row>
-
-    <!-- Centered Card with Login Form -->
-    <!-- <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="5">
-        <v-card class="elevation-12 px-3">
-          <v-card-text>
-            <v-form @submit.prevent="registerUser" ref="form" v-model="valid">
-              <v-text-field
-                label="Name"
-                v-model="name"
-                :rules="[rules.name]"
-              ></v-text-field>
-              <v-text-field
-                label="Email"
-                v-model="email"
-                :rules="rules.email"
-              ></v-text-field>
-              <v-text-field
-                label="Contact Number"
-                v-model="contact"
-                :rules="[rules.contact]"
-              ></v-text-field>
-              <v-textarea
-                name="address"
-                label="Address"
-                v-model="address"
-                auto-grow
-                row-height="6"
-                :rules="[rules.address]"
-              ></v-textarea>
-              <v-text-field
-                v-model="password"
-                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="rules.password"
-                :type="show ? 'text' : 'password'"
-                name="input-10-2"
-                label="Password"
-                hint="At least 8 characters"
-                @click:append="show = !show"
-                required
-              ></v-text-field>
-              <v-select
-                v-model="cat_selection"
-                :items="categories"
-                :rules="[rules.categories]"
-                label="Select categories"
-                multiple
-                chips
-                hint="Applying categories of Goods/Services"
-                persistent-hint
-              ></v-select>
-              <v-row no-gutters>
-                <v-col cols="8">
-                  <v-file-input
-                    v-model="image"
-                    accept="image/jpg, image/png"
-                    placeholder="Attach payment slip"
-                    hint="This should be a jpg/png file"
-                    persistent-hint
-                    :rules="[rules.image]"
-                  ></v-file-input>
-                </v-col>
-                <v-col align="right">
-                  <v-btn type="submit" class="primary mt-6">
-                    Sign Up
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions class="pl-4">
-            Already Have an account?<v-btn depressed class="ml-2"><router-link :to="{ name: 'login'}">Login here</router-link></v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row> -->
   </v-container>
 </template>
 
@@ -337,7 +265,7 @@ export default {
     step: 1,
     valid: true,
     show: false,
-    user_state: "New",
+    user_state: "new",
     menu: false,
     business_nature: ['Manufacturer', 'Wholesaler', 'Importer', 'Retailer', 'Authorized Agent', 'Contractor', 'Consultant'],
     business_type: ['Private Limited Company', 'Public Limited Company', 'Sole Proprietorship', 'Partnership', 'Government', 'Cooperative/Society'],
@@ -352,27 +280,28 @@ export default {
       business_address: "",
       contact_name: "",
       contact: "",
-      fax: "",
+      fax: "none",
       official_email: "",
-      web: "",
+      web: "none",
       business_reg_no: "",
       cert_copy: null,
       vat_reg_no: "",
       ictad_reg_no: "",
-      bank: "",
-      branch: "",
+      bank: "none",
+      branch: "none",
       business_nature: "",
       business_type: "",
-      credit_offered: "",
-      maximum_credit: "",
-      credit_period: "",
-      experience: "",
+      credit_offered: "none",
+      maximum_credit: "none",
+      credit_period: "none",
+      experience: "none",
       cat_selection: "",
       payment_bank: "",
       shroff: "",
       date: new Date().toISOString().substr(0, 10),
       amount: 0,
-      payment: null
+      payment: null,
+      payment_type: "bank",
     },
     rules: {
       name: v => !!v || "This field is required",
@@ -394,7 +323,6 @@ export default {
     }
   }),
 
-  // Custom Methods and Functions
   methods: {
     backToLogin() {
       this.$router.push({name: 'login'})
@@ -402,41 +330,64 @@ export default {
 
     proceedToForm2() {
       if(this.$refs.form1.validate()) {
-        this.$http.get("api/supplier/registration?="+this.email)
+        this.$http.get("api/supplier/registration", { params: {email: this.formdata.email} })
           .then(res => {
-            console.log(res);
-            this.step = 2;
+            if(res.data.length > 0) {
+              const user_registered = res.data.filter(entry => { return entry.reg_year === 2020 })
+              if(user_registered.length > 0) {
+                alert("You have already registered to our system for this year. Thank you!");
+              }
+              else {
+                this.user_state = "renew";
+                alert("Happy to see you renewing your registration. Only fill out the payment information.");
+                this.step = 4;
+              }
+            } else this.step = 2;
           })
       }
     },
 
     proceedToForm3() {
-      if(this.$refs.form2.validate()) {
-        console.log("Done")
-        this.step = 3;
-      }
+      if(this.$refs.form2.validate()) this.step = 3;
     },
 
     proceedToForm4() {
-      if(this.$refs.form3.validate()) {
-        console.log("Done")
-        this.step = 4;
-      }
+      if(this.$refs.form3.validate()) this.step = 4;
     },
 
     registerUser() {
       if (this.$refs.form4.validate()) {
         let form = new FormData();
-        form.append("formdata", this.formdata);
+        form.append("email", this.formdata.email);
+        form.append("password", this.formdata.password);
+        form.append("legal", this.formdata.legal);
+        form.append("business_address", this.formdata.business_address);
+        form.append("contact_name", this.formdata.contact_name);
+        form.append("contact", this.formdata.contact);
+        form.append("fax", this.formdata.fax);
+        form.append("official_email", this.formdata.official_email);
+        form.append("web", this.formdata.web);
+        form.append("business_reg_no", this.formdata.business_reg_no);
+        form.append("cert_copy", this.formdata.cert_copy);
+        form.append("vat_reg_no", this.formdata.vat_reg_no);
+        form.append("ictad_reg_no", this.formdata.ictad_reg_no);
+        form.append("bank", this.formdata.bank);
+        form.append("branch", this.formdata.branch);
+        form.append("business_nature", this.formdata.business_nature);
+        form.append("business_type", this.formdata.business_type);
+        form.append("credit_offered", this.formdata.credit_offered);
+        form.append("maximum_credit", this.formdata.maximum_credit);
+        form.append("credit_period", this.formdata.credit_period);
+        form.append("experience", this.formdata.experience);
+        form.append("cat_selection", this.formdata.cat_selection);
+        form.append("payment_bank", this.formdata.payment_bank);
+        form.append("shroff", this.formdata.shroff);
+        form.append("date", this.formdata.date);
+        form.append("amount", this.formdata.amount);
+        form.append("payment", this.formdata.payment);
+        form.append("payment_type", this.formdata.payment_type);
+        form.append("user_state", this.user_state);
         this.$http.post("/api/supplier/registration", form).then(res => {
-          if (res.statusText == "User exists") {
-            alert("Email already exists in the system");
-          } else if (res.statusText == "Successfully added") {
-            alert("You have been successfully registered");
-            this.$router.push("/login");
-          } else {
-            alert("Something went wrong! Please try again");
-          }
           console.log(res);
         });
       }
@@ -470,10 +421,6 @@ export default {
     background-size: cover;
 
     transform: scale(1);
-  }
-
-  .v-text-field {
-    font-size: 12px;
   }
 
 </style>
