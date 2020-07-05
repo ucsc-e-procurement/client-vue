@@ -45,6 +45,7 @@ import Director_Requests from "../views/director/Requests.vue";
 import Requisitions from "../views/director/Requisitions.vue";
 import Director_Shopping_Procurement_Stepper from "../views/director/ProcurementStepperShopping.vue";
 import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
+import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -170,6 +171,11 @@ const routes = [
         path: "requests",
         name: "d_req",
         component: Director_Requests
+      },
+      {
+        path: "requisition/view",
+        name: "d_req_accept",
+        component: AcceptRequisitionRequest
       },
       {
         path: "requisitions/:id",
