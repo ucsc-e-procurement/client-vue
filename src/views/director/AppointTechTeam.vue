@@ -34,7 +34,13 @@
                         @click:close="removeChairman(data.item)"
                         >
                         <v-avatar left color="blue">
-                            <span class="white--text headline">{{data.item.name[0]}}</span>
+                            <!-- <span class="white--text headline">{{mdi-account-circle}}</span> -->
+                            <v-icon
+                                icon="mdi-account-circle"
+                                color="white"
+                            >
+                                mdi-account-circle
+                            </v-icon>
                         </v-avatar>
                         {{ data.item.name }}
                         </v-chip>
@@ -45,11 +51,17 @@
                         </template>
                         <template v-else>
                         <v-list-item-avatar color="blue">
-                            <span class="white--text headline">{{data.item.name[0]}}</span>
+                            <!-- <span class="white--text headline">{{ mdi-account-circle}}</span> -->
+                            <v-icon
+                                icon="mdi-account-circle"
+                                color="white"
+                            >
+                                mdi-account-circle
+                            </v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                            <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                            <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
                         </v-list-item-content>
                         </template>
                     </template>
@@ -77,7 +89,13 @@
                         @click:close="removeTeam(data.item)"
                         >
                         <v-avatar left color="blue">
-                            <span class="white--text headline">{{data.item.name[0]}}</span>
+                            <!-- <span class="white--text headline">{{data.item.name[0]}}</span> -->
+                            <v-icon
+                                icon="mdi-account-circle"
+                                color="white"
+                            >
+                                mdi-account-circle
+                            </v-icon>
                         </v-avatar>
                         {{ data.item.name }}
                         </v-chip>
@@ -88,35 +106,42 @@
                         </template>
                         <template v-else>
                         <v-list-item-avatar color="blue">
-                            <span class="white--text headline">{{data.item.name[0]}}</span>
+                            <!-- <span class="white--text headline">{{data.item.name[0]}}</span> -->
+                            <v-icon
+                                icon="mdi-account-circle"
+                                color="white"
+                            >
+                                mdi-account-circle
+                            </v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                            <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                            <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
                         </v-list-item-content>
                         </template>
                     </template>
                     </v-autocomplete>
                 </v-col>
             </v-row>
-            <!-- <v-row>
-                <v-btn color="success" class="mr-4 ml-4">
+            <v-row>
+                <v-btn color="success" class="mr-4 ml-4" @click="this.verifyTecTeam">
                     Assign
                 </v-btn>
-            </v-row> -->
+            </v-row>
         </v-form>  
         <v-row justify="center">
+
             <v-dialog v-model="dialog" persistent max-width="600px">
-            <template v-slot:activator="{ on, attrs }">
+            <!-- <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                >
-                Assign
+                    color="primary"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                    Assign
                 </v-btn>
-            </template>
+            </template> -->
             <v-card>
                 <v-card-title>
                     <span class="headline">Confirm Technical Team?</span>
@@ -137,6 +162,14 @@
                         </v-col>
                         <v-col cols="12" sm="12">
                             <v-list>
+                                <v-list-item>
+                                    <v-text-field
+                                        :value="Object.assign({}, ...people.filter(i => this.chairman.includes(i.employee_id))).name "
+                                        outlined
+                                        readonly
+                                        label="Chairman"
+                                    ></v-text-field>
+                                </v-list-item>
                                 <v-list-item
                                     v-for="item in team"
                                     :key="item"
@@ -145,6 +178,7 @@
                                         :value="people.filter(i => i.employee_id == item)[0].name"
                                         outlined
                                         readonly
+                                        label="Member"
                                     ></v-text-field>
                                 </v-list-item>
                             </v-list>
@@ -156,6 +190,24 @@
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
                     <v-btn color="blue darken-1" text @click="this.assignTecTeam">Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+                v-model="error"
+                max-width="290"
+                >
+                <v-card>
+                    <v-card-title class="headline">Invalid Member Count</v-card-title>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="error = false"
+                    >
+                        Dismiss
+                    </v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -208,7 +260,9 @@ export default {
     ],
 
     procurementId: '',
-    techTeamId: ''
+    techTeamId: '',
+    error: false,
+    maxId: '',
 
   }),
 
@@ -223,8 +277,9 @@ export default {
   // Custom Methods and Functions
   methods: {
     removeChairman (item) {
-        const index = this.chairman.indexOf(item.employee_id)
-        if (index >= 0) this.chairman.splice(index, 1)
+        // const index = this.chairman.indexOf(item.employee_id)
+        // if (index >= 0) this.chairman.splice(index, 1)
+        this.chairman = [];
     },
     removeTeam (item) {
         const index = this.team.indexOf(item.employee_id)
@@ -246,19 +301,37 @@ export default {
                 console.log(err);
         })
     },
+    getMaxTecTeamId(){
+        this.$http
+            .get(`/api/director/get_max_tec_id`)
+            .then(response => {
+                console.log(response);
+                this.maxId = response.data[0].maxTecId == null ? 0 : response.data[0].maxTecId;
+            })
+            .catch(err => {
+                console.log(err);
+        })
+    },
+    verifyTecTeam(){
+        if(this.team.length + 1 == this.selectedMemberCount){
+            this.dialog = true;
+        }else{
+            this.error = true;
+        }
+    },
     assignTecTeam(){
         var i;
         var ids = [];
         for(i=0;i<this.team.length; i++){
-            ids.push(['tec10', this.team[i]])
+            ids.push([this.maxId + 1, this.team[i], 'member'])
         }
-        ids.push(['tec10', this.chairman]);
+        ids.push([this.maxId + 1, this.chairman, 'chairman']);
 
         this.$http
-            .post(`/api/director/procurements/appointTechTeam`,{
-                techTeamId: 'tec10',
+            .post(`/api/director/procurements/appoint_tech_team`,{
                 procurementId: this.procurementId,
-                directorId: 'e0004',
+                directorId: 'emp00001',
+                chairman: this.chairman,
                 employees: ids
             })
             .then(response => {
@@ -280,6 +353,7 @@ export default {
       this.procurementId = this.requisitionData.procurement_id;
       this.techTeamId = this.requisitionData.tec_team_id;
       this.getEmployees();
+      this.getMaxTecTeamId();
   },
   beforeMount() {},
   mounted() {},

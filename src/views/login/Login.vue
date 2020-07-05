@@ -17,8 +17,21 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
         <v-card class="elevation-12">
+          <v-progress-linear
+            v-show="loaderLogin"
+            indeterminate
+            color="primary"
+            rounded
+          ></v-progress-linear>
           <v-card-title>Login Portal</v-card-title>
           <v-divider></v-divider>
+          <v-row no-gutters class="px-4 pt-5">
+            <v-col cols="12">
+              <v-alert v-if="isLoginError" type="error" outlined border="left"
+                >Invalid Email or Passwrod</v-alert
+              >
+            </v-col>
+          </v-row>
           <v-card-text class="mt-5">
             <v-form>
               <v-text-field
@@ -28,6 +41,9 @@
                 append-icon="mdi-account"
                 outlined
                 type="text"
+                :error-messages="emailErrors"
+                @blur="$v.email.$touch()"
+                @input="$v.email.$touch()"
               ></v-text-field>
 
               <v-text-field
@@ -38,6 +54,9 @@
                 append-icon="mdi-lock"
                 outlined
                 type="password"
+                :error-messages="passwordErrors"
+                @blur="$v.password.$touch()"
+                @input="$v.password.$touch()"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -56,21 +75,20 @@
 <script>
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-/*
-
 // Validation Library - Vuelidate
 import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
-
-*/
+import { required, email } from "vuelidate/lib/validators";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
-  // mixins: [validationMixin],
+  mixins: [validationMixin],
 
   // Form Validations
-  // validations: {},
+  validations: {
+    email: { required, email },
+    password: { required },
+  },
 
   // Props Received
   props: [],
@@ -81,7 +99,9 @@ export default {
   // Data Variables and Values
   data: () => ({
     email: "",
-    password: ""
+    password: "",
+    loaderLogin: false,
+    isLoginError: false,
   }),
 
   // Custom Methods and Functions
@@ -90,33 +110,56 @@ export default {
       // http://localhost:3000/api/get/get_uers
       this.$http
         .get("/api/get_users")
-        .then(response => {
+        .then((response) => {
           console.log(response);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     login() {
-      let username = this.email;
-      let password = this.password;
-      this.$store
-        .dispatch("login", { username, password })
-        .then(role => {
-          console.log("I'm Here");
-          // Navigate to the Pages Based on User Role
-          switch (role) {
-            case "admin":
-              this.$router.push("/admin");
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.loaderLogin = true;
+        let email = this.email;
+        let password = this.password;
+        this.$store
+          .dispatch("login", { email, password })
+          .then((role) => {
+            console.log("I'm Here");
+            // Navigate to the Pages Based on User Role
+            switch (role) {
+              case "AB":
+                this.$router.push("/admin");
+                break;
+              case "HOD":
+                this.$router.push("/hod");
+                break;
+              case "DB":
+                this.$router.push("/deputy_bursar");
+                break;
+              case "DIR":
+                this.$router.push("/director");
+                break;
+              case "SUP":
+                this.$router.push("/supplier");
+                break;
+              case "tec_team":
+                this.$router.push("/tec_team");
+                break;
 
-              break;
-
-            default:
-              break;
-          }
-        })
-        .catch(err => console.log(err));
-    }
+              default:
+                break;
+            }
+            this.loaderLogin = false;
+          })
+          .catch((err) => {
+            console.log(err);
+            this.loaderLogin = false;
+            this.isLoginError = true;
+          });
+      }
+    },
   },
 
   // Life Cycle Hooks
@@ -130,7 +173,24 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {}
+  computed: {
+    // Validations
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      !this.$v.email.required && errors.push("Email is required.");
+      !this.$v.email.email && errors.push("Please Enter a Valid Email.");
+
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.required && errors.push("Password is required.");
+
+      return errors;
+    },
+  },
 };
 </script>
 

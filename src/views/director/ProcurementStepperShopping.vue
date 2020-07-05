@@ -14,22 +14,18 @@
             <v-row class="justify-space-between"> 
                 <v-col cols="12">
                     <v-stepper v-model="stepperValue" vertical>
-                        <v-stepper-step complete step="1" :editable="true" :edit-icon="'$complete'" :complete-icon="'$edit'">
-                            Product Requisition
-                        </v-stepper-step>
 
+                        <v-stepper-step complete step="1" :editable="true" :edit-icon="'$complete'" :complete-icon="'$edit'"> Product Requisition </v-stepper-step>
                         <v-stepper-content step="1">
                             <requisition :requisitionData = 'this.requisitionData' v-if="isMounted"/>
                         </v-stepper-content>
 
                         <v-stepper-step complete step="2" :editable="true" :edit-icon="'$complete'" :complete-icon="'$edit'">Procurement Initialization</v-stepper-step>
-
                         <v-stepper-content step="2">
-                            <ProcurementMethod />
+                            <ProcurementMethod :requisitionData = 'this.requisitionData' />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState >= 3" step="3" :editable="true" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Tech Team</v-stepper-step>
-
                         <v-stepper-content step="3">
                             <AppointTechTeam :requisitionData = 'this.requisitionData' :stepper = 3 @tecTeamUpdated="childUpdated" v-if="isMounted && this.requisitionData.tec_team_id == null" />
                             <TechTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.tec_team_id != null"/>
@@ -114,11 +110,11 @@ export default {
         .get(`/api/director/procurements/${this.$route.query.proc_id.replace(/[/]/g, '')}?procId=${this.$route.query.proc_id}`)
         .then(response => {
           this.requisitionData = response.data[0];
-          this.procurementState = response.data[0].stepper;
-          this.stepperValue = 1;
+          this.procurementState = response.data[0].step;
+          this.stepperValue = 10;
           this.isMounted = true;
-          if(response.data[0].stepper == 3 || response.data[0].stepper == 4){
-            this.stepperValue = response.data[0].stepper;
+          if(response.data[0].step == 3 || response.data[0].step == 4){
+            this.stepperValue = response.data[0].step;
           }
         })
         .catch(err => {

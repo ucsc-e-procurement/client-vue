@@ -1,6 +1,6 @@
 <template>
-  <v-card color="error">
-    <v-card-title>Terminated</v-card-title>
+  <v-card color="warning">
+    <v-card-title>Deputy Bursar Approved</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
@@ -9,11 +9,7 @@
       single-line
       hide-details
     ></v-text-field>
-    <v-data-table
-      :headers="headers"
-      :items="procs"
-      :search="search"
-    ></v-data-table>
+    <v-data-table :headers="headers" :items="procs" :search="search"></v-data-table>
   </v-card>
 </template>
 
@@ -27,25 +23,24 @@ export default {
       search: "",
       headers: [
         {
-          text: "Procurement Id",
+          text: "Request Id",
           align: "start",
           sortable: false,
-          value: "requisition_id",
+          value: "requisition_id"
         },
-        { text: "Procurement Name", value: "procurement_name" },
         { text: "Description", value: "description" },
-        { text: "Date", value: "date" },
+        { text: "Date", value: "date" }
       ],
-      procs: [],
+      procs: []
     };
   },
   created() {
     axios
-      .get(`http://localhost:5001/api/hod/terminated/${this.empid}`)
-      .then((response) => {
+      .get(`http://localhost:5000/api/hod/approved/${this.empid}`)
+      .then(response => {
         this.procs = response.data;
       })
-      .catch((error) => console.log(error));
-  },
+      .catch(error => console.log(error));
+  }
 };
 </script>

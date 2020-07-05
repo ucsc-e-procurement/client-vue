@@ -46,7 +46,7 @@
                 <v-divider :key="key" v-if="key != ongoingProcurements.length - 1"></v-divider>
             </template>
         </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
+        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
             <!-- <template v-slot:activator="{ on, attrs }">
                 <v-btn
                 color="primary"
@@ -84,20 +84,20 @@
                       <tr>
                         <th class="text-left">Item</th>
                         <th class="text-left">Quantity</th>
-                        <th class="text-left">Price</th>
+                        <th class="text-left">Unit Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="item in JSON.parse(ongoingProcurements[procurement].bids)" :key="item.name">
                         <td>{{ item.product_name }}</td>
                         <td>{{ item.qty }}</td>
-                        <td>{{ item.price }}</td>
+                        <td>{{ item.unit_price }}</td>
                       </tr>
                     </tbody>
                   </template>
                 </v-simple-table>
                 <p class="text--primary text-center">
-                    Total Amount(LKR): {{ongoingProcurements[procurement].quotation}}
+                    Total with VAT(LKR): {{ongoingProcurements[procurement].total_with_vat}}
                 </p>
                 </v-card-text>
                 <v-card-actions>
@@ -195,7 +195,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchOngoingProcurements('s0001')
+    this.fetchOngoingProcurements('s000001')
+    //this.fetchOngoingProcurements(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
   updated() {},

@@ -10,6 +10,8 @@ import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminate
 import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
+import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
+import Admin_View_Users from "../views/admin/View_Users.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -26,14 +28,14 @@ import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 import Registration from "../views/supplier/Registration.vue";
 import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
-import Supplier_Procurements from "../views/supplier/Procurements.vue"
+import Supplier_Procurements from "../views/supplier/Procurements.vue";
 import Price_Schedule from "../views/supplier/PriceSchedule.vue";
 
 //Employee
-import Employee from "../views/employee/Employee.vue"
-import Employee_Dashboard from "../views/employee/Dashboard.vue"
-import Employee_Tec_team from "../views/employee/Tec_team.vue"
-import Employee_Tec_Report from "../views/employee/Tec_Report.vue"
+import Employee from "../views/employee/Employee.vue";
+import Employee_Dashboard from "../views/employee/Dashboard.vue";
+import Employee_Tec_team from "../views/employee/Tec_team.vue";
+import Employee_Tec_Report from "../views/employee/Tec_Report.vue";
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -41,8 +43,9 @@ import Director_Dashboard from "../views/director/Dashboard.vue";
 import Director_Procurements from "../views/director/Procurements.vue";
 import Director_Requests from "../views/director/Requests.vue";
 import Requisitions from "../views/director/Requisitions.vue";
-import Director_Shopping_Procurement_Stepper from '../views/director/ProcurementStepperShopping.vue'
-import Director_Direct_Procurement_Stepper from '../views/director/ProcurementStepperDirect.vue'
+import Director_Shopping_Procurement_Stepper from "../views/director/ProcurementStepperShopping.vue";
+import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
+import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -59,12 +62,12 @@ const routes = [
   {
     path: "",
     name: "home",
-    component: Home
+    component: Home,
   },
   {
     path: "/login",
     name: "login",
-    component: Login
+    component: Login,
   },
   {
     path: "/registration",
@@ -92,38 +95,50 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         path: "ongoing_procurements",
         name: "ongoing procurements",
-        component: Admin_Procurements_Ongoing
+        component: Admin_Procurements_Ongoing,
       },
       {
         path: "terminated_procurements",
         name: "terminated procurements",
-        component: Admin_Procurements_Terminated
+        component: Admin_Procurements_Terminated,
       },
       {
         path: "completed_procurements",
         name: "completed procurements",
-        component: Admin_Procurements_Completed
+        component: Admin_Procurements_Completed,
       },
       {
         path: "pending_approvals",
         name: "pending approvals",
-        component: Admin_Pending_Approvals
+        component: Admin_Pending_Approvals,
       },
       {
         path: "procurement_overview/:encodedProcurementId",
         name: "procurement overview",
         component: Admin_Procurement_Overview,
+        props: true,
+      },
+      {
+        path: "suppliers",
+        name: "view all suppliers",
+        component: Admin_View_Suppliers,
+        props: true
+      },
+      {
+        path: "users",
+        name: "view all users",
+        component: Admin_View_Users,
         props: true
       },
       // TODO Redirect to Page Not Found Or Dashborad
-      { path: "*", redirect: "/" }
-    ]
+      { path: "*", redirect: "/" },
+    ],
   },
 
   // Director
@@ -140,7 +155,7 @@ const routes = [
       {
         path: "procurements",
         name: "d_proc",
-        component: Director_Procurements,
+        component: Director_Procurements
       },
       {
         path: "procurements/shopping/:id",
@@ -158,11 +173,15 @@ const routes = [
         component: Director_Requests
       },
       {
+        path: "requisition/view",
+        name: "d_req_accept",
+        component: AcceptRequisitionRequest
+      },
+      {
         path: "requisitions/:id",
         name: "d_reqi",
         component: Requisitions
-      },
-      
+      }
     ]
   },
 
@@ -175,14 +194,14 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: HOD_Dashboard
+        component: HOD_Dashboard,
       },
       {
         path: "newproc",
         name: "New Procurement",
-        component: HOD_New_Proc
-      }
-    ]
+        component: HOD_New_Proc,
+      },
+    ],
   },
   {
     path: "/supplier",
@@ -203,9 +222,7 @@ const routes = [
         path: "procurements",
         name: "procurements",
         component: Supplier_Procurements,
-        children: [
-          
-        ]
+        children: []
       }
     ]
   },
@@ -242,19 +259,27 @@ const routes = [
       {
         path: "",
         name: "default",
+<<<<<<< HEAD
         component: Director_Dashboard
       },
       {
         path: "product_requisitions",
         component: Product_Requisitions
+=======
+        component: Deputy_Bursar_Dashboard,
+      },
+      {
+        path: "/product_requisitions",
+        component: Product_Requisitions,
+>>>>>>> 0b4b3c8a64a69878310ed19a07bcfbce97e432f4
       },
       {
         path: "view_product_requisition/:id",
         component: View_Product_Requisition,
-        props: true
-      }
-    ]
-  }
+        props: true,
+      },
+    ],
+  },
 ];
 
 // Development Perposes Only - Remove these routes before final Production Deployment
@@ -280,11 +305,11 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
       next();
       return;

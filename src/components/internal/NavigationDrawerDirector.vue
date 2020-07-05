@@ -1,21 +1,23 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped dark>
     <template v-slot:prepend>
-        <v-list-item two-line>
-            <v-list-item-avatar>
-            <img src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png">
-            </v-list-item-avatar>
+      <v-list-item two-line>
+        <v-list-item-avatar>
+          <img
+            src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png"
+          />
+        </v-list-item-avatar>
 
-            <v-list-item-content>
-            <v-list-item-title>KP Hewagamage</v-list-item-title>
-            <v-list-item-subtitle>Director</v-list-item-subtitle>
-            </v-list-item-content>
-        </v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>KP Hewagamage</v-list-item-title>
+          <v-list-item-subtitle>Director</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
     </template>
 
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link to="/director">
+      <v-list-item exact="" link to="/director">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
@@ -34,9 +36,9 @@
       <v-list-item link to="/director/requests">
         <v-list-item-action>
           <!-- <v-tab> -->
-            <v-badge color="blue" content="2">
-              <v-icon>mdi-email</v-icon>
-            </v-badge>
+          <v-badge color="blue" content="2">
+            <v-icon>mdi-email</v-icon>
+          </v-badge>
           <!-- </v-tab>  -->
         </v-list-item-action>
         <v-list-item-content>
@@ -53,16 +55,16 @@
       </v-list-item>
     </v-list>
     <template v-slot:append>
-        <v-list>
-            <v-list-item link to="/logout">
-                <v-list-item-action>
-                    <v-icon>mdi-logout-variant</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                    <v-list-item-title>Logout</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-        </v-list>
+      <v-list>
+        <v-list-item @click="logout">
+          <v-list-item-action>
+            <v-icon>mdi-logout-variant</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </template>
   </v-navigation-drawer>
 </template>
@@ -101,7 +103,11 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-
+    logout() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    }
   },
 
   // Life Cycle Hooks

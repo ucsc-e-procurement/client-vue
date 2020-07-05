@@ -3,7 +3,9 @@
     <v-list dense>
       <v-list-item two-line :class="miniVariant && 'px-0'">
         <v-list-item-avatar>
-          <v-icon dark>mdi-account-circle</v-icon>
+          <img
+            src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png"
+          />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -23,6 +25,18 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <template v-slot:append>
+      <v-list>
+        <v-list-item @click="logout">
+          <v-list-item-action>
+            <v-icon>mdi-logout-variant</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 
@@ -57,12 +71,18 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-view-dashboard", link: "/hod" },
-      { title: "Calender", icon: "mdi-calendar", link: "#" },
-    ],
+      { title: "Calender", icon: "mdi-calendar", link: "#" }
+    ]
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
@@ -75,7 +95,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 

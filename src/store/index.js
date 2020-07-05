@@ -12,7 +12,7 @@ export default new Vuex.Store({
     status: "",
     token: localStorage.getItem("token") || "",
     user: {},
-    internal: null
+    internal: null,
   },
   /*
    * Mutators are used to change the state of a vuex store
@@ -38,7 +38,7 @@ export default new Vuex.Store({
     setInternal(state, internalState) {
       console.log("Setting Internal State: ", internalState);
       state.internal = internalState;
-    }
+    },
   },
   /*
    * Actions are used to commit mutations to the vuex store
@@ -51,7 +51,7 @@ export default new Vuex.Store({
         // Sending HTTP request to the server
         axios
           .post(`${baseURL}/api/auth/login`, user)
-          .then(res => {
+          .then((res) => {
             console.log("Res ", res.data);
             if (res.data.status === 200) {
               const token = res.data.token;
@@ -79,7 +79,7 @@ export default new Vuex.Store({
               reject(res.data.error_message);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             commit("authError");
             localStorage.removeItem("token");
             reject(err);
@@ -89,7 +89,7 @@ export default new Vuex.Store({
 
     // Logout Handler
     logout({ commit }) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         commit("logout");
         localStorage.removeItem("token");
         delete axios.defaults.headers.common["authorization"];
@@ -112,7 +112,7 @@ export default new Vuex.Store({
           reject(error);
         }
       });
-    }
+    },
   },
   modules: {},
 
@@ -123,10 +123,12 @@ export default new Vuex.Store({
    * sensitive information.
    */
   getters: {
-    isLoggedIn: state => !!state.token,
-    authStatus: state => state.status,
-    userRole: state => state.user.user_role,
-    isInternal: state => state.internal,
-    userId: state => state.user.user_id
-  }
+    isLoggedIn: (state) => !!state.token,
+    authStatus: (state) => state.status,
+    userRole: (state) => state.user.user_role,
+    isInternal: (state) => state.internal,
+    userId: (state) => state.user.user_id,
+    employeeId: (state) => state.user.employee_id,
+    user: (state) => state.user,
+  },
 });
