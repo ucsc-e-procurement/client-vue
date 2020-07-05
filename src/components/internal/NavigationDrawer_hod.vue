@@ -27,7 +27,7 @@
     </v-list>
     <template v-slot:append>
       <v-list>
-        <v-list-item link>
+        <v-list-item @click="logout">
           <v-list-item-action>
             <v-icon>mdi-logout-variant</v-icon>
           </v-list-item-action>
@@ -71,12 +71,18 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-view-dashboard", link: "/hod" },
-      { title: "Calender", icon: "mdi-calendar", link: "#" },
-    ],
+      { title: "Calender", icon: "mdi-calendar", link: "#" }
+    ]
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
@@ -89,7 +95,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 
