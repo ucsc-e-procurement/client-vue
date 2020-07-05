@@ -58,9 +58,6 @@
             </v-row>
           </v-container>
         </v-card>
-        <v-container>
-          <v-btn color="primary" to="/purchase_requests">View Purchase Requests</v-btn>
-        </v-container>
       </v-col>
     </v-row>
   </v-container>

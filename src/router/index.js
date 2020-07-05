@@ -242,14 +242,14 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Deputy_Bursar_Dashboard
+        component: Director_Dashboard
       },
       {
-        path: "/product_requisitions",
+        path: "product_requisitions",
         component: Product_Requisitions
       },
       {
-        path: "/view_product_requisition/:id",
+        path: "view_product_requisition/:id",
         component: View_Product_Requisition,
         props: true
       }
