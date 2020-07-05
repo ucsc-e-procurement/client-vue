@@ -171,7 +171,7 @@ export default {
     openDialog: function (key) {
       this.procurement = key
       this.dialog = true
-      console.log(key)
+      console.log(key, newRequests[procurement])
     },
 
     fetchRequests(supplier_id) {
@@ -199,7 +199,8 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchRequests('s0001')
+    this.fetchRequests('s000001')
+    //this.fetchRequests(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
   updated() {},

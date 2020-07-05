@@ -110,7 +110,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.getSupplier('s0001')
+    this.getSupplier('s000001')
+    //this.getSupplier(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
   updated() {},
