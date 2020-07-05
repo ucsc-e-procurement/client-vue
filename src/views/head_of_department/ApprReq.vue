@@ -9,11 +9,7 @@
       single-line
       hide-details
     ></v-text-field>
-    <v-data-table
-      :headers="headers"
-      :items="procs"
-      :search="search"
-    ></v-data-table>
+    <v-data-table :headers="headers" :items="procs" :search="search"></v-data-table>
   </v-card>
 </template>
 
@@ -30,21 +26,21 @@ export default {
           text: "Request Id",
           align: "start",
           sortable: false,
-          value: "requisition_id",
+          value: "requisition_id"
         },
         { text: "Description", value: "description" },
-        { text: "Date", value: "date" },
+        { text: "Date", value: "date" }
       ],
-      procs: [],
+      procs: []
     };
   },
   created() {
     axios
-      .get(`http://localhost:5001/api/hod/approved/${this.empid}`)
-      .then((response) => {
+      .get(`http://localhost:5000/api/hod/approved/${this.empid}`)
+      .then(response => {
         this.procs = response.data;
       })
-      .catch((error) => console.log(error));
-  },
+      .catch(error => console.log(error));
+  }
 };
 </script>
