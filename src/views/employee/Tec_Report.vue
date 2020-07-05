@@ -262,7 +262,7 @@
                 <template v-for="(member,key) in this.tec_team">
                   <div :key="key">
                     {{member.employee_name}} - {{member.capacity}}
-                    <v-radio-group v-model="row" row :disabled="user != member.employee_id">
+                    <v-radio-group v-model="row[key]" row :disabled="user != member.employee_id">
                       <v-radio label="Agree" value="agree"></v-radio>
                       <v-radio label="Disagree" value="disagree"></v-radio>
                     </v-radio-group>
@@ -345,7 +345,7 @@ export default {
     //procurement: this.procurement,
     //requisition: this.requisition,
     //tec_team: this.tec_team,
-    user: "e0001",
+    user: "emp00005",
     //user: this.$store.getters.user.employee_id,
     items: [{product_name:'prod 1', qty: '5'}],
     team: [{name: 'name1', designation: 'designation 1', capasity: 'chairman'}, {name: 'name2', designation: 'designation 2', capasity: 'member'}],
@@ -354,7 +354,8 @@ export default {
     reason_for_rejecting: [],
     rejectReasons: [],
     recommendReasons: [],
-    tecTeamRemarks: []
+    tecTeamRemarks: [],
+    row:[]
   }),
 
   // Custom Methods and Functions

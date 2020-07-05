@@ -24,7 +24,7 @@
                     <v-card-text>
                       <div>Tender Number : {{item.procurement_id}}</div>
                       <p class="text-h6">
-                        {{item.catagory}}
+                        {{item.category}}
                       </p>
                       <div class="text--primary">
                         Status : {{item.bid_status}}
@@ -46,7 +46,7 @@
                 <v-divider :key="key" v-if="key != ongoingProcurements.length - 1"></v-divider>
             </template>
         </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
+        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
             <!-- <template v-slot:activator="{ on, attrs }">
                 <v-btn
                 color="primary"
@@ -64,7 +64,7 @@
                 </v-card-title>
                 <v-card-text>
                 <p class="text-h6">
-                    {{ongoingProcurements[procurement].catagory}}
+                    {{ongoingProcurements[procurement].category}}
                 </p>
                 <div class="text--primary">
                     Published Date : {{ongoingProcurements[procurement].date}}
@@ -195,7 +195,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchOngoingProcurements('s0001')
+    this.fetchOngoingProcurements('s000001')
     //this.fetchOngoingProcurements(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},

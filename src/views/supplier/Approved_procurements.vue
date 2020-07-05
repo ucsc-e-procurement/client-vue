@@ -10,7 +10,7 @@
                 <v-card-text>
                   <div>Tender Number : {{item.procurement_id}}</div>
                   <p class="text-h6">
-                    {{item.catagory}}
+                    {{item.category}}
                   </p>
                   <div class="text--primary">
                     Published Date : {{item.date}}
@@ -44,7 +44,7 @@
             ></v-pagination>
           </div>
         </template>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
+        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
             <!-- <template v-slot:activator="{ on, attrs }">
                 <v-btn
                 color="primary"
@@ -61,7 +61,7 @@
                 </v-card-title>
                 <v-card-text>
                 <p class="text-h6">
-                    {{completedProcurements[procurement].catagory}}
+                    {{completedProcurements[procurement].category}}
                 </p>
                 <div class="text--primary">
                     Published Date : {{completedProcurements[procurement].date}}
@@ -195,7 +195,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchCompletedProcurements('s0001')
+    this.fetchCompletedProcurements('s000001')
     //this.fetchCompletedProcurements(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},

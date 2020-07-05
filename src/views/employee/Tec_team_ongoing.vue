@@ -24,7 +24,7 @@
                 </template>
             </v-data-table>
         </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
+        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
             <v-card>
                 
                 <v-card-title>
@@ -269,7 +269,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchOngoingProcurements('e0001')
+      this.fetchOngoingProcurements('emp00005')
       //this.fetchOngoingProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},

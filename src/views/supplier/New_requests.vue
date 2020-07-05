@@ -10,7 +10,7 @@
                     <v-card-text>
                       <div>Tender Number : {{item.procurement_id}}</div>
                       <p class="text-h6">
-                        {{item.catagory}}
+                        {{item.category}}
                       </p>
                       <div class="text--primary">
                         Published Date : {{item.date}}
@@ -65,10 +65,10 @@
                     Dear Sir,
                 </p> 
                 <p class="text--primary text-decoration-underline">
-                    INVITATION OF QUOTATIONS FOR – {{newRequests[procurement].procurement_id}} ({{newRequests[procurement].catagory}}).
+                    INVITATION OF QUOTATIONS FOR – {{newRequests[procurement].procurement_id}} ({{newRequests[procurement].category}}).
                 </p> 
                 <p class="text--primary">
-                    The University of Colombo School of Computing hereby requests sealed quotations for Supply & Delivery of {{newRequests[procurement].catagory}} & Quantity.
+                    The University of Colombo School of Computing hereby requests sealed quotations for Supply & Delivery of {{newRequests[procurement].category}} & Quantity.
                 </p> 
 
                 <p class="text--primary text-decoration-underline text-center">
@@ -171,7 +171,7 @@ export default {
     openDialog: function (key) {
       this.procurement = key
       this.dialog = true
-      console.log(key)
+      console.log(key, newRequests[procurement])
     },
 
     fetchRequests(supplier_id) {
@@ -199,7 +199,7 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchRequests('s0001')
+    this.fetchRequests('s000001')
     //this.fetchRequests(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
