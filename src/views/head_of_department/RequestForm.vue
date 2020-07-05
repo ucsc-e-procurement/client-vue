@@ -4,9 +4,7 @@
       <v-card class="overflow-hidden" color="grey lighten-1" dark>
         <v-toolbar flat outlined color="primary" font="balck">
           <v-icon>mdi-cards-variant</v-icon>
-          <v-toolbar-title class="font-weight-light"
-            >Request Form</v-toolbar-title
-          >
+          <v-toolbar-title class="font-weight-light">Request Form</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
@@ -32,11 +30,7 @@
               required
             ></v-checkbox>
           </ValidationProvider>
-          <ValidationProvider
-            v-slot="{ errors }"
-            name="Description"
-            rules="required"
-          >
+          <ValidationProvider v-slot="{ errors }" name="Description" rules="required">
             <v-textarea
               v-model="descript"
               outlined
@@ -58,21 +52,17 @@
           <v-card>
             <v-card-title class="headline">Confirm Request?</v-card-title>
 
-            <v-card-text
-              >By proceeding you are accepting to initialize a new procurement
-              process</v-card-text
-            >
+            <v-card-text>
+              By proceeding you are accepting to initialize a new procurement
+              process
+            </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn type="submit" color="green darken-1" text @click="submit"
-                >Proceed</v-btn
-              >
+              <v-btn type="submit" color="green darken-1" text @click="submit">Proceed</v-btn>
 
-              <v-btn color="red darken-1" text @click="dialog = false"
-                >Cancel</v-btn
-              >
+              <v-btn color="red darken-1" text @click="dialog = false">Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -87,15 +77,15 @@ import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode,
+  setInteractionMode
 } from "vee-validate";
-//import axios from "axios";
+import axios from "axios";
 
 setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty",
+  message: "{_field_} can not be empty"
 });
 
 export default {
@@ -110,33 +100,75 @@ export default {
       statesProcType: [
         { name: "Services", abbr: "S", id: 1 },
         { name: "Work", abbr: "W", id: 2 },
-        { name: "Goods", abbr: "G", id: 3 },
+        { name: "Goods", abbr: "G", id: 3 }
       ],
       checkbox: false,
       division: "ENG",
       head_of_division_id: "emp00004",
+      director_id: "",
+      deputy_bursar_id: "",
+      reorder: false,
+      procurement_type: ""
     };
+  },
+
+  created() {
+    axios
+      .get(`http://localhost:5000/api/hod/dir_empid`)
+      .then(response => {
+        this.director_id = response.data.employee_id;
+      })
+      .catch(error => console.log(error));
+
+    axios
+      .get(`http://localhost:5000/api/hod/db_empid`)
+      .then(response => {
+        this.deputy_bursar_id = response.data.employee_id;
+      })
+      .catch(error => console.log(error));
   },
 
   methods: {
     submit() {
-      this.$refs.observer.validate().then((success) => {
+      this.$refs.observer.validate().then(success => {
         if (!success) {
           return;
         }
+        switch (this.selectProcType) {
+          case "Services":
+            this.procurement_type = "S";
+            break;
+          case "Work":
+            this.procurement_type = "W";
+            break;
+          default:
+            this.procurement_type = "G";
+            break;
+        }
+        {
+          this.checkbox ? (this.reorder = false) : (this.reorder = true);
+        }
+
+        axios
+          .post("http://localhost:5000/api/hod/create_req", {
+            description: this.descript,
+            procurement_type: this.procurement_type,
+            head_of_division_id: this.head_of_division_id,
+            director_id: this.director_id,
+            deputy_bursar_id: this.deputy_bursar_id,
+            division: this.division,
+            reorder: this.reorder
+          })
+          .then(response => {
+            alert(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+
         window.location.href = "http://localhost:8080/hod";
-        // axios
-        //   .post("http://localhost:5001/api/hod/create_req", {
-        //     //body
-        //   })
-        //   .then((response) => {
-        //     console.log(response);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
       });
-    },
-  },
+    }
+  }
 };
 </script>
