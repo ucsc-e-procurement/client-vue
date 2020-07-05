@@ -159,7 +159,16 @@ export default {
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    getUsers() {
+      return new Promise((resolve, reject) => {
+        this.$http
+          .get("/all")
+          .then()
+          .catch();
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
