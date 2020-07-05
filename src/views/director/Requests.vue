@@ -33,7 +33,7 @@
                         </v-avatar>
                         Description: {{request.description}} <br/>
                         Department: {{request.department}} <br/>
-                        Date Approced: {{new Date(request.date).getDate() + '/' + new Date(request.date).getMonth() + '/' + new Date(request.date).getFullYear()}}    
+                        Date Requested: {{new Date(request.date).getDate() + '/' + new Date(request.date).getMonth() + '/' + new Date(request.date).getFullYear()}}    
                         <template v-slot:actions>
                           <v-btn text color="blue accent-4">View</v-btn>
                         </template>
@@ -60,9 +60,9 @@
                             mdi-alert-circle
                           </v-icon>
                         </v-avatar>
-                        Description:  <br/>
-                        Department: <br/>
-                        Date Approced:  
+                        Procurement ID: UCSC/NCB/G/ENG/2020/0010 <br/>
+                        Department: ADMTC<br/>
+                        Description: Stationary  
                         <template v-slot:actions>
                           <v-btn text color="blue accent-4">View</v-btn>
                         </template>

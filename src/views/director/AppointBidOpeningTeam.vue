@@ -25,7 +25,12 @@
                         @click:close="removeTeam(data.item)"
                         >
                         <v-avatar left color="blue">
-                            <span class="white--text headline">{{data.item.name[0]}}</span>
+                            <v-icon
+                                icon="mdi-account-circle"
+                                color="white"
+                            >
+                                mdi-account-circle
+                            </v-icon>
                         </v-avatar>
                         {{ data.item.name }}
                         </v-chip>
@@ -36,30 +41,30 @@
                         </template>
                         <template v-else>
                         <v-list-item-avatar color="blue">
-                            <span class="white--text headline">{{data.item.name[0]}}</span>
+                            <v-icon
+                                icon="mdi-account-circle"
+                                color="white"
+                            >
+                                mdi-account-circle
+                            </v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                            <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                            <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
                         </v-list-item-content>
                         </template>
                     </template>
                     </v-autocomplete>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-btn color="success" class="mr-4 ml-4" @click="this.verifyBidOpeningTeam">
+                    Assign
+                </v-btn>
+            </v-row>
         </v-form>  
         <v-row justify="center">
             <v-dialog v-model="dialog" persistent max-width="600px">
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                >
-                Assign
-                </v-btn>
-            </template>
             <v-card>
                 <v-card-title>
                     <span class="headline">Confirm Bid Opening Team?</span>
@@ -87,6 +92,25 @@
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
                     <v-btn color="blue darken-1" text @click="this.assignBidOpeningTeam">Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+                v-model="error"
+                max-width="290"
+                >
+                <v-card>
+                    <v-card-title class="headline">Invalid Member Count</v-card-title>
+                    <v-card-text>Bid Opening Team should contain 2 members</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="error = false"
+                    >
+                        Dismiss
+                    </v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -127,6 +151,7 @@ export default {
     
     autoUpdate: true,
     dialog: '',
+    error: false,
     team: [],
     isUpdating: false,
     people: [
@@ -136,7 +161,8 @@ export default {
         { name: 'Tucker Smith', group: 'Group 1', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
     ],
     procurementId: '',
-    tecTeamId: ''
+    tecTeamId: '',
+    maxId: '',
 
   }),
 
@@ -154,6 +180,13 @@ export default {
         const index = this.team.indexOf(item.employee_id)
         if (index >= 0) this.team.splice(index, 1)
     },
+    verifyBidOpeningTeam(){
+        if(this.team.length == 2){
+            this.dialog = true;
+        }else{
+            this.error = true;
+        }
+    },
     getEmployeesNotInTecTeam(){
         this.$http
             .get(`/api/director/get_employees_not_in_tec_team?tecTeamId=${this.tecTeamId}`)
@@ -168,11 +201,11 @@ export default {
     assignBidOpeningTeam(){
         this.$http
             .post(`/api/director/procurements/appointBidOpeningTeam`,{
-                bidOpeningTeamId: 'bot10',
                 procurementId: this.procurementId,
-                directorId: 'e0004',
+                directorId: 'emp00001',
                 member_1: this.team[0],
-                member_2: this.team[1]
+                member_2: this.team[1],
+                maxId: this.maxId + 1
             })
             .then(response => {
                 console.log(response);
@@ -183,7 +216,18 @@ export default {
         })
         this.dialog=false;
         this.$emit('bidTeamAppointed', 5);
-    }
+    },
+    getMaxBidOpeningTeamId(){
+        this.$http
+            .get(`/api/director/get_max_bid_opening_team_id`)
+            .then(response => {
+                console.log(response);
+                this.maxId = response.data[0].maxBidTeamId == null ? 0 : response.data[0].maxBidTeamId;
+            })
+            .catch(err => {
+                console.log(err);
+        })
+    },
   },
 
   // Life Cycle Hooks
@@ -192,6 +236,7 @@ export default {
       this.procurementId = this.requisitionData.procurement_id;
       this.tecTeamId = this.requisitionData.tec_team_id;
       this.getEmployeesNotInTecTeam();
+      this.getMaxBidOpeningTeamId();
   },
   beforeMount() {},
   mounted() {},

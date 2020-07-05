@@ -22,10 +22,10 @@
                     <v-list>
                         <v-list-item
                             v-for="item in team"
-                            :key="item.title"
+                            :key="item.employee_id"
                         >
                             <v-text-field
-                                :value="item.name"
+                                :value="item.employee_name"
                                 outlined
                                 readonly
                             ></v-text-field>
@@ -100,9 +100,9 @@ export default {
             this.$http
                 .get(`/api/director/get_tec_team?techTeamId=${this.techTeamId}`)
                 .then(response => {
-                    console.log(response);
-                    this.selectedMemberCount = response.data.length;
-                    this.team = response.data;
+                    // console.log(JSON.parse(response.data[0].team));
+                    this.selectedMemberCount = JSON.parse(response.data[0].team).length;
+                    this.team = JSON.parse(response.data[0].team);
                 })
                 .catch(err => {
                     console.log(err);

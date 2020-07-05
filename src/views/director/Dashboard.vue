@@ -93,7 +93,7 @@
                       </v-avatar>
                         Description: {{item.description}} <br/>
                         Department: {{item.department}} <br/>
-                        Date Approced: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
+                        Date Requested: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
                       <template v-slot:actions>
                         <v-btn text color="deep-purple accent-4" @click="OpenApprovedRequisitionsDialog(item)">View</v-btn>
                       </template>
@@ -102,7 +102,7 @@
                 </v-card>
                 <v-dialog
                   v-model="approvedRequisitionsDialog"
-                  max-width="600px"
+                  max-width="800px"
                 >
                   <v-card>
                     <v-card-title class="headline">Product Requisition</v-card-title>
