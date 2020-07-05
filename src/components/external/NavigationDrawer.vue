@@ -15,7 +15,7 @@
 
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link to="/supplier">
+      <v-list-item exact="" link to="/supplier">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
@@ -23,7 +23,7 @@
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/supplier/procurements">
+      <v-list-item exact="" link to="/supplier/procurements">
         <v-list-item-action>
           <v-icon>mdi-email</v-icon>
         </v-list-item-action>
