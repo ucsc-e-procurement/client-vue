@@ -12,12 +12,14 @@
             <h4>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING</h4>
           </v-row>
           <v-row no-gutters>
-            <h5>[ Tender Name & Tender Number ]</h5>
-            <h5>{{ this.procurement_id }}</h5>
+            <!-- <h5>[ Tender Name & Tender Number ]</h5> -->
+            <h5>Tender Number : </h5>
+            <h5>{{ this.$route.query.procurement.procurement_id }}</h5>
           </v-row>
           <v-row no-gutters>
-            <h5>[ Closing Date & Time ]</h5>
-            <h5>{{ this.expiration_date }}</h5>
+            <!-- <h5>[ Closing Date & Time ]</h5> -->
+            <h5> Closing Date & Time : </h5>
+            <h5>{{ this.$route.query.procurement.deadline }}</h5>
           </v-row>
 
           <v-card class="my-2 py-2 px-1" id="schedule">
@@ -50,14 +52,14 @@
                 </tr>
               </thead>
               <tbody class="text-center">
-                <tr v-for="(item, index) in items" :key="index">
+                <tr v-for="(item, index) in JSON.parse(this.$route.query.procurement.products)" :key="index">
                   <td>{{ index + 1 }}</td>
                   <td style="max-width: 30px">
                     <span v-if="editIndex !== index">{{
-                      item.description
+                      item.product_name
                     }}</span>
                     <span v-if="editIndex === index">
-                      <v-text-field v-model="item.description" disabled />
+                      <v-text-field v-model="item.product_name" disabled />
                     </span>
                   </td>
                   <td>
@@ -227,6 +229,7 @@
 export default {
   // Props Received
   props: {
+    procurement: Object,
     supplier_id: String,
     procurement_id: String,
     expiration_date: Date,
