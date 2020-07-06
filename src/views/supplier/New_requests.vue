@@ -180,7 +180,7 @@ export default {
     openDialog: function(key) {
       this.procurement = key;
       this.dialog = true;
-      console.log(key, newRequests[procurement]);
+      //console.log(key, newRequests[procurement])
     },
 
     fetchRequests(supplier_id) {
