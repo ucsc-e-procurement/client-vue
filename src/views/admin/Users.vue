@@ -360,16 +360,40 @@ export default {
 
     // Account Activation
     activateUser(user) {
+      this.loaderOverlay = true;
       this.$http
         .put("/api/admin/change_user_status", {
           user_id: user.email,
           status: 0
         })
         .then(res => {
-          console.log("Deactivate Res: ", res.data);
+          console.log("Activate Res: ", res.data);
+          if (res.data.message === "SUCCESS") {
+            // Snackbar
+            this.snackbar.text = "User Activated Successfully";
+            this.snackbar.color = "";
+            this.snackbar.timeout = 4000;
+            this.snackbar.show = true;
+
+            this.users[this.users.indexOf(user)].status = true;
+          } else {
+            // Snackbar
+            this.snackbar.text = "Something Went Wrong";
+            this.snackbar.color = "error";
+            this.snackbar.timeout = 4000;
+            this.snackbar.show = true;
+          }
+          this.loaderOverlay = false;
         })
         .catch(err => {
           console.log("Deactivate Err: ", err);
+          this.loaderOverlay = false;
+
+          // Snackbar
+          this.snackbar.text = "Something Went Wrong";
+          this.snackbar.color = "error";
+          this.snackbar.timeout = 4000;
+          this.snackbar.show = true;
         });
     }
   },
