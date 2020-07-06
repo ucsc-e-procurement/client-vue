@@ -1,6 +1,6 @@
 <template>
   <v-card color="warning">
-    <v-card-title>Deputy Bursar Approved</v-card-title>
+    <v-card-title height="50%">Deputy Bursar Approved</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
