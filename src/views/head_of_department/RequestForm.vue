@@ -16,7 +16,6 @@
               color="black"
               item-text="name"
               label="Type of Procurment"
-              required
               :error-messages="errors"
             ></v-autocomplete>
           </ValidationProvider>
@@ -31,28 +30,47 @@
             ></v-checkbox>
           </ValidationProvider>
           <!-- include the inputs here-->
-          <!-- <ValidationProvider>
-            <v-btn :disabled="!checkbox" depressed large color="primary">Add item</v-btn>
+          <ValidationProvider>
+            <v-btn
+              class="ma-2"
+              :disabled="!checkbox"
+              depressed
+              large
+              color="primary"
+              @click="additem"
+            >Add item</v-btn>
+            <v-btn
+              class="ma-2"
+              :disabled="!checkbox"
+              depressed
+              large
+              color="warning"
+              @click="reset"
+            >Reset</v-btn>
+            <!-- <ValidationObserver ref="addItemObsever"> -->
             <v-row align="center">
               <v-col cols="8">
                 <v-autocomplete
                   :disabled="!checkbox"
                   v-model="value"
-                  :items="products[''].product_name"
+                  :items="item_list"
                   dense
                   filled
-                  label="Filled"
+                  label="Search Item"
                 ></v-autocomplete>
               </v-col>
               <v-col cols="4">
                 <v-text-field
                   :disabled="!checkbox"
+                  v-model="quantity"
                   type="number"
-                  min="0"
+                  label="Quantity"
+                  min="1"
                   oninput="validity.valid||(value='')"
                 />
               </v-col>
             </v-row>
+            <!-- </ValidationObserver> -->
             <v-simple-table
               :disabled="!checkbox"
               :dense="dense"
@@ -63,25 +81,20 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">Product Id</th>
                     <th class="text-left">Item</th>
                     <th class="text-left">Quantity</th>
-                    <th class="text-left">Remove</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in product_request" :key="item.product_id">
-                    <td>{{ item.product_id }}</td>
+                  <tr v-for="item in product_request" :key="item.product_name">
                     <td>{{ item.product_name }}</td>
                     <td>{{item.qnty}}</td>
-                    <td>
-                      <v-btn :disabled="!checkbox" depressed large color="warning">X</v-btn>
-                    </td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
-          </ValidationProvider>-->
+          </ValidationProvider>
+          <!-- item inclusion-->
           <ValidationProvider v-slot="{ errors }" name="Description" rules="required">
             <div class="my-2">
               <v-textarea
@@ -98,11 +111,11 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click.stop="dialog = true">Submit</v-btn>
+          <v-btn color="success" @click.stop="dialog1 = true">Submit</v-btn>
         </v-card-actions>
       </v-card>
       <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="290">
+        <v-dialog v-model="dialog1" max-width="290">
           <v-card>
             <v-card-title class="headline">Confirm Request?</v-card-title>
 
@@ -116,7 +129,22 @@
 
               <v-btn type="submit" color="green darken-1" text @click="submit">Proceed</v-btn>
 
-              <v-btn color="red darken-1" text @click="dialog = false">Cancel</v-btn>
+              <v-btn color="red darken-1" text @click="dialog2 = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+      <v-row justify="center">
+        <v-dialog v-model="dialog2" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Error</v-card-title>
+
+            <v-card-text>Please select product!</v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="red darken-1" text @click="dialog2 = false">Ok</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -147,7 +175,8 @@ export default {
 
   data() {
     return {
-      dialog: false,
+      dialog1: false,
+      dialog2: false,
       model: null,
       dense: true,
       fixedHeader: false,
@@ -167,7 +196,16 @@ export default {
       reorder: false,
       procurement_type: "",
       product_request: [],
-      products: []
+      products: [],
+      item_list: [
+        "Canon laser printer DM-1000X",
+        "Canon digital scanner NP-3200T",
+        "Canon DM-1000X printer toner",
+        "30GSM A4 standard quality paper",
+        "60GSM A4 printer quality paper"
+      ],
+      value: "",
+      quantity: 1
     };
   },
 
@@ -192,9 +230,30 @@ export default {
         this.products = response.data;
       })
       .catch(error => console.log(error));
+
+    //getAllProducts();
   },
 
   methods: {
+    getAllProducts() {
+      for (const item of this.products.product_name) {
+        item_list.push(item);
+      }
+    },
+    reset() {
+      this.product_request = [];
+      this.value = "";
+    },
+    additem() {
+      if (this.value == "") {
+        this.dialog2 = true;
+        return;
+      }
+      var obj = {};
+      obj["product_name"] = this.value;
+      obj["qnty"] = this.quantity;
+      this.product_request.push(obj);
+    },
     submit() {
       this.$refs.observer.validate().then(success => {
         if (!success) {
