@@ -72,7 +72,7 @@ const routes = [
   {
     path: "/registration",
     name: "Registration",
-    component: Registration
+    component: Registration,
   },
   // {
   //   path: "/about",
@@ -128,13 +128,13 @@ const routes = [
         path: "suppliers",
         name: "view all suppliers",
         component: Admin_View_Suppliers,
-        props: true
+        props: true,
       },
       {
         path: "users",
         name: "view all users",
         component: Admin_View_Users,
-        props: true
+        props: true,
       },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" },
@@ -150,39 +150,39 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Director_Dashboard
+        component: Director_Dashboard,
       },
       {
         path: "procurements",
         name: "d_proc",
-        component: Director_Procurements
+        component: Director_Procurements,
       },
       {
         path: "procurements/shopping/:id",
         name: "d_proc_stepper_shopping",
-        component: Director_Shopping_Procurement_Stepper
+        component: Director_Shopping_Procurement_Stepper,
       },
       {
         path: "procurements/direct/:id",
         name: "d_proc_stepper_direct",
-        component: Director_Direct_Procurement_Stepper
+        component: Director_Direct_Procurement_Stepper,
       },
       {
         path: "requests",
         name: "d_req",
-        component: Director_Requests
+        component: Director_Requests,
       },
       {
         path: "requisition/view",
         name: "d_req_accept",
-        component: AcceptRequisitionRequest
+        component: AcceptRequisitionRequest,
       },
       {
         path: "requisitions/:id",
         name: "d_reqi",
-        component: Requisitions
-      }
-    ]
+        component: Requisitions,
+      },
+    ],
   },
 
   // Head of Department
@@ -211,20 +211,20 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Supplier_Dashboard
+        component: Supplier_Dashboard,
       },
       {
         path: "price_schedule",
         name: "price_schedule",
-        component: Price_Schedule
+        component: Price_Schedule,
       },
       {
         path: "procurements",
         name: "procurements",
         component: Supplier_Procurements,
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
 
   //employee routes
@@ -236,19 +236,19 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Employee_Dashboard
+        component: Employee_Dashboard,
       },
       {
         path: "tecteam",
         name: "default",
-        component: Employee_Tec_team
+        component: Employee_Tec_team,
       },
       {
         path: "tecteam/tecreport",
         name: "default",
-        component: Employee_Tec_Report
-      }
-    ]
+        component: Employee_Tec_Report,
+      },
+    ],
   },
 
   {
@@ -259,19 +259,11 @@ const routes = [
       {
         path: "",
         name: "default",
-<<<<<<< HEAD
-        component: Director_Dashboard
-      },
-      {
-        path: "product_requisitions",
-        component: Product_Requisitions
-=======
-        component: Deputy_Bursar_Dashboard,
+        component: Director_Dashboard,
       },
       {
         path: "/product_requisitions",
         component: Product_Requisitions,
->>>>>>> 0b4b3c8a64a69878310ed19a07bcfbce97e432f4
       },
       {
         path: "view_product_requisition/:id",

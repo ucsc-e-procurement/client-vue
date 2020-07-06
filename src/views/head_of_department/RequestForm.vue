@@ -2,7 +2,7 @@
   <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
     <form id="request-form" @submit.prevent="handleSubmit(onSubmit)">
       <v-card class="overflow-hidden" color="grey lighten-1" dark>
-        <v-toolbar flat outlined color="primary" font="balck">
+        <v-toolbar flat outlined color="grey" font="balck">
           <v-icon>mdi-cards-variant</v-icon>
           <v-toolbar-title class="font-weight-light">Request Form</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -30,15 +30,69 @@
               required
             ></v-checkbox>
           </ValidationProvider>
+          <!-- include the inputs here-->
+          <!-- <ValidationProvider>
+            <v-btn :disabled="!checkbox" depressed large color="primary">Add item</v-btn>
+            <v-row align="center">
+              <v-col cols="8">
+                <v-autocomplete
+                  :disabled="!checkbox"
+                  v-model="value"
+                  :items="products[''].product_name"
+                  dense
+                  filled
+                  label="Filled"
+                ></v-autocomplete>
+              </v-col>
+              <v-col cols="4">
+                <v-text-field
+                  :disabled="!checkbox"
+                  type="number"
+                  min="0"
+                  oninput="validity.valid||(value='')"
+                />
+              </v-col>
+            </v-row>
+            <v-simple-table
+              :disabled="!checkbox"
+              :dense="dense"
+              :fixed-header="fixedHeader"
+              :height="height"
+              light
+            >
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">Product Id</th>
+                    <th class="text-left">Item</th>
+                    <th class="text-left">Quantity</th>
+                    <th class="text-left">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in product_request" :key="item.product_id">
+                    <td>{{ item.product_id }}</td>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{item.qnty}}</td>
+                    <td>
+                      <v-btn :disabled="!checkbox" depressed large color="warning">X</v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </ValidationProvider>-->
           <ValidationProvider v-slot="{ errors }" name="Description" rules="required">
-            <v-textarea
-              v-model="descript"
-              outlined
-              name="input-7-4"
-              label="Product Description"
-              required
-              :error-messages="errors"
-            ></v-textarea>
+            <div class="my-2">
+              <v-textarea
+                v-model="descript"
+                outlined
+                name="input-7-4"
+                label="Product Description"
+                required
+                :error-messages="errors"
+              ></v-textarea>
+            </div>
           </ValidationProvider>
         </v-card-text>
         <v-divider></v-divider>
@@ -93,10 +147,13 @@ export default {
 
   data() {
     return {
-      selectProcType: null,
-      descript: "",
       dialog: false,
       model: null,
+      dense: true,
+      fixedHeader: false,
+      height: 300,
+      selectProcType: null,
+      descript: "",
       statesProcType: [
         { name: "Services", abbr: "S", id: 1 },
         { name: "Work", abbr: "W", id: 2 },
@@ -108,7 +165,9 @@ export default {
       director_id: "",
       deputy_bursar_id: "",
       reorder: false,
-      procurement_type: ""
+      procurement_type: "",
+      product_request: [],
+      products: []
     };
   },
 
@@ -116,14 +175,21 @@ export default {
     axios
       .get(`http://localhost:5000/api/hod/dir_empid`)
       .then(response => {
-        this.director_id = response.data.employee_id;
+        this.director_id = response.data[0].employee_id;
       })
       .catch(error => console.log(error));
 
     axios
       .get(`http://localhost:5000/api/hod/db_empid`)
       .then(response => {
-        this.deputy_bursar_id = response.data.employee_id;
+        this.deputy_bursar_id = response.data[0].employee_id;
+      })
+      .catch(error => console.log(error));
+
+    axios
+      .get(`http://localhost:5000/api/hod/products`)
+      .then(response => {
+        this.products = response.data;
       })
       .catch(error => console.log(error));
   },
@@ -146,7 +212,7 @@ export default {
             break;
         }
         {
-          this.checkbox ? (this.reorder = false) : (this.reorder = true);
+          this.checkbox ? (this.reorder = true) : (this.reorder = false);
         }
 
         axios
@@ -160,10 +226,10 @@ export default {
             reorder: this.reorder
           })
           .then(response => {
-            alert(response);
+            console.log(response);
           })
           .catch(error => {
-            alert(error);
+            console.log(error);
           });
 
         window.location.href = "http://localhost:8080/hod";
