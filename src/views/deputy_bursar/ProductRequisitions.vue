@@ -9,8 +9,7 @@
         <v-card color="white">
           <div class="d-flex flex-no-wrap justify-space-between">
             <v-col cols="6" class="ml-4">
-              <v-card-title class="headline" v-text="result.procurement_name">
-              </v-card-title>
+              <v-card-title v-text="result.division"></v-card-title>
               <v-card-subtitle v-text="result.date"></v-card-subtitle>
             </v-col>
             <v-col cols="3" class="mr-6">
@@ -58,8 +57,10 @@ export default {
   // Custom Methods and Functions
   methods: {   
     gotoViewRequisition(id){
+      console.log("test",id)
+
       this.$router
-      .push(`/view_product_requisition/${id}`);
+      .push({ query: {id: id}, path: `view_product_requisition/${id.replace(/[/]/g, '')}`})
     },
 
     // get product requisition list
