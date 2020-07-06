@@ -201,8 +201,9 @@ export default {
         });
     },
     gotoPriceSchedule() {
+      console.log(this.newRequests[this.procurement])
       this.dialog = false;
-      this.$router.push("/supplier/price_schedule");
+      this.$router.push({ path: "/supplier/price_schedule", query: { procurement: this.newRequests[this.procurement]}});
     }
   },
 
