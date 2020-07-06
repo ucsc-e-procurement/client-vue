@@ -11,7 +11,19 @@
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
+            <v-row class="">
+              <v-spacer />
+              <v-col cols="6">
+                <v-text-field
+                  v-model="search"
+                  label="Search"
+                  outlined
+                  dense
+                  append-icon="mdi-magnify"
+                  class="pt-5"
+                  clearable
+                ></v-text-field>
+              </v-col>
               <v-col v-if="users.length == 10" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Users Available
@@ -23,23 +35,32 @@
                   :items="users"
                   :search="search"
                   :items-per-page="10"
-                  @click:row="onclickTableRowUsers"
                   no-data-text="No Users Available"
+                  :loading="loaderUsers"
                 >
                   <template v-slot:item.actions="{ item }">
-                    <v-btn small color="" @click="gotoProcurement(item)"
-                      >Edit</v-btn
-                    >
-
                     <v-btn
+                      v-if="item.status"
                       class="mx-2"
                       small
                       color=""
-                      @click="gotoProcurement(item)"
+                      @click="openDeactivateConfirmation(item)"
                       >Deactivate</v-btn
                     >
-                    <v-btn small color="" @click="gotoProcurement(item)"
-                      >Delete</v-btn
+                    <v-btn
+                      v-else
+                      class="mx-2"
+                      small
+                      color=""
+                      @click="activateUser(item)"
+                      >Activate</v-btn
+                    >
+                    <v-btn
+                      small
+                      icon
+                      class="ml-5"
+                      @click="gotoProcurement(item)"
+                      ><v-icon color="red darken-2">mdi-delete</v-icon></v-btn
                     >
                   </template>
 
@@ -60,6 +81,61 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Dialog Verify Deactivation -->
+    <v-row justify="center">
+      <v-dialog v-model="dialogDeactivateUser" persistent max-width="350">
+        <v-card>
+          <v-card-title class="headline">Account Deactivation</v-card-title>
+          <v-card-text
+            >Do you want to <strong>Deactivate</strong> this user account ?
+            <small
+              >Note: By deactivating User account, User cannot be logged in to
+              the system</small
+            >
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              :disabled="loaderDeactivateUser"
+              small
+              color=""
+              @click="cancelDeactivateConfirmation"
+              >Cancel</v-btn
+            >
+            <v-btn
+              small
+              color="red darken-2"
+              dark
+              :loading="loaderDeactivateUser"
+              @click="deactivateUser(deactivatePointer)"
+              >Deactivate</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+    <!-- Snackbar -->
+    <v-row>
+      <v-snackbar
+        v-model="snackbar.show"
+        bottom
+        right
+        :color="snackbar.color"
+        :timeout="snackbar.timeout"
+      >
+        {{ snackbar.text }}
+        <v-btn text @click="snackbar.show = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+    </v-row>
+
+    <!-- Fullscreen Overlay - Loader -->
+    <v-overlay :value="loaderOverlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -95,18 +171,26 @@ export default {
     headers: [
       {
         text: "#",
-        value: "no",
+        value: "index",
         sortable: false,
         align: "start",
-        divider: true,
+        divider: false,
         groupable: true
       },
       {
-        text: "Username (Email)",
-        value: "user_id",
+        text: "Name",
+        value: "name",
         sortable: true,
         align: "start",
-        divider: true,
+        divider: false,
+        groupable: true
+      },
+      {
+        text: "Email (Login)",
+        value: "email",
+        sortable: true,
+        align: "start",
+        divider: false,
         groupable: true
       },
       {
@@ -114,15 +198,23 @@ export default {
         value: "password",
         sortable: true,
         align: "start",
-        divider: true,
+        divider: false,
         groupable: true
       },
       {
         text: "Role",
-        value: "user_role",
+        value: "role",
         sortable: false,
         align: "start",
-        divider: true,
+        divider: false,
+        groupable: true
+      },
+      {
+        text: "User ID",
+        value: "_id",
+        sortable: false,
+        align: "start",
+        divider: false,
         groupable: true
       },
 
@@ -131,7 +223,7 @@ export default {
         value: "status",
         sortable: false,
         align: "start",
-        divider: true,
+        divider: false,
         groupable: true,
         width: "150"
       },
@@ -140,7 +232,7 @@ export default {
         value: "actions",
         sortable: false,
         align: "center",
-        divider: true,
+        divider: false,
         width: "300"
       }
     ],
@@ -155,24 +247,140 @@ export default {
         actions: ""
       }
     ],
-    search: ""
+    search: "",
+
+    // Snackbar
+    snackbar: {
+      show: false,
+      text: "",
+      color: "",
+      timeout: 4000
+    },
+
+    // Loaders
+    loaderOverlay: false,
+    loaderUsers: false,
+    loaderDeactivateUser: false,
+
+    // Dialogs
+    dialogDeactivateUser: false,
+
+    deactivatePointer: null
   }),
 
   // Custom Methods and Functions
   methods: {
     getUsers() {
+      this.loaderUsers = true;
       return new Promise((resolve, reject) => {
         this.$http
-          .get("/all")
-          .then()
-          .catch();
+          .get("/api/admin/get_all_users")
+          .then(res => {
+            console.log("Users: ", res.data);
+            let index = 0;
+            let users = [];
+
+            users = res.data.map(user => {
+              index++;
+              return {
+                index: index,
+                name: user.name,
+                email: user.user_id,
+                role: user.user_role,
+                status: user.status === 0 ? true : false,
+                _id:
+                  user.employee_id === undefined
+                    ? user.supplier_id
+                    : user.employee_id,
+                actions: "",
+                password: "********"
+              };
+            });
+            this.loaderUsers = false;
+
+            resolve(users);
+          })
+          .catch(err => {
+            this.loaderUsers = false;
+
+            reject(err);
+          });
       });
+    },
+
+    // Account Deactivation
+    openDeactivateConfirmation(user) {
+      this.dialogDeactivateUser = true;
+      this.deactivatePointer = user;
+    },
+
+    cancelDeactivateConfirmation() {
+      this.dialogDeactivateUser = false;
+      this.deactivatePointer = null;
+    },
+
+    deactivateUser(user) {
+      this.loaderDeactivateUser = true;
+      this.$http
+        .put("/api/admin/change_user_status", {
+          user_id: user.email,
+          status: 1
+        })
+        .then(res => {
+          console.log("Deactivate Res: ", res.data);
+          if (res.data.message === "SUCCESS") {
+            // Snackbar
+            this.snackbar.text = "User Deactivated Successfully";
+            this.snackbar.color = "";
+            this.snackbar.timeout = 4000;
+            this.snackbar.show = true;
+
+            this.users[this.users.indexOf(user)].status = false;
+          } else {
+            // Snackbar
+            this.snackbar.text = "Something Went Wrong";
+            this.snackbar.color = "error";
+            this.snackbar.timeout = 4000;
+            this.snackbar.show = true;
+          }
+          this.loaderDeactivateUser = false;
+          this.cancelDeactivateConfirmation();
+        })
+        .catch(err => {
+          console.log("Deactivate Err: ", err);
+          this.loaderDeactivateUser = false;
+          // Snackbar
+          this.snackbar.text = "Something Went Wrong";
+          this.snackbar.color = "error";
+          this.snackbar.timeout = 4000;
+          this.snackbar.show = true;
+          this.cancelDeactivateConfirmation();
+        });
+    },
+
+    // Account Activation
+    activateUser(user) {
+      this.$http
+        .put("/api/admin/change_user_status", {
+          user_id: user.email,
+          status: 0
+        })
+        .then(res => {
+          console.log("Deactivate Res: ", res.data);
+        })
+        .catch(err => {
+          console.log("Deactivate Err: ", err);
+        });
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.getUsers().then(users => {
+      this.users = users;
+    });
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
