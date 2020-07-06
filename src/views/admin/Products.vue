@@ -40,6 +40,18 @@
                   no-data-text="No Users Available"
                   :loading="loaderUsers"
                 >
+                  <template v-slot:item.type="{ item }">
+                    <v-chip small outlined>{{
+                      item.type === "G"
+                        ? "Goods"
+                        : item.type === "W"
+                        ? "Work"
+                        : item.type === "S"
+                        ? "Service"
+                        : "Other"
+                    }}</v-chip>
+                  </template>
+
                   <template v-slot:item.actions="{ item }">
                     <v-btn
                       small
@@ -47,17 +59,6 @@
                       class="ml-5"
                       @click="gotoProcurement(item)"
                       ><v-icon color="red darken-2">mdi-delete</v-icon></v-btn
-                    >
-                  </template>
-
-                  <template v-slot:item.status="{ item }">
-                    <v-chip
-                      outlined
-                      small
-                      :color="item.status === true ? 'success' : 'error'"
-                      >{{
-                        item.status === true ? "Active" : "InActive"
-                      }}</v-chip
                     >
                   </template>
                 </v-data-table>
@@ -254,7 +255,7 @@ export default {
                 id: product.product_id,
                 name: product.product_name,
                 description: product.description,
-                typr: product.type,
+                type: product.type,
                 actions: ""
               };
             });
@@ -365,6 +366,7 @@ export default {
   created() {
     this.getProducts().then(products => {
       this.products = products;
+      console.log(">>>>>>>>>>>>>>> ", this.products);
     });
   },
   beforeMount() {},
