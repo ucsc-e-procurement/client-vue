@@ -1,6 +1,6 @@
 <template>
   <v-card color="success">
-    <v-card-title>Director Approved</v-card-title>
+    <v-card-title height="50%">Director Approved</v-card-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
