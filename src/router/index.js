@@ -12,6 +12,7 @@ import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
+import Admin_Products from "../views/admin/Products.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -134,6 +135,12 @@ const routes = [
         path: "users",
         name: "view all users",
         component: Admin_View_Users,
+        props: true
+      },
+      {
+        path: "products",
+        name: "view all products",
+        component: Admin_Products,
         props: true
       },
       // TODO Redirect to Page Not Found Or Dashborad
