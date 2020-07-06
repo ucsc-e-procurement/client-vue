@@ -162,17 +162,13 @@ import {
   setInteractionMode
 } from "vee-validate";
 import axios from "axios";
-
 setInteractionMode("eager");
-
 extend("required", {
   ...required,
   message: "{_field_} can not be empty"
 });
-
 export default {
   components: { ValidationProvider, ValidationObserver },
-
   data() {
     return {
       dialog1: false,
@@ -208,7 +204,6 @@ export default {
       quantity: 1
     };
   },
-
   created() {
     axios
       .get(`http://localhost:5000/api/hod/dir_empid`)
@@ -216,24 +211,20 @@ export default {
         this.director_id = response.data[0].employee_id;
       })
       .catch(error => console.log(error));
-
     axios
       .get(`http://localhost:5000/api/hod/db_empid`)
       .then(response => {
         this.deputy_bursar_id = response.data[0].employee_id;
       })
       .catch(error => console.log(error));
-
     axios
       .get(`http://localhost:5000/api/hod/products`)
       .then(response => {
-        this.products = response.data;
+        this.products = response.data[0].employee_id;
       })
       .catch(error => console.log(error));
-
     //getAllProducts();
   },
-
   methods: {
     getAllProducts() {
       for (const item of this.products.product_name) {
@@ -273,7 +264,6 @@ export default {
         {
           this.checkbox ? (this.reorder = true) : (this.reorder = false);
         }
-
         axios
           .post("http://localhost:5000/api/hod/create_req", {
             description: this.descript,
@@ -286,11 +276,11 @@ export default {
           })
           .then(response => {
             console.log(response);
+            alert(JSON.stringify(response));
           })
           .catch(error => {
             console.log(error);
           });
-
         window.location.href = "http://localhost:8080/hod";
       });
     }
