@@ -217,7 +217,7 @@ export default {
 
       var proc_id = event.procurement_id;
 
-      if(event.procurement_method == 'NCB'){
+      if(event.procurement_method == 'shopping'){
         this.$router.push({ path: `procurements/shopping/${proc_id.replace(/[/]/g, '')}` , query:{
           proc_id: event.procurement_id,
           stepper: event.step
