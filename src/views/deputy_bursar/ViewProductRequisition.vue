@@ -149,7 +149,7 @@ export default {
           this.division = resultsArray[0].division;
           this.description = resultsArray[0].description;
           this.date = resultsArray[0].date;
-          this.procurement_type = resultsArray[0].procuremnet_type;
+          this.procurement_type = resultsArray[0].procurement_type;
           console.log(response)
         })
         .catch(err => {

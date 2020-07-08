@@ -259,19 +259,11 @@ const routes = [
       {
         path: "",
         name: "default",
-<<<<<<< HEAD
-        component: Director_Dashboard
-      },
-      {
-        path: "product_requisitions",
-        component: Product_Requisitions
-=======
         component: Deputy_Bursar_Dashboard,
       },
       {
         path: "/product_requisitions",
         component: Product_Requisitions,
->>>>>>> 0b4b3c8a64a69878310ed19a07bcfbce97e432f4
       },
       {
         path: "view_product_requisition/:id",
