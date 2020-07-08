@@ -16,11 +16,17 @@
       <v-col cols="12" md="6">
         <v-stepper v-model="step">
           <v-stepper-header>
-            <v-stepper-step :complete="step > 1" step="1">System</v-stepper-step>
+            <v-stepper-step :complete="step > 1" step="1"
+              >System</v-stepper-step
+            >
             <v-divider></v-divider>
-            <v-stepper-step :complete="step > 2" step="2">General</v-stepper-step>
+            <v-stepper-step :complete="step > 2" step="2"
+              >General</v-stepper-step
+            >
             <v-divider></v-divider>
-            <v-stepper-step :complete="step > 3" step="3">Business</v-stepper-step>
+            <v-stepper-step :complete="step > 3" step="3"
+              >Business</v-stepper-step
+            >
             <v-divider></v-divider>
             <v-stepper-step step="4">Payment</v-stepper-step>
           </v-stepper-header>
@@ -44,8 +50,15 @@
                   required
                 ></v-text-field>
               </v-form>
-              Already Have an account?<router-link class="mx-3" :to="{ name: 'login'}">Login here</router-link>
-              <v-btn color="primary float-right" @click="proceedToForm2">Continue</v-btn>
+              Already Have an account?<router-link
+                class="mx-3"
+                :to="{ name: 'login' }"
+                >Login here</router-link
+              >
+              <!-- <v-btn color="primary float-right" @click="proceedToForm2">Continue</v-btn> -->
+              <v-btn color="primary float-right" @click="step = 2"
+                >Continue</v-btn
+              >
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-form ref="form2" v-model="valid">
@@ -131,7 +144,9 @@
                   </v-col>
                 </v-row>
               </v-form>
-              <v-btn color="primary float-right" @click="proceedToForm3">Continue</v-btn>
+              <v-btn color="primary float-right" @click="step = 3"
+                >Continue</v-btn
+              >
               <v-btn text @click.native="step = 1">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
@@ -148,7 +163,11 @@
                   :rules="[rules.categories]"
                   label="Business Type"
                 ></v-select>
-                <v-radio-group v-model="formdata.credit_offered" row label="Is credit facility being offered">
+                <v-radio-group
+                  v-model="formdata.credit_offered"
+                  row
+                  label="Is credit facility being offered"
+                >
                   <v-radio label="Yes" value="yes"></v-radio>
                   <v-radio label="No" value="no"></v-radio>
                 </v-radio-group>
@@ -179,14 +198,22 @@
                   label="Experience in the industry ( No. of Years )"
                 ></v-select>
               </v-form>
-              <v-btn color="primary float-right" @click="proceedToForm4">Continue</v-btn>
+              <!-- <v-btn color="primary float-right" @click="proceedToForm4"
+                >Continue</v-btn
+              > -->
+              <v-btn color="primary float-right" @click="step = 4"
+                >Continue</v-btn
+              >
               <v-btn text @click.native="step = 2">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="4">
               <v-form ref="form4" v-model="valid">
                 <v-radio-group v-model="formdata.payment_type" row>
                   <v-radio label="Paid from Bank" value="bank"></v-radio>
-                  <v-radio label="Paid to the Shroff counter" value="shroff"></v-radio>
+                  <v-radio
+                    label="Paid to the Shroff counter"
+                    value="shroff"
+                  ></v-radio>
                 </v-radio-group>
                 <v-text-field
                   v-if="formdata.payment_type == 'bank'"
@@ -225,7 +252,7 @@
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
-                  <v-col cols="6"> 
+                  <v-col cols="6">
                     <v-text-field
                       label="Amount(Rs.)"
                       v-model="formdata.amount"
@@ -242,8 +269,12 @@
                   :rules="[rules.image]"
                 ></v-file-input>
               </v-form>
-              <v-btn color="primary float-right" @click="registerUser">Submit</v-btn>
-              <v-btn text @click.native="step = 3" v-if="user_state == 'new'">Back</v-btn>
+              <v-btn color="primary float-right" @click="registerUser"
+                >Submit</v-btn
+              >
+              <v-btn text @click.native="step = 3" v-if="user_state == 'new'"
+                >Back</v-btn
+              >
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -267,11 +298,31 @@ export default {
     show: false,
     user_state: "new",
     menu: false,
-    business_nature: ['Manufacturer', 'Wholesaler', 'Importer', 'Retailer', 'Authorized Agent', 'Contractor', 'Consultant'],
-    business_type: ['Private Limited Company', 'Public Limited Company', 'Sole Proprietorship', 'Partnership', 'Government', 'Cooperative/Society'],
-    maximum_credit: ['1-1000', '1000-10000', 'Above 10000'],
-    credit_period: ['1-30 Days', '31-60 Days', 'More than 60 Days'],
-    experience: ['Below 1 Year', '1-5 Years', '6-10 Years', 'More than 10 Years'],
+    business_nature: [
+      "Manufacturer",
+      "Wholesaler",
+      "Importer",
+      "Retailer",
+      "Authorized Agent",
+      "Contractor",
+      "Consultant"
+    ],
+    business_type: [
+      "Private Limited Company",
+      "Public Limited Company",
+      "Sole Proprietorship",
+      "Partnership",
+      "Government",
+      "Cooperative/Society"
+    ],
+    maximum_credit: ["1-1000", "1000-10000", "Above 10000"],
+    credit_period: ["1-30 Days", "31-60 Days", "More than 60 Days"],
+    experience: [
+      "Below 1 Year",
+      "1-5 Years",
+      "6-10 Years",
+      "More than 10 Years"
+    ],
     categories: ["Stationery", "Computers", "Services"],
     formdata: {
       email: "",
@@ -301,7 +352,7 @@ export default {
       date: new Date().toISOString().substr(0, 10),
       amount: 0,
       payment: null,
-      payment_type: "bank",
+      payment_type: "bank"
     },
     rules: {
       name: v => !!v || "This field is required",
@@ -325,34 +376,42 @@ export default {
 
   methods: {
     backToLogin() {
-      this.$router.push({name: 'login'})
+      this.$router.push({ name: "login" });
     },
 
     proceedToForm2() {
-      if(this.$refs.form1.validate()) {
-        this.$http.get("api/supplier/registration", { params: {email: this.formdata.email} })
+      if (this.$refs.form1.validate()) {
+        this.$http
+          .get("api/supplier/registration", {
+            params: { email: this.formdata.email }
+          })
           .then(res => {
-            if(res.data.length > 0) {
-              const user_registered = res.data.filter(entry => { return entry.reg_year === 2020 })
-              if(user_registered.length > 0) {
-                alert("You have already registered to our system for this year. Thank you!");
-              }
-              else {
+            if (res.data.length > 0) {
+              const user_registered = res.data.filter(entry => {
+                return entry.reg_year === 2020;
+              });
+              if (user_registered.length > 0) {
+                alert(
+                  "You have already registered to our system for this year. Thank you!"
+                );
+              } else {
                 this.user_state = "renew";
-                alert("Happy to see you renewing your registration. Only fill out the payment information.");
+                alert(
+                  "Happy to see you renewing your registration. Only fill out the payment information."
+                );
                 this.step = 4;
               }
             } else this.step = 2;
-          })
+          });
       }
     },
 
     proceedToForm3() {
-      if(this.$refs.form2.validate()) this.step = 3;
+      if (this.$refs.form2.validate()) this.step = 3;
     },
 
     proceedToForm4() {
-      if(this.$refs.form3.validate()) this.step = 4;
+      if (this.$refs.form3.validate()) this.step = 4;
     },
 
     registerUser() {
@@ -411,16 +470,15 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  .bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: url("../../assets/ucsc.jpg") no-repeat center center;
-    background-size: cover;
+.bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../../assets/ucsc.jpg") no-repeat center center;
+  background-size: cover;
 
-    transform: scale(1);
-  }
-
+  transform: scale(1);
+}
 </style>

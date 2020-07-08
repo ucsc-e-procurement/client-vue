@@ -11,7 +11,8 @@ import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
-import Admin_View_Users from "../views/admin/View_Users.vue";
+import Admin_View_Users from "../views/admin/Users.vue";
+import Admin_Products from "../views/admin/Products.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -62,12 +63,12 @@ const routes = [
   {
     path: "",
     name: "home",
-    component: Home,
+    component: Home
   },
   {
     path: "/login",
     name: "login",
-    component: Login,
+    component: Login
   },
   {
     path: "/registration",
@@ -95,34 +96,34 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: true,
-        },
+          requiresAuth: true
+        }
       },
       {
         path: "ongoing_procurements",
         name: "ongoing procurements",
-        component: Admin_Procurements_Ongoing,
+        component: Admin_Procurements_Ongoing
       },
       {
         path: "terminated_procurements",
         name: "terminated procurements",
-        component: Admin_Procurements_Terminated,
+        component: Admin_Procurements_Terminated
       },
       {
         path: "completed_procurements",
         name: "completed procurements",
-        component: Admin_Procurements_Completed,
+        component: Admin_Procurements_Completed
       },
       {
         path: "pending_approvals",
         name: "pending approvals",
-        component: Admin_Pending_Approvals,
+        component: Admin_Pending_Approvals
       },
       {
         path: "procurement_overview/:encodedProcurementId",
         name: "procurement overview",
         component: Admin_Procurement_Overview,
-        props: true,
+        props: true
       },
       {
         path: "suppliers",
@@ -136,9 +137,15 @@ const routes = [
         component: Admin_View_Users,
         props: true
       },
+      {
+        path: "products",
+        name: "view all products",
+        component: Admin_Products,
+        props: true
+      },
       // TODO Redirect to Page Not Found Or Dashborad
-      { path: "*", redirect: "/" },
-    ],
+      { path: "*", redirect: "/" }
+    ]
   },
 
   // Director
@@ -194,14 +201,14 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: HOD_Dashboard,
+        component: HOD_Dashboard
       },
       {
         path: "newproc",
         name: "New Procurement",
-        component: HOD_New_Proc,
-      },
-    ],
+        component: HOD_New_Proc
+      }
+    ]
   },
   {
     path: "/supplier",
@@ -259,19 +266,19 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Deputy_Bursar_Dashboard,
+        component: Director_Dashboard
       },
       {
-        path: "/product_requisitions",
-        component: Product_Requisitions,
+        path: "product_requisitions",
+        component: Product_Requisitions
       },
       {
         path: "view_product_requisition/:id",
         component: View_Product_Requisition,
-        props: true,
-      },
-    ],
-  },
+        props: true
+      }
+    ]
+  }
 ];
 
 // Development Perposes Only - Remove these routes before final Production Deployment
@@ -297,11 +304,11 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
       next();
       return;

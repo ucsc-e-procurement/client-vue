@@ -33,7 +33,7 @@
 
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 4 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Bid Evaluation</v-stepper-step>
+                        <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 4 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Evaluation</v-stepper-step>
                         <v-stepper-content step="4">
             
                         </v-stepper-content>
