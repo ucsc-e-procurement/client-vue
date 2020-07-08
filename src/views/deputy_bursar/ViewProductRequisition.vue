@@ -205,11 +205,7 @@ export default {
           this.description = resultsArray[0].description;
           this.date = resultsArray[0].date;
           this.procurement_type = resultsArray[0].procurement_type;
-<<<<<<< HEAD
-          console.log(response)
-=======
           console.log(response);
->>>>>>> 772a171ff4d506556650530b9982f79a11286a0e
         })
         .catch(err => {
           console.log(err);
