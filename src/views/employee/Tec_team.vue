@@ -27,6 +27,9 @@
                       <v-divider></v-divider>
                       <v-tabs-items v-model="tab">
                         <v-tab-item>
+                            <TecteamNew />
+                        </v-tab-item>
+                        <v-tab-item>
                             <TecteamOngoing />
                         </v-tab-item>
                         <v-tab-item>
@@ -48,6 +51,7 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
+import TecteamNew from "./Tec_team_new"
 import TecteamOngoing from "./Tec_team_ongoing"
 import TecteamCompleted from "./Tec_team_completed"
 
@@ -71,14 +75,14 @@ export default {
   props: [],
 
   // Imported Components
-  components: { TecteamOngoing, TecteamCompleted },
+  components: { TecteamNew, TecteamOngoing, TecteamCompleted },
 
   // Data Variables and Values
   data: () => ({
     search: '',
     tab: null,
     tabs: [
-      'Ongoing', 'Completed',
+      'New Procurements','Unlocked', 'Completed',
     ],
   }),
 

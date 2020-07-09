@@ -18,7 +18,7 @@
                 <v-btn class="mx-2" small color="primary" @click="openDialog(props.item)">
                     VIEW
                 </v-btn>
-                <v-btn :disabled="!props.item.bids" class="mx-2" small color="primary" @click="openTecReport(props.item)">
+                <v-btn :disabled="!props.item.bids" class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
                     TEC-Report
                 </v-btn>
                 </template>
@@ -36,9 +36,6 @@
                 </p>
                 <div class="text--primary">
                     Initialized Date : {{procurement.date}}
-                </div>
-                <div class="text--primary">
-                    Bid Opening Date : {{procurement.bid_opening_date}}
                 </div>
                 <div class="text--primary">
                     <!-- include sub-status here instead -->
@@ -157,26 +154,7 @@ export default {
         { text: 'Date Initiated', value: 'date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    ongoingProcurements: [
-        {
-        tenderNo: 'UCSC/DIM/G/ENG/2020/0004',
-        category: 'Stationeries and Office Consumables',
-        status: 'Bid Open',
-        init_date: '05-06-2020',
-        comp_date: 'Pending',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-        {
-        tenderNo: 'UCSC/DIM/G/ENG/2020/0006',
-        category: 'Stationeries and Office Consumables',
-        status: 'Pending TEC Report',
-        init_date: '01-05-2020',
-        comp_date: 'pending',
-        supplier: 'Techzone',
-        actions: '1%',
-        },
-    ],
+    ongoingProcurements: [],
   }),
 
   // Custom Methods and Functions
@@ -217,6 +195,12 @@ export default {
                     r[a.product_id] = [...r[a.product_id] || [], a];
                     return r;
                 }, {})
+            }
+            if(element.step == 7){
+              element.btn = "green darken-1"
+            }
+            else{
+              element.btn = "primary"
             }
         });
         console.log(this.ongoingProcurements)
