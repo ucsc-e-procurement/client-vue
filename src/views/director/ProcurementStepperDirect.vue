@@ -28,7 +28,7 @@
                             <ProcurementMethod :requisitionData = 'this.requisitionData' />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 3" step="3" :editable="procurementState >= 3 ? true : false" :edit-icon="procurementState >= 3 ? '$complete' : '$edit' "  :complete-icon="procurementState >= 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 3" step="3" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="3">
                             <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
                         </v-stepper-content>
@@ -88,7 +88,7 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
     import Requisition from "./Requisition"
     import ProcurementMethod from './ProcurementMethod'
-    import Rfq from "./RfqDirect"
+    import Rfq from "./Rfq"
 /*
 
 // Validation Library - Vuelidate

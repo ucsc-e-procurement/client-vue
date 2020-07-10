@@ -4,6 +4,16 @@
             <v-row>
               <v-col cols="12" sm="6">
                 <v-text-field
+                  :value="new Date(this.rfq.date).getDate() + ' - ' + new Date(this.rfq.date).getMonth() + ' - ' + new Date(this.rfq.date).getFullYear()"
+                  label="Date Initialized"
+                  outlined
+                  readonly
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
                     :value="new Date(this.rfq.deadline).getDate() + ' - ' + new Date(this.rfq.deadline).getMonth() + ' - ' + new Date(this.rfq.deadline).getFullYear()"
                     label="Deadline"
                     outlined
