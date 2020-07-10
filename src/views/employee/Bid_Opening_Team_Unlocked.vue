@@ -11,7 +11,7 @@
             </v-card-title>
             <v-data-table
             :headers="completedHeaders"
-            :items="completedProcurements"
+            :items="procurements"
             :search="search"
             >
                 <template v-slot:item.controls="props">
@@ -133,10 +133,10 @@ export default {
         { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
         { text: 'Category', value: 'category' },
         { text: 'Date Initiated', value: 'date' },
-        { text: 'Date Completed', value: 'completed_date' },
+        { text: 'Date Unlocked', value: 'bid_opening_date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    completedProcurements: [],
+    procurements: [],
   }),
 
   // Custom Methods and Functions
@@ -154,16 +154,16 @@ export default {
       console.log(item)
     },
 
-    fetchCompletedProcurements(employee_id) {
-      this.$http.get('/api/bid_opening_team/get_completed_procurements', {
+    fetchUnlockedProcurements(employee_id) {
+      this.$http.get('/api/bid_opening_team/get_unlocked_procurements', {
         params: {
           id: employee_id
         }
       })
       .then(response => {
         console.log(response.data);
-        this.completedProcurements = response.data
-        this.completedProcurements.forEach(element => {
+        this.procurements = response.data
+        this.procurements.forEach(element => {
             element.bids = JSON.parse(element.bids)
             element.bids = element.bids.reduce((r, a) => {
                 console.log("a", a);
@@ -172,8 +172,8 @@ export default {
                 return r;
             }, {})
         });
-        console.log(this.completedProcurements)
-        console.log(Object.values(this.completedProcurements[0].bids))
+        console.log(this.procurements)
+        console.log(Object.values(this.procurements[0].bids))
       })
       .catch(error => {
         console.log(error);
@@ -205,8 +205,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchCompletedProcurements('emp00005')
-      //this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
+      this.fetchUnlockedProcurements('emp00005')
+      //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

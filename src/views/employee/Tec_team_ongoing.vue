@@ -207,7 +207,7 @@ export default {
                 }, {})
             }
             if(element.step == 7){
-              element.btn = "green darken-1"
+              element.btn = "success"
             }
             else{
               element.btn = "primary"

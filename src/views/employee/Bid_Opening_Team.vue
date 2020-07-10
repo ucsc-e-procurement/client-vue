@@ -27,7 +27,13 @@
                       <v-divider></v-divider>
                       <v-tabs-items v-model="tab">
                         <v-tab-item>
-                            <TecteamOngoing />
+                          <BidOpeningTeamLocked/>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <BidOpeningTeamPending/>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <BidOpeningTeamUnlocked/>
                         </v-tab-item>
                         <v-tab-item>
                             <BidOpeningTeamCompleted />
@@ -48,8 +54,10 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-import TecteamOngoing from "./Tec_team_ongoing"
-import BidOpeningTeamCompleted from "./Tec_team_completed"
+import BidOpeningTeamCompleted from "./Bid_Opening_Team_Completed"
+import BidOpeningTeamUnlocked from "./Bid_Opening_Team_Unlocked"
+import BidOpeningTeamPending from "./Bid_Opening_Team_Pending"
+import BidOpeningTeamLocked from "./Bid_Opening_Team_Locked"
 
 /*
 
@@ -71,14 +79,14 @@ export default {
   props: [],
 
   // Imported Components
-  components: { TecteamOngoing, BidOpeningTeamCompleted },
+  components: { BidOpeningTeamCompleted, BidOpeningTeamUnlocked, BidOpeningTeamPending, BidOpeningTeamLocked },
 
   // Data Variables and Values
   data: () => ({
     search: '',
     tab: null,
     tabs: [
-      'Ongoing', 'Completed',
+      'Locked', 'Pending', 'Unlocked','Completed',
     ],
   }),
 

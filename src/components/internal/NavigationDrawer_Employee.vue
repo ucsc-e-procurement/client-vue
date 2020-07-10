@@ -17,7 +17,7 @@
 
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link>
+      <v-list-item exact="" link to="/employee/">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>

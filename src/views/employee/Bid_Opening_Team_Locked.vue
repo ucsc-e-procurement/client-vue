@@ -11,14 +11,14 @@
             </v-card-title>
             <v-data-table
             :headers="completedHeaders"
-            :items="completedProcurements"
+            :items="procurements"
             :search="search"
             >
-                <template v-slot:item.controls="props">
+                <!-- <template v-slot:item.controls="props">
                 <v-btn class="mx-2" small color="primary" @click="openBidOpeningSchedule(props.item)">
                     Bid Opening Schedule
                 </v-btn>
-                </template>
+                </template> -->
             </v-data-table>
         </v-card>
         <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
@@ -77,7 +77,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog> -->
-        <v-dialog v-model="viewBidOpeningSchedule" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <!-- <v-dialog v-model="viewBidOpeningSchedule" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar dark color="primary">
                 <v-btn icon dark @click="viewBidOpeningSchedule = false">
@@ -88,7 +88,7 @@
                 </v-toolbar>
                 <BidOpeningSchedule v-if="procurement" v-bind:procurement="procurement" v-bind:bid_opening_team="bid_opening_team"/>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
   </v-container>
 </template>
 
@@ -133,10 +133,10 @@ export default {
         { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
         { text: 'Category', value: 'category' },
         { text: 'Date Initiated', value: 'date' },
-        { text: 'Date Completed', value: 'completed_date' },
+        { text: 'Bid Opening Date', value: 'bid_opening_date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    completedProcurements: [],
+    procurements: [],
   }),
 
   // Custom Methods and Functions
@@ -147,56 +147,46 @@ export default {
     //   console.log(item)
     // },
 
-    openBidOpeningSchedule: function (item) {
-      this.procurement = item
-      this.fetchBidOpeningTeam(this.procurement.bid_opening_team_id)
-      this.viewBidOpeningSchedule = true
-      console.log(item)
-    },
+    // openBidOpeningSchedule: function (item) {
+    //   this.procurement = item
+    //   this.fetchBidOpeningTeam(this.procurement.bid_opening_team_id)
+    //   this.viewBidOpeningSchedule = true
+    //   console.log(item)
+    // },
 
-    fetchCompletedProcurements(employee_id) {
-      this.$http.get('/api/bid_opening_team/get_completed_procurements', {
+    fetchLockedProcurements(employee_id) {
+      this.$http.get('/api/bid_opening_team/get_locked_procurements', {
         params: {
           id: employee_id
         }
       })
       .then(response => {
         console.log(response.data);
-        this.completedProcurements = response.data
-        this.completedProcurements.forEach(element => {
-            element.bids = JSON.parse(element.bids)
-            element.bids = element.bids.reduce((r, a) => {
-                console.log("a", a);
-                console.log('r', r);
-                r[a.product_id] = [...r[a.product_id] || [], a];
-                return r;
-            }, {})
-        });
-        console.log(this.completedProcurements)
-        console.log(Object.values(this.completedProcurements[0].bids))
+        this.procurements = response.data
+        console.log(this.procurements)
       })
       .catch(error => {
         console.log(error);
       });
     },
 
-    fetchBidOpeningTeam(bid_opening_team_id) {
-      this.$http.get('/api/bid_opening_team/get_bid_opening_team', {
-        params: {
-          id: bid_opening_team_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.bid_opening_team = response.data
-        //this.bid_opening_team = JSON.parse(this.tec_team.team)
-        console.log(this.bid_opening_team)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchBidOpeningTeam(bid_opening_team_id) {
+    //   this.$http.get('/api/bid_opening_team/get_bid_opening_team', {
+    //     params: {
+    //       id: bid_opening_team_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     this.bid_opening_team = response.data
+    //     //this.bid_opening_team = JSON.parse(this.tec_team.team)
+    //     console.log(this.bid_opening_team)
+    //     //console.log(Object.values(this.ongoingProcurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
 
   },
 
@@ -205,8 +195,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchCompletedProcurements('emp00005')
-      //this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
+      this.fetchLockedProcurements('emp00005')
+      //this.fetchLockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},
