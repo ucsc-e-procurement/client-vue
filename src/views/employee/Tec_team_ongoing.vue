@@ -15,8 +15,8 @@
             :search="search"
             >
                 <template v-slot:item.controls="props">
-                <v-btn class="mx-2" small color="primary" @click="openDialog(props.item)">
-                    VIEW
+                <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
+                    Requisition
                 </v-btn>
                 <v-btn :disabled="!props.item.bids" class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
                     TEC-Report
@@ -24,7 +24,7 @@
                 </template>
             </v-data-table>
         </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
+        <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
             <v-card>
                 
                 <v-card-title>
@@ -38,7 +38,6 @@
                     Initialized Date : {{procurement.date}}
                 </div>
                 <div class="text--primary">
-                    <!-- include sub-status here instead -->
                     Status : {{procurement.procurement_status}} 
                 </div>
                 <br/>
@@ -79,18 +78,20 @@
                 <v-btn color="blue darken-3" text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
+        </v-dialog> -->
+        <v-dialog v-model="viewRequisition" fullscreen hide-overlay transition="dialog-bottom-transition">
+            <v-card>
+                <v-toolbar dark color="primary">
+                <v-btn icon dark @click="viewRequisition = false">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-toolbar-title>Requisition</v-toolbar-title>
+                <v-spacer></v-spacer>
+                </v-toolbar>
+                <Requisition v-if="procurement" v-bind:requisition="requisition"/>
+            </v-card>
         </v-dialog>
         <v-dialog v-model="tecReport" fullscreen hide-overlay transition="dialog-bottom-transition">
-            <!-- <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                >
-                Open Dialog
-                </v-btn>
-            </template> -->
             <v-card>
                 <v-toolbar dark color="primary">
                 <v-btn icon dark @click="tecReport = false">
@@ -114,6 +115,7 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 import TecReport from "./Tec_Report"
+import Requisition from "./Requisition"
 
 /*
 
@@ -135,13 +137,14 @@ export default {
   props: [],
 
   // Imported Components
-  components: { TecReport },
+  components: { TecReport, Requisition },
 
   // Data Variables and Values
   data: () => ({
     //
     tab: null,
-    dialog: false,
+    // dialog: false,
+    viewRequisition: false,
     tecReport: false,
     procurement: null,
     requisition: null,
@@ -159,9 +162,16 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-    openDialog: function (item) {
+    // openDialog: function (item) {
+    //   this.procurement = item
+    //   this.dialog = true
+    //   console.log(item)
+    // },
+
+    openRequisition: function (item) {
       this.procurement = item
-      this.dialog = true
+      this.fetchRequisition(this.procurement.requisition_id)
+      this.viewRequisition = true
       console.log(item)
     },
 

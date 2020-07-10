@@ -21,7 +21,7 @@
                 </template>
             </v-data-table>
         </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
+        <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
             <v-card>
                 
                 <v-card-title>
@@ -38,7 +38,6 @@
                     Bid Opening Date : {{procurement.bid_opening_date}}
                 </div>
                 <div class="text--primary">
-                    <!-- include sub-status here instead -->
                     Status : {{procurement.procurement_status}} 
                 </div>
                 <br/>
@@ -50,7 +49,7 @@
                 <v-btn color="blue darken-3" text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
         <v-dialog v-model="viewRequisition" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar dark color="primary">
@@ -98,7 +97,7 @@ export default {
   data: () => ({
     //
     tab: null,
-    dialog: false,
+    // dialog: false,
     viewRequisition: false,
     procurement: null,
     requisition: null,
@@ -116,11 +115,11 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-    openDialog: function (item) {
-      this.procurement = item
-      this.dialog = true
-      console.log(item)
-    },
+    // openDialog: function (item) {
+    //   this.procurement = item
+    //   this.dialog = true
+    //   console.log(item)
+    // },
 
     openRequisition: function (item) {
       this.procurement = item
