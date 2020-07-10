@@ -82,7 +82,7 @@ export default {
     search: '',
     tab: null,
     tabs: [
-      'New Procurements','Unlocked', 'Completed',
+      'Locked','Unlocked', 'Completed',
     ],
   }),
 

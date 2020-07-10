@@ -11,7 +11,7 @@
             </v-card-title>
             <v-data-table
             :headers="headers"
-            :items="newProcurements"
+            :items="procurements"
             :search="search"
             >
                 <template v-slot:item.controls="props">
@@ -110,7 +110,7 @@ export default {
         { text: 'Date Initiated', value: 'date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    newProcurements: [],
+    procurements: [],
   }),
 
   // Custom Methods and Functions
@@ -128,16 +128,16 @@ export default {
       console.log(item)
     },
 
-    fetchNewProcurements(employee_id) {
-      this.$http.get('/api/tec_team/get_new_procurements', {
+    fetchLockedProcurements(employee_id) {
+      this.$http.get('/api/tec_team/get_locked_procurements', {
         params: {
           id: employee_id
         }
       })
       .then(response => {
         console.log(response.data);
-        this.newProcurements = response.data
-        console.log(this.newProcurements)
+        this.procurements = response.data
+        console.log(this.procurements)
         //console.log(Object.values(this.ongoingProcurements[0].bids))
       })
       .catch(error => {
@@ -187,8 +187,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchNewProcurements('emp00005')
-      //this.fetchOngoingProcurements(this.$store.getters.user.employee_id)
+      this.fetchLockedProcurements('emp00005')
+      //this.fetchLockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

@@ -157,26 +157,7 @@ export default {
         { text: 'Date Completed', value: 'completed_date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    completedProcurements: [
-        {
-        tenderNo: 'UCSC/DIM/G/ENG/2020/0001',
-        category: 'Janitorial Items/ Essential Items',
-        status: 'Completed',
-        init_date: '20-01-2020',
-        comp_date: '30-01-2020',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-        {
-        tenderNo: 'UCSC/DIM/G/ENG/2020/0002',
-        category: 'Supply of Refreshment and Foods',
-        status: 'Completed',
-        init_date: '02-04-2020',
-        comp_date: '18-04-2020',
-        supplier: 'SLT',
-        actions: '1%',
-        },
-    ],
+    completedProcurements: [],
   }),
 
   // Custom Methods and Functions

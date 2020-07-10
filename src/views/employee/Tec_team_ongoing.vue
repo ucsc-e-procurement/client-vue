@@ -11,7 +11,7 @@
             </v-card-title>
             <v-data-table
             :headers="ongoingHeaders"
-            :items="ongoingProcurements"
+            :items="procurements"
             :search="search"
             >
                 <template v-slot:item.controls="props">
@@ -157,7 +157,7 @@ export default {
         { text: 'Date Initiated', value: 'date' },
         { text: "Actions", value: "controls", sortable: false }
     ],
-    ongoingProcurements: [],
+    procurements: [],
   }),
 
   // Custom Methods and Functions
@@ -183,16 +183,16 @@ export default {
       console.log(item)
     },
 
-    fetchOngoingProcurements(employee_id) {
-      this.$http.get('/api/tec_team/get_ongoing_procurements', {
+    fetchUnlockedProcurements(employee_id) {
+      this.$http.get('/api/tec_team/get_unlocked_procurements', {
         params: {
           id: employee_id
         }
       })
       .then(response => {
         console.log(response.data);
-        this.ongoingProcurements = response.data
-        this.ongoingProcurements.forEach(element => {
+        this.procurements = response.data
+        this.procurements.forEach(element => {
             if(element.bids) {
                 element.bids = JSON.parse(element.bids)
                 element.supplier_bids = element.bids.reduce((r, a) => {
@@ -213,8 +213,8 @@ export default {
               element.btn = "primary"
             }
         });
-        console.log(this.ongoingProcurements)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
+        console.log(this.procurements)
+        //console.log(Object.values(this.procurements[0].bids))
       })
       .catch(error => {
         console.log(error);
@@ -232,7 +232,7 @@ export default {
         this.requisition = response.data[0]
         this.requisition.products = JSON.parse(this.requisition.products)
         console.log(this.requisition)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
+        //console.log(Object.values(this.procurements[0].bids))
       })
       .catch(error => {
         console.log(error);
@@ -250,7 +250,7 @@ export default {
         this.tec_team = response.data[0]
         this.tec_team = JSON.parse(this.tec_team.team)
         console.log(this.tec_team)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
+        //console.log(Object.values(this.procurements[0].bids))
       })
       .catch(error => {
         console.log(error);
@@ -263,8 +263,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchOngoingProcurements('emp00005')
-      //this.fetchOngoingProcurements(this.$store.getters.user.employee_id)
+      this.fetchUnlockedProcurements('emp00005')
+      //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},
