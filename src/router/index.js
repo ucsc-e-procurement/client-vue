@@ -14,6 +14,7 @@ import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
+import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -148,6 +149,12 @@ const routes = [
         path: "requisitions",
         name: "view all products requisitions",
         component: Admin_Requisitions,
+        props: true
+      },
+      {
+        path: "requisition/:encodedRequisitionId",
+        name: "view products requisition",
+        component: Admin_View_Requisition,
         props: true
       },
       // TODO Redirect to Page Not Found Or Dashborad

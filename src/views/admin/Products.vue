@@ -26,7 +26,7 @@
                   clearable
                 ></v-text-field>
               </v-col>
-              <v-col v-if="products.length == 10" cols="12">
+              <v-col v-if="products.length == 0" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Products Available
                 </v-alert>
@@ -67,40 +67,6 @@
           </v-container>
         </v-card>
       </v-col>
-    </v-row>
-
-    <!-- Dialog Verify Deactivation -->
-    <v-row justify="center">
-      <v-dialog v-model="dialogDeactivateUser" persistent max-width="350">
-        <v-card>
-          <v-card-title class="headline">Account Deactivation</v-card-title>
-          <v-card-text
-            >Do you want to <strong>Deactivate</strong> this user account ?
-            <small
-              >Note: By deactivating User account, User cannot be logged in to
-              the system</small
-            >
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              :disabled="loaderDeactivateUser"
-              small
-              color=""
-              @click="cancelDeactivateConfirmation"
-              >Cancel</v-btn
-            >
-            <v-btn
-              small
-              color="red darken-2"
-              dark
-              :loading="loaderDeactivateUser"
-              @click="deactivateUser(deactivatePointer)"
-              >Deactivate</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-row>
 
     <!-- Snackbar -->
@@ -283,7 +249,6 @@ export default {
     },
 
     deactivateUser(user) {
-      this.loaderDeactivateUser = true;
       this.$http
         .put("/api/admin/change_user_status", {
           user_id: user.email,
@@ -306,12 +271,12 @@ export default {
             this.snackbar.timeout = 4000;
             this.snackbar.show = true;
           }
-          this.loaderDeactivateUser = false;
+
           this.cancelDeactivateConfirmation();
         })
         .catch(err => {
           console.log("Deactivate Err: ", err);
-          this.loaderDeactivateUser = false;
+
           // Snackbar
           this.snackbar.text = "Something Went Wrong";
           this.snackbar.color = "error";
