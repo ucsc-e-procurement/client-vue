@@ -1,15 +1,24 @@
 <template>
     <v-card class="mx-auto" max-width=1500>
         <v-container> 
-            <h3>RFQ</h3>
-            <v-col cols="12" sm="6">
+            <v-row>
+              <v-col cols="12" sm="6">
                 <v-text-field
-                    value="Hahah"
-                    label="Requisition ID"
+                    :value="new Date(this.rfq.deadline).getDate() + ' - ' + new Date(this.rfq.deadline).getMonth() + ' - ' + new Date(this.rfq.deadline).getFullYear()"
+                    label="Deadline"
                     outlined
                     readonly
                 ></v-text-field>
-                </v-col>
+              </v-col>
+              <v-col cols="12" sm="12">
+                  <v-data-table
+                      :headers="headers"
+                      :items="this.rfqData"
+                      :items-per-page="5"
+                      class="elevation-1"
+                  ></v-data-table>
+              </v-col>
+            </v-row>
         </v-container>
     </v-card>
 </template>
@@ -21,7 +30,7 @@ export default {
 
   // Props Received
   name: 'Rfq',
-  props: ['procurementId'],
+  props: ['rfqData'],
 
   // Imported Components
   components: {},
@@ -29,17 +38,18 @@ export default {
   // Data Variables and Values
   data: () => ({
     // reqId: this.requisitionId,
-    requisition: [],
+    rfq: '',
     products: '',
+    isMounted: false,
     headers: [
         {
-        text: 'Product Name',
+        text: 'Supplier',
         align: 'start',
         sortable: false,
-        value: 'product_name',
+        value: 'name',
         },
-        { text: 'Description', value: 'prod_desc' },
-        { text: 'Quantity', value: 'prod_qty' },
+        { text: 'Category', value: 'category' },
+        { text: 'Status', value: 'status' },
     ],
   }),
 
@@ -51,7 +61,7 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-
+    this.rfq = this.rfqData[0];
   },
   beforeMount() {
   },
