@@ -7,6 +7,10 @@
             <!-- Page Title -->
             <v-row no-gutters>
               <h5 class="headline">Users of the System</h5>
+              <v-spacer />
+              <v-btn @click="dialogAddUser = true" small color="primary"
+                >Add User</v-btn
+              >
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -136,6 +140,8 @@
     <v-overlay :value="loaderOverlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
+
+    <Add_User :showDialog="dialogAddUser" />
   </v-container>
 </template>
 
@@ -152,6 +158,10 @@ import { required } from "vuelidate/lib/validators";
 
 */
 
+import AddUser from "./components/Add_User_Dialog";
+
+import { bus } from "../../main";
+
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
@@ -164,7 +174,9 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    Add_User: AddUser
+  },
 
   // Data Variables and Values
   data: () => ({
@@ -264,6 +276,7 @@ export default {
 
     // Dialogs
     dialogDeactivateUser: false,
+    dialogAddUser: false,
 
     deactivatePointer: null
   }),
@@ -274,7 +287,7 @@ export default {
       this.loaderUsers = true;
       return new Promise((resolve, reject) => {
         this.$http
-          .get("/api/admin/get_all_users")
+          .get("/api/admin/users")
           .then(res => {
             console.log("Users: ", res.data);
             let index = 0;
@@ -403,6 +416,10 @@ export default {
   created() {
     this.getUsers().then(users => {
       this.users = users;
+    });
+
+    bus.$on("CLOSE_ADD_USER_DIALOG_0001", () => {
+      this.dialogAddUser = false;
     });
   },
   beforeMount() {},
