@@ -1,7 +1,7 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app clipped>
+  <v-navigation-drawer app clipped>
     <!-- Admin Navigation Items -->
-    <v-list shaped v-if="$store.getters.userRole == 'admin'" dense>
+    <v-list shaped v-if="$store.getters.userRole == 'AB'" dense>
       <v-list-item-group v-model="listNaviagation" color="primary">
         <v-list-item link @click="$router.push('/admin')">
           <v-list-item-action>
@@ -11,7 +11,7 @@
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item link @click="$router.push('/admin/users')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -27,12 +27,20 @@
             <v-list-item-title>Suppliers</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item link @click="$router.push('/admin/products')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Products</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="$router.push('/admin/requisitions')">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Product Requisitions</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link>
@@ -120,7 +128,7 @@ export default {
   // Form Validations
   // validations: {},
   // Props Received
-  props: ["drawer"],
+  props: [],
   // Imported Components
   components: {},
   // Data Variables and Values
@@ -143,7 +151,6 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    console.log("Navigation Drawer => Role: ", this.$store.state);
     this.role = this.$store.getters.userRole;
   },
   beforeUpdate() {},

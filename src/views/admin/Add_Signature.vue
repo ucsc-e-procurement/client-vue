@@ -1,8 +1,20 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-app-bar app>sadasd</v-app-bar>
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4"> </v-col>
+  <v-container fluid class="px-0 py-0">
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-card flat>
+          <v-container>
+            <!-- Page Title -->
+            <v-row no-gutters>
+              <h5 class="headline">Page Title</h5>
+            </v-row>
+            <v-divider class="mt-1"></v-divider>
+
+            <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
+            <v-row> </v-row>
+          </v-container>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -42,21 +54,7 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {
-    this.$http
-      .get("/api/test/ayubowan")
-      .then(res => {
-        console.log("Response: ", res.data);
-        console.log("Status: ", res.st);
-      })
-      .catch(err => {
-        console.log("Error: ", err);
-        console.log("Error Response: ", err.response);
-        console.log("Error Response Status: ", err.response.status);
-        console.log("Error Response Message: ", err.message);
-        console.log("Error Response Message >>: ", err.response.data);
-      });
-  },
+  created() {},
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

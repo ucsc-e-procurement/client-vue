@@ -1,10 +1,12 @@
 <template>
   <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
     <form id="request-form" @submit.prevent="handleSubmit(onSubmit)">
-      <v-card class="overflow-hidden" color="grey lighten-1" dark>
-        <v-toolbar flat outlined color="grey" font="balck">
+      <v-card class="overflow-hidden" color="">
+        <v-toolbar flat outlined color="" font="balck">
           <v-icon>mdi-cards-variant</v-icon>
-          <v-toolbar-title class="font-weight-light">Request Form</v-toolbar-title>
+          <v-toolbar-title class="font-weight-light"
+            >Request Form</v-toolbar-title
+          >
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
@@ -17,6 +19,7 @@
               item-text="name"
               label="Type of Procurment"
               :error-messages="errors"
+              outlined
             ></v-autocomplete>
           </ValidationProvider>
           <ValidationProvider v-slot="{ errors }" name="checkbox">
@@ -38,15 +41,17 @@
               large
               color="primary"
               @click="additem"
-            >Add item</v-btn>
+              >Add item</v-btn
+            >
             <v-btn
               class="ma-2"
               :disabled="!checkbox"
               depressed
               large
-              color="warning"
+              color=""
               @click="reset"
-            >Reset</v-btn>
+              >Reset</v-btn
+            >
             <!-- <ValidationObserver ref="addItemObsever"> -->
             <v-row align="center">
               <v-col cols="8">
@@ -55,8 +60,8 @@
                   v-model="value"
                   :items="item_list"
                   dense
-                  filled
                   label="Search Item"
+                  outlined
                 ></v-autocomplete>
               </v-col>
               <v-col cols="4">
@@ -67,6 +72,8 @@
                   label="Quantity"
                   min="1"
                   oninput="validity.valid||(value='')"
+                  outlined
+                  dense
                 />
               </v-col>
             </v-row>
@@ -88,14 +95,18 @@
                 <tbody>
                   <tr v-for="item in product_request" :key="item.product_name">
                     <td>{{ item.product_name }}</td>
-                    <td>{{item.qnty}}</td>
+                    <td>{{ item.qnty }}</td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
           </ValidationProvider>
           <!-- item inclusion-->
-          <ValidationProvider v-slot="{ errors }" name="Description" rules="required">
+          <ValidationProvider
+            v-slot="{ errors }"
+            name="Description"
+            rules="required"
+          >
             <div class="my-2">
               <v-textarea
                 v-model="descript"
@@ -111,7 +122,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click.stop="dialog1 = true">Submit</v-btn>
+          <v-btn color="primary" @click.stop="dialog1 = true">Submit</v-btn>
         </v-card-actions>
       </v-card>
       <v-row justify="center">
@@ -127,9 +138,13 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn type="submit" color="green darken-1" text @click="submit">Proceed</v-btn>
+              <v-btn type="submit" color="green darken-1" text @click="submit"
+                >Proceed</v-btn
+              >
 
-              <v-btn color="red darken-1" text @click="dialog2 = false">Cancel</v-btn>
+              <v-btn color="red darken-1" text @click="dialog2 = false"
+                >Cancel</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -144,7 +159,9 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn color="red darken-1" text @click="dialog2 = false">Ok</v-btn>
+              <v-btn color="red darken-1" text @click="dialog2 = false"
+                >Ok</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -228,7 +245,7 @@ export default {
   methods: {
     getAllProducts() {
       for (const item of this.products.product_name) {
-        item_list.push(item);
+        this.item_list.push(item);
       }
     },
     reset() {
@@ -276,10 +293,11 @@ export default {
           })
           .then(response => {
             console.log(response);
-            alert(JSON.stringify(response));
+            // alert(JSON.stringify(response));
           })
           .catch(error => {
             console.log(error);
+            // alert(JSON.stringify(error));
           });
         window.location.href = "http://localhost:8080/hod";
       });

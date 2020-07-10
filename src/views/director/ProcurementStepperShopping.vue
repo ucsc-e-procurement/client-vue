@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Procurement {{this.procurementId}}</h5>
+              <h5 class="headline">Procurement {{ this.procurementId }}</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -93,12 +93,12 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-    import Requisition from "./Requisition"
-    import ProcurementMethod from './ProcurementMethod'
-    import AppointTechTeam from './AppointTechTeam'
-    import AppointBidOpeningTeam from './AppointBidOpeningTeam'
-    import TechTeam from './TechTeam'
-    import BidOpeningTeam from './BidOpeningTeam'
+import Requisition from "./Requisition";
+import ProcurementMethod from "./ProcurementMethod";
+import AppointTechTeam from "./AppointTechTeam";
+import AppointBidOpeningTeam from "./AppointBidOpeningTeam";
+import TechTeam from "./TechTeam";
+import BidOpeningTeam from "./BidOpeningTeam";
 /*
 
 // Validation Library - Vuelidate
@@ -120,46 +120,51 @@ export default {
 
   // Imported Components
   components: {
-      requisition: Requisition,
-      AppointTechTeam: AppointTechTeam,
-      AppointBidOpeningTeam: AppointBidOpeningTeam,
-      ProcurementMethod: ProcurementMethod,
-      TechTeam: TechTeam,
-      BidOpeningTeam: BidOpeningTeam,
+    requisition: Requisition,
+    AppointTechTeam: AppointTechTeam,
+    AppointBidOpeningTeam: AppointBidOpeningTeam,
+    ProcurementMethod: ProcurementMethod,
+    TechTeam: TechTeam,
+    BidOpeningTeam: BidOpeningTeam
   },
 
   // Data Variables and Values
   data: () => ({
-      stepperValue: 1,
-      procurementState: '',
-      procurementId: '',
-      requisitionData: '',
-      isMounted: false,
-      test: 0,
+    stepperValue: 1,
+    procurementState: "",
+    procurementId: "",
+    requisitionData: "",
+    isMounted: false,
+    test: 0
   }),
 
   // Custom Methods and Functions
   methods: {
-    getRequisition(){
+    getRequisition() {
       this.$http
-        .get(`/api/director/procurements/${this.$route.query.proc_id.replace(/[/]/g, '')}?procId=${this.$route.query.proc_id}`)
+        .get(
+          `/api/director/procurements/${this.$route.query.proc_id.replace(
+            /[/]/g,
+            ""
+          )}?procId=${this.$route.query.proc_id}`
+        )
         .then(response => {
           this.requisitionData = response.data[0];
           this.procurementState = response.data[0].step;
           this.stepperValue = 12;
           this.isMounted = true;
-          if(response.data[0].step == 3 || response.data[0].step == 4){
+          if (response.data[0].step == 3 || response.data[0].step == 4) {
             this.stepperValue = response.data[0].step;
           }
         })
         .catch(err => {
           console.log(err);
-        })
+        });
     },
     editIcon(event) {
-      console.log(event)
+      console.log(event);
     },
-    childUpdated(stepVal){
+    childUpdated(stepVal) {
       this.test = stepVal;
       this.isMounted = false;
       this.getRequisition();
@@ -181,19 +186,14 @@ export default {
     // console.log('daaaam mnt', this.$route.query.proc_id)
   },
   beforeUpdate() {},
-  updated() {
-
-  },
+  updated() {},
   beforeDestroy() {},
   destroyed() {},
 
   // Computed Properties
-  computed: {},
-
+  computed: {}
 };
 </script>
 
 // Custom CSS Rules and Classes
 <style scoped></style>
-
-

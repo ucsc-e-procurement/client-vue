@@ -10,7 +10,9 @@
       </v-avatar>
       <v-toolbar-title class="pl-5">E-Procurement Login</v-toolbar-title>
       <v-spacer />
-      <v-btn outlined>Register As a Supplier</v-btn>
+      <v-btn @click="$router.push('/registration')" outlined
+        >Register As a Supplier</v-btn
+      >
     </v-app-bar>
 
     <!-- Centered Card with Login Form -->
@@ -87,7 +89,7 @@ export default {
   // Form Validations
   validations: {
     email: { required, email },
-    password: { required },
+    password: { required }
   },
 
   // Props Received
@@ -101,7 +103,7 @@ export default {
     email: "",
     password: "",
     loaderLogin: false,
-    isLoginError: false,
+    isLoginError: false
   }),
 
   // Custom Methods and Functions
@@ -110,10 +112,10 @@ export default {
       // http://localhost:3000/api/get/get_uers
       this.$http
         .get("/api/get_users")
-        .then((response) => {
+        .then(response => {
           console.log(response);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -125,7 +127,7 @@ export default {
         let password = this.password;
         this.$store
           .dispatch("login", { email, password })
-          .then((role) => {
+          .then(role => {
             console.log("I'm Here");
             // Navigate to the Pages Based on User Role
             switch (role) {
@@ -144,8 +146,8 @@ export default {
               case "SUP":
                 this.$router.push("/supplier");
                 break;
-              case "tec_team":
-                this.$router.push("/tec_team");
+              case "EMP":
+                this.$router.push("/employee");
                 break;
 
               default:
@@ -153,13 +155,13 @@ export default {
             }
             this.loaderLogin = false;
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
             this.loaderLogin = false;
             this.isLoginError = true;
           });
       }
-    },
+    }
   },
 
   // Life Cycle Hooks
@@ -189,8 +191,8 @@ export default {
       !this.$v.password.required && errors.push("Password is required.");
 
       return errors;
-    },
-  },
+    }
+  }
 };
 </script>
 

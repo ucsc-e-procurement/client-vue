@@ -11,7 +11,10 @@ import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
-import Admin_View_Users from "../views/admin/View_Users.vue";
+import Admin_View_Users from "../views/admin/Users.vue";
+import Admin_Products from "../views/admin/Products.vue";
+import Admin_Requisitions from "../views/admin/Requisitions.vue";
+import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -62,17 +65,17 @@ const routes = [
   {
     path: "",
     name: "home",
-    component: Home,
+    component: Home
   },
   {
     path: "/login",
     name: "login",
-    component: Login,
+    component: Login
   },
   {
     path: "/registration",
     name: "Registration",
-    component: Registration,
+    component: Registration
   },
   // {
   //   path: "/about",
@@ -95,50 +98,68 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: true,
-        },
+          requiresAuth: true
+        }
       },
       {
         path: "ongoing_procurements",
         name: "ongoing procurements",
-        component: Admin_Procurements_Ongoing,
+        component: Admin_Procurements_Ongoing
       },
       {
         path: "terminated_procurements",
         name: "terminated procurements",
-        component: Admin_Procurements_Terminated,
+        component: Admin_Procurements_Terminated
       },
       {
         path: "completed_procurements",
         name: "completed procurements",
-        component: Admin_Procurements_Completed,
+        component: Admin_Procurements_Completed
       },
       {
         path: "pending_approvals",
         name: "pending approvals",
-        component: Admin_Pending_Approvals,
+        component: Admin_Pending_Approvals
       },
       {
         path: "procurement_overview/:encodedProcurementId",
         name: "procurement overview",
         component: Admin_Procurement_Overview,
-        props: true,
+        props: true
       },
       {
         path: "suppliers",
         name: "view all suppliers",
         component: Admin_View_Suppliers,
-        props: true,
+        props: true
       },
       {
         path: "users",
         name: "view all users",
         component: Admin_View_Users,
-        props: true,
+        props: true
+      },
+      {
+        path: "products",
+        name: "view all products",
+        component: Admin_Products,
+        props: true
+      },
+      {
+        path: "requisitions",
+        name: "view all products requisitions",
+        component: Admin_Requisitions,
+        props: true
+      },
+      {
+        path: "requisition/:encodedRequisitionId",
+        name: "view products requisition",
+        component: Admin_View_Requisition,
+        props: true
       },
       // TODO Redirect to Page Not Found Or Dashborad
-      { path: "*", redirect: "/" },
-    ],
+      { path: "*", redirect: "/" }
+    ]
   },
 
   // Director
@@ -150,39 +171,39 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Director_Dashboard,
+        component: Director_Dashboard
       },
       {
         path: "procurements",
         name: "d_proc",
-        component: Director_Procurements,
+        component: Director_Procurements
       },
       {
         path: "procurements/shopping/:id",
         name: "d_proc_stepper_shopping",
-        component: Director_Shopping_Procurement_Stepper,
+        component: Director_Shopping_Procurement_Stepper
       },
       {
         path: "procurements/direct/:id",
         name: "d_proc_stepper_direct",
-        component: Director_Direct_Procurement_Stepper,
+        component: Director_Direct_Procurement_Stepper
       },
       {
         path: "requests",
         name: "d_req",
-        component: Director_Requests,
+        component: Director_Requests
       },
       {
         path: "requisition/view",
         name: "d_req_accept",
-        component: AcceptRequisitionRequest,
+        component: AcceptRequisitionRequest
       },
       {
         path: "requisitions/:id",
         name: "d_reqi",
-        component: Requisitions,
-      },
-    ],
+        component: Requisitions
+      }
+    ]
   },
 
   // Head of Department
@@ -194,14 +215,14 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: HOD_Dashboard,
+        component: HOD_Dashboard
       },
       {
         path: "newproc",
         name: "New Procurement",
-        component: HOD_New_Proc,
-      },
-    ],
+        component: HOD_New_Proc
+      }
+    ]
   },
   {
     path: "/supplier",
@@ -211,20 +232,20 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Supplier_Dashboard,
+        component: Supplier_Dashboard
       },
       {
         path: "price_schedule",
         name: "price_schedule",
-        component: Price_Schedule,
+        component: Price_Schedule
       },
       {
         path: "procurements",
         name: "procurements",
         component: Supplier_Procurements,
-        children: [],
-      },
-    ],
+        children: []
+      }
+    ]
   },
 
   //employee routes
@@ -236,19 +257,19 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Employee_Dashboard,
+        component: Employee_Dashboard
       },
       {
         path: "tecteam",
         name: "default",
-        component: Employee_Tec_team,
+        component: Employee_Tec_team
       },
       {
         path: "tecteam/tecreport",
         name: "default",
-        component: Employee_Tec_Report,
-      },
-    ],
+        component: Employee_Tec_Report
+      }
+    ]
   },
 
   {
@@ -259,19 +280,19 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: Director_Dashboard,
+        component: Director_Dashboard
       },
       {
-        path: "/product_requisitions",
-        component: Product_Requisitions,
+        path: "product_requisitions",
+        component: Product_Requisitions
       },
       {
         path: "view_product_requisition/:id",
         component: View_Product_Requisition,
-        props: true,
-      },
-    ],
-  },
+        props: true
+      }
+    ]
+  }
 ];
 
 // Development Perposes Only - Remove these routes before final Production Deployment
@@ -297,11 +318,11 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
       next();
       return;
