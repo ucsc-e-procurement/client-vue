@@ -240,9 +240,10 @@ const routes = [
         component: Supplier_Dashboard
       },
       {
-        path: "price_schedule",
+        path: "price_schedule/:procurement",
         name: "price_schedule",
-        component: Price_Schedule
+        component: Price_Schedule,
+        props: true,
       },
       {
         path: "procurements",

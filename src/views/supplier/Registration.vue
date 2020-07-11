@@ -55,10 +55,7 @@
                 :to="{ name: 'login' }"
                 >Login here</router-link
               >
-              <!-- <v-btn color="primary float-right" @click="proceedToForm2">Continue</v-btn> -->
-              <v-btn color="primary float-right" @click="step = 2"
-                >Continue</v-btn
-              >
+              <v-btn color="primary float-right" @click="proceedToForm2">Continue</v-btn>
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-form ref="form2" v-model="valid">
@@ -144,9 +141,7 @@
                   </v-col>
                 </v-row>
               </v-form>
-              <v-btn color="primary float-right" @click="step = 3"
-                >Continue</v-btn
-              >
+              <v-btn color="primary float-right" @click="proceedToForm3">Continue</v-btn>
               <v-btn text @click.native="step = 1">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
@@ -198,12 +193,7 @@
                   label="Experience in the industry ( No. of Years )"
                 ></v-select>
               </v-form>
-              <!-- <v-btn color="primary float-right" @click="proceedToForm4"
-                >Continue</v-btn
-              > -->
-              <v-btn color="primary float-right" @click="step = 4"
-                >Continue</v-btn
-              >
+              <v-btn color="primary float-right" @click="proceedToForm4">Continue</v-btn>
               <v-btn text @click.native="step = 2">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="4">
@@ -296,6 +286,7 @@ export default {
     step: 1,
     valid: true,
     show: false,
+    regError: false,
     user_state: "new",
     menu: false,
     business_nature: [
@@ -331,21 +322,21 @@ export default {
       business_address: "",
       contact_name: "",
       contact: "",
-      fax: "none",
+      fax: "",
       official_email: "",
-      web: "none",
+      web: "",
       business_reg_no: "",
       cert_copy: null,
       vat_reg_no: "",
       ictad_reg_no: "",
-      bank: "none",
-      branch: "none",
+      bank: "",
+      branch: "",
       business_nature: "",
       business_type: "",
-      credit_offered: "none",
-      maximum_credit: "none",
-      credit_period: "none",
-      experience: "none",
+      credit_offered: "",
+      maximum_credit: "",
+      credit_period: "",
+      experience: "",
       cat_selection: "",
       payment_bank: "",
       shroff: "",
@@ -447,7 +438,12 @@ export default {
         form.append("payment_type", this.formdata.payment_type);
         form.append("user_state", this.user_state);
         this.$http.post("/api/supplier/registration", form).then(res => {
-          console.log(res);
+          if(res.data == "Successful") {
+            alert(
+            "You have successfully registered to our system. Await verification of your request."
+            );
+            $router.push('/login');
+          } else console.log(res);
         });
       }
     }
@@ -470,15 +466,15 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-.bg {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: url("../../assets/ucsc.jpg") no-repeat center center;
-  background-size: cover;
+  .bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url("../../assets/ucsc.jpg") no-repeat center center;
+    background-size: cover;
 
-  transform: scale(1);
-}
+    transform: scale(1);
+  }
 </style>

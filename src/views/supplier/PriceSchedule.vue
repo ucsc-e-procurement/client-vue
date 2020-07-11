@@ -12,14 +12,10 @@
             <h4>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING</h4>
           </v-row>
           <v-row no-gutters>
-            <!-- <h5>[ Tender Name & Tender Number ]</h5> -->
-            <h5>Tender Number : </h5>
-            <h5>{{ this.$route.query.procurement.procurement_id }}</h5>
+            <h5>Tender Number : {{ this.procurement.procurement_id }}</h5>
           </v-row>
           <v-row no-gutters>
-            <!-- <h5>[ Closing Date & Time ]</h5> -->
-            <h5> Closing Date & Time : </h5>
-            <h5>{{ this.$route.query.procurement.deadline }}</h5>
+            <h5> Closing Date & Time : {{ this.procurement.deadline }}</h5>
           </v-row>
 
           <v-card class="my-2 py-2 px-1" id="schedule">
@@ -52,14 +48,14 @@
                 </tr>
               </thead>
               <tbody class="text-center">
-                <tr v-for="(item, index) in JSON.parse(this.$route.query.procurement.products)" :key="index">
+                <tr v-for="(item, index) in items" :key="index">
                   <td>{{ index + 1 }}</td>
                   <td style="max-width: 30px">
                     <span v-if="editIndex !== index">{{
-                      item.product_name
+                      item.description
                     }}</span>
                     <span v-if="editIndex === index">
-                      <v-text-field v-model="item.product_name" disabled />
+                      <v-text-field v-model="item.description" disabled />
                     </span>
                   </td>
                   <td>
@@ -78,6 +74,7 @@
                     <span v-if="editIndex === index">
                       <v-text-field
                         type="number"
+                        step=".01"
                         min="0"
                         oninput="validity.valid||(value='')"
                         v-model.number="item.figures"
@@ -89,6 +86,7 @@
                     <span v-if="editIndex === index">
                       <v-text-field
                         type="number"
+                        step=".01"
                         min="0"
                         oninput="validity.valid||(value='')"
                         v-model.number="item.vat"
@@ -154,7 +152,6 @@
                       <v-icon @click="edit(item, index)" class="mx-1"
                         >mdi-pencil</v-icon
                       >
-                      <!-- <v-icon @click="remove(item, index)" class="mx-1">mdi-delete</v-icon> -->
                     </span>
                     <span v-else>
                       <v-icon @click="cancel(item)" class="mx-1"
@@ -169,8 +166,6 @@
               </tbody>
             </table>
           </v-card>
-
-          <!-- <v-btn class="primary" v-show="!editIndex" @click="add">Add Item</v-btn> -->
 
           <v-row no-gutters class="my-2 mt-4">
             <v-col cols="12" sm="6">
@@ -228,18 +223,7 @@
 <script>
 export default {
   // Props Received
-  props: {
-    procurement: Object,
-    supplier_id: String,
-    procurement_id: String,
-    expiration_date: Date,
-    prod_ids: {
-      type: Object,
-      default: function() {
-        return [["prod1", "bat"], ["prod2", "ball"]];
-      }
-    }
-  },
+  props: ['procurement'],
 
   // Imported Components
   components: {},
@@ -263,44 +247,23 @@ export default {
       vat: v => !!v || "Vat Registration No. is required",
       authorized: v => !!v || "There should be an authorized person"
     },
-    items: [
-      {
-        prod_id: 'prod1',
-        description: "laptops",
-        qty: "20",
-        figures: 30000,
-        vat: 1200,
-        make: "dell",
-        date: new Date().toISOString().substr(0, 10),
-        validity: 4,
-        credit: 10
-      },
-      {
-        prod_id: 'prod2',
-        description: "soap",
-        qty: "100",
-        figures: 300,
-        vat: 12,
-        make: "dettol",
-        date: new Date().toISOString().substr(0, 10),
-        validity: 2,
-        credit: 2
-      }
-    ],
+    items: [],
     menu: false
   }),
 
   // Custom Methods and Functions
   methods: {
     createTable() {
+      let products = JSON.parse(this.procurement.products);
+      console.log(products)
         this.originalData = null;
-        for (const index in this.prod_ids) {
+        for (const index in products) {
           this.items.push({
-            prod_id: this.prod_ids[index][0],
-            description: this.prod_ids[index][1],
-            qty: 1,
-            figures: 1,
-            vat: 1,
+            prod_id: products[index]['product_id'],
+            description: products[index]['product_name'],
+            qty: products[index]['qty'],
+            figures: 0,
+            vat: 0,
             make: "-",
             date: new Date().toISOString().substr(0, 10),
             validity: 0,
@@ -326,10 +289,6 @@ export default {
       this.originalData = null;
     },
 
-    // remove(item, index) {
-    //   this.items.splice(index, 1);
-    // },
-
     save(item) {
       if (item.description && item.make) {
         this.originalData = null;
@@ -347,10 +306,10 @@ export default {
 
     submitBid() {
       if (this.$refs.form.validate()) {
-        this.$http.post('/api/supplier/price_schedule',
+        this.$http.post('/api/supplier/price_schedule/:procurement',
         {
-          supplier_id: this.supplier_id,
-          procurement_id: this.procurement_id,
+          supplier_id: this.procurement.supplier_id,
+          procurement_id: this.procurement.procurement_id,
           items: this.items,
           subtotal: this.subTotal,
           total_with_vat: this.total,
