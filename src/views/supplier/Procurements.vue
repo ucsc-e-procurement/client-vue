@@ -110,7 +110,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.getSupplier('s000001')
+    this.getSupplier('sale@gamestreet.lk')
     //this.getSupplier(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},
