@@ -13,6 +13,9 @@ import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue"
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
+import Admin_Requisitions from "../views/admin/Requisitions.vue";
+import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
+import Add_Signature from "../views/admin/Add_Signature.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -36,7 +39,7 @@ import Price_Schedule from "../views/supplier/PriceSchedule.vue";
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
-import Employee_Tec_Report from "../views/employee/Tec_Report.vue";
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -143,6 +146,22 @@ const routes = [
         component: Admin_Products,
         props: true
       },
+      {
+        path: "requisitions",
+        name: "view all products requisitions",
+        component: Admin_Requisitions,
+        props: true
+      },
+      {
+        path: "requisition/:encodedRequisitionId",
+        name: "view products requisition",
+        component: Admin_View_Requisition,
+        props: true
+      },
+      {
+        path: "signature/add",
+        component: Add_Signature
+      },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" }
     ]
@@ -248,14 +267,14 @@ const routes = [
       },
       {
         path: "tecteam",
-        name: "default",
+        name: "tecteam",
         component: Employee_Tec_team
       },
       {
-        path: "tecteam/tecreport",
-        name: "default",
-        component: Employee_Tec_Report
-      }
+        path: "bidopeningteam",
+        name: "bigopeningteam",
+        component: Employee_Bid_Opening_Team
+      },
     ]
   },
 

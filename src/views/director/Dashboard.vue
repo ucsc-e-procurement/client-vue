@@ -71,10 +71,11 @@
                 </v-card>
               </v-col>
             </v-row>
+            <v-row></v-row>
             <v-row>
               <v-col cols="6">
-                <v-card class="scroll" height="450px">
-                  <v-card-title class="text-center justify-center py-6">
+                <v-card class="scroll" min-height="450px">
+                  <v-card-title class="text-center justify-center py-6" height="50%" color="blue lighten-2">
                       <h4 class="font-weight-bold ">Approved Requisitions</h4>
                   </v-card-title>
                   <v-card-text>

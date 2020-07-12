@@ -9,7 +9,7 @@
                 <v-col cols="12">
                     <v-card>
                       <v-card-title class="text-center justify-center py-6">
-                        <h4 class="font-weight-bold ">Participation as TEC team member</h4>
+                        <h4 class="font-weight-bold ">Participation as Bid Opening Team Member</h4>
                       </v-card-title>
 
                       <v-tabs
@@ -27,13 +27,16 @@
                       <v-divider></v-divider>
                       <v-tabs-items v-model="tab">
                         <v-tab-item>
-                            <TecteamNew />
+                          <BidOpeningTeamLocked/>
                         </v-tab-item>
                         <v-tab-item>
-                            <TecteamOngoing />
+                            <BidOpeningTeamPending/>
                         </v-tab-item>
                         <v-tab-item>
-                            <TecteamCompleted />
+                            <BidOpeningTeamUnlocked/>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <BidOpeningTeamCompleted />
                         </v-tab-item>
                       </v-tabs-items>
                     </v-card>
@@ -51,9 +54,10 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-import TecteamNew from "./Tec_team_new"
-import TecteamOngoing from "./Tec_team_ongoing"
-import TecteamCompleted from "./Tec_team_completed"
+import BidOpeningTeamCompleted from "./Bid_Opening_Team_Completed"
+import BidOpeningTeamUnlocked from "./Bid_Opening_Team_Unlocked"
+import BidOpeningTeamPending from "./Bid_Opening_Team_Pending"
+import BidOpeningTeamLocked from "./Bid_Opening_Team_Locked"
 
 /*
 
@@ -75,14 +79,14 @@ export default {
   props: [],
 
   // Imported Components
-  components: { TecteamNew, TecteamOngoing, TecteamCompleted },
+  components: { BidOpeningTeamCompleted, BidOpeningTeamUnlocked, BidOpeningTeamPending, BidOpeningTeamLocked },
 
   // Data Variables and Values
   data: () => ({
     search: '',
     tab: null,
     tabs: [
-      'Locked','Unlocked', 'Completed',
+      'Locked', 'Pending', 'Unlocked','Completed',
     ],
   }),
 
