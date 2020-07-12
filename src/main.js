@@ -9,8 +9,31 @@ Vue.config.productionTip = false;
 
 // Global Axios Configurations
 Vue.prototype.$http = Axios.create({
-  baseURL: "http://localhost:3000"
+  baseURL: "http://localhost:5000"
 });
+
+// Setting Up Authorization Headers
+
+const token = localStorage.getItem("token");
+// console.log("main.js => loactStorage Check: ", token);
+if (token) {
+  Vue.prototype.$http.defaults.headers.common[
+    "authorization"
+  ] = `Bearer ${token}`;
+
+  store
+    .dispatch("setUserFromToken", token)
+    .then(() => {
+      console.log("User Set Successfully");
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+// console.log(
+//   "main.js => Axios Auth Header: ",
+//   Vue.prototype.$http.defaults.headers.common["authorization"]
+// );
 
 // Event Bus
 export const bus = new Vue();

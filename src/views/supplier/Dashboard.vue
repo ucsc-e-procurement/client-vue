@@ -14,29 +14,29 @@
 
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-card height="100">
-                  <v-card-title>Ongoing </v-card-title>
+                  <v-card-title>New Requests </v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <!-- <v-col cols="3">
                 <v-card height="100">
                   <v-card-title>Terminated</v-card-title>
                 </v-card>
+              </v-col> -->
+              <v-col cols="4">
+                <v-card height="100">
+                  <v-card-title>On-going</v-card-title>
+                </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-card height="100">
                   <v-card-title>Completed</v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Other</v-card-title>
-                </v-card>
-              </v-col>
             </v-row>
 
-            <v-row>
+            <!-- <v-row>
               <v-col cols="6">
                 <v-card>
                   <v-sparkline
@@ -55,7 +55,7 @@
                   ></v-sparkline>
                 </v-card>
               </v-col>
-            </v-row>
+            </v-row> -->
           </v-container>
         </v-card>
       </v-col>

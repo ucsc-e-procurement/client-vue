@@ -1,23 +1,61 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped dark>
+    <template v-slot:prepend>
+      <v-list-item two-line>
+        <v-list-item-avatar>
+          <img
+            src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png"
+          />
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ user.name }}</v-list-item-title>
+          <v-list-item-subtitle>Supplier</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </template>
+
+    <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link>
+      <v-list-item exact="" link to="/supplier">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Dashboard External</v-list-item-title>
+          <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item exact="" link to="/supplier/procurements">
         <v-list-item-action>
           <v-icon>mdi-email</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Procurements External</v-list-item-title>
+          <v-list-item-title>Procurements</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link>
+        <v-list-item-action>
+          <v-badge color="blue" content="1">
+            <v-icon>mdi-bell</v-icon>
+          </v-badge>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Notifications</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <template v-slot:append>
+      <v-list>
+        <v-list-item link @click="logout">
+          <v-list-item-action>
+            <v-icon>mdi-logout-variant</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 
@@ -50,11 +88,17 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    //
+    user: { name: "Supplier Name" }
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},

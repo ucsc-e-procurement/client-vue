@@ -2,6 +2,7 @@
   <v-container fluid>
     <v-row no-gutters>
       <v-col cols="12">
+        <nav_drawer_supplier :drawer="navDrawerExternal"/>
         <router-view />
       </v-col>
     </v-row>
@@ -12,7 +13,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-
+import NavigationDrawer_External from "../../components/external/NavigationDrawer";
 /*
 
 // Validation Library - Vuelidate
@@ -33,11 +34,12 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: { nav_drawer_supplier: NavigationDrawer_External},
 
   // Data Variables and Values
   data: () => ({
     //
+    navDrawerExternal: true,
   }),
 
   // Custom Methods and Functions
