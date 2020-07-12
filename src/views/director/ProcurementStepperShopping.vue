@@ -192,6 +192,7 @@ export default {
     this.stepperValue = this.$route.query.stepper;
     this.getRequisition();
     this.getRfq();
+    console.log('>>>',this.$store.getters);
   },
   beforeMount() {},
   mounted() {
