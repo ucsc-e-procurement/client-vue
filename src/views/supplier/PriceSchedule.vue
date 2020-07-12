@@ -255,7 +255,6 @@ export default {
   methods: {
     createTable() {
       let products = JSON.parse(this.procurement.products);
-      console.log(products)
         this.originalData = null;
         for (const index in products) {
           this.items.push({
