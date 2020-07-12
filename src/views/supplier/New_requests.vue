@@ -180,10 +180,11 @@ export default {
     openDialog: function(key) {
       this.procurement = key;
       this.dialog = true;
-      //console.log(key, newRequests[procurement])
+      console.log(this.dialog)
     },
 
     fetchRequests(supplier_id) {
+      console.log(supplier_id)
       this.$http
         .get("/api/supplier/get_new_requests", {
           params: {
@@ -201,9 +202,10 @@ export default {
         });
     },
     gotoPriceSchedule() {
-      console.log(this.newRequests[this.procurement])
       this.dialog = false;
-      this.$router.push({ path: "/supplier/price_schedule", query: { procurement: this.newRequests[this.procurement]}});
+      this.$router.push({ name: "price_schedule", 
+        params: { procurement: this.newRequests[this.procurement] }
+      });
     }
   },
 
@@ -214,7 +216,7 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchRequests("s000001");
+    this.fetchRequests("sale@gamestreet.lk");
     //this.fetchRequests(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},

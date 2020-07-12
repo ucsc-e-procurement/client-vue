@@ -42,7 +42,21 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.$http
+      .get("/api/test/ayubowan")
+      .then(res => {
+        console.log("Response: ", res.data);
+        console.log("Status: ", res.st);
+      })
+      .catch(err => {
+        console.log("Error: ", err);
+        console.log("Error Response: ", err.response);
+        console.log("Error Response Status: ", err.response.status);
+        console.log("Error Response Message: ", err.message);
+        console.log("Error Response Message >>: ", err.response.data);
+      });
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

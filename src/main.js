@@ -15,7 +15,7 @@ Vue.prototype.$http = Axios.create({
 // Setting Up Authorization Headers
 
 const token = localStorage.getItem("token");
-console.log("main.js => loactStorage Check: ", token);
+// console.log("main.js => loactStorage Check: ", token);
 if (token) {
   Vue.prototype.$http.defaults.headers.common[
     "authorization"
@@ -30,10 +30,10 @@ if (token) {
       console.log(err);
     });
 }
-console.log(
-  "main.js => Axios Auth Header: ",
-  Vue.prototype.$http.defaults.headers.common["authorization"]
-);
+// console.log(
+//   "main.js => Axios Auth Header: ",
+//   Vue.prototype.$http.defaults.headers.common["authorization"]
+// );
 
 // Event Bus
 export const bus = new Vue();

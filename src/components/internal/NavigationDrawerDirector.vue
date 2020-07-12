@@ -53,6 +53,16 @@
           <v-list-item-title>Statistics</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item link to="/director/notifications">
+        <v-list-item-action>
+          <v-badge color="blue" content="2">
+            <v-icon>mdi-bell</v-icon>
+          </v-badge>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Notifications</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
     <template v-slot:append>
       <v-list>
