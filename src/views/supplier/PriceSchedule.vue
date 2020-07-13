@@ -2,7 +2,28 @@
   <v-container fluid class="px-0 py-0">
     <v-row no-gutters>
       <v-col cols="12">
-        <v-container>
+        <instructions v-if="this.method" />
+        <datasheet v-if="this.method" :deadline='this.procurement.deadline' />
+
+        <v-container class="elevation-1">
+           <v-row no-gutters>
+            <h5 class="headline">Authorization to sign the Quotation</h5>
+          </v-row>
+          <v-divider class="mt-1"></v-divider>
+        </v-container>
+
+        <schedule :products='JSON.parse(this.procurement.products)' />
+
+        <v-container class="elevation-1">
+           <v-row no-gutters>
+            <h5 class="headline">Technical Specification and Compliance</h5>
+          </v-row>
+          <v-divider class="mt-1"></v-divider>
+        </v-container>
+
+        <quotationForm />
+
+        <v-container class="elevation-1">
           <v-row no-gutters>
             <h5 class="headline">Price Schedule</h5>
           </v-row>
@@ -200,7 +221,7 @@
                   placeholder="Name of authorized person"
                   outlined
                   dense
-                  :rules="[rules.authorized]"
+                  :rules="[rules.general]"
                 />
               </v-form>
             </v-col>
@@ -210,23 +231,61 @@
             >Add Signature</v-btn
           >
 
-          <v-row class="mt-4" no-gutters>
-            <v-btn class="mr-2 secondary">Cancel</v-btn>
-            <v-btn class="success" @click="submitBid">Review & Submit</v-btn>
-          </v-row>
         </v-container>
+
+        <v-container class="elevation-1">
+           <v-row no-gutters>
+            <h5 class="headline">Manufacturer's Authorization</h5>
+          </v-row>
+          <v-divider class="mt-1"></v-divider>
+          <v-row no-gutters class="py-2">
+            Download the document<v-icon @click="downloadLetter" class="mx-2">mdi-package-down</v-icon>
+          </v-row>
+          <v-file-input
+            v-model="manufacturerDoc"
+            accept="application/pdf"
+            placeholder="Attach manufacturer's authorization"
+            hint="This should be a pdf file"
+            persistent-hint
+            :rules="[rules.general]"
+          ></v-file-input>
+        </v-container>
+
+        <v-container class="elevation-1">
+           <v-row no-gutters>
+            <h5 class="headline">Other attachments</h5>
+          </v-row>
+          <v-file-input
+            v-model="otherDoc"
+            accept="application/pdf"
+            placeholder="Attach any other drawings/attachments"
+            hint="This should be a pdf file"
+            persistent-hint
+            :rules="[rules.general]"
+          ></v-file-input>
+        </v-container>
+        <v-row class="mt-4" no-gutters>
+          <v-btn class="success" @click="submitBid">Submit Bid</v-btn>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import instructions from './Bid_Instructions';
+import datasheet from './Bid_Datasheet';
+import schedule from './Bid_Requirements';
+import quotationForm from './Bid_QuotationForm';
+
 export default {
   // Props Received
   props: ['procurement'],
 
   // Imported Components
-  components: {},
+  components: {
+    instructions, datasheet, schedule, quotationForm
+  },
 
   filters: {
     money: value =>
@@ -238,14 +297,20 @@ export default {
 
   // Data Variables and Values
   data: () => ({
+    method: true,
     valid: true,
     vatNo: "",
     authorizedName: "",
+    authorizedDesignation: "",
+    authorizedNIC: "",
+    authorizer: "",
+    authorizerDesignation: "",
+    manufacturerDoc: null,
     editIndex: null,
     originalData: null,
     rules: {
       vat: v => !!v || "Vat Registration No. is required",
-      authorized: v => !!v || "There should be an authorized person"
+      general: v => !!v || "This is required"
     },
     items: [],
     menu: false
