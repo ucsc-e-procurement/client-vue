@@ -320,20 +320,20 @@ export default {
   methods: {
     createTable() {
       let products = JSON.parse(this.procurement.products);
-        this.originalData = null;
-        for (const index in products) {
-          this.items.push({
-            prod_id: products[index]['product_id'],
-            description: products[index]['product_name'],
-            qty: products[index]['qty'],
-            figures: 0,
-            vat: 0,
-            make: "-",
-            date: new Date().toISOString().substr(0, 10),
-            validity: 0,
-            credit: 0
-          });
-        }
+      this.originalData = null;
+      for (const index in products) {
+        this.items.push({
+          prod_id: products[index]['product_id'],
+          description: products[index]['product_name'],
+          qty: products[index]['qty'],
+          figures: 0,
+          vat: 0,
+          make: "-",
+          date: new Date().toISOString().substr(0, 10),
+          validity: 0,
+          credit: 0
+        });
+      }
     },
 
     edit(item, index) {
@@ -366,6 +366,20 @@ export default {
 
     subtotalVAT(item) {
       return item.qty * (item.figures + item.vat);
+    },
+
+    downloadLetter() {
+      this.$http.get('/api/supplier/price_schedule/get_file')
+        .then(res => {
+          let bytes = new Uint8Array(res.data.data);
+          let blob = new Blob([bytes], { type: 'application/pdf' });
+          let fileURL = window.URL.createObjectURL(blob)
+          let fileLink = document.createElement('a');
+          fileLink.href = fileURL;
+          fileLink.setAttribute('download', 'manufacturer_auth.pdf');
+          document.body.appendChild(fileLink);
+          fileLink.click();
+        })
     },
 
     submitBid() {
@@ -418,23 +432,23 @@ export default {
 </script>
 
 <style scoped>
-input[type="number"] {
-  text-align: right;
-}
+  input[type="number"] {
+    text-align: right;
+  }
 
-th {
-  border: 1px solid #000;
-}
+  th {
+    border: 1px solid #000;
+  }
 
-.v-icon {
-  color: #000;
-}
+  .v-icon {
+    color: #000;
+  }
 
-#schedule {
-  font-size: 12px;
-}
+  #schedule {
+    font-size: 12px;
+  }
 
-table .v-text-field {
-  font-size: 12px;
-}
+  table .v-text-field {
+    font-size: 12px;
+  }
 </style>
