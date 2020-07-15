@@ -10,6 +10,55 @@
             <h5 class="headline">Authorization to sign the Quotation</h5>
           </v-row>
           <v-divider class="mt-1"></v-divider>
+          <v-row no-gutters class="caption mt-4">
+            You hereby agree that the authorizee details of you provided below are authorized from your company to sign the quotation. 
+            The signature and the company seal entered here will appear in the document as proof of personnel and responsibilty.
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="authorizedName"
+                label="Authorized Person"
+                placeholder="Name of authorized person"
+                outlined
+                dense
+                :rules="[rules.general]"
+              />
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="authorizedNIC"
+                label="NIC No."
+                placeholder="NIC number of authorized person"
+                outlined
+                dense
+                :rules="[rules.general]"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model="authorizedDesignation"
+                label="Designation"
+                placeholder="Designation of authorized person"
+                outlined
+                dense
+                :rules="[rules.general]"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+            <v-btn class="primary mb-3" v-show="!editIndex" @click="add">Add Signature & Company Seal</v-btn>
+            </v-col>
+            <v-col>
+              Authorizee Signature :  
+            </v-col>
+            <v-col>
+              Company Seal :  
+            </v-col>
+          </v-row>
         </v-container>
 
         <schedule :products='JSON.parse(this.procurement.products)' />
@@ -19,9 +68,77 @@
             <h5 class="headline">Technical Specification and Compliance</h5>
           </v-row>
           <v-divider class="mt-1"></v-divider>
+          <table class="mt-4" style="width: 100%; font-size: 12px">
+              <thead>
+                <tr>
+                  <th>Minimum Specification</th>
+                  <th width="20%">Bidder Response (Yes/No)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in specs" :key="index">
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="text-right pr-3">Unit Price (Without VAT) (Rs)</td>
+                  <td>
+                    <v-text-field
+                      type="number"
+                      min="0"
+                      step=".01"
+                      oninput="validity.valid||(value='')"
+                      v-model.number="compliance.unit"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-right pr-3">Discount (If any) (Rs)</td>
+                  <td>
+                    <v-text-field
+                      type="number"
+                      min="0"
+                      step=".01"
+                      oninput="validity.valid||(value='')"
+                      v-model.number="compliance.discount"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-right pr-3">Unit Price After Discount (Without VAT) (Rs)</td>
+                  <td>
+                    <v-text-field
+                      disabled
+                      :value="this.unitDiscount"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-right pr-3">15% VAT Amount (Rs)</td>
+                  <td>
+                    <v-text-field
+                      type="number"
+                      min="0"
+                      step=".01"
+                      oninput="validity.valid||(value='')"
+                      v-model.number="compliance.vat"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-right pr-3">Grand Total Amount With VAT</td>
+                  <td>
+                    <v-text-field
+                      disabled
+                      :value="this.grandTotal"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
         </v-container>
 
-        <quotationForm />
+        <quotationForm :procurement='this.procurement' :beforeVat='this.unitDiscount' :total='this.grandTotal' />
 
         <v-container class="elevation-1">
           <v-row no-gutters>
@@ -221,16 +338,11 @@
                   placeholder="Name of authorized person"
                   outlined
                   dense
-                  :rules="[rules.general]"
+                  disabled
                 />
               </v-form>
             </v-col>
           </v-row>
-
-          <v-btn class="primary" v-show="!editIndex" @click="add"
-            >Add Signature</v-btn
-          >
-
         </v-container>
 
         <v-container class="elevation-1">
@@ -303,14 +415,20 @@ export default {
     authorizedName: "",
     authorizedDesignation: "",
     authorizedNIC: "",
-    authorizer: "",
-    authorizerDesignation: "",
     manufacturerDoc: null,
     editIndex: null,
     originalData: null,
     rules: {
       vat: v => !!v || "Vat Registration No. is required",
       general: v => !!v || "This is required"
+    },
+    specs: [],
+    compliance: {
+      unit: 0,
+      discount: 0,
+      unit_after: 0,
+      vat: 0,
+      total: 0,
     },
     items: [],
     menu: false
@@ -319,6 +437,7 @@ export default {
   // Custom Methods and Functions
   methods: {
     createTable() {
+      console.log(this.procurement)
       let products = JSON.parse(this.procurement.products);
       this.originalData = null;
       for (const index in products) {
@@ -416,6 +535,14 @@ export default {
 
   // Computed Properties
   computed: {
+    unitDiscount() {
+      return (this.compliance.unit - this.compliance.discount).toFixed(2);
+    },
+
+    grandTotal() {
+      return (this.compliance.unit - this.compliance.discount + this.compliance.vat).toFixed(2);
+    },
+
     subTotal() {
       return this.items
         .map(item => this.subtotal(item))
