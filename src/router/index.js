@@ -13,6 +13,7 @@ import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue"
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
+import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
@@ -145,6 +146,12 @@ const routes = [
         path: "products",
         name: "view all products",
         component: Admin_Products,
+        props: true
+      },
+      {
+        path: "purchase_order",
+        name: "generate purchase order",
+        component: Admin_Purchase_Order,
         props: true
       },
       {
