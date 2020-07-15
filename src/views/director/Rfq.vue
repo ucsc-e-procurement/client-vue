@@ -20,6 +20,13 @@
                     readonly
                 ></v-text-field>
               </v-col>
+            </v-row>
+            <v-row v-if="!this.rfq.procurement_id.includes('DIM')">
+              <v-col style="text-align: center">
+                <v-btn color="blue darken-1" >Technical Specification</v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col cols="12" sm="12">
                   <v-data-table
                       :headers="headers"
