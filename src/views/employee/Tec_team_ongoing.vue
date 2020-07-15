@@ -93,7 +93,7 @@
         </v-dialog>
         <v-dialog v-model="tecReport" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
-                <v-toolbar dark color="primary">
+                <!-- <v-app-bar dark color="primary" fixed>
                 <v-btn icon dark @click="tecReport = false">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -102,8 +102,8 @@
                 <v-toolbar-items>
                     <v-btn dark text @click="tecReport = false">Save</v-btn>
                 </v-toolbar-items>
-                </v-toolbar>
-                <TecReport v-if="procurement" v-bind:procurement="procurement" v-bind:requisition="requisition" v-bind:tec_team="tec_team"/>
+                </v-app-bar> -->
+                <TecReport v-if="procurement" v-bind:procurement="procurement" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:closeTecReport="closeTecReport"/>
             </v-card>
         </v-dialog>
   </v-container>
@@ -181,6 +181,10 @@ export default {
       this.fetchTecTeam(this.procurement.tec_team_id)
       this.tecReport = true
       console.log(item)
+    },
+
+    closeTecReport: function () {
+      this.tecReport = false
     },
 
     fetchUnlockedProcurements(employee_id) {
