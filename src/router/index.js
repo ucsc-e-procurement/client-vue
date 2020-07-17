@@ -40,7 +40,7 @@ import Price_Schedule from "../views/supplier/PriceSchedule.vue";
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
-import Employee_Tec_Report from "../views/employee/Tec_Report.vue";
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -280,14 +280,14 @@ const routes = [
       },
       {
         path: "tecteam",
-        name: "default",
+        name: "tecteam",
         component: Employee_Tec_team
       },
       {
-        path: "tecteam/tecreport",
-        name: "default",
-        component: Employee_Tec_Report
-      }
+        path: "bidopeningteam",
+        name: "bigopeningteam",
+        component: Employee_Bid_Opening_Team
+      },
     ]
   },
 
