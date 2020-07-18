@@ -37,11 +37,9 @@
                             <BidOpeningTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.bid_opening_team_id != null" />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request Quotations</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="5">
-                            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-                            <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
-                            <v-btn text>Cancel</v-btn>
+                            <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">TEC Evaluation</v-stepper-step>
@@ -99,6 +97,7 @@ import AppointTechTeam from "./AppointTechTeam";
 import AppointBidOpeningTeam from "./AppointBidOpeningTeam";
 import TechTeam from "./TechTeam";
 import BidOpeningTeam from "./BidOpeningTeam";
+import Rfq from "./Rfq";
 /*
 
 // Validation Library - Vuelidate
@@ -125,7 +124,8 @@ export default {
     AppointBidOpeningTeam: AppointBidOpeningTeam,
     ProcurementMethod: ProcurementMethod,
     TechTeam: TechTeam,
-    BidOpeningTeam: BidOpeningTeam
+    BidOpeningTeam: BidOpeningTeam,
+    RFQ: Rfq,
   },
 
   // Data Variables and Values
@@ -135,6 +135,7 @@ export default {
     procurementId: "",
     requisitionData: "",
     isMounted: false,
+    rfqMounted: false,
     test: 0
   }),
 
@@ -168,7 +169,19 @@ export default {
       this.test = stepVal;
       this.isMounted = false;
       this.getRequisition();
-    }
+    },
+    getRfq(){
+      this.$http
+        .get(`/api/director/get_rfq_details?procId=${this.$route.query.proc_id}`)
+        .then(response => {
+          this.rfqData = response.data
+          this.rfqMounted = true;
+          console.log(this.rfq);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },
   },
 
   // Life Cycle Hooks
@@ -178,6 +191,8 @@ export default {
     this.procurementState = this.$route.query.stepper;
     this.stepperValue = this.$route.query.stepper;
     this.getRequisition();
+    this.getRfq();
+    console.log('>>>',this.$store.getters);
   },
   beforeMount() {},
   mounted() {
