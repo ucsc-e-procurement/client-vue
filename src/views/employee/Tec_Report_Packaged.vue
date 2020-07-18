@@ -103,28 +103,33 @@
             <v-row no-gutters>
                 <h5 class="headline pt-5 pb-5">Bids Recieved Before Closing Time</h5>
             </v-row>
-            <!-- <v-row>
+            <v-row>
                 <v-col  class="justify-center">
-                <template v-for="(product,key) in Object.values(procurement.bids)">
+                <template v-for="(bid,key) in bid_data">
                     <div :key="key">
                     <v-card flat>
                         <div class="text-h6">
-                            Item {{key+1}} - {{product[0].product_name}}
+                            Supplier {{key+1}} - {{bid.name}}
                         </div>
                         <v-simple-table>
                         <template v-slot:default>
                             <thead>
                             <tr>
-                                <th class="text-h6 text-left" width="300px">Supplier</th>
+                                <th class="text-h6 text-left" width="300px">Item</th>
                                 <th class="text-h6 text-left" width="250px">Quantity</th>
                                 <th class="text-h6 text-left" width="250px">Unit Price</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="bid in product" :key="bid.supplier_id">
-                                <td>{{ bid.supplier_name }}</td>
-                                <td>{{ bid.qty }}</td>
-                                <td>{{ bid.unit_price }}</td>
+                            <tr v-for="item in bid.bids" :key="item.product_id">
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.qty }}</td>
+                                <td>{{ item.unit_price }}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td class="text-h6 text-left">Total with VAT</td>
+                              <td class="text-h6 text-left">{{ bid.total_with_vat }}</td>
                             </tr>
                             </tbody>
                         </template>
@@ -135,7 +140,7 @@
                 </template>
                 </v-col>
             </v-row>
-            <br/> -->
+            <br/>
             <v-divider class="mt-1"></v-divider>
             <v-row no-gutters>
                 <h5 class="headline pt-5 pb-5">TEC Meeting Minutes</h5>
@@ -145,142 +150,134 @@
                 <h5 class="headline pt-5 pb-5">Bid Evaluation</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
-            <!-- <v-col  class="justify-center">
-                <template v-for="(product,key) in Object.values(procurement.bids)">
-                  <div :key="key">
-                    <div class="text-h6">
-                        Item {{key+1}} - {{product[0].product_name}}
-                    </div>
-                    <v-row no-gutters>
-                        <h5 class="headline pt-5 pb-5">Rejected Bids</h5>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                      <v-select
-                        item-text="supplier_name"
-                        item-value="bid_id"
-                        :items="bids[key]"
-                        label="Select suppliers to reject their bids"
-                        v-model="rejected[key]"
-                        multiple
-                        outlined
-                      ></v-select>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <template v-for="(bid,key1) in rejected_bids[key]">
-                            <div :key="key1">
-                            {{bid[key].supplier_name}}
-                            <v-text-field
-                                v-model="rejectReasons[key1]"
-                                label="Reason for rejecting supplier"
-                                outlined
-                                @input="getReasonForRejecting(key)"
-                            ></v-text-field>
-                          </div>
-                        </template>
-                        <v-card>
-                        <v-simple-table>
-                          <template v-slot:default>
-                            <thead>
-                              <tr>
-                                <th class="text-h6 text-left" width="500px">Supplier</th>
-                                <th class="text-h6 text-left" width="250px">Unit Price</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(item) in rejected_bids[key]" :key="item.name">
-                                <td>{{ item[key].supplier_name }}</td>
-                                <td>{{ item[key].unit_price }}</td>
-                              </tr>
-                            </tbody>
-                          </template>
-                        </v-simple-table>
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row no-gutters>
-                        <h5 class="headline pt-5 pb-5">Evaluated Substantially Responsive Bidders</h5>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <v-card >
-                        <v-simple-table>
-                          <template v-slot:default>
-                            <thead>
-                              <tr>
-                                <th class="text-h6 text-left" width="500px">Supplier</th>
-                                <th class="text-h6 text-left" width="250px">Unit Price</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(item) in responsive_bids[key]" :key="item.name">
-                                <td>{{ item[key].supplier_name }}</td>
-                                <td>{{ item[key].unit_price }}</td>
-                              </tr>
-                            </tbody>
-                          </template>
-                        </v-simple-table>
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row no-gutters>
-                        <h5 class="headline pt-5 pb-5">Recommended Bidder</h5>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                      <v-select
-                        item-text="supplier_name"
-                        item-value="bid_id"
-                        :items="responsive_bid_selection[key]"
-                        label="Select suppliers to recommend their bid"
-                        v-model="recommended[key]"
-                        multiple
-                        outlined
-                      ></v-select>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <template v-for="(bid,key) in recommended_bids[key]">
-                            <div :key="key">
-                            {{bid[0].supplier_name}}
-                            <v-text-field
-                                v-model="recommendReasons[key]"
-                                label="Reason for recommending supplier"
-                                outlined
-                                @input="getReasonForRecommending(key)"
-                            ></v-text-field>
-                          </div>
-                        </template>
-                        <v-card>
-                        <v-simple-table>
-                          <template v-slot:default>
-                            <thead>
-                              <tr>
-                                <th class="text-h6 text-left" width="500px">Supplier</th>
-                                <th class="text-h6 text-left" width="500px">Address</th>
-                                <th class="text-h6 text-left" width="250px">Unit Price</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(item) in recommended_bids[key]" :key="item.name">
-                                <td>{{ item[0].supplier_name }}</td>
-                                <td>{{ item[0].supplier_address }}</td>
-                                <td>{{ item[0].unit_price }}</td>
-                              </tr>
-                            </tbody>
-                          </template>
-                        </v-simple-table>
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-divider class="mt-1"></v-divider>
-                    <br/>
-                  </div>
-                </template>
-            </v-col> -->
+            <v-col  class="justify-center">
+                <v-row no-gutters>
+                    <h5 class="headline pt-5 pb-5">Rejected Bids</h5>
+                </v-row>
+                <v-row>
+                  <v-col>
+                  <v-select
+                    item-text="supplier_name"
+                    item-value="bid_id"
+                    :items="bids"
+                    label="Select suppliers to reject their bids"
+                    v-model="rejected"
+                    multiple
+                    outlined
+                  ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <template v-for="(bid,key) in rejected_bids">
+                        <div :key="key">
+                        {{bid.name}}
+                        <v-text-field
+                            v-model="rejectReasons[key]"
+                            label="Reason for rejecting supplier"
+                            outlined
+                            @input="getReasonForRejecting(key)"
+                        ></v-text-field>
+                      </div>
+                    </template>
+                    <v-card>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-h6 text-left" width="500px">Supplier</th>
+                            <th class="text-h6 text-left" width="250px">Total with VAT</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(item) in rejected_bids" :key="item.name">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.total_with_vat }}</td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <h5 class="headline pt-5 pb-5">Evaluated Substantially Responsive Bidders</h5>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-card >
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-h6 text-left" width="500px">Supplier</th>
+                            <th class="text-h6 text-left" width="250px">Total with VAT</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(item) in responsive_bids" :key="item.name">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.total_with_vat }}</td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                    <h5 class="headline pt-5 pb-5">Recommended Bidder</h5>
+                </v-row>
+                <v-row>
+                  <v-col>
+                  <v-select
+                    item-text="supplier_name"
+                    item-value="bid_id"
+                    :items="responsive_bid_selection"
+                    label="Select suppliers to recommend their bid"
+                    v-model="recommended"
+                    outlined
+                  ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <template v-for="(bid,key) in recommended_bids">
+                        <div :key="key">
+                        {{bid.name}}
+                        <v-text-field
+                            v-model="recommendReasons[key]"
+                            label="Reason for recommending supplier"
+                            outlined
+                            @input="getReasonForRecommending(key)"
+                        ></v-text-field>
+                      </div>
+                    </template>
+                    <v-card>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-h6 text-left" width="500px">Supplier</th>
+                            <th class="text-h6 text-left" width="500px">Address</th>
+                            <th class="text-h6 text-left" width="250px">Total with VAT</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(item) in recommended_bids" :key="item.name">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.address }}</td>
+                            <td>{{ item.total_with_vat }}</td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                    </v-card> 
+                  </v-col>
+                </v-row>
+                <v-divider class="mt-1"></v-divider>
+                <br/>
+            </v-col>
             <v-divider class="mt-1"></v-divider>
             <v-row no-gutters>
                 <h5 class="headline pt-5 pb-5">TEC Team Recommendation</h5>
@@ -414,160 +411,81 @@ export default {
   // Computed Properties
   computed: {
     //get bid_id and supplier_name for each bid -packaged
-    // bids () {
-    //   var bids = []
-    //   console.log('supplier bids', this.procurement.supplier_bids)
-    //   Object.values(this.procurement.supplier_bids).forEach(bid => {
-    //     bids.push({bid_id: bid[0].bid_id, supplier_name: bid[0].supplier_name})
-    //   })
-    //   console.log('bids', bids)
-    //   return bids
-    // },
-
-    //item-wise
     bids () {
-      var len = Object.values(this.procurement.bids).length
       var bids = []
-      console.log('supplier bids', this.procurement.supplier_bids)
-      for (let i = 0; i < len; i++) {
-          var suppliers = []
-          Object.values(this.procurement.supplier_bids).forEach(bid => {
-          suppliers.push({bid_id: bid[0].bid_id, supplier_name: bid[0].supplier_name})
-        })
-        console.log('supp', suppliers)
-        bids[i] = suppliers
-      }
+      this.bid_data.forEach(bid => {
+        if(!this.recommended || !this.recommended.includes(bid.bid_id)) {
+          bids.push({bid_id: bid.bid_id, supplier_name: bid.name})
+        }
+      })
       console.log('bids', bids)
       return bids
     },
 
     //get the rejected bids - packaged
-    // rejected_bids () {
-    //   var bids = []
-    //   console.log('supplier bids', Object.values(this.procurement.supplier_bids))
-    //   bids = Object.values(this.procurement.supplier_bids).filter(bid => {
-    //     console.log(bid[0].bid_id)
-    //     console.log(this.rejected)
-    //     return this.rejected.includes(bid[0].bid_id)
-    //   })
-    //   console.log('rejected bids', bids)
-    //   // bids.forEach(bid => {
-    //   //   bid[0].reason_for_rejecting = ""
-    //   // })
-    //   return bids
-    // },
-
-
-    //item-wise
     rejected_bids () {
-      var len = Object.values(this.procurement.bids).length
       var bids = []
-      for (let i = 0; i < len; i++) {
-        var suppliers = [];
-        console.log('supplier bids in rejected', Object.values(this.procurement.supplier_bids))
-        if(this.rejected[i]){
-          suppliers = Object.values(this.procurement.supplier_bids).filter(bid => {
-          return this.rejected[i].includes(bid[0].bid_id)
-        })
-        console.log('supppp', suppliers)
-        bids[i] = suppliers
-        }
-      }
-      console.log('rejected bids123', bids)
+      bids = this.bid_data.filter(bid => {
+        console.log(this.rejected)
+        return this.rejected.includes(bid.bid_id)
+      })
+      console.log('rejected bids', bids)
+      // bids.forEach(bid => {
+      //   bid[0].reason_for_rejecting = ""
+      // })
       return bids
     },
 
-    //get responsive bids - !rejected_bids
-    // responsive_bids () {
-    //   var bids = []
-    //   console.log('supplier bids', Object.values(this.procurement.supplier_bids))
-    //   bids = Object.values(this.procurement.supplier_bids).filter(bid => {
-    //     console.log(bid[0].bid_id)
-    //     console.log(this.rejected)
-    //     return !this.rejected.includes(bid[0].bid_id)
-    //   })
-    //   console.log('responsive bids', bids)
-    //   return bids
-    // },
-
+    // get responsive bids - !rejected_bids
     responsive_bids () {
       var bids = []
-      var len = Object.values(this.procurement.bids).length
-      console.log('supplier bids', Object.values(this.procurement.supplier_bids))
-      for (let i = 0; i < len; i++) {
-        var suppliers = [];
-        if(this.rejected[i]){
-          suppliers = Object.values(this.procurement.supplier_bids).filter(bid => {
-            console.log(bid[0].bid_id)
-            console.log(this.rejected)
-            return !this.rejected[i].includes(bid[0].bid_id)
-          })
-          bids[i] = suppliers
-        }
-        else{
-          console.log('responsive else',Object.values(this.procurement.supplier_bids))
-          bids[i] = Object.values(this.procurement.supplier_bids)
-        }
-      }
+      bids = this.bid_data.filter(bid => {
+        console.log(this.rejected)
+        return !this.rejected.includes(bid.bid_id)
+      })
       console.log('responsive bids', bids)
       return bids
     },
 
     //packaged
-    // responsive_bid_selection () {
-    //   var bids = []
-    //   Object.values(this.responsive_bids).forEach(bid => {
-    //     bids.push({bid_id: bid[0].bid_id, supplier_name: bid[0].supplier_name})
-    //   })
-    //   console.log('bids', bids)
-    //   return bids
-    // },
-
-  //item-wise
     responsive_bid_selection () {
       var bids = []
-      var len = Object.values(this.procurement.bids).length
-      for (let i = 0; i < len; i++) {
-        var suppliers = []
-        Object.values(this.responsive_bids[i]).forEach(bid => {
-          suppliers.push({bid_id: bid[0].bid_id, supplier_name: bid[0].supplier_name})
-        })
-        bids[i] = suppliers
-      }
+      this.responsive_bids.forEach(bid => {
+        bids.push({bid_id: bid.bid_id, supplier_name: bid.name})
+      })
       console.log('bids', bids)
       return bids
     },
 
     //packaged
-    // recommended_bids () {
-    //   var bids = []
-    //   console.log('supplier bids', Object.values(this.procurement.supplier_bids))
-    //   bids = Object.values(this.procurement.supplier_bids).filter(bid => {
-    //     console.log(this.recommended)
-    //     return this.recommended.includes(bid[0].bid_id)
-    //   })
-    //   console.log('recommended bids', bids)
-    //   return bids
-    // },
-
-    //item-wise
     recommended_bids () {
       var bids = []
-      var len = Object.values(this.procurement.bids).length
-      for (let i = 0; i < len; i++) {
-        var suppliers = []
-        console.log('supplier bids', Object.values(this.procurement.supplier_bids))
-        if(this.recommended[i]){
-          suppliers = Object.values(this.procurement.supplier_bids).filter(bid => {
-            console.log(this.recommended)
-            return this.recommended[i].includes(bid[i].bid_id)
-          })
-        }
-        bids[i] = suppliers
-      }
+      bids = this.bid_data.filter(bid => {
+        console.log(this.recommended)
+        return this.recommended.includes(bid.bid_id)
+      })
       console.log('recommended bids', bids)
       return bids
     },
+
+    //item-wise
+    // recommended_bids () {
+    //   var bids = []
+    //   var len = Object.values(this.procurement.bids).length
+    //   for (let i = 0; i < len; i++) {
+    //     var suppliers = []
+    //     console.log('supplier bids', Object.values(this.procurement.supplier_bids))
+    //     if(this.recommended[i]){
+    //       suppliers = Object.values(this.procurement.supplier_bids).filter(bid => {
+    //         console.log(this.recommended)
+    //         return this.recommended[i].includes(bid[i].bid_id)
+    //       })
+    //     }
+    //     bids[i] = suppliers
+    //   }
+    //   console.log('recommended bids', bids)
+    //   return bids
+    // },
 
     rejected_reasons () {
       var arr = []
