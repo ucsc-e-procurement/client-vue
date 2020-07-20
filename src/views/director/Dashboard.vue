@@ -74,7 +74,7 @@
             <v-row></v-row>
             <v-row>
               <v-col cols="6">
-                <v-card class="scroll" min-height="450px">
+                <v-card class="scroll">
                   <v-card-title class="text-center justify-center py-6" height="50%" color="blue lighten-2">
                       <h4 class="font-weight-bold ">Approved Requisitions</h4>
                   </v-card-title>
@@ -127,38 +127,29 @@
                 </v-dialog>
               </v-col>
               <v-col cols="6">
-                <v-card
-                  class="mx-auto text-center"
-                  color="blue"
-                  dark
-                >
-                <v-card-text>
-                  <v-sheet color="rgba(0, 0, 0, .12)">
-                    <v-sparkline
-                      :value="values"
-                      color="rgba(255, 255, 255, .7)"
-                      height="100"
-                      padding="24"
-                      stroke-linecap="round"
-                      smooth
-                    >
-                      <template v-slot:label="item">
-                        ${{ item.value }}
-                      </template>
-                    </v-sparkline>
-                  </v-sheet>
-                </v-card-text>
-
-                <v-card-text>
-                  <div class="display-1 font-weight-thin">Sales Last 24h</div>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions class="justify-center">
-                  <v-btn block text>Go to Report</v-btn>
-                </v-card-actions>
-              </v-card>
+                <v-card>
+                  <v-card-title>
+                    <v-text-field
+                      v-model="search"
+                      label="Search"
+                      single-line
+                      hide-details
+                    ></v-text-field>
+                  </v-card-title>
+                  <v-data-table
+                    :headers="headers"
+                    :items="recentPurchases"
+                    :search="search"
+                    v-if="isMounted"
+                  >
+                  </v-data-table>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-row>
+              <v-col cols="12" md="12">
+                <!-- bury all your secrets in my skin, go away with innocence and leave me with my sins -->
               </v-col>
             </v-row>
           </v-container>
@@ -209,27 +200,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    // Dummy Data
-    width: 2,
-    radius: 10,
-    padding: 8,
-    lineCap: "round",
-    gradient: gradients[5],
-    value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
-    gradientDirection: "top",
-    gradients,
-    fill: false,
-    type: "trend",
-    autoLineWidth: false,
-    values: [
-        423,
-        446,
-        675,
-        510,
-        590,
-        610,
-        760,
-    ],
+    search: "",
     requisitionCount: '',
     ongoingProcurementCount: '',
     completedProcurementCount: '',
@@ -238,6 +209,18 @@ export default {
     isMounted: false,
     approvedRequisitionsDialog: false,
     approvedRequisition: '',
+    recentPurchases: [],
+
+    headers: [
+      {
+        text: "Product",
+        align: "start",
+        value: "product_name"
+      },
+      { text: "Supplier", value: "name" },
+      { text: "Quantity", value: "quantity"},
+      { text: "Delivery Date", value: "delivery_date" },
+    ]
   }),
 
   // Custom Methods and Functions
@@ -246,7 +229,7 @@ export default {
       this.$http
         .get("/api/director/procurements")
         .then(response => {
-          // console.log(response);
+          console.log(response);
           this.ongoingProcurementCount = response.data.filter(item => item.status == 'on-going').length;
           this.completedProcurementCount = response.data.filter(item => item.status == 'completed').length;
           this.terminatedProcurementCount = response.data.filter(item => item.status == 'terminated').length;
@@ -273,7 +256,21 @@ export default {
       this.approvedRequisition = item;
       this.isMounted = true;
       this.approvedRequisitionsDialog = true;
-    }
+    },
+
+    getRecentProducts(){
+      this.isMounted = true;
+      this.$http
+        .get("/api/director/get_recent_products")
+        .then(response => {
+          console.log(response);
+          this.recentPurchases = response.data;
+          this.isMounted = true;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },
   },
 
   // Life Cycle Hooks
@@ -281,6 +278,7 @@ export default {
   created() {
     this.getProcurements();
     this.getApprovedRequisitions();
+    this.getRecentProducts();
   },
   beforeMount() {},
   mounted() {},
