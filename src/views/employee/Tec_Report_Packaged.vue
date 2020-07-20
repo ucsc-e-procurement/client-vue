@@ -1,5 +1,5 @@
 <template>
-    <v-card v-if="this.requisition && this.procurement" class="mx-auto" max-width=1500>
+    <v-card v-if="this.requisition && this.procurement && this.bid_data && this.tec_report_data" class="mx-auto" max-width=1500>
         <v-app-bar dark color="primary" fixed>
           <v-btn icon dark @click="closeTecReport">
               <v-icon>mdi-close</v-icon>
@@ -15,7 +15,7 @@
                 <h3 class="text-h4 justify-center">Bid Evaluation Report</h3>
             </v-row>
             <v-divider class="mt-1"></v-divider>
-        <v-form>
+        <v-form ref="form">
              <v-row no-gutters>
                 <h5 class="headline pt-5 pb-5">Procurement Details</h5>
             </v-row>    
@@ -154,7 +154,7 @@
                 <v-row no-gutters>
                     <h5 class="headline pt-5 pb-5">Rejected Bids</h5>
                 </v-row>
-                <v-row>
+                <v-row v-if="!tec_report_data">
                   <v-col>
                   <v-select
                     item-text="supplier_name"
@@ -164,6 +164,7 @@
                     v-model="rejected"
                     multiple
                     outlined
+                    :rules="[rules.required]"
                   ></v-select>
                   </v-col>
                 </v-row>
@@ -176,6 +177,8 @@
                             v-model="rejectReasons[key]"
                             label="Reason for rejecting supplier"
                             outlined
+                            :rules="[rules.required]"
+                            :readonly="tec_report_data && tec_report_data.status == 'saved'"
                             @input="getReasonForRejecting(key)"
                         ></v-text-field>
                       </div>
@@ -228,7 +231,7 @@
                 <v-row no-gutters>
                     <h5 class="headline pt-5 pb-5">Recommended Bidder</h5>
                 </v-row>
-                <v-row>
+                <v-row v-if="!tec_report_data">
                   <v-col>
                   <v-select
                     item-text="supplier_name"
@@ -237,6 +240,8 @@
                     label="Select suppliers to recommend their bid"
                     v-model="recommended"
                     outlined
+                    :rules="[rules.required]"
+                    required
                   ></v-select>
                   </v-col>
                 </v-row>
@@ -249,6 +254,8 @@
                             v-model="recommendReasons[key]"
                             label="Reason for recommending supplier"
                             outlined
+                            :rules="[rules.required]"
+                            :readonly="tec_report_data && tec_report_data.status == 'saved'"
                             @input="getReasonForRecommending(key)"
                         ></v-text-field>
                       </div>
@@ -287,15 +294,44 @@
                 <template v-for="(member,key) in this.tec_team">
                   <div :key="key">
                     {{member.employee_name}} - {{member.capacity}}
-                    <v-radio-group v-model="row[key]" row :disabled="user != member.employee_id">
+                    <v-radio-group 
+                      v-if="user != member.employee_id" 
+                      v-model="row[key]" 
+                      row 
+                      disabled 
+                      @input="tecRecommendation(key)" 
+                    >
                       <v-radio label="Agree" value="agree"></v-radio>
                       <v-radio label="Disagree" value="disagree"></v-radio>
                     </v-radio-group>
+                    <v-radio-group 
+                      v-else
+                      v-model="row[key]" 
+                      row  
+                      @input="tecRecommendation(key)" 
+                      :rules="[rules.required]"
+                      :readonly="tec_report_data && tec_report_data.status == 'saved'"
+                    >
+                      <v-radio label="Agree" value="agree"></v-radio>
+                      <v-radio label="Disagree" value="disagree"></v-radio>
+                    </v-radio-group>
+
                     <v-text-field
+                        v-if="user != member.employee_id"
                         v-model="tecTeamRemarks[key]"
                         label="Remarks"
                         outlined
-                        :disabled="user != member.employee_id"
+                        @input="tecRecommendation(key)"
+                        disabled
+                    ></v-text-field>
+                    <v-text-field
+                        v-else
+                        v-model="tecTeamRemarks[key]"
+                        label="Remarks"
+                        outlined
+                        :rules="[rules.required]"
+                        :readonly="tec_report_data && tec_report_data.status == 'saved'"
+                        @input="tecRecommendation(key)"
                     ></v-text-field>
                   </div>
                 </template>
@@ -344,10 +380,8 @@
                     outlined
                     disabled
                 ></v-text-field>
-                </v-col>
-                
-            </v-row>
-            
+                </v-col> 
+            </v-row>            
         </v-form>   
         </v-container>
     </v-card>
@@ -360,7 +394,7 @@ export default {
   // Props Received
   name: 'Tec_Report',
 
-  props: ['procurement', 'bid_data','requisition', 'tec_team', 'closeTecReport'],
+  props: ['procurement', 'bid_data','requisition', 'tec_team', 'tec_report_data','closeTecReport'],
 
   // Imported Components
   components: {},
@@ -372,30 +406,63 @@ export default {
     //tec_team: this.tec_team,
     user: "emp00005",
     //user: this.$store.getters.user.employee_id,
-    items: [{product_name:'prod 1', qty: '5'}],
-    team: [{name: 'name1', designation: 'designation 1', capasity: 'chairman'}, {name: 'name2', designation: 'designation 2', capasity: 'member'}],
-    rejected: [],
-    recommended: [],
+    //rejected: [],
+    //recommended: [],
     reason_for_rejecting: [],
-    rejectReasons: [],
-    recommendReasons: [],
-    tecTeamRemarks: [],
-    row:[],
+    reason_for_recommending: [],
+    //rejectReasons: [],
+    //recommendReasons: [],
+    //tecTeamRemarks: [],
+    //row: [],
+    tec_recommendation:[],
+    rules: {required: value => !!value || 'Required.'}
   }),
 
   // Custom Methods and Functions
   methods: {
     getReasonForRejecting(key) {
-      this.reason_for_rejecting[key] = {bid_id: this.rejected_bids[key][0].bid_id, supplier_name: this.rejected_bids[key][0].supplier_name, reason: this.rejectReasons[key]}
-      console.log('onchange',this.reason_for_rejecting)
+      this.reason_for_rejecting[key] = {bid_id: this.rejected_bids[key].bid_id, name: this.rejected_bids[key].name, reason: this.rejectReasons[key]}
+      console.log('onchange reject',this.reason_for_rejecting)
     },
 
     getReasonForRecommending(key) {
-      console.log(this.recommendReasons[key])
+      this.reason_for_recommending[key] = {bid_id: this.recommended_bids[key].bid_id, name: this.recommended_bids[key].name, reason: this.recommendReasons[key]}
+      console.log('on change recommend', this.reason_for_recommending)
+    },
+
+    tecRecommendation(key) {
+      this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.row[key], remarks: this.tecTeamRemarks[key]}
+      console.log('on change tec recommendation', this.tec_recommendation)
     },
 
     save() {
-      console.log('Save', this.rejected, this.rejectReasons, this.recommended, this.recommendReasons)
+      var valid = this.$refs.form.validate()
+      if(valid) {
+        console.log('valid')
+        if(this.tec_report_data && this.tec_report_data.status == 'saved'){
+          //update
+          console.log('update tec report')
+        }
+        else{
+          this.$http.post('/api/tec_team/save_tec_report', {
+                rejectedbids: this.rejected,
+                reasonsForRejecting: JSON.stringify(this.reason_for_rejecting),
+                recommendedbids: this.recommended,
+                reasonForRecommending: JSON.stringify(this.reason_for_recommending),
+                tecRecommendation: JSON.stringify(this.tec_recommendation),
+                tecTeamId: this.procurement.tec_team_id,
+                procurementId: this.procurement.procurement_id
+            })
+            .then(response => {
+                console.log(response);
+                this.people = response.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+      }
+      console.log('Save', this.rejected, this.reason_for_rejecting, this.recommended, this.reason_for_recommending, this.tec_recommendation)
     }
   },
 
@@ -425,15 +492,12 @@ export default {
     //get the rejected bids - packaged
     rejected_bids () {
       var bids = []
-      bids = this.bid_data.filter(bid => {
-        console.log(this.rejected)
-        return this.rejected.includes(bid.bid_id)
-      })
-      console.log('rejected bids', bids)
-      // bids.forEach(bid => {
-      //   bid[0].reason_for_rejecting = ""
-      // })
-      return bids
+        bids = this.bid_data.filter(bid => {
+          console.log('rejected',this.rejected)
+          return this.rejected.includes(bid.bid_id)
+        })
+        console.log('rejected bids', bids)
+        return bids
     },
 
     // get responsive bids - !rejected_bids
@@ -468,33 +532,129 @@ export default {
       return bids
     },
 
-    //item-wise
-    // recommended_bids () {
-    //   var bids = []
-    //   var len = Object.values(this.procurement.bids).length
-    //   for (let i = 0; i < len; i++) {
-    //     var suppliers = []
-    //     console.log('supplier bids', Object.values(this.procurement.supplier_bids))
-    //     if(this.recommended[i]){
-    //       suppliers = Object.values(this.procurement.supplier_bids).filter(bid => {
-    //         console.log(this.recommended)
-    //         return this.recommended[i].includes(bid[i].bid_id)
-    //       })
-    //     }
-    //     bids[i] = suppliers
-    //   }
-    //   console.log('recommended bids', bids)
-    //   return bids
-    // },
+  //radio buttons
+    row () {
+      if(this.tec_report_data){
+        var arr =[]
+        console.log('heeee', this.tec_report_data)
+        this.tec_report_data.tec_recommendation.forEach(item => {
+          if(item){
+            arr.push(item.decision)
+          }
+          else{
+            arr.push('')
+          }
+        })
+        console.log('row', arr)
+        return arr
+      }
+      else{
+        return []
+      }
+    },
 
-    rejected_reasons () {
-      var arr = []
-      this.reason_for_rejecting.forEach(reason => {
-        arr.push(reason)
-      })
-      console.log('rejected reasons', arr)
-      return arr
-    }
+    tecTeamRemarks () {
+      if(this.tec_report_data){
+        var arr =[]
+        console.log('heeee', this.tec_report_data)
+        this.tec_report_data.tec_recommendation.forEach(item => {
+          if(item){
+            arr.push(item.remarks)
+          }
+          else{
+            arr.push('')
+          }
+        })
+        console.log('remarks', arr)
+        return arr
+      }
+      else{
+        return []
+      }
+    },
+
+    //values for text fields
+    rejectReasons () {
+      if(this.tec_report_data){
+        var arr =[]
+        console.log('heeee', this.tec_report_data)
+        this.tec_report_data.rejected_bids.forEach(item => {
+          if(item){
+            arr.push(item.reason)
+          }
+          else{
+            arr.push('')
+          }
+        })
+        console.log('reject reasons', arr)
+        return arr
+      }
+      else{
+        return []
+      }
+    },
+
+    //values for rejected array
+    rejected () {
+      if(this.tec_report_data){
+        var arr =[]
+        console.log('heeee', this.tec_report_data)
+        this.tec_report_data.rejected_bids.forEach(item => {
+          if(item){
+            arr.push(item.bid_id)
+          }
+          else{
+            arr.push('')
+          }
+        })
+        console.log('rejected', arr)
+        return arr
+      }
+      else{
+        return []
+      }
+    },
+
+    recommended () {
+      if(this.tec_report_data){
+        var arr =[]
+        console.log('heeee', this.tec_report_data)
+        this.tec_report_data.recommended_bids.forEach(item => {
+          if(item){
+            arr.push(item.bid_id)
+          }
+          else{
+            arr.push('')
+          }
+        })
+        console.log('recommended', arr)
+        return arr
+      }
+      else{
+        return []
+      }
+    },
+
+    recommendReasons () {
+      if(this.tec_report_data){
+        var arr =[]
+        console.log('heeee', this.tec_report_data)
+        this.tec_report_data.recommended_bids.forEach(item => {
+          if(item){
+            arr.push(item.reason)
+          }
+          else{
+            arr.push('')
+          }
+        })
+        console.log('recommended reasons', arr)
+        return arr
+      }
+      else{
+        return []
+      }
+    },
   }
+
 }
 </script>

@@ -103,8 +103,8 @@
                     <v-btn dark text @click="tecReport = false">Save</v-btn>
                 </v-toolbar-items>
                 </v-app-bar> -->
-                <TecReport v-if="procurement && procurement.bid_type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:closeTecReport="closeTecReport"/>
-                <TecReportPackaged v-if="procurement && procurement.bid_type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:closeTecReport="closeTecReport"/>
+                <TecReport v-if="procurement && procurement.bid_type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data" v-bind:closeTecReport="closeTecReport"/>
+                <TecReportPackaged v-if="procurement && procurement.bid_type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data" v-bind:closeTecReport="closeTecReport"/>
             </v-card>
         </v-dialog>
   </v-container>
@@ -152,6 +152,7 @@ export default {
     requisition: null,
     tec_team: null,
     bid_data: null,
+    tec_report_data: null,
     search: '',
     ongoingHeaders: [
         { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
@@ -188,6 +189,7 @@ export default {
       }
       this.fetchRequisition(this.procurement.requisition_id)
       this.fetchTecTeam(this.procurement.tec_team_id)
+      this.fetchTecReport(this.procurement.procurement_id)
       this.tecReport = true
       console.log(item)
     },
@@ -227,7 +229,6 @@ export default {
             }
         });
         console.log(this.procurements)
-        //console.log(Object.values(this.procurements[0].bids))
       })
       .catch(error => {
         console.log(error);
@@ -304,6 +305,25 @@ export default {
         this.tec_team = JSON.parse(this.tec_team.team)
         console.log(this.tec_team)
         //console.log(Object.values(this.procurements[0].bids))
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+
+    fetchTecReport(procurement_id) {
+      this.$http.get('/api/tec_team/get_tec_report', {
+        params: {
+          id: procurement_id
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.tec_report_data = response.data[0]
+        this.tec_report_data.rejected_bids = this.tec_report_data.rejected_bids ? JSON.parse(this.tec_report_data.rejected_bids) : []
+        this.tec_report_data.recommended_bids = this.tec_report_data.recommended_bids ? JSON.parse(this.tec_report_data.recommended_bids) : []
+        this.tec_report_data.tec_recommendation = this.tec_report_data.tec_recommendation ? JSON.parse(this.tec_report_data.tec_recommendation) : []
+        console.log('tec report data',this.tec_report_data)
       })
       .catch(error => {
         console.log(error);
