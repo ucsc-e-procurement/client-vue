@@ -1,12 +1,12 @@
 <template>
-    <v-card v-if="this.requisition && this.procurement && this.bid_data && this.tec_report_data" class="mx-auto" max-width=1500>
+    <v-card v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500>
         <v-app-bar dark color="primary" fixed>
           <v-btn icon dark @click="closeTecReport">
               <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>TEC Report</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
+          <v-toolbar-items v-if="! filled">
               <v-btn dark text @click="save">Save</v-btn>
           </v-toolbar-items>
           </v-app-bar>
@@ -174,12 +174,12 @@
                         <div :key="key">
                         {{bid.name}}
                         <v-text-field
-                            v-model="rejectReasons[key]"
+                            :value="tec_report_data ? rejected_reasons[key] : rejectReasons[key]"
                             label="Reason for rejecting supplier"
                             outlined
                             :rules="[rules.required]"
                             :readonly="tec_report_data && tec_report_data.status == 'saved'"
-                            @input="getReasonForRejecting(key)"
+                            @input="getReasonForRejecting($event, key)"
                         ></v-text-field>
                       </div>
                     </template>
@@ -251,12 +251,12 @@
                         <div :key="key">
                         {{bid.name}}
                         <v-text-field
-                            v-model="recommendReasons[key]"
+                            :value="tec_report_data ? recommended_reasons[key] : recommendReasons[key]"
                             label="Reason for recommending supplier"
                             outlined
                             :rules="[rules.required]"
                             :readonly="tec_report_data && tec_report_data.status == 'saved'"
-                            @input="getReasonForRecommending(key)"
+                            @input="getReasonForRecommending($event, key)"
                         ></v-text-field>
                       </div>
                     </template>
@@ -294,9 +294,10 @@
                 <template v-for="(member,key) in this.tec_team">
                   <div :key="key">
                     {{member.employee_name}} - {{member.capacity}}
+                    <!-- radio group if not logged in user -->
                     <v-radio-group 
                       v-if="user != member.employee_id" 
-                      v-model="row[key]" 
+                      :value="tec_approval[key]"  
                       row 
                       disabled 
                       @input="tecRecommendation(key)" 
@@ -304,13 +305,14 @@
                       <v-radio label="Agree" value="agree"></v-radio>
                       <v-radio label="Disagree" value="disagree"></v-radio>
                     </v-radio-group>
+                    <!-- radio group if logged in user -->
                     <v-radio-group 
-                      v-else
-                      v-model="row[key]" 
+                      v-if="user == member.employee_id"
+                      :value="tec_report_data ? tec_approval[key] : row[key]"
                       row  
-                      @input="tecRecommendation(key)" 
                       :rules="[rules.required]"
-                      :readonly="tec_report_data && tec_report_data.status == 'saved'"
+                      :readonly="tec_report_data && tec_report_data.status == 'saved' && filled"
+                      @change="tecApproval($event, key)"
                     >
                       <v-radio label="Agree" value="agree"></v-radio>
                       <v-radio label="Disagree" value="disagree"></v-radio>
@@ -318,7 +320,7 @@
 
                     <v-text-field
                         v-if="user != member.employee_id"
-                        v-model="tecTeamRemarks[key]"
+                        :value="tec_remarks[key]"
                         label="Remarks"
                         outlined
                         @input="tecRecommendation(key)"
@@ -326,12 +328,12 @@
                     ></v-text-field>
                     <v-text-field
                         v-else
-                        v-model="tecTeamRemarks[key]"
+                        :value="tec_report_data ? tec_remarks[key] : tecTeamRemarks[key]"
                         label="Remarks"
                         outlined
                         :rules="[rules.required]"
-                        :readonly="tec_report_data && tec_report_data.status == 'saved'"
-                        @input="tecRecommendation(key)"
+                        :readonly="tec_report_data && tec_report_data.status == 'saved' && filled"
+                        @input="tecRecommendation($event, key)"
                     ></v-text-field>
                   </div>
                 </template>
@@ -406,33 +408,42 @@ export default {
     //tec_team: this.tec_team,
     user: "emp00005",
     //user: this.$store.getters.user.employee_id,
-    //rejected: [],
-    //recommended: [],
+    rejected: [],
+    recommended: [],
     reason_for_rejecting: [],
     reason_for_recommending: [],
-    //rejectReasons: [],
-    //recommendReasons: [],
-    //tecTeamRemarks: [],
-    //row: [],
+    rejectReasons: [],
+    recommendReasons: [],
+    tecTeamRemarks: [],
+    row: [],
     tec_recommendation:[],
     rules: {required: value => !!value || 'Required.'}
   }),
 
   // Custom Methods and Functions
   methods: {
-    getReasonForRejecting(key) {
+    getReasonForRejecting(val, key) {
+      this.rejectReasons[key] = val
       this.reason_for_rejecting[key] = {bid_id: this.rejected_bids[key].bid_id, name: this.rejected_bids[key].name, reason: this.rejectReasons[key]}
       console.log('onchange reject',this.reason_for_rejecting)
     },
 
-    getReasonForRecommending(key) {
+    getReasonForRecommending(val, key) {
+      this.recommendReasons[key] = val
       this.reason_for_recommending[key] = {bid_id: this.recommended_bids[key].bid_id, name: this.recommended_bids[key].name, reason: this.recommendReasons[key]}
       console.log('on change recommend', this.reason_for_recommending)
     },
 
-    tecRecommendation(key) {
+    tecRecommendation(val, key) {
+      this.tecTeamRemarks[key] = val
       this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.row[key], remarks: this.tecTeamRemarks[key]}
       console.log('on change tec recommendation', this.tec_recommendation)
+    },
+
+    tecApproval(val, key) {
+      this.row[key] = val
+      this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.row[key], remarks: this.tecTeamRemarks[key]}
+      console.log('on change tec approval', this.row)
     },
 
     save() {
@@ -441,7 +452,24 @@ export default {
         console.log('valid')
         if(this.tec_report_data && this.tec_report_data.status == 'saved'){
           //update
+          this.tec_team.forEach((item, key) => {
+            console.log(key, item)
+            if(!this.tec_recommendation[key]) {
+              this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.tec_approval[key], remarks: this.tec_remarks[key]} 
+            }
+          })
           console.log('update tec report')
+          this.$http.post('/api/tec_team/update_tec_report', {
+                tecRecommendation: JSON.stringify(this.tec_recommendation),
+                procurementId: this.procurement.procurement_id
+            })
+            .then(response => {
+                console.log(response);
+                this.people = response.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
         }
         else{
           this.$http.post('/api/tec_team/save_tec_report', {
@@ -461,6 +489,7 @@ export default {
                 console.log(err);
             })
         }
+        this.closeTecReport()
       }
       console.log('Save', this.rejected, this.reason_for_rejecting, this.recommended, this.reason_for_recommending, this.tec_recommendation)
     }
@@ -492,10 +521,19 @@ export default {
     //get the rejected bids - packaged
     rejected_bids () {
       var bids = []
-        bids = this.bid_data.filter(bid => {
-          console.log('rejected',this.rejected)
-          return this.rejected.includes(bid.bid_id)
-        })
+        if(this.tec_report_data) {
+          //rejected_fetched
+          bids = this.bid_data.filter(bid => {
+            console.log('rejected',this.rejected)
+            return this.rejected_fetched.includes(bid.bid_id)
+          })
+        }
+        else{
+          bids = this.bid_data.filter(bid => {
+            console.log('rejected',this.rejected)
+            return this.rejected.includes(bid.bid_id)
+          })
+        }
         console.log('rejected bids', bids)
         return bids
     },
@@ -503,10 +541,19 @@ export default {
     // get responsive bids - !rejected_bids
     responsive_bids () {
       var bids = []
-      bids = this.bid_data.filter(bid => {
-        console.log(this.rejected)
-        return !this.rejected.includes(bid.bid_id)
-      })
+      if(this.tec_report_data) {
+        //
+        bids = this.bid_data.filter(bid => {
+          console.log('rejected',this.rejected)
+          return !this.rejected_fetched.includes(bid.bid_id)
+        })
+      }
+      else {
+        bids = this.bid_data.filter(bid => {
+          console.log(this.rejected)
+          return !this.rejected.includes(bid.bid_id)
+        })
+      }
       console.log('responsive bids', bids)
       return bids
     },
@@ -524,16 +571,25 @@ export default {
     //packaged
     recommended_bids () {
       var bids = []
-      bids = this.bid_data.filter(bid => {
-        console.log(this.recommended)
-        return this.recommended.includes(bid.bid_id)
-      })
+      if(this.tec_report_data) {
+        //
+        bids = this.bid_data.filter(bid => {
+          console.log(this.recommended)
+          return this.recommended_fetched.includes(bid.bid_id)
+        })
+      }
+      else {
+        bids = this.bid_data.filter(bid => {
+          console.log(this.recommended)
+          return this.recommended.includes(bid.bid_id)
+        })
+      }
       console.log('recommended bids', bids)
       return bids
     },
 
   //radio buttons
-    row () {
+    tec_approval () {
       if(this.tec_report_data){
         var arr =[]
         console.log('heeee', this.tec_report_data)
@@ -545,7 +601,7 @@ export default {
             arr.push('')
           }
         })
-        console.log('row', arr)
+        console.log('tec_approval', arr)
         return arr
       }
       else{
@@ -553,7 +609,7 @@ export default {
       }
     },
 
-    tecTeamRemarks () {
+    tec_remarks () {
       if(this.tec_report_data){
         var arr =[]
         console.log('heeee', this.tec_report_data)
@@ -574,7 +630,7 @@ export default {
     },
 
     //values for text fields
-    rejectReasons () {
+    rejected_reasons () {
       if(this.tec_report_data){
         var arr =[]
         console.log('heeee', this.tec_report_data)
@@ -595,7 +651,7 @@ export default {
     },
 
     //values for rejected array
-    rejected () {
+    rejected_fetched () {
       if(this.tec_report_data){
         var arr =[]
         console.log('heeee', this.tec_report_data)
@@ -615,7 +671,7 @@ export default {
       }
     },
 
-    recommended () {
+    recommended_fetched () {
       if(this.tec_report_data){
         var arr =[]
         console.log('heeee', this.tec_report_data)
@@ -635,7 +691,7 @@ export default {
       }
     },
 
-    recommendReasons () {
+    recommended_reasons () {
       if(this.tec_report_data){
         var arr =[]
         console.log('heeee', this.tec_report_data)
@@ -654,6 +710,18 @@ export default {
         return []
       }
     },
+
+    filled () {
+      var userHasFilled = false
+      if(this.tec_report_data){
+        this.tec_report_data.tec_recommendation.forEach(item => {
+          if(item && item.emp_id == this.user && item.decision){
+            userHasFilled = true
+          }
+        })
+      }
+      return userHasFilled
+    }
   }
 
 }

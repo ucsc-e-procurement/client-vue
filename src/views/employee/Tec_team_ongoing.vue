@@ -319,10 +319,12 @@ export default {
       })
       .then(response => {
         console.log(response.data);
-        this.tec_report_data = response.data[0]
-        this.tec_report_data.rejected_bids = this.tec_report_data.rejected_bids ? JSON.parse(this.tec_report_data.rejected_bids) : []
-        this.tec_report_data.recommended_bids = this.tec_report_data.recommended_bids ? JSON.parse(this.tec_report_data.recommended_bids) : []
-        this.tec_report_data.tec_recommendation = this.tec_report_data.tec_recommendation ? JSON.parse(this.tec_report_data.tec_recommendation) : []
+        if(response.data[0]){
+          this.tec_report_data = response.data[0]
+          this.tec_report_data.rejected_bids = this.tec_report_data.rejected_bids ? JSON.parse(this.tec_report_data.rejected_bids) : []
+          this.tec_report_data.recommended_bids = this.tec_report_data.recommended_bids ? JSON.parse(this.tec_report_data.recommended_bids) : []
+          this.tec_report_data.tec_recommendation = this.tec_report_data.tec_recommendation ? JSON.parse(this.tec_report_data.tec_recommendation) : []
+        }
         console.log('tec report data',this.tec_report_data)
       })
       .catch(error => {
