@@ -13,10 +13,11 @@ import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue"
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
-import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
+import Admin_Purchase_Orders from "../views/admin/Purchase_Orders.vue";
+import Admin_Generate_Purchase_Order from "../views/admin/Generate_Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
-import Add_Signature from "../views/admin/Add_Signature.vue";
+// import Add_Signature from "../views/admin/Add_Signature.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -26,7 +27,7 @@ import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
 // Deputy Bursar
 import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar";
 import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition";
-import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
+// import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
 import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
 //Supplier
@@ -149,9 +150,15 @@ const routes = [
         props: true
       },
       {
-        path: "purchase_order",
+        path: "purchase_orders",
+        name: "purchase orders list",
+        component: Admin_Purchase_Orders,
+        props: true
+      },
+      {
+        path: "purchase_orders/:id",
         name: "generate purchase order",
-        component: Admin_Purchase_Order,
+        component: Admin_Generate_Purchase_Order,
         props: true
       },
       {
@@ -166,10 +173,10 @@ const routes = [
         component: Admin_View_Requisition,
         props: true
       },
-      {
-        path: "signature/add",
-        component: Add_Signature
-      },
+      // {
+      //   path: "signature/add",
+      //   component: Add_Signature
+      // },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" }
     ]
