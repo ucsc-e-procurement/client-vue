@@ -35,6 +35,7 @@ import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
 import Supplier_Procurements from "../views/supplier/Procurements.vue";
 import Price_Schedule from "../views/supplier/PriceSchedule.vue";
+import Purchases from "../views/supplier/Purchases.vue";
 
 //Employee
 import Employee from "../views/employee/Employee.vue";
@@ -263,6 +264,11 @@ const routes = [
         name: "procurements",
         component: Supplier_Procurements,
         children: []
+      },
+      {
+        path: "purchases",
+        name: "purchases",
+        component: Purchases,
       }
     ]
   },
