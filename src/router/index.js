@@ -13,6 +13,7 @@ import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue"
 import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
+import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
@@ -34,12 +35,13 @@ import Supplier from "../views/supplier/Supplier.vue";
 import Supplier_Dashboard from "../views/supplier/Dashboard.vue";
 import Supplier_Procurements from "../views/supplier/Procurements.vue";
 import Price_Schedule from "../views/supplier/PriceSchedule.vue";
+import Purchases from "../views/supplier/Purchases.vue";
 
 //Employee
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
-import Employee_Tec_Report from "../views/employee/Tec_Report.vue";
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -50,6 +52,7 @@ import Requisitions from "../views/director/Requisitions.vue";
 import Director_Shopping_Procurement_Stepper from "../views/director/ProcurementStepperShopping.vue";
 import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
 import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
+import Director_Notifications from "../views/director/Notifications";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -147,6 +150,12 @@ const routes = [
         props: true
       },
       {
+        path: "purchase_order",
+        name: "generate purchase order",
+        component: Admin_Purchase_Order,
+        props: true
+      },
+      {
         path: "requisitions",
         name: "view all products requisitions",
         component: Admin_Requisitions,
@@ -207,6 +216,11 @@ const routes = [
         path: "requisitions/:id",
         name: "d_reqi",
         component: Requisitions
+      },
+      {
+        path: "notifications",
+        name: "d_notif",
+        component: Director_Notifications
       }
     ]
   },
@@ -250,6 +264,11 @@ const routes = [
         name: "procurements",
         component: Supplier_Procurements,
         children: []
+      },
+      {
+        path: "purchases",
+        name: "purchases",
+        component: Purchases,
       }
     ]
   },
@@ -267,14 +286,14 @@ const routes = [
       },
       {
         path: "tecteam",
-        name: "default",
+        name: "tecteam",
         component: Employee_Tec_team
       },
       {
-        path: "tecteam/tecreport",
-        name: "default",
-        component: Employee_Tec_Report
-      }
+        path: "bidopeningteam",
+        name: "bigopeningteam",
+        component: Employee_Bid_Opening_Team
+      },
     ]
   },
 

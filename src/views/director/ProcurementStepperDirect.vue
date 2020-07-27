@@ -28,9 +28,9 @@
                             <ProcurementMethod :requisitionData = 'this.requisitionData' />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 3" step="3" :editable="procurementState >= 3 ? true : false" :edit-icon="procurementState >= 3 ? '$complete' : '$edit' "  :complete-icon="procurementState >= 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 3" step="3" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="3">
-                            <RFQ :procurementId = 'this.requisitionData.procurement_id' />
+                            <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 4" step="4" :editable="procurementState > 4 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Quotation Evaluation</v-stepper-step>
@@ -88,7 +88,7 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
     import Requisition from "./Requisition"
     import ProcurementMethod from './ProcurementMethod'
-    import Rfq from "./RfqDirect"
+    import Rfq from "./Rfq"
 /*
 
 // Validation Library - Vuelidate
@@ -121,7 +121,9 @@ export default {
       procurementState: '',
       procurementId: '',
       requisitionData: '',
+      rfqData: [],
       isMounted: false,
+      rfqMounted: false,
       test: 0,
   }),
 
@@ -150,7 +152,19 @@ export default {
       this.test = stepVal;
       this.isMounted = false;
       this.getRequisition();
-    }
+    },
+    getRfq(){
+      this.$http
+        .get(`/api/director/get_rfq_details?procId=${this.$route.query.proc_id}`)
+        .then(response => {
+          this.rfqData = response.data
+          this.rfqMounted = true;
+          console.log(this.rfq);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },
   },
 
   // Life Cycle Hooks
@@ -160,6 +174,7 @@ export default {
     this.procurementState = this.$route.query.stepper;
     this.stepperValue = this.$route.query.stepper;
     this.getRequisition();
+    this.getRfq();
   },
   beforeMount() {},
   mounted() {

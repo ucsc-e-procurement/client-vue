@@ -17,7 +17,7 @@
 
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item link>
+      <v-list-item exact="" link to="/employee/">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
@@ -33,7 +33,7 @@
           <v-list-item-title>TEC Team</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item exact="" link to="/employee/bidopeningteam">
         <v-list-item-action>
           <v-icon>mdi-account-multiple</v-icon>
         </v-list-item-action>
