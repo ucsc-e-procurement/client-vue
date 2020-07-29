@@ -142,7 +142,7 @@
                     :headers="headers"
                     :items="recentPurchases"
                     :search="search"
-                    items-per-page="5"
+                    :items-per-page=5
                     v-if="isMounted"
                   >
                   </v-data-table>

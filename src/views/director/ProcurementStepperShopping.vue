@@ -39,7 +39,7 @@
 
                         <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="5">
-                            <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
+                            <RFQ  :rfqData = 'this.rfqData' v-if="rfqMounted && procurementState > 5" />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">TEC Evaluation</v-stepper-step>
@@ -101,7 +101,7 @@ import Rfq from "./Rfq";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
-  
+
   props: [],
 
   // Imported Components
