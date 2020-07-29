@@ -159,11 +159,43 @@
                       </v-card>
                     </v-stepper-content>
 
+                    <!-- Step 3 - OTP Verification -->
                     <v-stepper-content step="3">
-                      <v-card
-                        class="mb-12"
-                        color="grey lighten-1"
-                        height="200px"
+                      <v-card flat>
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12">
+                              <v-row no-gutters class="justify-space-between">
+                                <v-col cols="10">
+                                  <v-text-field
+                                    label="Mobile Number"
+                                    outlined
+                                    dense
+                                    placeholder="Enter Mobile Number"
+                                  />
+                                </v-col>
+                                <v-col cols="1">
+                                  <v-btn color="primary" @click="sendOTP"
+                                    >Send</v-btn
+                                  >
+                                </v-col>
+                              </v-row>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-alert type="info" outlined border="left"
+                                ><v-row>
+                                  You Will Recieve an One Time Password(OTP) to
+                                  Your Mobile XXXXXXX201 Shortly.
+                                  <v-spacer />
+                                  <v-btn text small>Send Me Again</v-btn>
+                                </v-row>
+                              </v-alert>
+                              <v-text-field
+                                label="Secret Key (OTP)"
+                                outlined
+                                dense
+                                placeholder="Enter Secret Key (OTP)"
+                              /> </v-col></v-row></v-container
                       ></v-card>
 
                       <v-btn color="primary" @click="e1 = 1">
@@ -304,6 +336,22 @@ export default {
       this.proccessedImageURL = "";
       this.showImageinStep1 = false;
       console.log("CLicked", this.selectedImageFile);
+    },
+
+    sendOTP() {
+      this.$http
+        .post("/api/signature/generate_otp", {
+          user_id: "pjd@ucsc.cmb.ac.lk",
+          username: "Pasindu Dewapriya",
+          mobile_no: "94710521918"
+        })
+        .then(res => {
+          console.log("Rsponse base64 Image: ", res.data.base64_image);
+          this.proccessedImageURL = res.data.base64_image;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
 
