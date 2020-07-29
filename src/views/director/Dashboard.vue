@@ -128,18 +128,21 @@
               </v-col>
               <v-col cols="6">
                 <v-card>
-                  <v-card-title>
-                    <v-text-field
+                  <!-- <v-card-title class="headline">Recently Purchased Products</v-card-title> -->
+                  <v-card-title class="text-center justify-center py-6">
+                    <h4 class="font-weight-bold ">Recently Purchased Products</h4>
+                    <!-- <v-text-field
                       v-model="search"
                       label="Search"
                       single-line
                       hide-details
-                    ></v-text-field>
+                    ></v-text-field> -->
                   </v-card-title>
                   <v-data-table
                     :headers="headers"
                     :items="recentPurchases"
                     :search="search"
+                    items-per-page="5"
                     v-if="isMounted"
                   >
                   </v-data-table>
