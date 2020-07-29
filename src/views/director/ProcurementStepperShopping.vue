@@ -98,23 +98,10 @@ import AppointTechTeam from "./AppointTechTeam";
 import TechTeam from "./TechTeam";
 // import BidOpeningTeam from "./BidOpeningTeam";
 import Rfq from "./Rfq";
-/*
-
-// Validation Library - Vuelidate
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
-
-*/
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
-  // Mixins
-  // mixins: [validationMixin],
-
-  // Form Validations
-  // validations: {},
-
-  // Props Received
+  
   props: [],
 
   // Imported Components
