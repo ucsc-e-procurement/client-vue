@@ -16,7 +16,7 @@
     </template>
 
     <v-divider></v-divider>
-    <v-list dense>
+    <v-list dense rounded>
       <v-list-item exact="" link to="/director">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
