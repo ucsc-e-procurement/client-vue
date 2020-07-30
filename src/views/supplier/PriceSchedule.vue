@@ -342,9 +342,9 @@
                 </v-row>
                 <v-file-input
                   v-model="manufacturerDoc"
-                  accept="application/pdf"
+                  accept="image/jpg, image/png"
                   placeholder="Attach manufacturer's authorization"
-                  hint="This should be a pdf file"
+                  hint="This should be a scanned image document"
                   persistent-hint
                   :rules="[rules.general]"
                 ></v-file-input>
@@ -359,31 +359,14 @@
                   <h5 class="headline">Bid Guarantee</h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
-              <v-row class="caption" no-gutters>
-                [ This Bank Guarantee form shall be filled in accordance with the instructions indicated in brackets ]
-              </v-row>
-              <v-text-field
-                  v-model="vatNo"
-                  label="insert issuing agency’s name, and address of issuing branch or office"
-                  :rules="[rules.general]"
-                />
-                <v-text-field
-                  v-model="vatNo"
-                  label="name and address of Purchaser"
-                  placeholder="Beneficiary"
-                  :rules="[rules.general]"
-                />
-                <v-text-field
-                  v-model="vatNo"
-                  label="insert (by issuing agency) number"
-                  placeholder="BID GUARANTEE No"
-                  :rules="[rules.general]"
-                />
+                <v-row no-gutters class="py-2">
+                  Download the document<v-icon @click="downloadBid" class="mx-2">mdi-package-down</v-icon>
+                </v-row>
                 <v-file-input
-                  v-model="manufacturerDoc"
-                  accept="application/pdf"
-                  placeholder="Attach the Bid guarantee form"
-                  hint="This should be a pdf file"
+                  v-model="bidGuarantee"
+                  accept="image/jpg, image/png"
+                  placeholder="Attach bid guarantee here"
+                  hint="This should be a scanned image document"
                   persistent-hint
                   :rules="[rules.general]"
                 ></v-file-input>
@@ -509,6 +492,7 @@ export default {
     authorizedDesignation: "",
     authorizedNIC: "",
     manufacturerDoc: null,
+    bidGuarantee: null,
     otherDoc: null,
     editIndex: null,
     originalData: null,
@@ -590,6 +574,20 @@ export default {
           let fileLink = document.createElement('a');
           fileLink.href = fileURL;
           fileLink.setAttribute('download', 'manufacturer_auth.pdf');
+          document.body.appendChild(fileLink);
+          fileLink.click();
+        })
+    },
+
+    downloadBid() {
+      this.$http.get('/api/supplier/price_schedule/get_bid_guarantee')
+        .then(res => {
+          let bytes = new Uint8Array(res.data.data);
+          let blob = new Blob([bytes], { type: 'application/pdf' });
+          let fileURL = window.URL.createObjectURL(blob)
+          let fileLink = document.createElement('a');
+          fileLink.href = fileURL;
+          fileLink.setAttribute('download', 'bid_guarantee.pdf');
           document.body.appendChild(fileLink);
           fileLink.click();
         })
