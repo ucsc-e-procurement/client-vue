@@ -168,7 +168,7 @@
                 </v-card>
               </v-col>
               <v-col cols="4">              
-                <!-- <v-col cols="12"> -->
+                <v-row v-if="approvedRequisitions.length > 0">
                   <v-card>
                     <v-card-title class="text-center justify-center py-6" height="50%" color="blue lighten-2">
                         <h4 class="font-weight-bold ">Approved Requisitions</h4>
@@ -220,68 +220,74 @@
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
-                <!-- </v-col> -->
-                <v-col cols="12">
-                  <v-row no-gutters style="justify-content: center;">
-                    <h5 class="headline">This Month</h5>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-card height="150" color="deep-purple lighten-3">
-                        <v-card-title class="headline font-weight-bold" style="justify-content: center;">
-                          <div style="font-size: 50px; padding-top: 10px">
-                            {{this.requisitionCount}}
-                          </div>
-                        </v-card-title>
-                        <v-card-text class="headline " style="text-align: left;">
-                            Purchase Requisitions
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-card height="150" color="orange lighten-3">
-                        <v-card-title class="headline font-weight-bold" style="justify-content: center;">
-                          <div style="font-size: 50px; padding-top: 10px">
-                            {{ongoingProcurementCount}}
-                          </div>
-                        </v-card-title>
-                        <v-card-text class="headline " style="text-align: left;">
-                          Ongoing Procurements  
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col cols="12">
-                  <v-row>
-                    <v-col cols="6">
-                      <v-card height="150" color="green lighten-3">
-                        <v-card-title class="headline font-weight-bold" style="justify-content: center;">
-                          <div style="font-size: 50px; padding-top: 10px">
-                            {{completedProcurementCount}}
-                          </div>
-                        </v-card-title>
-                        <v-card-text class="headline " style="text-align: left;">
-                          Completed Procurements
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-card height="150" color="red lighten-3">
-                        <v-card-title class="headline font-weight-bold" style="justify-content: center;">
-                          <div style="font-size: 50px; padding-top: 10px">
-                            {{terminatedProcurementCount}}
-                          </div>
-                        </v-card-title>
-                        <v-card-text class="headline " style="text-align: left;">
-                          Terminated Procurements
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </v-col>
+                </v-row>
+                <v-col v-if="approvedRequisitions.length > 0"></v-col>
+                <v-row>
+                  <v-card>
+                    <v-card-title class="text-center justify-center">
+                        <h4 class="font-weight-bold ">This Month</h4>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-col cols="12">
+                        <v-row>
+                          <v-col cols="6">
+                            <v-card height="150" color="deep-purple lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{this.requisitionCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                  Purchase Requisitions
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                          <v-col cols="6">
+                            <v-card height="150" color="orange lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{ongoingProcurementCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                Ongoing Procurements  
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-row>
+                          <v-col cols="6">
+                            <v-card height="150" color="green lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{completedProcurementCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                Completed Procurements
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                          <v-col cols="6">
+                            <v-card height="150" color="red lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{terminatedProcurementCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                Terminated Procurements
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </v-card-text>
+                  </v-card>
+                </v-row>
               </v-col>
-
             </v-row>
             <v-divider></v-divider>
             <v-row>
