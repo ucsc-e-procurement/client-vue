@@ -44,7 +44,7 @@
                   :rules="rules.password"
                   :type="show ? 'text' : 'password'"
                   name="input-10-2"
-                  label="Password"
+                  label="New Password"
                   hint="At least 8 characters"
                   @click:append="show = !show"
                   required
@@ -82,6 +82,7 @@
                       label="Contact Number"
                       v-model="formdata.contact"
                       :rules="rules.contact"
+                      prefix="( +94 )"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -262,7 +263,7 @@
               <v-btn color="primary float-right" @click="registerUser"
                 >Submit</v-btn
               >
-              <v-btn text @click.native="step = 3" v-if="user_state == 'new'"
+              <v-btn text @click.native="step = 3"
                 >Back</v-btn
               >
             </v-stepper-content>
@@ -353,7 +354,7 @@ export default {
       ],
       contact: [
         v => !!v || "Contact number is required",
-        v => v.length >= 10 || "Enter valid contact number"
+        v => v.length >= 9 || "Enter valid contact number"
       ],
       password: [
         v => !!v || "Password is required",
@@ -373,7 +374,7 @@ export default {
     proceedToForm2() {
       if (this.$refs.form1.validate()) {
         this.$http
-          .get("api/supplier/registration", {
+          .get("api/supplier/registration/check_supplier", {
             params: { email: this.formdata.email }
           })
           .then(res => {
@@ -387,10 +388,31 @@ export default {
                 );
               } else {
                 this.user_state = "renew";
-                alert(
-                  "Happy to see you renewing your registration. Only fill out the payment information."
-                );
-                this.step = 4;
+                this.$http.get("api/supplier/registration/get_current_info", {
+                  params: { email: this.formdata.email }
+                })
+                  .then(res => {
+                    this.formdata.legal =  res.data[0].legal;
+                    this.formdata.business_address = res.data[0].address;
+                    this.formdata.contact_name = res.data[0].name;
+                    this.formdata.contact = res.data[0].contact_number;
+                    this.formdata.fax = res.data[0].fax;
+                    this.formdata.official_email = res.data[0].email;
+                    this.formdata.web = res.data[0].web;
+                    this.formdata.business_reg_no = res.data[0].business_reg;
+                    this.formdata.vat_reg_no = res.data[0].vat_reg_no;
+                    this.formdata.ictad_reg_no = res.data[0].ictad_reg_no;
+                    this.formdata.bank = res.data[0].bank;
+                    this.formdata.branch = res.data[0].branch;
+                    this.formdata.business_nature = res.data[0].business_nature;
+                    this.formdata.business_type = res.data[0].business_type;
+                    this.formdata.credit_offered = res.data[0].credit_offered;
+                    this.formdata.maximum_credit = res.data[0].maximum_credit;
+                    this.formdata.credit_period = res.data[0].credit_period;
+                    this.formdata.experience = res.data[0].experience;
+                    this.formdata.cat_selection = res.data[0].category;
+                  })
+                this.step = 2;
               }
             } else this.step = 2;
           });
@@ -442,7 +464,7 @@ export default {
             alert(
             "You have successfully registered to our system. Await verification of your request."
             );
-            $router.push('/login');
+            this.$router.push('/login');
           } else console.log(res);
         });
       }

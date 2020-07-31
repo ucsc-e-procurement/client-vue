@@ -46,24 +46,48 @@
                         </v-chip>
                     </template>
                     <template v-slot:item="data">
-                        <template v-if="typeof data.item !== 'object'">
-                        <v-list-item-content v-text="data.item"></v-list-item-content>
-                        </template>
-                        <template v-else>
-                        <v-list-item-avatar color="blue">
-                            <!-- <span class="white--text headline">{{ mdi-account-circle}}</span> -->
-                            <v-icon
-                                icon="mdi-account-circle"
-                                color="white"
-                            >
-                                mdi-account-circle
-                            </v-icon>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                            <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
-                        </v-list-item-content>
-                        </template>
+                        <!-- <template v-if="typeof data.item !== 'object'">
+                            <v-list-item-content v-text="data.item"></v-list-item-content>
+                        </template> -->
+                        <v-tooltip bottom color="#E0E0E0">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-list-item-avatar color="blue">
+                                    <!-- <span class="white--text headline">{{ mdi-account-circle}}</span> -->
+                                    <v-icon
+                                        icon="mdi-account-circle"
+                                        color="white"
+                                    >
+                                        mdi-account-circle
+                                    </v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content v-bind="attrs" v-on="on">
+                                    <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                    <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
+                                </v-list-item-content>
+                            </template>
+                        <span v-if="data.item.assigned">
+                            <v-banner two-line   v-for="item in JSON.parse(data.item.assigned)" v-bind:key="item.procurementId" >
+                                <v-avatar
+                                    slot="icon"
+                                    color="blue lighten-1"
+                                    size="40"
+                                >
+                                    <v-icon
+                                    icon="mdi-checkbox-marked-circle-outline"
+                                    color="white"
+                                    >
+                                    mdi-checkbox-marked-circle-outline
+                                    </v-icon>
+                                </v-avatar>
+                                    Procurement: {{item.procurement_id}} <br/>
+                                    Capacity: {{item.capacity}} <br/>
+                                    Closing Date: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
+                            </v-banner>
+                        </span>
+                        <span v-else :style="{color: '#000000'}">
+                            No Assignments
+                        </span>
+                        </v-tooltip>
                     </template>
                     </v-autocomplete>
                 </v-col>
@@ -101,24 +125,48 @@
                         </v-chip>
                     </template>
                     <template v-slot:item="data">
-                        <template v-if="typeof data.item !== 'object'">
-                        <v-list-item-content v-text="data.item"></v-list-item-content>
+                        <!-- <template v-if="typeof data.item !== 'object'">
+                        <v-list-item-content v-text="data.item"></v-list-item-content> -->
+                        <!-- </template> -->
+                    <v-tooltip bottom color="#E0E0E0">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-list-item-avatar color="blue">
+                                <!-- <span class="white--text headline">{{ mdi-account-circle}}</span> -->
+                                <v-icon
+                                    icon="mdi-account-circle"
+                                    color="white"
+                                >
+                                    mdi-account-circle
+                                </v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content v-bind="attrs" v-on="on">
+                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
+                            </v-list-item-content>
                         </template>
-                        <template v-else>
-                        <v-list-item-avatar color="blue">
-                            <!-- <span class="white--text headline">{{data.item.name[0]}}</span> -->
-                            <v-icon
-                                icon="mdi-account-circle"
-                                color="white"
-                            >
-                                mdi-account-circle
-                            </v-icon>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                            <v-list-item-subtitle v-html="data.item.department"></v-list-item-subtitle>
-                        </v-list-item-content>
-                        </template>
+                        <span v-if="data.item.assigned">
+                            <v-banner two-line   v-for="item in JSON.parse(data.item.assigned)" v-bind:key="item.procurementId" >
+                                <v-avatar
+                                    slot="icon"
+                                    color="blue lighten-1"
+                                    size="40"
+                                >
+                                    <v-icon
+                                    icon="mdi-checkbox-marked-circle-outline"
+                                    color="white"
+                                    >
+                                    mdi-checkbox-marked-circle-outline
+                                    </v-icon>
+                                </v-avatar>
+                                    Procurement: {{item.procurement_id}} <br/>
+                                    Capacity: {{item.capacity}} <br/>
+                                    Closing Date: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
+                            </v-banner>
+                        </span>
+                        <span v-else :style="{color: '#000000'}">
+                            No Assignments
+                        </span>
+                    </v-tooltip>
                     </template>
                     </v-autocomplete>
                 </v-col>
