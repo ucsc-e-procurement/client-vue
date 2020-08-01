@@ -6,7 +6,7 @@
           </v-btn>
           <v-toolbar-title>TEC Report</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
+          <v-toolbar-items v-if="! filled">
               <v-btn dark text @click="save">Save</v-btn>
           </v-toolbar-items>
           </v-app-bar>
@@ -472,24 +472,24 @@ export default {
         console.log('valid')
         if(this.tec_report_data && this.tec_report_data.status == 'saved'){
           //update
-          // this.tec_team.forEach((item, key) => {
-          //   console.log(key, item)
-          //   if(!this.tec_recommendation[key]) {
-          //     this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.tec_approval[key], remarks: this.tec_remarks[key]} 
-          //   }
-          // })
-          // console.log('update tec report')
-          // this.$http.post('/api/tec_team/update_tec_report', {
-          //       tecRecommendation: JSON.stringify(this.tec_recommendation),
-          //       procurementId: this.procurement.procurement_id
-          //   })
-          //   .then(response => {
-          //       console.log(response);
-          //       this.people = response.data;
-          //   })
-          //   .catch(err => {
-          //       console.log(err);
-          //   })
+          this.tec_team.forEach((item, key) => {
+            console.log(key, item)
+            if(!this.tec_recommendation[key]) {
+              this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.tec_approval[key], remarks: this.tec_remarks[key]} 
+            }
+          })
+          console.log('update tec report')
+          this.$http.post('/api/tec_team/update_tec_report', {
+                tecRecommendation: JSON.stringify(this.tec_recommendation),
+                procurementId: this.procurement.procurement_id
+            })
+            .then(response => {
+                console.log(response);
+                this.people = response.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
         }
         else{
           this.$http.post('/api/tec_team/save_tec_report', {
@@ -562,38 +562,76 @@ export default {
     rejected_bids () {
       var len = this.bid_data.length
       var bids = []
-      for (let i = 0; i < len; i++) {
-        var suppliers = [];
-        if(this.rejected[i]){
-          suppliers = this.bid_data[i].bids.filter(bid => {
-          return this.rejected[i].includes(bid.bid_id)
-        })
-        console.log('supppp', suppliers)
-        bids[i] = suppliers
+      if(this.tec_report_data) {
+          //rejected_fetched
+        console.log('rejected_bids_tec_report_data', len)
+        for (let i = 0; i < len; i++) {
+          var suppliers = [];
+          if(this.rejected_fetched[i]){
+            suppliers = this.bid_data[i].bids.filter(bid => {
+              return this.rejected_fetched[i].includes(bid.bid_id)
+            })
+            console.log('sup', suppliers)
+            bids[i] = suppliers
+          }
         }
+        return bids
       }
-      console.log('rejected bids123', bids)
-      return bids
+      else {
+        for (let i = 0; i < len; i++) {
+          var suppliers = [];
+          if(this.rejected[i]){
+            suppliers = this.bid_data[i].bids.filter(bid => {
+            return this.rejected[i].includes(bid.bid_id)
+          })
+          console.log('supppp', suppliers)
+          bids[i] = suppliers
+          }
+        }
+        console.log('rejected bids123', bids)
+        return bids
+      }
     },
 
     //get responsive bids - !rejected_bids
     responsive_bids () {
       var bids = []
       var len = this.bid_data.length
-      for (let i = 0; i < len; i++) {
-        var suppliers = [];
-        if(this.rejected[i]){
-          suppliers = this.bid_data[i].bids.filter(bid => {
-            return !this.rejected[i].includes(bid.bid_id)
-          })
-          bids[i] = suppliers
+      if(this.tec_report_data) {
+          //rejected_fetched
+        console.log('rejected_bids_tec_report_data', len)
+        for (let i = 0; i < len; i++) {
+          var suppliers = [];
+          if(this.rejected_fetched[i]){
+            suppliers = this.bid_data[i].bids.filter(bid => {
+              return !this.rejected_fetched[i].includes(bid.bid_id)
+            })
+            console.log('sup', suppliers)
+            bids[i] = suppliers
+          }
+          else{
+            bids[i] = this.bid_data[i].bids
+          }
         }
-        else{
-          bids[i] = this.bid_data[i].bids
-        }
+        console.log('responsive bids', bids)
+        return bids
       }
-      console.log('responsive bids', bids)
-      return bids
+      else {
+        for (let i = 0; i < len; i++) {
+          var suppliers = [];
+          if(this.rejected[i]){
+            suppliers = this.bid_data[i].bids.filter(bid => {
+              return !this.rejected[i].includes(bid.bid_id)
+            })
+            bids[i] = suppliers
+          }
+          else{
+            bids[i] = this.bid_data[i].bids
+          }
+        }
+        console.log('responsive bids', bids)
+        return bids
+      }
     },
 
   //item-wise
@@ -615,17 +653,34 @@ export default {
     recommended_bids () {
       var bids = []
       var len = this.bid_data.length
-      for (let i = 0; i < len; i++) {
-        var suppliers = []
-        if(this.recommended[i]){
-          suppliers = this.bid_data[i].bids.filter(bid => {
-            return this.recommended[i].includes(bid.bid_id)
-          })
+      if(this.tec_report_data) {
+          //rejected_fetched
+        console.log('rejected_bids_tec_report_data', len)
+        for (let i = 0; i < len; i++) {
+          var suppliers = [];
+          if(this.recommended_fetched[i]){
+            suppliers = this.bid_data[i].bids.filter(bid => {
+              return this.recommended_fetched[i].includes(bid.bid_id)
+            })
+            console.log('sup', suppliers)
+            bids[i] = suppliers
+          }
         }
-        bids[i] = suppliers
+        return bids
       }
-      console.log('recommended bids', bids)
-      return bids
+      else {
+        for (let i = 0; i < len; i++) {
+          var suppliers = []
+          if(this.recommended[i]){
+            suppliers = this.bid_data[i].bids.filter(bid => {
+              return this.recommended[i].includes(bid.bid_id)
+            })
+          }
+          bids[i] = suppliers
+        }
+        console.log('recommended bids', bids)
+        return bids
+      }
     },
 
     // if tec report was saved
@@ -672,17 +727,25 @@ export default {
 
     //values for text fields
     rejected_reasons () {
+      var len = this.bid_data.length
+      var arr = []
       if(this.tec_report_data){
-        var arr =[]
-        console.log('heeee', this.tec_report_data)
-        this.tec_report_data.rejected_bids.forEach(item => {
-          if(item){
-            arr.push(item.reason)
+        for (let i = 0; i < len; i++) {
+          var reasons = []
+          console.log('heeee', this.tec_report_data)
+          if(this.tec_report_data.rejected_bids[i]){
+            console.log(this.tec_report_data.rejected_bids[i])
+            this.tec_report_data.rejected_bids[i].forEach(item => {
+              if(item){
+                reasons.push(item.reason)
+              }
+              else{
+                reasons.push('')
+              }
+            })
+            arr[i] = reasons
           }
-          else{
-            arr.push('')
-          }
-        })
+        }
         console.log('reject reasons', arr)
         return arr
       }
@@ -693,18 +756,27 @@ export default {
 
     //values for rejected array
     rejected_fetched () {
-      if(this.tec_report_data){
-        var arr =[]
-        console.log('heeee', this.tec_report_data)
-        this.tec_report_data.rejected_bids.forEach(item => {
-          if(item){
-            arr.push(item.bid_id)
+      var len = this.bid_data.length
+      var arr = []
+      if(this.tec_report_data) {
+          //rejected_fetched
+        for (let i = 0; i < len; i++) {
+          var bids = [];
+          console.log('tec report rejected', this.tec_report_data.rejected_bids)
+          if(this.tec_report_data.rejected_bids[i]){
+            this.tec_report_data.rejected_bids[i].forEach(item => {
+            if(item){
+              bids.push(item.bid_id)
+            }
+            else{
+              bids.push('')
+            }
+          })
+          console.log('rej bids i', bids)
+          arr[i] = bids
           }
-          else{
-            arr.push('')
-          }
-        })
-        console.log('rejected', arr)
+        }
+        console.log('rejected_fetched', arr)
         return arr
       }
       else{
@@ -713,17 +785,24 @@ export default {
     },
 
     recommended_fetched () {
+      var len = this.bid_data.length
+      var arr = []
       if(this.tec_report_data){
-        var arr =[]
         console.log('heeee', this.tec_report_data)
-        this.tec_report_data.recommended_bids.forEach(item => {
-          if(item){
-            arr.push(item.bid_id)
-          }
-          else{
-            arr.push('')
-          }
-        })
+        for (let i = 0; i < len; i++) {
+          var bids = []
+          if(this.tec_report_data.recommended_bids[i]){
+            this.tec_report_data.recommended_bids[i].forEach(item => {
+              if(item){
+                bids.push(item.bid_id)
+              }
+              else{
+                bids.push('')
+              }
+            })
+            arr[i] = bids
+          }     
+        }
         console.log('recommended', arr)
         return arr
       }
@@ -733,18 +812,26 @@ export default {
     },
 
     recommended_reasons () {
+      var len = this.bid_data.length
+      var arr = []
       if(this.tec_report_data){
-        var arr =[]
-        console.log('heeee', this.tec_report_data)
-        this.tec_report_data.recommended_bids.forEach(item => {
-          if(item){
-            arr.push(item.reason)
+        for (let i = 0; i < len; i++) {
+          var reasons = []
+          console.log('heeee', this.tec_report_data)
+          if(this.tec_report_data.recommended_bids[i]){
+            console.log(this.tec_report_data.recommended_bids[i])
+            this.tec_report_data.recommended_bids[i].forEach(item => {
+              if(item){
+                reasons.push(item.reason)
+              }
+              else{
+                reasons.push('')
+              }
+            })
+            arr[i] = reasons
           }
-          else{
-            arr.push('')
-          }
-        })
-        console.log('recommended reasons', arr)
+        }
+        console.log('reject reasons', arr)
         return arr
       }
       else{
