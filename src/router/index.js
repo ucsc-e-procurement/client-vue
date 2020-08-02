@@ -17,6 +17,7 @@ import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
+import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -41,7 +42,7 @@ import Purchases from "../views/supplier/Purchases.vue";
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
-import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -102,7 +103,7 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: true
+          requiresAuth: false
         }
       },
       {
@@ -171,6 +172,8 @@ const routes = [
         path: "signature/add",
         component: Add_Signature
       },
+      // Developmnet Purposes Only
+      { path: "test", component: Bidding_Doc_Data_Sheet },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" }
     ]
@@ -257,7 +260,7 @@ const routes = [
         path: "price_schedule/:procurement",
         name: "price_schedule",
         component: Price_Schedule,
-        props: true,
+        props: true
       },
       {
         path: "procurements",
@@ -268,7 +271,7 @@ const routes = [
       {
         path: "purchases",
         name: "purchases",
-        component: Purchases,
+        component: Purchases
       }
     ]
   },
@@ -293,7 +296,7 @@ const routes = [
         path: "bidopeningteam",
         name: "bigopeningteam",
         component: Employee_Bid_Opening_Team
-      },
+      }
     ]
   },
 
