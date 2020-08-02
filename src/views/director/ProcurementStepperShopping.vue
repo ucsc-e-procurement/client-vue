@@ -31,15 +31,15 @@
                             <TechTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.tec_team_id != null"/>
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Bid Opening Team</v-stepper-step>
+                        <!-- <v-stepper-step :complete="procurementState >= 4" step="4" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Bid Opening Team</v-stepper-step>
                         <v-stepper-content step="4">
                             <AppointBidOpeningTeam :requisitionData = 'this.requisitionData' :stepper = 3 @bidTeamAppointed="childUpdated" v-if="isMounted && this.requisitionData.bid_opening_team_id == null"/>
                             <BidOpeningTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.bid_opening_team_id != null" />
-                        </v-stepper-content>
+                        </v-stepper-content> -->
 
                         <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="5">
-                            <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
+                            <RFQ  :rfqData = 'this.rfqData' v-if="rfqMounted && procurementState > 5" />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">TEC Evaluation</v-stepper-step>
@@ -94,37 +94,24 @@
 import Requisition from "./Requisition";
 import ProcurementMethod from "./ProcurementMethod";
 import AppointTechTeam from "./AppointTechTeam";
-import AppointBidOpeningTeam from "./AppointBidOpeningTeam";
+// import AppointBidOpeningTeam from "./AppointBidOpeningTeam";
 import TechTeam from "./TechTeam";
-import BidOpeningTeam from "./BidOpeningTeam";
+// import BidOpeningTeam from "./BidOpeningTeam";
 import Rfq from "./Rfq";
-/*
-
-// Validation Library - Vuelidate
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
-
-*/
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
-  // Mixins
-  // mixins: [validationMixin],
 
-  // Form Validations
-  // validations: {},
-
-  // Props Received
   props: [],
 
   // Imported Components
   components: {
     requisition: Requisition,
     AppointTechTeam: AppointTechTeam,
-    AppointBidOpeningTeam: AppointBidOpeningTeam,
+    // AppointBidOpeningTeam: AppointBidOpeningTeam,
     ProcurementMethod: ProcurementMethod,
     TechTeam: TechTeam,
-    BidOpeningTeam: BidOpeningTeam,
+    // BidOpeningTeam: BidOpeningTeam,
     RFQ: Rfq,
   },
 
@@ -154,7 +141,8 @@ export default {
           this.procurementState = response.data[0].step;
           this.stepperValue = 12;
           this.isMounted = true;
-          if (response.data[0].step == 3 || response.data[0].step == 4) {
+          //  || response.data[0].step == 4
+          if (response.data[0].step == 3) {
             this.stepperValue = response.data[0].step;
           }
         })

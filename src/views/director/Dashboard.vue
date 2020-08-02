@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">This Month</h5>
+              <h5 class="headline">THIS YEAR</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -15,135 +15,278 @@
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
               <v-col cols="3">
-                <v-card height="100" color="deep-purple lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                      Purchase Requisitions
-                      <v-chip
-                        class="ma-2"
-                        color="deep-purple lighten-2"
-                      >
-                        {{this.requisitionCount}}
-                      </v-chip>
-                  </v-card-text>
+                <v-card
+                  color="#1976d2"
+                  dark
+                >
+                  <div class="d-flex flex-no-wrap justify-space-between">
+                    <div>
+                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                        <div style="font-size: 50px;">
+                          60
+                        </div>
+                      </v-card-title>
+                      <v-card-actions>
+                        <v-btn text>Registered Suppliers</v-btn>
+                      </v-card-actions>
+                    </div>
+                    <v-avatar
+                    class="ma-3"
+                    slot="icon"
+                    color="blue darken-4"
+                    size="125"
+                  >
+                    <v-icon
+                      icon="mdi-lock"
+                      color="white"
+                    >
+                      mdi-lock
+                    </v-icon>
+                  </v-avatar>
+                  </div>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card height="100" color="orange lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                    Ongoing Procurements
-                    <v-chip
-                      class="ma-2"
-                      color="orange lighten-2"
+                <v-card
+                  color="#1976d2"
+                  dark
+                >
+                  <div class="d-flex flex-no-wrap justify-space-between">
+                    <div>
+                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                        <div style="font-size: 50px;">
+                          20
+                        </div>
+                      </v-card-title>
+                      <v-card-actions>
+                        <v-btn text>Total Requisitions</v-btn>
+                      </v-card-actions>
+                    </div>
+                    <v-avatar
+                    class="ma-3"
+                    slot="icon"
+                    color="yellow darken-3"
+                    size="125"
+                  >
+                    <v-icon
+                      icon="mdi-lock"
+                      color="white"
                     >
-                      {{ongoingProcurementCount}}
-                    </v-chip>
-                  </v-card-text>
+                      mdi-lock
+                    </v-icon>
+                  </v-avatar>
+                  </div>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card height="100" color="green lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                    Completed Procurements
-                    <v-chip
-                      class="ma-2"
-                      color="green lighten-2"
+                <v-card
+                  color="#1976d2"
+                  dark
+                >
+                  <div class="d-flex flex-no-wrap justify-space-between">
+                    <div>
+                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                        <div style="font-size: 50px;">
+                          70%
+                        </div>
+                      </v-card-title>
+                      <v-card-actions>
+                        <v-btn text>Completed</v-btn>
+                      </v-card-actions>
+                    </div>
+                    <v-avatar
+                    class="ma-3"
+                    slot="icon"
+                    color="green lighten-1"
+                    size="125"
+                  >
+                    <v-icon
+                      icon="mdi-lock"
+                      color="white"
                     >
-                      {{completedProcurementCount}}
-                    </v-chip>
-                  </v-card-text>
+                      mdi-lock
+                    </v-icon>
+                  </v-avatar>
+                  </div>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card height="100" color="red lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                    Terminated Procurements
-                    <v-chip
-                      class="ma-2"
-                      color="red lighten-2"
+                <v-card
+                  color="#1976d2"
+                  dark
+                >
+                  <div class="d-flex flex-no-wrap justify-space-between">
+                    <div>
+                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                        <div style="font-size: 50px;">
+                          30%
+                        </div>
+                      </v-card-title>
+                      <v-card-actions>
+                        <v-btn text>Rejected</v-btn>
+                      </v-card-actions>
+                    </div>
+                    <v-avatar
+                    class="ma-3"
+                    slot="icon"
+                    color="red lighten-1"
+                    size="125"
+                  >
+                    <v-icon
+                      icon="mdi-lock"
+                      color="white"
                     >
-                      {{terminatedProcurementCount}}
-                    </v-chip>
-                  </v-card-text>
+                      mdi-lock
+                    </v-icon>
+                  </v-avatar>
+                  </div>
                 </v-card>
               </v-col>
             </v-row>
             <v-row></v-row>
             <v-row>
-              <v-col cols="6">
-                <v-card class="scroll">
-                  <v-card-title class="text-center justify-center py-6" height="50%" color="blue lighten-2">
-                      <h4 class="font-weight-bold ">Approved Requisitions</h4>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-banner two-line :key="item.requisition_id" v-for="item in this.approvedRequisitions">
-                      <v-avatar
-                        slot="icon"
-                        color="deep-purple accent-4"
-                        size="40"
-                      >
-                        <v-icon
-                          icon="mdi-lock"
-                          color="white"
-                        >
-                          mdi-lock
-                        </v-icon>
-                      </v-avatar>
-                        Description: {{item.description}} <br/>
-                        Department: {{item.department}} <br/>
-                        Date Requested: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
-                      <template v-slot:actions>
-                        <v-btn text color="deep-purple accent-4" @click="OpenApprovedRequisitionsDialog(item)">View</v-btn>
-                      </template>
-                    </v-banner>
-                  </v-card-text>
-                </v-card>
-                <v-dialog
-                  v-model="approvedRequisitionsDialog"
-                  max-width="800px"
-                >
-                  <v-card>
-                    <v-card-title class="headline">Product Requisition</v-card-title>
-
-                    <v-card-text>
-                      <requisition :requisitionData = 'this.approvedRequisition' v-if="isMounted"/>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="approvedRequisitionsDialog = false"
-                      >
-                        Close
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-col>
-              <v-col cols="6">
+              <v-col cols="8">
                 <v-card>
-                  <v-card-title>
-                    <v-text-field
+                  <!-- <v-card-title class="headline">Recently Purchased Products</v-card-title> -->
+                  <v-card-title class="text-center justify-center py-6">
+                    <h4 class="font-weight-bold ">Recent Purchases</h4>
+                    <!-- <v-text-field
                       v-model="search"
                       label="Search"
                       single-line
                       hide-details
-                    ></v-text-field>
+                    ></v-text-field> -->
                   </v-card-title>
                   <v-data-table
                     :headers="headers"
                     :items="recentPurchases"
                     :search="search"
+                    :items-per-page=5
                     v-if="isMounted"
                   >
                   </v-data-table>
                 </v-card>
+              </v-col>
+              <v-col cols="4">              
+                <v-row v-if="approvedRequisitions.length > 0">
+                  <v-card>
+                    <v-card-title class="text-center justify-center py-6" height="50%" color="blue lighten-2">
+                        <h4 class="font-weight-bold ">Approved Requisitions</h4>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-banner two-line :key="item.requisition_id" v-for="item in this.approvedRequisitions">
+                        <v-avatar
+                          slot="icon"
+                          color="deep-purple accent-4"
+                          size="40"
+                        >
+                          <v-icon
+                            icon="mdi-lock"
+                            color="white"
+                          >
+                            mdi-lock
+                          </v-icon>
+                        </v-avatar>
+                          Description: {{item.description}} <br/>
+                          Department: {{item.department}} <br/>
+                          Date Requested: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
+                        <template v-slot:actions>
+                          <v-btn text color="deep-purple accent-4" @click="OpenApprovedRequisitionsDialog(item)">View</v-btn>
+                        </template>
+                      </v-banner>
+                    </v-card-text>
+                  </v-card>
+                  <v-dialog
+                    v-model="approvedRequisitionsDialog"
+                    max-width="800px"
+                  >
+                    <v-card>
+                      <v-card-title class="headline">Product Requisition</v-card-title>
+
+                      <v-card-text>
+                        <requisition :requisitionData = 'this.approvedRequisition' v-if="isMounted"/>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="approvedRequisitionsDialog = false"
+                        >
+                          Close
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-row>
+                <v-col v-if="approvedRequisitions.length > 0"></v-col>
+                <v-row>
+                  <v-card>
+                    <v-card-title class="text-center justify-center">
+                        <h4 class="font-weight-bold ">This Month</h4>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-col cols="12">
+                        <v-row>
+                          <v-col cols="6">
+                            <v-card height="150" color="deep-purple lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{this.requisitionCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                  Purchase Requisitions
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                          <v-col cols="6">
+                            <v-card height="150" color="orange lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{ongoingProcurementCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                Ongoing Procurements  
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-row>
+                          <v-col cols="6">
+                            <v-card height="150" color="green lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{completedProcurementCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                Completed Procurements
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                          <v-col cols="6">
+                            <v-card height="150" color="red lighten-3">
+                              <v-card-title class="headline font-weight-bold" style="justify-content: center;">
+                                <div style="font-size: 50px; padding-top: 10px">
+                                  {{terminatedProcurementCount}}
+                                </div>
+                              </v-card-title>
+                              <v-card-text class="headline " style="text-align: left;">
+                                Terminated Procurements
+                              </v-card-text>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </v-card-text>
+                  </v-card>
+                </v-row>
               </v-col>
             </v-row>
             <v-divider></v-divider>
