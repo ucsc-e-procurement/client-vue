@@ -69,7 +69,7 @@
           <v-list-item-title>Departments</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/suppliers">
+      <v-list-item link to="/director/suppliers">
         <v-list-item-action>
           <v-icon>mdi-account-multiple</v-icon>
         </v-list-item-action>
