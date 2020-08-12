@@ -21,6 +21,9 @@
                 <v-btn class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
                     TEC-Report
                 </v-btn>
+                <v-btn class="mx-2" small color="primary" @click="openProcurement(props.item)">
+                    View
+                </v-btn>
                 </template>
             </v-data-table>
         </v-card>
@@ -171,6 +174,15 @@ export default {
     //   this.dialog = true
     //   console.log(item)
     // },
+
+    openProcurement(item) {
+      this.$router.push({
+          path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
+          query: {
+            procurement: item,
+          }
+        });
+    },
 
     openRequisition: function (item) {
       this.procurement = item

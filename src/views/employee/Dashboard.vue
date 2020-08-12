@@ -14,24 +14,19 @@
 
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-card height="100">
-                  <v-card-title>Current TEC Teams </v-card-title>
+                  <v-card-title>Current Procurements</v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="4">
+                <v-card height="100">
+                  <v-card-title>Pending Specifications</v-card-title>
+                </v-card>
+              </v-col>
+              <v-col cols="4">
                 <v-card height="100">
                   <v-card-title>Pending TEC Reports</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Current Bid Opening Teams</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Pending Bid Openings</v-card-title>
                 </v-card>
               </v-col>
             </v-row>
