@@ -17,6 +17,7 @@ import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
+import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -54,6 +55,7 @@ import Director_Shopping_Procurement_Stepper from "../views/director/Procurement
 import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
 import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
 import Director_Notifications from "../views/director/Notifications";
+import Director_Supplier_Details from '../views/director/SupplierDetails.vue'
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -103,7 +105,7 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: true
+          requiresAuth: false
         }
       },
       {
@@ -172,6 +174,8 @@ const routes = [
         path: "signature/add",
         component: Add_Signature
       },
+      // Developmnet Purposes Only
+      { path: "test", component: Bidding_Doc_Data_Sheet },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" }
     ]
@@ -222,6 +226,11 @@ const routes = [
         path: "notifications",
         name: "d_notif",
         component: Director_Notifications
+      },
+      {
+        path: "suppliers",
+        name: "d_sup",
+        component: Director_Supplier_Details
       }
     ]
   },
@@ -258,7 +267,7 @@ const routes = [
         path: "price_schedule/:procurement",
         name: "price_schedule",
         component: Price_Schedule,
-        props: true,
+        props: true
       },
       {
         path: "procurements",
@@ -269,7 +278,7 @@ const routes = [
       {
         path: "purchases",
         name: "purchases",
-        component: Purchases,
+        component: Purchases
       }
     ]
   },
