@@ -6,30 +6,31 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">{{this.$route.query.procurement.procurement_id}}</h5>
+              <h5 class="headline">{{this.$route.query.procurement_id}}</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
+            <br/>
             <v-row justify="center">
               <v-expansion-panels accordion>
                 <v-expansion-panel>
-                  <v-expansion-panel-header>Requisition</v-expansion-panel-header>
+                  <v-expansion-panel-header class="headline pt-5 pb-5">Requisition</v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <Requisition v-if="procurement" v-bind:requisition="requisition"/>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
                 <v-expansion-panel>
-                  <v-expansion-panel-header>Specification</v-expansion-panel-header>
+                  <v-expansion-panel-header class="headline pt-5 pb-5">Specification</v-expansion-panel-header>
                   <v-expansion-panel-content>
                     Spec
                   </v-expansion-panel-content>
                 </v-expansion-panel>
-                <v-expansion-panel>
-                  <v-expansion-panel-header>Tec Report</v-expansion-panel-header>
+                <v-expansion-panel v-if="this.$route.query.unlocked">
+                  <v-expansion-panel-header class="headline pt-5 pb-5">Bid Evaluation Report</v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <TecReport v-if="procurement && procurement.bid_type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data"/>
-                    <TecReportPackaged v-if="procurement && procurement.bid_type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data"/>
+                    <TecReport v-if="this.$route.query.type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data"/>
+                    <TecReportPackaged v-if="this.$route.query.type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data"/>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -124,6 +125,23 @@ export default {
       });
     },
 
+    fetchProcurement(procurement_id) {
+      this.$http.get('/api/tec_team/get_procurement', {
+        params: {
+          id: procurement_id
+        }
+      })
+      .then(response => {
+        console.log('procurement', response.data);
+        this.procurement = response.data[0]
+        console.log(this.procurement)
+        //console.log(Object.values(this.procurements[0].bids))
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+
     fetchRequisition(requisition_id) {
       this.$http.get('/api/tec_team/get_requisition', {
         params: {
@@ -184,19 +202,20 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
-  beforeMount() {
-    this.procurement = this.$route.query.procurement
-    this.fetchRequisition(this.$route.query.procurement.requisition_id)
-    this.fetchTecTeam(this.$route.query.procurement.tec_team_id)
-    this.fetchTecReport(this.$route.query.procurement.procurement_id)
-    if(this.$route.query.procurement.bid_type == 'items'){
-      this.fetchItemWiseBids(this.$route.query.procurement.procurement_id)
+  created() {
+    this.fetchProcurement(this.$route.query.procurement_id)
+    this.fetchRequisition(this.$route.query.requisition_id)
+    this.fetchTecTeam(this.$route.query.tec_team_id)
+    this.fetchTecReport(this.$route.query.procurement_id)
+    if(this.$route.query.type == 'items'){
+      this.fetchItemWiseBids(this.$route.query.procurement_id)
     }
     else{
-      this.fetchPackagedBids(this.$route.query.procurement.procurement_id)
+      this.fetchPackagedBids(this.$route.query.procurement_id)
     }
+    console.log('created', this.$route.query.procurement_id, this.$route.query.requisition_id, this.$route.query.tec_team_id)
   },
+  beforeMount() {},
   mounted() {},
   beforeUpdate() {},
   updated() {},

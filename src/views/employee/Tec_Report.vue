@@ -1,6 +1,6 @@
 <template>
     <v-card v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500>
-        <v-app-bar dark color="primary" fixed>
+        <!-- <v-app-bar dark color="primary" fixed>
           <v-btn icon dark @click="closeTecReport">
               <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -9,12 +9,12 @@
           <v-toolbar-items v-if="! filled">
               <v-btn dark text @click="save">Save</v-btn>
           </v-toolbar-items>
-          </v-app-bar>
+          </v-app-bar> -->
         <v-container> 
-            <v-row no-gutters>
+            <!-- <v-row no-gutters>
                 <h3 class="text-h4 justify-center">Bid Evaluation Report</h3>
             </v-row>
-            <v-divider class="mt-1"></v-divider>
+            <v-divider class="mt-1"></v-divider> -->
         <v-form ref="form">
              <v-row no-gutters>
                 <h5 class="headline pt-5 pb-5">Procurement Details</h5>
@@ -383,9 +383,10 @@
                     disabled
                 ></v-text-field>
                 </v-col>
-                
-            </v-row>
-            
+              </v-row>
+            <v-btn v-if="! filled" large class="mx-2" small color="success" @click="save">
+                SAVE
+            </v-btn>
         </v-form>   
         </v-container>
     </v-card>
