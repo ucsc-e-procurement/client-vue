@@ -15,73 +15,18 @@
             :search="search"
             >
                 <template v-slot:item.controls="props">
-                <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
+                <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
                     Requisition
                 </v-btn>
                 <v-btn class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
                     TEC-Report
-                </v-btn>
+                </v-btn> -->
                 <v-btn class="mx-2" small color="primary" @click="openProcurement(props.item)">
                     View
                 </v-btn>
                 </template>
             </v-data-table>
         </v-card>
-        <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="650px">
-            <v-card>
-                
-                <v-card-title>
-                <span class="headline">Tender Number : {{procurement.procurement_id}}</span>
-                </v-card-title>
-                <v-card-text>
-                <p class="text-h6">
-                    {{procurement.category}}
-                </p>
-                <div class="text--primary">
-                    Initialized Date : {{procurement.date}}
-                </div>
-                <div class="text--primary">
-                    Status : {{procurement.procurement_status}} 
-                </div>
-                <br/>
-                <v-divider></v-divider>
-                <br/>
-                <p v-if="procurement.bids" class="text-h6 text-decoration-underline text-center">
-                    Submitted Bids
-                </p>
-                <div v-if="procurement.bids">
-                <template v-for="(product,key) in Object.values(procurement.bids)">
-                    <div :key="product[0].product_id" class="text--primary">
-                        Item : {{product[0].product_name}}
-                    </div>
-                    <v-simple-table :key="key">
-                    <template v-slot:default>
-                        <thead>
-                        <tr>
-                            <th class="text-left">Supplier</th>
-                            <th class="text-left">Quantity</th>
-                            <th class="text-left">Unit Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="bid in product" :key="bid.supplier_id">
-                            <td>{{ bid.supplier_name }}</td>
-                            <td>{{ bid.qty }}</td>
-                            <td>{{ bid.unit_price }}</td>
-                        </tr>
-                        </tbody>
-                    </template>
-                    </v-simple-table>
-                    <br :key="product[0].product_name"/>
-                </template>
-                </div>
-                </v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-3" text @click="dialog = false">Close</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog> -->
         <v-dialog v-model="viewRequisition" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar dark color="primary">
@@ -177,38 +122,42 @@ export default {
 
     openProcurement(item) {
       this.$router.push({
-          path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
-          query: {
-            procurement: item,
-          }
-        });
+        path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
+        query: {
+          procurement_id: item.procurement_id,
+          tec_team_id: item.tec_team_id,
+          requisition_id: item.requisition_id,
+          type: item.bid_type,
+          unlocked: true
+        }
+      });
     },
 
-    openRequisition: function (item) {
-      this.procurement = item
-      this.fetchRequisition(this.procurement.requisition_id)
-      this.viewRequisition = true
-      console.log(item)
-    },
+    // openRequisition: function (item) {
+    //   this.procurement = item
+    //   this.fetchRequisition(this.procurement.requisition_id)
+    //   this.viewRequisition = true
+    //   console.log(item)
+    // },
 
-    openTecReport: function (item) {
-      this.procurement = item
-      if(this.procurement.bid_type == 'items'){
-        this.fetchItemWiseBids(this.procurement.procurement_id)
-      }
-      else{
-        this.fetchPackagedBids(this.procurement.procurement_id)
-      }
-      this.fetchRequisition(this.procurement.requisition_id)
-      this.fetchTecTeam(this.procurement.tec_team_id)
-      this.fetchTecReport(this.procurement.procurement_id)
-      this.tecReport = true
-      console.log(item)
-    },
+    // openTecReport: function (item) {
+    //   this.procurement = item
+    //   if(this.procurement.bid_type == 'items'){
+    //     this.fetchItemWiseBids(this.procurement.procurement_id)
+    //   }
+    //   else{
+    //     this.fetchPackagedBids(this.procurement.procurement_id)
+    //   }
+    //   this.fetchRequisition(this.procurement.requisition_id)
+    //   this.fetchTecTeam(this.procurement.tec_team_id)
+    //   this.fetchTecReport(this.procurement.procurement_id)
+    //   this.tecReport = true
+    //   console.log(item)
+    // },
 
-    closeTecReport: function () {
-      this.tecReport = false
-    },
+    // closeTecReport: function () {
+    //   this.tecReport = false
+    // },
 
     fetchUnlockedProcurements(employee_id) {
       this.$http.get('/api/tec_team/get_unlocked_procurements', {
@@ -247,102 +196,102 @@ export default {
       });
     },
 
-    fetchItemWiseBids(procurement_id) {
-      this.$http.get('/api/tec_team/get_itemwise_bids', {
-        params: {
-          id: procurement_id
-        }
-      })
-      .then(response => {
-        console.log('item-wise bids', response.data);
-        this.bid_data = response.data
-        this.bid_data.forEach(item => {
-          item.bids = JSON.parse(item.bids)
-        })
-        console.log(this.bid_data)
-        //console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchItemWiseBids(procurement_id) {
+    //   this.$http.get('/api/tec_team/get_itemwise_bids', {
+    //     params: {
+    //       id: procurement_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log('item-wise bids', response.data);
+    //     this.bid_data = response.data
+    //     this.bid_data.forEach(item => {
+    //       item.bids = JSON.parse(item.bids)
+    //     })
+    //     console.log(this.bid_data)
+    //     //console.log(Object.values(this.procurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
 
-    fetchPackagedBids(procurement_id) {
-      this.$http.get('/api/tec_team/get_packaged_bids', {
-        params: {
-          id: procurement_id
-        }
-      })
-      .then(response => {
-        console.log('packaged bids', response.data);
-        this.bid_data = response.data
-        this.bid_data.forEach(item => {
-          item.bids = JSON.parse(item.bids)
-        })
-        console.log(this.bid_data)
-        //console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchPackagedBids(procurement_id) {
+    //   this.$http.get('/api/tec_team/get_packaged_bids', {
+    //     params: {
+    //       id: procurement_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log('packaged bids', response.data);
+    //     this.bid_data = response.data
+    //     this.bid_data.forEach(item => {
+    //       item.bids = JSON.parse(item.bids)
+    //     })
+    //     console.log(this.bid_data)
+    //     //console.log(Object.values(this.procurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
 
-    fetchRequisition(requisition_id) {
-      this.$http.get('/api/tec_team/get_requisition', {
-        params: {
-          id: requisition_id
-        }
-      })
-      .then(response => {
-        console.log('requisition', response.data);
-        this.requisition = response.data[0]
-        this.requisition.products = JSON.parse(this.requisition.products)
-        console.log(this.requisition)
-        //console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchRequisition(requisition_id) {
+    //   this.$http.get('/api/tec_team/get_requisition', {
+    //     params: {
+    //       id: requisition_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log('requisition', response.data);
+    //     this.requisition = response.data[0]
+    //     this.requisition.products = JSON.parse(this.requisition.products)
+    //     console.log(this.requisition)
+    //     //console.log(Object.values(this.procurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
 
-    fetchTecTeam(tec_team_id) {
-      this.$http.get('/api/tec_team/get_tec_team', {
-        params: {
-          id: tec_team_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.tec_team = response.data[0]
-        this.tec_team = JSON.parse(this.tec_team.team)
-        console.log(this.tec_team)
-        //console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchTecTeam(tec_team_id) {
+    //   this.$http.get('/api/tec_team/get_tec_team', {
+    //     params: {
+    //       id: tec_team_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     this.tec_team = response.data[0]
+    //     this.tec_team = JSON.parse(this.tec_team.team)
+    //     console.log(this.tec_team)
+    //     //console.log(Object.values(this.procurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
 
-    fetchTecReport(procurement_id) {
-      this.$http.get('/api/tec_team/get_tec_report', {
-        params: {
-          id: procurement_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        if(response.data[0]){
-          this.tec_report_data = response.data[0]
-          this.tec_report_data.rejected_bids = this.tec_report_data.rejected_bids ? JSON.parse(this.tec_report_data.rejected_bids) : []
-          this.tec_report_data.recommended_bids = this.tec_report_data.recommended_bids ? JSON.parse(this.tec_report_data.recommended_bids) : []
-          this.tec_report_data.tec_recommendation = this.tec_report_data.tec_recommendation ? JSON.parse(this.tec_report_data.tec_recommendation) : []
-        }
-        console.log('tec report data',this.tec_report_data)
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchTecReport(procurement_id) {
+    //   this.$http.get('/api/tec_team/get_tec_report', {
+    //     params: {
+    //       id: procurement_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     if(response.data[0]){
+    //       this.tec_report_data = response.data[0]
+    //       this.tec_report_data.rejected_bids = this.tec_report_data.rejected_bids ? JSON.parse(this.tec_report_data.rejected_bids) : []
+    //       this.tec_report_data.recommended_bids = this.tec_report_data.recommended_bids ? JSON.parse(this.tec_report_data.recommended_bids) : []
+    //       this.tec_report_data.tec_recommendation = this.tec_report_data.tec_recommendation ? JSON.parse(this.tec_report_data.tec_recommendation) : []
+    //     }
+    //     console.log('tec report data',this.tec_report_data)
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
   },
 
   // Life Cycle Hooks
