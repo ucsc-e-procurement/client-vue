@@ -4,42 +4,20 @@
       <v-col cols="12">
         <v-card flat>
           <v-container>
-            <!-- Page Title -->
-            <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-
             <v-row class="justify-space-between">
               <v-col cols="12">
                 <v-card v-if="isMounted">
                   <v-card-title class="text-center justify-center py-6">
-                    <h4 class="font-weight-bold ">SUPPLIERS</h4>
+                    <h4 class="font-weight-bold ">{{this.supplierDetails.name}}</h4>
                   </v-card-title>
-                    <v-card>
-                        <v-card-title>
-                        <v-text-field
-                            v-model="search"
-                            label="Search"
-                            single-line
-                            hide-details
-                        ></v-text-field>
-                        </v-card-title>
-                        <v-data-table
-                        :headers="headers"
-                        :items="completedProcurements"
-                        :search="search"
-                        v-if="isMounted"
-                        >
-                            <template v-slot:item.controls="props">
-                                <v-btn
-                                class="mx-2"
-                                small
-                                color="primary"
-                                @click="onButtonClick(props.item)"
-                                >
-                                VIEW
-                                </v-btn>
-                            </template>
-                        </v-data-table>
-                    </v-card> 
+                  <v-row>
+                    <v-col cols="12" sm="9">
+                      <ProcurementsTab :procurements='this.supplierDetails.procurements' v-if="isMounted"/>
+                    </v-col>
+                    <v-col cols="12" sm="3">
+                      
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-col>
             </v-row>
@@ -51,93 +29,56 @@
 </template>
 
 <script>
+// Componenets
+
+import ProcurementsTab from './ProcurementsTab'
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
+  // Mixins
+  // mixins: [validationMixin],
+
+  // Form Validations
+  // validations: {},
+
+  // Props Received
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    ProcurementsTab: ProcurementsTab
+  },
 
   // Data Variables and Values
   data: () => ({
-    search: "",
-    isMounted: false,
-    tab: null,
-    ongoingProcurements: [],
-    completedProcurements: [],
-    terminatedProcurements: [],
-    headers: [
-      {
-        text: "Procurement ID",
-        align: "start",
-        value: "procurement_id"
-      },
-      { text: "Status", value: "status" },
-      { text: "Description", value: "description" },
-      { text: "Procurement Method", value: "procurement_method" },
-      { text: "Bid Opening Date", value: "bid_opening_date" },
-      { text: "Actions", value: "controls", sortable: false }
-    ]
+    supplierDetails: '',
+    isMounted: false
   }),
 
   // Custom Methods and Functions
   methods: {
-    onButtonClick: function(event) {
-      var proc_id = event.procurement_id;
-
-      if (event.procurement_method == "shopping") {
-        this.$router.push({
-          path: `procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
-          query: {
-            proc_id: event.procurement_id,
-            stepper: event.step
-          }
-        });
-      } else {
-        this.$router.push({
-          path: `procurements/direct/${proc_id.replace(/[/]/g, "")}`,
-          query: {
-            proc_id: event.procurement_id,
-            stepper: event.step
-          }
-        });
-      }
-    },
-
-    getProcurements() {
+      getSupplierDetails(){
       this.$http
-        .get("/api/director/procurements")
+        .get(`/api/director/get_supplier_details?supplierId=${this.$route.query.supplierId}`)
         .then(response => {
-          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
-          this.ongoingProcurements = response.data.filter(
-            item => item.status == "on-going"
-          );
-          this.completedProcurements = response.data.filter(
-            item => item.status == "completed"
-          );
-          this.terminatedProcurements = response.data.filter(
-            item => item.status == "terminated"
-          );
+        //   this.requisitionData = response.data[0];
+          this.supplierDetails = response.data[0];
+          console.log('>>>',this.supplierDetails)
           this.isMounted = true;
         })
         .catch(err => {
           console.log(err);
-        });
-    }
+        })
+    },
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.getProcurements();
+      this.getSupplierDetails()
   },
-  beforeMount() {
-    // this.getProcurements();
-  },
-  mounted() {
-    // this.getProcurements();
-  },
+  beforeMount() {},
+  mounted() {},
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},

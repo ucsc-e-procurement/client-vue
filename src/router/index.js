@@ -54,6 +54,7 @@ import Director_Shopping_Procurement_Stepper from "../views/director/Procurement
 import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
 import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
 import Director_Notifications from "../views/director/Notifications";
+import Director_Supplier_List from '../views/director/SupplierList.vue'
 import Director_Supplier_Details from '../views/director/SupplierDetails.vue'
 
 /* Remove These Routes in Production Mode Before Deployment  */
@@ -229,6 +230,11 @@ const routes = [
       {
         path: "suppliers",
         name: "d_sup",
+        component: Director_Supplier_List
+      },
+      {
+        path: "suppliers/:id",
+        name: "d_sup_d",
         component: Director_Supplier_Details
       }
     ]
