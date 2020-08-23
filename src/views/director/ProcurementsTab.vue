@@ -184,13 +184,13 @@ export default {
 
     getProcurements() {
       this.ongoingProcurements = this.procurementsList.filter(
-        item => item.status == "on-going"
+        item => item.status == "on-going" && item.bidStatus == "approved"
       );
       this.completedProcurements = this.procurementsList.filter(
-        item => item.status == "completed"
+        item => item.status == "completed" && item.bidStatus == "approved"
       );
       this.terminatedProcurements = this.procurementsList.filter(
-        item => item.status == "terminated"
+        item => item.status == "terminated" && item.bidStatus == "approved"
       );
       this.isMounted = true;
     }

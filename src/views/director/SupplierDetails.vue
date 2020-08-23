@@ -92,7 +92,7 @@ export default {
         .then(response => {
         //   this.requisitionData = response.data[0];
           this.supplierDetails = response.data[0];
-          // console.log('>>>',this.supplierDetails)
+          // console.log('>>', response.data[0]);
           this.isMounted = true;
         })
         .catch(err => {
