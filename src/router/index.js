@@ -42,7 +42,8 @@ import Purchases from "../views/supplier/Purchases.vue";
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
-import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
+import Employee_Procurement from "../views/employee/Tec_team_procurment.vue"
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -54,6 +55,8 @@ import Director_Shopping_Procurement_Stepper from "../views/director/Procurement
 import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
 import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
 import Director_Notifications from "../views/director/Notifications";
+import Director_Supplier_List from '../views/director/SupplierList.vue'
+import Director_Supplier_Details from '../views/director/SupplierDetails.vue'
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -224,6 +227,16 @@ const routes = [
         path: "notifications",
         name: "d_notif",
         component: Director_Notifications
+      },
+      {
+        path: "suppliers",
+        name: "d_sup",
+        component: Director_Supplier_List
+      },
+      {
+        path: "suppliers/:id",
+        name: "d_sup_d",
+        component: Director_Supplier_Details
       }
     ]
   },
@@ -296,7 +309,12 @@ const routes = [
         path: "bidopeningteam",
         name: "bigopeningteam",
         component: Employee_Bid_Opening_Team
-      }
+      },
+      {
+        path: "tecteam/procurement/:id",
+        name: "procurement",
+        component: Employee_Procurement
+      },
     ]
   },
 

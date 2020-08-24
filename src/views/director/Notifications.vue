@@ -30,7 +30,7 @@
                         mdi-lock
                     </v-icon>
                     </v-avatar>
-                        UCSC/NSP1/G/ENG/2020/0000030 : Procurement Initialized
+                        UCSC/NSP1/G/ENG/2020/0000030 | Procurement Initialized
                     <template v-slot:actions>
                     <v-btn text color="deep-purple accent-4">View</v-btn>
                     </template>
@@ -48,7 +48,7 @@
                         mdi-lock
                     </v-icon>
                     </v-avatar>
-                        UCSC/NSP1/G/ENG/2020/0000030 : Tec Report Created
+                        UCSC/NSP1/G/ENG/2020/0000030 | Tec Report Created
                     <template v-slot:actions>
                     <v-btn text color="deep-purple accent-4">View</v-btn>
                     </template>
@@ -66,7 +66,7 @@
                         mdi-lock
                     </v-icon>
                     </v-avatar>
-                        UCSC/NSP1/G/ENG/2020/0000030 : PO Generated
+                        UCSC/NSP1/G/ENG/2020/0000030 | PO Generated
                     <template v-slot:actions>
                     <v-btn text color="deep-purple accent-4">View</v-btn>
                     </template>
@@ -83,11 +83,12 @@
                     prominent
                     type="info"
                     elevation="2"
+                    v-for="request in this.requisitionRequests" :key="request.requisition_id"
                 >
                     <v-row align="center">
-                        <v-col class="grow">Appoint TEC team</v-col>
+                        <v-col class="grow">Approve Product Requisition</v-col>
                         <v-col class="shrink">
-                            <v-btn>Take action</v-btn>
+                            <v-btn @click="viewRequisitionRequest(request)">Take action</v-btn>
                         </v-col>
                     </v-row>
                 </v-alert>
@@ -95,13 +96,14 @@
                     border="top"
                     colored-border
                     prominent
-                    type="info"
+                    type="warning"
                     elevation="2"
+                    v-for="tecRequest in this.tecAppointmentRequests" :key="tecRequest.procurement_id"
                 >
                     <v-row align="center">
-                        <v-col class="grow">Appoint Bid Opening team</v-col>
+                        <v-col class="grow">Appoint TEC Team</v-col>
                         <v-col class="shrink">
-                            <v-btn>Take action</v-btn>
+                            <v-btn @click="manageTecAppointmentRequest(tecRequest)">Take action</v-btn>
                         </v-col>
                     </v-row>
                 </v-alert>
@@ -138,14 +140,71 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({}),
+  data: () => ({
+    requisitionRequests: [],
+    POApprovalRequests: [],
+    tecAppointmentRequests: [],
+  }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+
+    getRequisitionRequests(){
+      this.$http
+        .get("/api/director/get_requisition_requests")
+        .then(response => {
+          // console.log(response)
+          this.requisitionRequests = response.data;
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    getTecTeamRequests(){
+      this.$http
+        .get("/api/director/get_tec_appointment_requests")
+        .then(response => {
+        //   console.log(response)
+          this.tecAppointmentRequests = response.data;
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    viewRequisitionRequest: function (event) {
+        console.log(event);
+        this.$router.push({ path: `requisition/view` , query:{
+            requisition: event,
+        }})
+    },
+    manageTecAppointmentRequest: function (event) {
+        console.log(event);
+        var proc_id = event.procurement_id;
+
+        if (event.procurement_method == "shopping") {
+            this.$router.push({
+            path: `procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
+            query: {
+                proc_id: event.procurement_id,
+                stepper: event.step
+            }
+            });
+        } else {
+            this.$router.push({
+            path: `procurements/direct/${proc_id.replace(/[/]/g, "")}`,
+            query: {
+                proc_id: event.procurement_id,
+                stepper: event.step
+            }
+            });
+        }
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+      this.getRequisitionRequests();
+      this.getTecTeamRequests();
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
