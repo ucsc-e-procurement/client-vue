@@ -62,6 +62,7 @@ import Director_Notifications from "../views/director/Notifications";
 // Login
 import Login from "../views/login/Login.vue";
 import Home from "../views/home/Home.vue";
+import HomePage from "../views/home/HomePage.vue";
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,11 @@ const routes = [
     path: "",
     name: "home",
     component: Home
+  },
+  {
+    path: "/home_page",
+    name: "homePage",
+    component: HomePage
   },
   {
     path: "/login",
@@ -303,10 +309,15 @@ const routes = [
     name: "deputy_bursar",
     component: Deputy_Bursar,
     children: [
+      // {
+      //   path: "",
+      //   name: "default",
+      //   component: Director_Dashboard
+      // },
       {
         path: "",
         name: "default",
-        component: Director_Dashboard
+        component: HomePage
       },
       {
         path: "product_requisitions",

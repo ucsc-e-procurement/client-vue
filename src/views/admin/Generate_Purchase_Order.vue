@@ -2,9 +2,11 @@
   <v-container fluid class="px-0 py-0">
    <v-col v-for="(result,index) in resultsArray" :key="index" cols="12">
     <br/>
-    <v-card class="scroll">                
+    <v-card>                
       <v-card-title>
-      <span class="headline primary pa-2">Purchase Order</span>
+        <v-toolbar color="primary">
+          <v-toolbar-title>Purchase Order</v-toolbar-title>
+        </v-toolbar>
       </v-card-title>
       <v-card-text>
           <v-row>
@@ -109,14 +111,16 @@
       </ul>
       </div>	
       <br/><br/>
-      <v-card-actions>				
-      <v-btn color="primary">Show Preview</v-btn>
-      <v-btn color="secondary" @click="dialog = false">Close</v-btn>
-      </v-card-actions>            
+      <div class="ml-3 mb-3">
+        <v-card-actions>				
+        <v-btn color="primary" class="mb-4">Show Preview</v-btn>
+        <v-btn color="secondary" class="mb-4" @click="dialog = false">Close</v-btn>
+        </v-card-actions>       
+      </div>     
   </v-card>
   </v-col>
   </v-container>
-</template>
+</template> 
 
 <script>
 // Componenets
@@ -225,9 +229,9 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-.scroll {
+/* .scroll {
   overflow: scroll;
-}
+} */
 table {
   border-collapse: collapse;
   width: 95%;
