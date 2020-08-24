@@ -41,7 +41,8 @@ import Purchases from "../views/supplier/Purchases.vue";
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
-import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
+import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -293,6 +294,11 @@ const routes = [
         path: "bidopeningteam",
         name: "bigopeningteam",
         component: Employee_Bid_Opening_Team
+      },
+      {
+        path: "specsheet",
+        name: "specsheet",
+        component: Employee_spec_sheet
       },
     ]
   },
