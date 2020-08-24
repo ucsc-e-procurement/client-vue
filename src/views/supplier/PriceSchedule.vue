@@ -514,6 +514,16 @@ export default {
 
   // Custom Methods and Functions
   methods: {
+
+    getBidData() {
+      this.$http.get('/api/supplier/price_schedule/get_bid_data_from_fb', {
+        params: { procurement_id: this.procurement.procurement_id }
+        })
+        .then(res => {
+          console.log(res)
+        })
+    },
+    
     createTable() {
       console.log(this.procurement)
       let products = JSON.parse(this.procurement.products);
@@ -618,6 +628,7 @@ export default {
   created() {},
   beforeMount() {
     this.createTable();
+    this.getBidData();
   },
   mounted() {},
   beforeUpdate() {},
