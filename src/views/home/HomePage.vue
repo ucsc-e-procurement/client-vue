@@ -23,7 +23,7 @@
                             </thead>  
                             <tbody>
                                 <tr v-for="result in resultsArray" :key="result" cols="12">
-                                    <td>{{result.procurement_id}}hii</td>
+                                    <td>{{result.procurement_id}}</td>
                                     <td>{{result.category}}</td>
                                     <td>{{result.bid_opening_date}}</td>
                                     <td><v-btn color="primary" class="mb-4 mt-4" @click="getOngoingProcurementsData(result.procurement_id)">View</v-btn></td>
@@ -68,7 +68,7 @@
                         </thead>  
                         <tbody>
                                 <tr v-for="product in bid" :key="product" cols="12">
-                                <td>{{product.supplier_name}}hii</td>
+                                <td>{{product.supplier_name}}</td>
                                 <td>{{product.qty}}</td> 
                                 <td>{{product.unit_price}}</td>
                                 <td>{{product.total_with_vat}}</td>
@@ -118,7 +118,9 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-      dialog1 : false
+      dialog1 : false,
+      resultsArray: [],
+      resultsArray1: []
   }),
 
   // Custom Methods and Functions
