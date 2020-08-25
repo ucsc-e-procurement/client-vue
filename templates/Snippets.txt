@@ -1,0 +1,31 @@
+// Snackbar
+    snackbar: {
+      show: false,
+      text: "",
+      color: "",
+      timeout: 4000
+    },
+
+    // Snackbar Error
+          this.snackbar.text = "Unable to Create Quiz";
+          this.snackbar.color = "error";
+          this.snackbar.timeout = 4000;
+          this.snackbar.show = true;
+
+    <!-- Snackbar -->
+    <v-row>
+      <v-snackbar
+        v-model="snackbar.show"
+        top
+        right
+        :color="snackbar.color"
+        :timeout="snackbar.timeout"
+      >
+        {{ snackbar.text }}
+        <v-btn text @click="snackbar.show = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+    </v-row>
+
+    ------------------------------------------------------------------------------------------------------------------
