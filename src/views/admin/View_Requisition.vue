@@ -15,75 +15,158 @@
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row>
               <v-col cols="12">
-                <h5 class="subtitle-1">Requisition ID: {{ requisition.id }}</h5>
-                <h5 class="subtitle-1">
-                  Description: {{ requisition.description }}
-                </h5>
-                <h5 class="subtitle-1">
-                  Head of Division: {{ requisition.hod.name }}
-                </h5>
-                <h5 class="subtitle-1">
-                  Division: {{ requisition.divisionId }}
-                </h5>
-                <h5 class="subtitle-1">
-                  Fund Type:
-                  {{
-                    requisition.fundType === null
-                      ? "No Provided"
-                      : requisition.fundType
-                  }}
-                </h5>
+                <v-row no-gutters>
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">Requisition ID:</h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">{{ requisition.id }}</h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters>
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">
+                      Description:
+                    </h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">
+                      {{ requisition.description }}
+                    </h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="mt-2">
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">
+                      Head of Division:
+                    </h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">
+                      {{ requisition.hod.name }}
+                    </h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters>
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">
+                      Division:
+                    </h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">
+                      {{ requisition.divisionId }}
+                    </h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="mt-2">
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">
+                      Fund Type:
+                    </h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">
+                      {{
+                        requisition.fundType === null
+                          ? "-Not Provided-"
+                          : requisition.fundType
+                      }}
+                    </h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="mt-2">
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">Deputy Bursar's Recommendation:</h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <v-chip
+                      :color="
+                        requisition.isDeputyBurasrRecommended
+                          ? 'success'
+                          : 'error'
+                      "
+                      small
+                      class="ml-n2"
+                    >
+                      {{
+                        requisition.isDeputyBurasrRecommended
+                          ? "Reccommended"
+                          : "Not Reccommended"
+                      }}</v-chip
+                    >
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters>
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">
+                      Remarks of Rejection:
+                    </h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">
+                      {{
+                        requisition.deputyBursarRemark === "None"
+                          ? "No Rejection Remarks Has Provided"
+                          : requisition.deputyBursarRemark
+                      }}
+                    </h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="mt-2">
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">Director's Approval:</h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <v-chip
+                      :color="
+                        requisition.isDirectorApproved ? 'success' : 'error'
+                      "
+                      small
+                      class="ml-n2"
+                    >
+                      {{
+                        requisition.isDirectorApproved ? "Approved" : "Rejected"
+                      }}</v-chip
+                    >
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters>
+                  <v-col cols="3">
+                    <h5 class="subtitle-1">Remarks of Rejection:</h5>
+                  </v-col>
+                  <v-col cols="8">
+                    <h5 class="subtitle-1">
+                      {{
+                        requisition.directorsRemark === "None"
+                          ? "No Rejection Remarks Has Provided"
+                          : requisition.deputyBursarRemark
+                      }}
+                    </h5>
+                  </v-col>
+                </v-row>
+
+                <v-row no-gutters class="my-5">
+                  <v-select
+                    label="Procurement Type"
+                    :items="procurementMethods"
+                    outlined
+                    dense
+                  />
+                </v-row>
               </v-col>
             </v-row>
-            <v-row no-gutters>
-              <h5 class="subtitle-1">Deputy Bursar's Recommendation:</h5>
-              <v-chip
-                :color="
-                  requisition.isDeputyBurasrRecommended ? 'success' : 'error'
-                "
-                small
-                class="mx-5"
-              >
-                {{
-                  requisition.isDeputyBurasrRecommended
-                    ? "Reccommended"
-                    : "Not Reccommended"
-                }}</v-chip
-              >
-            </v-row>
-            <v-row no-gutters>
-              <h5 class="subtitle-1">
-                Remarks of Rejection:
-                {{
-                  requisition.deputyBursarRemark === "None"
-                    ? "No Rejection Remarks Has Provided"
-                    : requisition.deputyBursarRemark
-                }}
-              </h5>
-            </v-row>
-
-            <v-row no-gutters>
-              <h5 class="subtitle-1">Director's Approval:</h5>
-              <v-chip
-                :color="requisition.isDirectorApproved ? 'success' : 'error'"
-                small
-                class="mx-5"
-              >
-                {{
-                  requisition.isDirectorApproved ? "Approved" : "Rejected"
-                }}</v-chip
-              >
-            </v-row>
-            <v-row no-gutters>
-              <h5 class="subtitle-1">
-                Remarks of Rejection:
-                {{
-                  requisition.directorsRemark === "None"
-                    ? "No Rejection Remarks Has Provided"
-                    : requisition.deputyBursarRemark
-                }}
-              </h5>
-            </v-row>
+            <v-card-actions class="mx-0 px-0">
+              <v-btn class="" color="primary">Initialize Procurement</v-btn>
+            </v-card-actions>
           </v-container>
         </v-card>
       </v-col>
@@ -136,7 +219,9 @@ export default {
       hod: null,
       deputyBursar: null,
       products: []
-    }
+    },
+
+    procurementMethods: ["Direct Method", "Shopping Method"]
   }),
 
   // Custom Methods and Functions

@@ -8,9 +8,7 @@
             <v-row no-gutters>
               <h5 class="headline">Users of the System</h5>
               <v-spacer />
-              <v-btn @click="dialogAddUser = true" small color="primary"
-                >Add User</v-btn
-              >
+              <v-btn @click="gotoAddUser" small color="primary">Add User</v-btn>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -408,6 +406,9 @@ export default {
           this.snackbar.timeout = 4000;
           this.snackbar.show = true;
         });
+    },
+    gotoAddUser() {
+      this.$router.push("/admin/add_user");
     }
   },
 
