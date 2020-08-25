@@ -22,7 +22,7 @@
                   </v-card-title>
                   <v-card-text>
                     <v-text-field
-                      v-model="datasheet.purchaser"
+                      v-model="datasheet.itvCR_1_1.purchaser"
                       label="The Purchaser is: "
                       outlined
                       dense
@@ -30,7 +30,7 @@
                     />
 
                     <v-text-field
-                      v-model="datasheet.address"
+                      v-model="datasheet.itvCR_1_1.address"
                       label="Address: "
                       outlined
                       dense
@@ -49,10 +49,11 @@
                   </v-card-title>
                   <v-card-text>
                     <v-select
+                      v-model="datasheet.itvCR_5_1"
                       label="If the bidder is allowed to quote for less than the all the items specified, indicate the details: "
                       outlined
                       dense
-                      ::items="itemsRef_5_1"
+                      :items="itemsRef_5_1"
                     />
                   </v-card-text>
                   <v-divider class="mx-4"></v-divider>
@@ -67,7 +68,7 @@
                   </v-card-title>
                   <v-card-text>
                     <v-text-field
-                      prefix="Manufacture’s Authorization is Required"
+                      :value="datasheet.itvCR_7_3"
                       outlined
                       dense
                       readonly
@@ -93,7 +94,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="datasheet.dateValidTill"
+                          v-model="datasheet.itvCR_8.quotationValidUntil"
                           label="The Quotation shall be valid until: "
                           outlined
                           dense
@@ -103,7 +104,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="datasheet.dateValidTill"
+                        v-model="datasheet.itvCR_8.quotationValidUntil"
                         no-title
                         @input="menuValidTill = false"
                       ></v-date-picker>
@@ -123,10 +124,11 @@
                     <h5 class="subtitle-1 font-weight-regular">
                       Address for submission of Quotations is
                     </h5>
-                    <v-row>
+                    <v-row no-gutters>
                       <v-textarea
+                        v-model="datasheet.itvCR_11_1.address"
                         :value="
-                          `Assistant Bursar - Procurement \n ${datasheet.purchaser} \n ${datasheet.address}`
+                          `Assistant Bursar - Procurement \n${this.datasheet.itvCR_1_1.purchaser} \n${this.datasheet.itvCR_1_1.address}`
                         "
                         outlined
                         dense
@@ -135,7 +137,7 @@
                     </v-row>
 
                     <v-menu
-                      v-model="menuValidTill"
+                      v-model="menuDeadlineDate"
                       :close-on-text-click="false"
                       :nudge-right="300"
                       transition="scale-transition"
@@ -143,7 +145,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="datasheet.dateValidTill"
+                          v-model="datasheet.itvCR_11_1.deadlineDate"
                           label="Deadline for submission of quoted items is"
                           prefix="Date: "
                           outlined
@@ -154,18 +156,18 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="datasheet.dateValidTill"
+                        v-model="datasheet.itvCR_11_1.deadlineDate"
                         no-title
-                        @input="menuValidTill = false"
+                        @input="menuDeadlineDate = false"
                       ></v-date-picker>
                     </v-menu>
 
                     <v-menu
-                      ref="menuTimePicker"
+                      ref="menuTP"
                       v-model="menuTimePicker"
-                      :close-on-text-click="false"
+                      :close-on-content-click="false"
                       :nudge-right="40"
-                      :return-value.sync="datasheet.endQuotationTime"
+                      :return-value.sync="datasheet.itvCR_11_1.deadlineTime"
                       transition="scale-transition"
                       offset-y
                       max-width="290px"
@@ -173,7 +175,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="datasheet.endQuotationTime"
+                          v-model="datasheet.itvCR_11_1.deadlineTime"
                           outlined
                           dense
                           label="Deadline for submission of quoted items is"
@@ -185,30 +187,14 @@
                       </template>
                       <v-time-picker
                         v-if="menuTimePicker"
-                        v-model="datasheet.endQuotationTime"
+                        v-model="datasheet.itvCR_11_1.deadlineTime"
                         full-width
+                        scrollable
                         @click:minute="
-                          $refs.menuTimePicker.save(datasheet.endQuotationTime)
+                          $refs.menuTP.save(datasheet.itvCR_11_1.deadlineTime)
                         "
                       ></v-time-picker>
                     </v-menu>
-                  </v-card-text>
-                  <v-divider class="mx-4"></v-divider>
-                </v-card>
-
-                <v-card class="my-5" flat>
-                  <v-card-title
-                    ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
-                    </h5>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-select
-                      label="adasdasdasdasd"
-                      outlined
-                      dense
-                      :items="['aasdasdasd']"
-                    />
                   </v-card-text>
                   <v-divider class="mx-4"></v-divider>
                 </v-card>
@@ -243,7 +229,8 @@
                             color="primary"
                           >
                             <v-list-item
-                              v-for="(doc, i) in additionalDocuments"
+                              v-for="(doc, i) in datasheet.itvCR_3_1
+                                .additionalDocuments"
                               :key="i"
                               class="px-1"
                             >
@@ -263,7 +250,7 @@
                               <v-list-item-action>
                                 <v-row no-gutters>
                                   <v-divider verticl dark></v-divider>
-                                  <v-btn icon @click="removeChoice(choice, i)">
+                                  <v-btn icon @click="removeDocument(doc, i)">
                                     <v-icon color="red darken-2"
                                       >mdi-delete</v-icon
                                     >
@@ -300,7 +287,7 @@
                     <v-row>
                       <v-col cols="12">
                         <v-textarea
-                          v-model="addressQuotationsOpen"
+                          v-model="datasheet.itvCR_13.quotationOpenAddress"
                           outlined
                           dense
                         />
@@ -340,7 +327,8 @@
                             color="primary"
                           >
                             <v-list-item
-                              v-for="(fact, i) in otherFactorsForEvaluations"
+                              v-for="(fact, i) in datasheet.itvCR_16
+                                .evaluationFactors"
                               :key="i"
                               class="px-1"
                             >
@@ -360,7 +348,7 @@
                               <v-list-item-action>
                                 <v-row no-gutters>
                                   <v-divider verticl dark></v-divider>
-                                  <v-btn icon @click="removeChoice(choice, i)">
+                                  <v-btn icon @click="removeFactor(fact, i)">
                                     <v-icon color="red darken-2"
                                       >mdi-delete</v-icon
                                     >
@@ -398,7 +386,9 @@
                     <v-row>
                       <v-col cols="12">
                         <v-textarea
-                          v-model="conditionsOfPayment"
+                          v-model="
+                            datasheet.itvCR_20.methodsAndConditionsOfPayment
+                          "
                           outlined
                           dense
                         />
@@ -418,7 +408,7 @@
                   <v-card-text>
                     <v-row no-gutters>
                       <v-text-field
-                        v-model="bidSecurityAddressee"
+                        v-model="datasheet.itvCR_21.addresseeOfTheBidSecurity"
                         class="pr-5"
                         label="Addressee of the Bid Security"
                         outlined
@@ -433,7 +423,7 @@
                         &
                         <strong
                           >Bid Security should be addressed in favor of “{{
-                            bidSecurityAddressee
+                            datasheet.itvCR_21.addresseeOfTheBidSecurity
                           }}”</strong
                         >
                       </h5>
@@ -441,7 +431,7 @@
                     <v-row no-gutters class="mt-5">
                       <v-col cols="12">
                         <v-text-field
-                          v-model="bidSecurityAmount"
+                          v-model="datasheet.itvCR_21.bidSecurityAmount"
                           class="pr-5"
                           label="The amount of the bid security shall be "
                           prefix="LKR"
@@ -451,7 +441,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="bidSecurityValidiUntil"
+                          v-model="datasheet.itvCR_21.bidSecurityValidiUntil"
                           class="pr-5"
                           label="The validity period of the bid security shall be until"
                           outlined
@@ -484,6 +474,7 @@ import { required } from "vuelidate/lib/validators";
 
 */
 
+import firebsase from "firebase";
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
@@ -500,41 +491,64 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    panel: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    items: 5,
     datasheet: {
-      purchaser: "University of Colombo School of Computing",
-      address: "No 35 Reid Avenue Colombo 00700",
+      itvCR_1_1: {
+        purchaser: "University of Colombo School of Computing",
+        address: "No 35 Reid Avenue Colombo 00700"
+      },
+      itvCR_5_1: "",
+      itvCR_7_3: "Manufacture’s Authorization is required",
+      itvCR_8: {
+        quotationValidUntil: ""
+      },
+      itvCR_11_1: {
+        address: "",
+        deadlineDate: "",
+        deadlineTime: ""
+      },
+      itvCR_3_1: {
+        additionalDocuments: []
+      },
+      itvCR_13: {
+        quotationOpenAddress: ""
+      },
+      itvCR_16: {
+        evaluationFactors: []
+      },
+      itvCR_20: {
+        methodsAndConditionsOfPayment: ""
+      },
+      itvCR_21: {
+        addresseeOfTheBidSecurity:
+          "Director University of Colombo School of Computing",
+        bidSecurityAmount: 0.0,
+        bidSecurityValidiUntil: ""
+      },
+
       dateValidTill: "",
       endQuotationTime: "",
       endQuotationDate: ""
     },
     itemsRef_5_1: ["Should be quoted for total Items", "Ask For the Option"],
+
+    // Menu
     menuValidTill: false,
-    manuTimePicker: false,
+    menuTimePicker: false,
+    menuDeadlineDate: false,
 
     // Section 3.1
-    additionalDocuments: [],
     listItem_3_1: 0,
     documentDescription: "",
 
-    // Section 13
-    addressQuotationsOpen:
-      "ADMTC Lab – 03rd Floor \nUniversity Of Colombo School Of Computing \nNo 35 Reid Avenue Colombo 00700.",
-
     // Section 16
     listItem_16: null,
-    otherFactorsForEvaluations: [],
     statement: "",
 
     // Section 20
     conditionsOfPayment:
-      "Advance payment will not be allowed. \nPayment shall be made in Sri Lanka Rupees within Thirty (30) days of presentation of claim supported by a certificate from the Purchaser declaring that the Goods have been delivered and that all other contracted Services have been performed.",
+      "Advance payment will not be allowed. \nPayment shall be made in Sri Lanka Rupees within Thirty (30) days of presentation of claim supported by a certificate from the Purchaser declaring that the Goods have been delivered and that all other contracted Services have been performed."
 
     // Section 21
-    bidSecurityAddressee: "Director University of Colombo School of Computing",
-    bidSecurityAmount: 0,
-    bidSecurityValidiUntil: ""
   }),
 
   // Custom Methods and Functions
@@ -547,6 +561,20 @@ export default {
     // Section 16
     addEvaluationFactor() {
       this.otherFactorsForEvaluations.push(this.statement);
+    },
+
+    saveData() {
+      return new Promise((resolve, reject) => {
+        let db = firebsase.firestore();
+
+        let datasheet = {};
+
+        db.collection("ScheduleOfRequirements")
+          .doc("nzeQSViDCYS9mRpM9oXA")
+          .update()
+          .then()
+          .catch();
+      });
     }
   },
 
