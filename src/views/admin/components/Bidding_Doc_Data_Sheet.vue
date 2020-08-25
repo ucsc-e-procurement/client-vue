@@ -234,11 +234,8 @@
                               :key="i"
                               class="px-1"
                             >
-                              <v-list-item-avatar
-                                color="grey lighten-2"
-                                size="25"
-                              >
-                                {{ i + 1 }}
+                              <v-list-item-avatar class="ml-2" size="25">
+                                {{ alphabet[i] }} )
                               </v-list-item-avatar>
 
                               <v-list-item-content>
@@ -250,7 +247,12 @@
                               <v-list-item-action>
                                 <v-row no-gutters>
                                   <v-divider verticl dark></v-divider>
-                                  <v-btn icon @click="removeDocument(doc, i)">
+                                  <v-btn
+                                    icon
+                                    @click="
+                                      showDeleteDialogDocumentDescription(i)
+                                    "
+                                  >
                                     <v-icon color="red darken-2"
                                       >mdi-delete</v-icon
                                     >
@@ -332,11 +334,8 @@
                               :key="i"
                               class="px-1"
                             >
-                              <v-list-item-avatar
-                                color="grey lighten-2"
-                                size="25"
-                              >
-                                {{ i + 1 }}
+                              <v-list-item-avatar class="ml-2" size="25">
+                                {{ alphabet[i] }} )
                               </v-list-item-avatar>
 
                               <v-list-item-content>
@@ -348,7 +347,10 @@
                               <v-list-item-action>
                                 <v-row no-gutters>
                                   <v-divider verticl dark></v-divider>
-                                  <v-btn icon @click="removeFactor(fact, i)">
+                                  <v-btn
+                                    icon
+                                    @click="showDeleteDialogEvaluationFactor(i)"
+                                  >
                                     <v-icon color="red darken-2"
                                       >mdi-delete</v-icon
                                     >
@@ -451,12 +453,94 @@
                     </v-row>
                   </v-card-text>
                   <v-divider class="mx-4"></v-divider>
+
+                  <v-card-actions>
+                    <v-btn @click="saveDatasheet">Save</v-btn>
+                  </v-card-actions>
                 </v-card>
               </v-col>
+            </v-row>
+
+            <!-- Snackbar -->
+            <v-row>
+              <v-snackbar
+                v-model="snackbar.show"
+                bottom
+                right
+                :color="snackbar.color"
+                :timeout="snackbar.timeout"
+              >
+                {{ snackbar.text }}
+                <v-btn text @click="snackbar.show = false">
+                  Close
+                </v-btn>
+              </v-snackbar>
             </v-row>
           </v-container>
         </v-card>
       </v-col>
+    </v-row>
+
+    <!-- Dialog Delete Confirmation - Evaluation Factors -->
+    <v-row justify="center">
+      <v-dialog
+        v-model="dialogDeleteEvaluationFactor"
+        persistent
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="headline">Delete Confirmation</v-card-title>
+          <v-card-text>Do You Reallly Want to Delete this ?</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color=""
+              small
+              text
+              @click="dialogDeleteEvaluationFactor = false"
+              >Cancel</v-btn
+            >
+            <v-btn
+              color="red darken-2"
+              small
+              dark
+              @click="removeEvaluationFactor"
+              >Delete</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+    <!-- Dialog Delete Confirmation - Additional Documents / Document Description -->
+    <v-row justify="center">
+      <v-dialog
+        v-model="dialogDeleteDocumentDescription"
+        persistent
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="headline">Delete Confirmation</v-card-title>
+          <v-card-text>Do You Reallly Want to Delete this ?</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color=""
+              small
+              text
+              @click="dialogDeleteDocumentDescription = false"
+              >Cancel</v-btn
+            >
+            <v-btn
+              color="red darken-2"
+              small
+              dark
+              @click="removeDocumentDescription"
+              >Delete</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
   </v-container>
 </template>
@@ -516,19 +600,17 @@ export default {
         evaluationFactors: []
       },
       itvCR_20: {
-        methodsAndConditionsOfPayment: ""
+        methodsAndConditionsOfPayment:
+          "Advance payment will not be allowed. \nPayment shall be made in Sri Lanka Rupees within Thirty (30) days of presentation of claim supported by a certificate from the Purchaser declaring that the Goods have been delivered and that all other contracted Services have been performed."
       },
       itvCR_21: {
         addresseeOfTheBidSecurity:
           "Director University of Colombo School of Computing",
         bidSecurityAmount: 0.0,
         bidSecurityValidiUntil: ""
-      },
-
-      dateValidTill: "",
-      endQuotationTime: "",
-      endQuotationDate: ""
+      }
     },
+    alphabet: "abcdefghijklmnopqrstuvwxyz".split(""),
     itemsRef_5_1: ["Should be quoted for total Items", "Ask For the Option"],
 
     // Menu
@@ -537,43 +619,87 @@ export default {
     menuDeadlineDate: false,
 
     // Section 3.1
-    listItem_3_1: 0,
+    listItem_3_1: null,
     documentDescription: "",
+    deletePointer: null,
 
     // Section 16
     listItem_16: null,
     statement: "",
 
-    // Section 20
-    conditionsOfPayment:
-      "Advance payment will not be allowed. \nPayment shall be made in Sri Lanka Rupees within Thirty (30) days of presentation of claim supported by a certificate from the Purchaser declaring that the Goods have been delivered and that all other contracted Services have been performed."
+    // Dialogs
+    dialogDeleteEvaluationFactor: false,
+    dialogDeleteDocumentDescription: false,
 
-    // Section 21
+    // Snackbar
+    snackbar: {
+      show: false,
+      text: "",
+      color: "",
+      timeout: 4000
+    }
   }),
 
   // Custom Methods and Functions
   methods: {
     // Section 3.1
     addDocumentDescription() {
-      this.additionalDocuments.push(this.documentDescription);
+      this.datasheet.itvCR_3_1.additionalDocuments.push(
+        this.documentDescription.trim()
+      );
+
+      this.documentDescription = "";
     },
 
     // Section 16
     addEvaluationFactor() {
-      this.otherFactorsForEvaluations.push(this.statement);
+      this.datasheet.itvCR_16.evaluationFactors.push(this.statement.trim());
+      this.statement = "";
+    },
+    removeEvaluationFactor(deletePointer) {
+      this.datasheet.itvCR_16.evaluationFactors.splice(deletePointer, 1);
+      this.dialogDeleteEvaluationFactor = false;
+      // Snackbar Error
+      this.snackbar.text = "Evaluation Factor Deleted";
+      this.snackbar.color = "";
+      this.snackbar.timeout = 4000;
+      this.snackbar.show = true;
+    },
+    removeDocumentDescription(deletePointer) {
+      this.datasheet.itvCR_3_1.splice(deletePointer, 1);
+      this.dialogDeleteDocumentDescription = false;
+      // Snackbar Error
+      this.snackbar.text = "Document Description Deleted";
+      this.snackbar.color = "";
+      this.snackbar.timeout = 4000;
+      this.snackbar.show = true;
+    },
+    showDeleteDialogEvaluationFactor(index) {
+      this.dialogDeleteEvaluationFactor = true;
+      this.deletePointer = index;
+    },
+    showDeleteDialogDocumentDescription(index) {
+      this.dialogDeleteDocumentDescription = true;
+      this.deletePointer = index;
     },
 
-    saveData() {
+    saveDatasheet() {
       return new Promise((resolve, reject) => {
         let db = firebsase.firestore();
 
-        let datasheet = {};
+        let datasheet = { ...this.datasheet };
 
         db.collection("ScheduleOfRequirements")
           .doc("nzeQSViDCYS9mRpM9oXA")
-          .update()
-          .then()
-          .catch();
+          .update(datasheet)
+          .then(() => {
+            resolve();
+            console.log("Updated");
+          })
+          .catch(err => {
+            reject(err);
+            console.log(err);
+          });
       });
     }
   },
