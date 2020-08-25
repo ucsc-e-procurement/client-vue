@@ -16,7 +16,7 @@
     </template>
 
     <v-divider></v-divider>
-    <v-list dense>
+    <v-list rounded>
       <v-list-item exact="" link to="/employee/">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
@@ -27,20 +27,21 @@
       </v-list-item>
       <v-list-item exact="" link to="/employee/tecteam">
         <v-list-item-action>
-          <v-icon>mdi-account-group</v-icon>
+          <!-- <v-icon>mdi-account-group</v-icon> -->
+          <v-icon>mdi-notebook-outline</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>TEC Team</v-list-item-title>
+          <v-list-item-title>Procurements</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item exact="" link to="/employee/bidopeningteam">
+      <!-- <v-list-item exact="" link to="/employee/bidopeningteam">
         <v-list-item-action>
           <v-icon>mdi-account-multiple</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>Bid-Opening Team</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item link>
         <v-list-item-action>
           <v-badge color="blue" content="1">
