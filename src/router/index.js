@@ -17,6 +17,7 @@ import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
+import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -41,8 +42,13 @@ import Purchases from "../views/supplier/Purchases.vue";
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
+<<<<<<< HEAD
 import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
 import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
+=======
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
+import Employee_Procurement from "../views/employee/Tec_team_procurment.vue"
+>>>>>>> 278c6a861b1c643d3b0f2a6728368a204b22f965
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -54,6 +60,8 @@ import Director_Shopping_Procurement_Stepper from "../views/director/Procurement
 import Director_Direct_Procurement_Stepper from "../views/director/ProcurementStepperDirect.vue";
 import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest.vue";
 import Director_Notifications from "../views/director/Notifications";
+import Director_Supplier_List from '../views/director/SupplierList.vue'
+import Director_Supplier_Details from '../views/director/SupplierDetails.vue'
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -103,7 +111,7 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: true
+          requiresAuth: false
         }
       },
       {
@@ -172,6 +180,8 @@ const routes = [
         path: "signature/add",
         component: Add_Signature
       },
+      // Developmnet Purposes Only
+      { path: "test", component: Bidding_Doc_Data_Sheet },
       // TODO Redirect to Page Not Found Or Dashborad
       { path: "*", redirect: "/" }
     ]
@@ -222,6 +232,16 @@ const routes = [
         path: "notifications",
         name: "d_notif",
         component: Director_Notifications
+      },
+      {
+        path: "suppliers",
+        name: "d_sup",
+        component: Director_Supplier_List
+      },
+      {
+        path: "suppliers/:id",
+        name: "d_sup_d",
+        component: Director_Supplier_Details
       }
     ]
   },
@@ -258,7 +278,7 @@ const routes = [
         path: "price_schedule/:procurement",
         name: "price_schedule",
         component: Price_Schedule,
-        props: true,
+        props: true
       },
       {
         path: "procurements",
@@ -269,7 +289,7 @@ const routes = [
       {
         path: "purchases",
         name: "purchases",
-        component: Purchases,
+        component: Purchases
       }
     ]
   },
@@ -296,9 +316,15 @@ const routes = [
         component: Employee_Bid_Opening_Team
       },
       {
+<<<<<<< HEAD
         path: "specsheet",
         name: "specsheet",
         component: Employee_spec_sheet
+=======
+        path: "tecteam/procurement/:id",
+        name: "procurement",
+        component: Employee_Procurement
+>>>>>>> 278c6a861b1c643d3b0f2a6728368a204b22f965
       },
     ]
   },

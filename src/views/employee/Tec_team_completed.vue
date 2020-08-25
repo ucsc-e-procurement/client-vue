@@ -15,11 +15,14 @@
             :search="search"
             >
                 <template v-slot:item.controls="props">
-                <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
+                <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
                     Requisition
                 </v-btn>
                 <v-btn :disabled="!props.item.bids" class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
                     TEC-Report
+                </v-btn> -->
+                <v-btn class="mx-2" small color="primary" @click="openProcurement(props.item)">
+                    View
                 </v-btn>
                 </template>
             </v-data-table>
@@ -163,24 +166,37 @@ export default {
   // Custom Methods and Functions
   methods: {
 
-    openRequisition: function (item) {
-      this.procurement = item
-      this.fetchRequisition(this.procurement.requisition_id)
-      this.viewRequisition = true
-      console.log(item)
+    openProcurement(item) {
+      this.$router.push({
+        path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
+        query: {
+          procurement_id: item.procurement_id,
+          tec_team_id: item.tec_team_id,
+          requisition_id: item.requisition_id,
+          type: item.bid_type,
+          unlocked:true
+        }
+      });
     },
 
-    openTecReport: function (item) {
-      this.procurement = item
-      this.fetchRequisition(this.procurement.requisition_id)
-      this.fetchTecTeam(this.procurement.tec_team_id)
-      this.tecReport = true
-      console.log(item)
-    },
+    // openRequisition: function (item) {
+    //   this.procurement = item
+    //   this.fetchRequisition(this.procurement.requisition_id)
+    //   this.viewRequisition = true
+    //   console.log(item)
+    // },
 
-    closeTecReport: function () {
-      this.tecReport = false
-    },
+    // openTecReport: function (item) {
+    //   this.procurement = item
+    //   this.fetchRequisition(this.procurement.requisition_id)
+    //   this.fetchTecTeam(this.procurement.tec_team_id)
+    //   this.tecReport = true
+    //   console.log(item)
+    // },
+
+    // closeTecReport: function () {
+    //   this.tecReport = false
+    // },
 
     fetchCompletedProcurements(employee_id) {
       this.$http.get('/api/tec_team/get_completed_procurements', {
@@ -216,41 +232,41 @@ export default {
       });
     },
 
-    fetchRequisition(requisition_id) {
-      this.$http.get('/api/tec_team/get_requisition', {
-        params: {
-          id: requisition_id
-        }
-      })
-      .then(response => {
-        console.log('requisition', response.data);
-        this.requisition = response.data[0]
-        this.requisition.products = JSON.parse(this.requisition.products)
-        console.log(this.requisition)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchRequisition(requisition_id) {
+    //   this.$http.get('/api/tec_team/get_requisition', {
+    //     params: {
+    //       id: requisition_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log('requisition', response.data);
+    //     this.requisition = response.data[0]
+    //     this.requisition.products = JSON.parse(this.requisition.products)
+    //     console.log(this.requisition)
+    //     //console.log(Object.values(this.ongoingProcurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
 
-    fetchTecTeam(tec_team_id) {
-      this.$http.get('/api/tec_team/get_tec_team', {
-        params: {
-          id: tec_team_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.tec_team = response.data[0]
-        this.tec_team = JSON.parse(this.tec_team.team)
-        console.log(this.tec_team)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    // fetchTecTeam(tec_team_id) {
+    //   this.$http.get('/api/tec_team/get_tec_team', {
+    //     params: {
+    //       id: tec_team_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     this.tec_team = response.data[0]
+    //     this.tec_team = JSON.parse(this.tec_team.team)
+    //     console.log(this.tec_team)
+    //     //console.log(Object.values(this.ongoingProcurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
     
   },
 
