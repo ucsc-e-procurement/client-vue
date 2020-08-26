@@ -473,20 +473,28 @@ export default {
         console.log('valid')
         if(this.tec_report_data && this.tec_report_data.status == 'saved'){
           //update
+          var complete = true
           this.tec_team.forEach((item, key) => {
             console.log(key, item)
             if(!this.tec_recommendation[key]) {
               this.tec_recommendation[key] = {emp_id: this.tec_team[key].employee_id, emp_name: this.tec_team[key].employee_name, decision: this.tec_approval[key], remarks: this.tec_remarks[key]} 
             }
           })
-          console.log('update tec report')
+          this.tec_team.forEach((item, key) => {
+            if(!this.tec_recommendation[key].decision){
+              complete = false
+            }
+          })
+          console.log('update tec report', complete)
           this.$http.post('/api/tec_team/update_tec_report', {
                 tecRecommendation: JSON.stringify(this.tec_recommendation),
-                procurementId: this.procurement.procurement_id
+                procurementId: this.procurement.procurement_id,
+                complete: complete
             })
             .then(response => {
                 console.log(response);
                 this.people = response.data;
+                this.$router.go()
             })
             .catch(err => {
                 console.log(err);
@@ -505,12 +513,14 @@ export default {
             .then(response => {
                 console.log(response);
                 this.people = response.data;
+                this.$router.go()
             })
             .catch(err => {
                 console.log(err);
             })
         }
-        this.closeTecReport()
+        // this.closeTecReport()
+        // this.$router.go()
       }
       console.log('Save', this.rejected, this.reason_for_rejecting, this.recommended, this.reason_for_recommending, this.tec_recommendation)
     }
