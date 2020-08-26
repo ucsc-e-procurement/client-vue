@@ -6,59 +6,14 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">
-                Procurement Overview of {{ procurementId }}
-              </h5>
+              <h5 class="headline">Procurement Overview</h5>
+              <v-spacer />
+              <h5 class="headline">{{}}</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
-              <v-col cols="12">
-                <v-stepper v-model="e6" vertical>
-                  <v-stepper-step step="1" editable>
-                    Purchase Request Submission by the HoD
-                    <small>Summarize if needed</small>
-                  </v-stepper-step>
-
-                  <v-stepper-content step="1">
-                    <v-card></v-card>
-                    <!-- <v-btn color="primary" @click="e6 = 2">Next</v-btn> -->
-                  </v-stepper-content>
-
-                  <v-stepper-step step="2" editable>
-                    Duputy Bursar's Reccomandation - Approval
-                    <small>Summarize if needed</small>
-                  </v-stepper-step>
-
-                  <v-stepper-content step="2">
-                    <v-card></v-card>
-                    <!-- <v-btn color="primary" @click="e6 = 2">Next</v-btn> -->
-                  </v-stepper-content>
-
-                  <v-stepper-step step="3">
-                    Director’s Approval for Request (TEC Committee and
-                    Bid-Opening Members Appointment)
-                    <small>Summarize if needed</small>
-                  </v-stepper-step>
-
-                  <v-stepper-content step="3">
-                    <v-card></v-card>
-                    <!-- <v-btn color="primary" @click="e6 = 2">Next</v-btn> -->
-                  </v-stepper-content>
-
-                  <v-stepper-step step="4">
-                    Procurement Method Selection
-                    <small>Summarize if needed</small>
-                  </v-stepper-step>
-
-                  <v-stepper-content step="4">
-                    <v-card></v-card>
-                    <!-- <v-btn color="primary" @click="e6 = 2">Next</v-btn> -->
-                  </v-stepper-content>
-                </v-stepper>
-              </v-col>
-            </v-row>
+            <v-row> </v-row>
           </v-container>
         </v-card>
       </v-col>
@@ -88,26 +43,20 @@ export default {
   // validations: {},
 
   // Props Received
-  props: ["encodedProcurementId"],
+  props: [],
 
   // Imported Components
   components: {},
 
   // Data Variables and Values
-  data: () => ({
-    // Procurement ID
-    procurementId: ""
-  }),
+  data: () => ({}),
 
   // Custom Methods and Functions
   methods: {},
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {
-    this.procurementId = atob(this.encodedProcurementId);
-    console.log("Decoded Procurement ID: ", atob(this.encodedProcurementId));
-  },
+  created() {},
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

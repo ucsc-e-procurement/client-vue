@@ -20,7 +20,7 @@
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
+            <v-row v-if="isLoaded">
               <v-col cols="12">
                 <v-row no-gutters>
                   <v-col cols="12">
@@ -29,7 +29,13 @@
                       border="left"
                       outlined
                       v-show="alert.show"
-                      >{{ alert.text }}</v-alert
+                      ><v-row no-gutters>
+                        {{ alert.text }}
+                        <v-spacer />
+                        <v-btn color="primary" small text
+                          >View Procurement</v-btn
+                        >
+                      </v-row></v-alert
                     >
                   </v-col>
                 </v-row>
@@ -339,7 +345,12 @@
               @click="dialogInitializeProcurement = false"
               >Cancel</v-btn
             >
-            <v-btn color="primary" small dark @click="initializeProcurement"
+            <v-btn
+              color="primary"
+              small
+              dark
+              @click="initializeProcurement"
+              loading
               >Okay</v-btn
             >
           </v-card-actions>
@@ -453,6 +464,9 @@ export default {
     // Loaders
     loaderOverlay: false,
 
+    isLoaded: false,
+    isInitialized: false,
+
     // Menus
     menuBidOpeningDate: false,
     menuExpirationDate: false,
@@ -537,6 +551,20 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    getInitialisationStatus(requisitionId) {
+      return new Promise((resolve, reject) => {
+        this.$http
+          .get(
+            `/api/admin/procurement/is_initialized?requisitionId=${requisitionId}`
+          )
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
     }
   },
 
@@ -549,7 +577,12 @@ export default {
     this.procurementMethodMap.set("Normal Price Schedule", "NSP1");
     this.procurementMethodMap.set("National Shopping", "NSP2");
 
-    this.getProductRequisition(atob(this.encodedRequisitionId))
+    this.getInitialisationStatus(atob(this.encodedRequisitionId))
+      .then(res => {
+        this.isInitialized = res.is_initialized;
+
+        return this.getProductRequisition(atob(this.encodedRequisitionId));
+      })
       .then(requisition => {
         this.requisition.id = requisition.requisition_id;
         this.requisition.description = requisition.description;
@@ -596,12 +629,19 @@ export default {
             : true;
 
         // Alert
-        this.alert.text =
-          "This Product Requitition Cannot be Initialized to a Procurement";
-        this.alert.type = "error";
-        this.alert.show = !this.isOkayToInitialize;
-
+        if (!this.isInitialized) {
+          this.alert.text =
+            "This Product Requitition Cannot be Initialized to a Procurement";
+          this.alert.type = "error";
+          this.alert.show = !this.isOkayToInitialize;
+        } else {
+          this.alert.text = "This Procurement Has Already Initialized";
+          this.alert.type = "info";
+          this.alert.show = true;
+          this.isOkayToInitialize = false;
+        }
         console.log("Procurement: ", this.requisition);
+        this.isLoaded = true;
       })
       .catch(() => {
         // Snackbar Error
