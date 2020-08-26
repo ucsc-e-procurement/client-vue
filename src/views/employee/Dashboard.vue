@@ -197,7 +197,7 @@
                     v-for="item in this.pendingEval" :key="item.procurement_id"
                 >
                     <v-row align="center">
-                        <v-col class="grow">Specification Report Pending for {{item.procurement_id}}</v-col>
+                        <v-col class="grow">Evaluation Report Pending for {{item.procurement_id}}</v-col>
                         <v-col class="shrink">
                             <v-btn @click="openProcurement(item)">View</v-btn>
                         </v-col>

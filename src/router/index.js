@@ -41,9 +41,10 @@ import Purchases from "../views/supplier/Purchases.vue";
 //Employee
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
-import Employee_Tec_team from "../views/employee/Tec_team.vue";
+import Employee_Tec_team_procurements from "../views/employee/Tec_team.vue";
 // import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 import Employee_Procurement from "../views/employee/Tec_team_procurment.vue"
+import Employee_Tec_teams from "../views/employee/Tec_team_teams.vue"
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -301,9 +302,14 @@ const routes = [
         component: Employee_Dashboard
       },
       {
-        path: "tecteam",
-        name: "tecteam",
-        component: Employee_Tec_team
+        path: "procurements",
+        name: "procurements",
+        component: Employee_Tec_team_procurements
+      },
+      {
+        path: "tecteams",
+        name: "tecteams",
+        component: Employee_Tec_teams
       },
       // {
       //   path: "bidopeningteam",
