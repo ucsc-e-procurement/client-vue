@@ -19,8 +19,8 @@
             (b) We offer to supply in conformity with the Bidding Documents and in accordance with the Delivery
             Schedules specified in the Schedule of Requirements the following Goods and Related Services Supply &amp;
             Delivery of <b>[ {{ this.procurement.description }} ] [ {{ this.procurement.procurement_id }} ]</b><br>
-            (c) Total price of our quotation without VAT, including any discounts offered is: {{ this.beforeVat }}<br>
-            (d) Total price of our quotation including VAT, and any discounts offered is: {{ this.total }}.<br>
+            (c) Total price of our quotation without VAT, including any discounts offered is: Total before VAT <br>
+            (d) Total price of our quotation including VAT, and any discounts offered is: Total After VAT.<br>
             (e) Our quotation shall be valid for the period of time specified in ITV Sub-Clause 8.1, from the date fixed for
             the quotation submission deadline in accordance with ITV Sub-Clause 11.1, and it shall remain binding
             upon us and may be accepted at any time before the expiration of that period;<br>
@@ -46,6 +46,6 @@
 </template>
 <script>
 export default {
-    props: ['procurement', 'beforeVat', 'total']
+    props: ['procurement']
 }
 </script>
