@@ -32,7 +32,7 @@
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <datasheet v-if="this.method" :deadline='this.procurement.deadline' />
+              <datasheet v-if="this.method" :deadline='this.procurement.deadline' :data='this.fbData' />
               <v-btn class="mt-3" text @click.native="step = 1">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step=3">Continue</v-btn>
             </v-stepper-content>
@@ -49,7 +49,9 @@
                   <h5 class="headline">Technical Specification and Compliance</h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
-                <table class="mt-4" style="width: 100%; font-size: 12px">
+                <v-container v-for="(item, index) in this.fbData[0].items" :key="index">
+                  <table class="mt-4" style="width: 100%; font-size: 12px">
+                    <caption>{{ item.ItemName }}</caption>
                     <thead>
                       <tr>
                         <th wdith="15%">Features</th>
@@ -58,74 +60,36 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in specs" :key="index">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
                       <tr>
-                        <td class="text-right pr-3" colspan="2">Unit Price (Without VAT) (Rs)</td>
                         <td>
-                          <v-text-field
-                            type="number"
-                            min="0"
-                            step=".01"
-                            oninput="validity.valid||(value='')"
-                            v-model.number="compliance.unit"
-                          />
+                          <ul v-for="(feature, index) in item.Features" :key="index">
+                            <li class="py-2">{{ feature }}</li>
+                          </ul>
                         </td>
-                      </tr>
-                      <tr>
-                        <td class="text-right pr-3" colspan="2">Discount (If any) (Rs)</td>
                         <td>
-                          <v-text-field
-                            type="number"
-                            min="0"
-                            step=".01"
-                            oninput="validity.valid||(value='')"
-                            v-model.number="compliance.discount"
-                          />
+                          <ul v-for="(requirement, index) in item.MinimumRequirement" :key="index" style="list-style-type: none">
+                            <li class="py-2">{{ requirement }}</li>
+                          </ul>
                         </td>
-                      </tr>
-                      <tr>
-                        <td class="text-right pr-3" colspan="2">Unit Price After Discount (Without VAT) (Rs)</td>
                         <td>
-                          <v-text-field
-                            disabled
-                            :value="this.unitDiscount"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-right pr-3" colspan="2">15% VAT Amount (Rs)</td>
-                        <td>
-                          <v-text-field
-                            type="number"
-                            min="0"
-                            step=".01"
-                            oninput="validity.valid||(value='')"
-                            v-model.number="compliance.vat"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-right pr-3" colspan="2">Grand Total Amount With VAT</td>
-                        <td>
-                          <v-text-field
-                            disabled
-                            :value="this.grandTotal"
-                          />
+                          <ul v-for="(response, index) in item.bidderResponse" :key="index" style="list-style-type: none">
+                            <li class="py-2 text-center">
+                             <input type="checkbox" true-value="Yes" false-value="No" v-model="item.bidderResponse[index]">
+                             <span> {{ response }}</span>
+                            </li>
+                          </ul>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </v-container>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 3">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step=5">Continue</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="5">
-              <quotationForm :procurement='this.procurement' :beforeVat='this.unitDiscount' :total='this.grandTotal' />
+              <quotationForm :procurement='this.procurement' />
               <v-btn class="mt-3" text @click.native="step = 4">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step=6">Continue</v-btn>
             </v-stepper-content>
@@ -465,6 +429,8 @@ import datasheet from './Bid_Datasheet';
 import schedule from './Bid_Requirements';
 import quotationForm from './Bid_QuotationForm';
 
+import firebase from 'firebase';
+
 export default {
   // Props Received
   props: ['procurement'],
@@ -484,6 +450,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
+    fbData: [],
     step: 1,
     method: true,
     valid: true,
@@ -500,14 +467,6 @@ export default {
       vat: v => !!v || "Vat Registration No. is required",
       general: v => !!v || "This is required"
     },
-    specs: [],
-    compliance: {
-      unit: 0,
-      discount: 0,
-      unit_after: 0,
-      vat: 0,
-      total: 0,
-    },
     items: [],
     menu: false
   }),
@@ -515,17 +474,42 @@ export default {
   // Custom Methods and Functions
   methods: {
 
-    getBidData() {
-      this.$http.get('/api/supplier/price_schedule/get_bid_data_from_fb', {
-        params: { procurement_id: this.procurement.procurement_id }
-        })
-        .then(res => {
-          console.log(res)
-        })
+    async getBidData() {
+      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+      let doc_id;
+      this.fbData.push({
+        doc: await invRef.where("InvitationNo", "==", 'UCSC/SP/ADMTC/2019/099').get()
+          .then(function(querySnapshot) {
+            let docArr;
+
+            querySnapshot.forEach(function(doc) {
+              docArr = doc.data();
+              doc_id = doc.id;
+            });
+
+            return docArr;
+          }),
+        items: await invRef.doc(doc_id).collection("Items").get()
+          .then(function(querySnapshot) {
+            let itemArr = [];
+            let iterator = 0;
+
+            querySnapshot.forEach(function(doc) {
+              itemArr.push(doc.data());
+              itemArr[iterator].bidderResponse = [];
+              for(const index in doc.data().Features) {
+                itemArr[iterator].bidderResponse.push("No");
+              }
+              console.log(itemArr[iterator]);
+              iterator++;
+            });
+
+            return itemArr;
+          }) 
+      });
     },
-    
+
     createTable() {
-      console.log(this.procurement)
       let products = JSON.parse(this.procurement.products);
       this.originalData = null;
       for (const index in products) {
@@ -638,14 +622,6 @@ export default {
 
   // Computed Properties
   computed: {
-    unitDiscount() {
-      return (this.compliance.unit - this.compliance.discount).toFixed(2);
-    },
-
-    grandTotal() {
-      return (this.compliance.unit - this.compliance.discount + this.compliance.vat).toFixed(2);
-    },
-
     subTotal() {
       return this.items
         .map(item => this.subtotal(item))
