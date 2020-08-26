@@ -12,17 +12,17 @@
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row>
-              <v-expansion-panels v-model="panel" multiple flat accordion>
+              <v-col cols="12">
                 <!-- ITV Clause Reference: 1.1 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
                       ITV Clause Reference: <strong>1.1</strong>
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
+                  </v-card-title>
+                  <v-card-text>
                     <v-text-field
-                      v-model="datasheet.purchaser"
+                      v-model="datasheet.itvCR_1_1.purchaser"
                       label="The Purchaser is: "
                       outlined
                       dense
@@ -30,70 +30,71 @@
                     />
 
                     <v-text-field
-                      v-model="datasheet.address"
+                      v-model="datasheet.itvCR_1_1.address"
                       label="Address: "
                       outlined
                       dense
                       clearable
                     />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 5.1 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
                       ITV Clause Reference: <strong>5.1</strong>
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
+                  </v-card-title>
+                  <v-card-text>
                     <v-select
+                      v-model="datasheet.itvCR_5_1"
                       label="If the bidder is allowed to quote for less than the all the items specified, indicate the details: "
                       outlined
                       dense
-                      ::items="itemsRef_5_1"
+                      :items="itemsRef_5_1"
                     />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 7.3 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
                       ITV Clause Reference: <strong>7.3</strong>
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
+                  </v-card-title>
+                  <v-card-text>
                     <v-text-field
-                      prefix="Manufacture’s Authorization is Required"
+                      :value="datasheet.itvCR_7_3"
                       outlined
                       dense
                       readonly
                     />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 8 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
                       ITV Clause Reference: <strong>8</strong>
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
+                  </v-card-title>
+                  <v-card-text>
                     <v-menu
                       v-model="menuValidTill"
-                      :close-on-content-click="false"
+                      :close-on-text-click="false"
                       :nudge-right="300"
                       transition="scale-transition"
                       min-width="290px"
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="datasheet.dateValidTill"
+                          v-model="datasheet.itvCR_8.quotationValidUntil"
                           label="The Quotation shall be valid until: "
                           outlined
                           dense
@@ -103,43 +104,48 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="datasheet.dateValidTill"
+                        v-model="datasheet.itvCR_8.quotationValidUntil"
                         no-title
                         @input="menuValidTill = false"
                       ></v-date-picker>
                     </v-menu>
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 11.1 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
                       ITV Clause Reference: 11.1
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-textarea
-                      label="Address for submission of Quotations is"
-                      :value="
-                        `Assistant Bursar - Procurement \n ${datasheet.purchaser} \n ${datasheet.address}`
-                      "
-                      outlined
-                      dense
-                    >
-                    </v-textarea>
+                  </v-card-title>
+                  <v-card-text>
+                    <h5 class="subtitle-1 font-weight-regular">
+                      Address for submission of Quotations is
+                    </h5>
+                    <v-row no-gutters>
+                      <v-textarea
+                        v-model="datasheet.itvCR_11_1.address"
+                        :value="
+                          `Assistant Bursar - Procurement \n${this.datasheet.itvCR_1_1.purchaser} \n${this.datasheet.itvCR_1_1.address}`
+                        "
+                        outlined
+                        dense
+                      >
+                      </v-textarea>
+                    </v-row>
 
                     <v-menu
-                      v-model="menuValidTill"
-                      :close-on-content-click="false"
+                      v-model="menuDeadlineDate"
+                      :close-on-text-click="false"
                       :nudge-right="300"
                       transition="scale-transition"
                       min-width="290px"
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="datasheet.dateValidTill"
+                          v-model="datasheet.itvCR_11_1.deadlineDate"
                           label="Deadline for submission of quoted items is"
                           prefix="Date: "
                           outlined
@@ -150,18 +156,18 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="datasheet.dateValidTill"
+                        v-model="datasheet.itvCR_11_1.deadlineDate"
                         no-title
-                        @input="menuValidTill = false"
+                        @input="menuDeadlineDate = false"
                       ></v-date-picker>
                     </v-menu>
 
                     <v-menu
-                      ref="menuTimePicker"
+                      ref="menuTP"
                       v-model="menuTimePicker"
                       :close-on-content-click="false"
                       :nudge-right="40"
-                      :return-value.sync="timeEndQuotations"
+                      :return-value.sync="datasheet.itvCR_11_1.deadlineTime"
                       transition="scale-transition"
                       offset-y
                       max-width="290px"
@@ -169,7 +175,9 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="timeEndQuotations"
+                          v-model="datasheet.itvCR_11_1.deadlineTime"
+                          outlined
+                          dense
                           label="Deadline for submission of quoted items is"
                           prefix="Time: "
                           readonly
@@ -179,128 +187,360 @@
                       </template>
                       <v-time-picker
                         v-if="menuTimePicker"
-                        v-model="timeEndQuotations"
+                        v-model="datasheet.itvCR_11_1.deadlineTime"
                         full-width
+                        scrollable
                         @click:minute="
-                          $refs.menuTimePicker.save(timeEndQuotations)
+                          $refs.menuTP.save(datasheet.itvCR_11_1.deadlineTime)
                         "
                       ></v-time-picker>
                     </v-menu>
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
-
-                <v-expansion-panel>
-                  <v-expansion-panel-header
-                    ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
-                    </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-select
-                      label="adasdasdasdasd"
-                      outlined
-                      dense
-                      :items="['aasdasdasd']"
-                    />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 3.1 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
+                      ITV Clause Reference: 3.1
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-select
+                  </v-card-title>
+                  <v-card-text>
+                    <h5 class="subtitle-1">
+                      The Bidder shall submit the following additional
+                      documents:
+                    </h5>
+                    <v-row no-gutters class="mt-2">
+                      <v-text-field
+                        v-model="documentDescription"
+                        class="pr-5"
+                        label="Document Description"
+                        outlined
+                        dense
+                      />
+                      <v-btn @click="addDocumentDescription">Add</v-btn>
+                    </v-row>
+                    <v-row no-gutters>
+                      <v-col cols="12">
+                        <v-list dense shaped>
+                          <v-list-item-group
+                            v-model="listItem_3_1"
+                            color="primary"
+                          >
+                            <v-list-item
+                              v-for="(doc, i) in datasheet.itvCR_3_1
+                                .additionalDocuments"
+                              :key="i"
+                              class="px-1"
+                            >
+                              <v-list-item-avatar class="ml-2" size="25">
+                                {{ alphabet[i] }} )
+                              </v-list-item-avatar>
+
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  v-text="doc"
+                                ></v-list-item-title>
+                              </v-list-item-content>
+
+                              <v-list-item-action>
+                                <v-row no-gutters>
+                                  <v-divider verticl dark></v-divider>
+                                  <v-btn
+                                    icon
+                                    @click="
+                                      showDeleteDialogDocumentDescription(i)
+                                    "
+                                  >
+                                    <v-icon color="red darken-2"
+                                      >mdi-delete</v-icon
+                                    >
+                                  </v-btn>
+                                </v-row>
+                              </v-list-item-action>
+                            </v-list-item>
+                          </v-list-item-group>
+                        </v-list>
+                      </v-col>
+                    </v-row>
+
+                    <!-- <v-select
                       label="adasdasdasdasd"
                       outlined
                       dense
                       :items="['aasdasdasd']"
-                    />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                    /> -->
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 13 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
-                    ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
+                <v-card class="my-5" flat>
+                  <v-card-title
+                    ><h5 class="font-weight-regular">
+                      ITV Clause Reference: 13
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-select
-                      label="adasdasdasdasd"
-                      outlined
-                      dense
-                      :items="['aasdasdasd']"
-                    />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-title>
+                  <v-card-text>
+                    <h5 class="subtitle-1 font-weight-regular">
+                      The quotations shall be opened at the following address
+                    </h5>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-textarea
+                          v-model="datasheet.itvCR_13.quotationOpenAddress"
+                          outlined
+                          dense
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 16 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
+                <v-card class="my-5" flat>
+                  <v-card-title
                     ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
+                      ITV Clause Reference: 16
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-select
+                  </v-card-title>
+                  <v-card-text>
+                    <h5 class="subtitle-1">
+                      Other factors that will be considered for evaluation are
+                      (List and describe the methodology)
+                    </h5>
+                    <v-row no-gutters class="mt-2">
+                      <v-text-field
+                        v-model="statement"
+                        class="pr-5"
+                        label="Evaluation Statement"
+                        outlined
+                        dense
+                      />
+                      <v-btn @click="addEvaluationFactor">Add</v-btn>
+                    </v-row>
+                    <v-row no-gutters>
+                      <v-col cols="12">
+                        <v-list dense shaped>
+                          <v-list-item-group
+                            v-model="listItem_16"
+                            color="primary"
+                          >
+                            <v-list-item
+                              v-for="(fact, i) in datasheet.itvCR_16
+                                .evaluationFactors"
+                              :key="i"
+                              class="px-1"
+                            >
+                              <v-list-item-avatar class="ml-2" size="25">
+                                {{ alphabet[i] }} )
+                              </v-list-item-avatar>
+
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  v-text="fact"
+                                ></v-list-item-title>
+                              </v-list-item-content>
+
+                              <v-list-item-action>
+                                <v-row no-gutters>
+                                  <v-divider verticl dark></v-divider>
+                                  <v-btn
+                                    icon
+                                    @click="showDeleteDialogEvaluationFactor(i)"
+                                  >
+                                    <v-icon color="red darken-2"
+                                      >mdi-delete</v-icon
+                                    >
+                                  </v-btn>
+                                </v-row>
+                              </v-list-item-action>
+                            </v-list-item>
+                          </v-list-item-group>
+                        </v-list>
+                      </v-col>
+                    </v-row>
+
+                    <!-- <v-select
                       label="adasdasdasdasd"
                       outlined
                       dense
                       :items="['aasdasdasd']"
-                    />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                    /> -->
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 20 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
-                    ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
+                <v-card class="my-5" flat>
+                  <v-card-title
+                    ><h5 class="font-weight-regular">
+                      ITV Clause Reference: 20
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-select
-                      label="adasdasdasdasd"
-                      outlined
-                      dense
-                      :items="['aasdasdasd']"
-                    />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
+                  </v-card-title>
+                  <v-card-text>
+                    <h5 class="subtitle-1 font-weight-regular">
+                      The method and conditions of payment to be made to the
+                      Supplier under this Contract shall be as follows
+                    </h5>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-textarea
+                          v-model="
+                            datasheet.itvCR_20.methodsAndConditionsOfPayment
+                          "
+                          outlined
+                          dense
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                </v-card>
 
                 <!-- ITV Clause Reference: 21 -->
-                <v-expansion-panel>
-                  <v-expansion-panel-header
-                    ><h5 class="subtitle-1 font-weight-regular">
-                      ITV Clause Reference: 1.1
+                <v-card class="my-5" flat>
+                  <v-card-title
+                    ><h5 class="font-weight-regular">
+                      ITV Clause Reference: 21
                     </h5>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-select
-                      label="adasdasdasdasd"
-                      outlined
-                      dense
-                      :items="['aasdasdasd']"
-                    />
-                  </v-expansion-panel-content>
-                  <v-divider class="mx-5"></v-divider>
-                </v-expansion-panel>
-              </v-expansion-panels>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-row no-gutters>
+                      <v-text-field
+                        v-model="datasheet.itvCR_21.addresseeOfTheBidSecurity"
+                        class="pr-5"
+                        label="Addressee of the Bid Security"
+                        outlined
+                        dense
+                      />
+                      <h5 class="subtitle-1 font-weight-regular">
+                        Bid shall include a Bid Security issued from a
+                        <strong
+                          >Commercial Bank Registered in Central Bank of Sri
+                          Lanka</strong
+                        >. Specimen Format Included in Section IV Bidding Forms
+                        &
+                        <strong
+                          >Bid Security should be addressed in favor of “{{
+                            datasheet.itvCR_21.addresseeOfTheBidSecurity
+                          }}”</strong
+                        >
+                      </h5>
+                    </v-row>
+                    <v-row no-gutters class="mt-5">
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="datasheet.itvCR_21.bidSecurityAmount"
+                          class="pr-5"
+                          label="The amount of the bid security shall be "
+                          prefix="LKR"
+                          outlined
+                          dense
+                        />
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="datasheet.itvCR_21.bidSecurityValidiUntil"
+                          class="pr-5"
+                          label="The validity period of the bid security shall be until"
+                          outlined
+                          dense
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+
+                  <v-card-actions>
+                    <v-btn @click="saveDatasheet">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <!-- Snackbar -->
+            <v-row>
+              <v-snackbar
+                v-model="snackbar.show"
+                bottom
+                right
+                :color="snackbar.color"
+                :timeout="snackbar.timeout"
+              >
+                {{ snackbar.text }}
+                <v-btn text @click="snackbar.show = false">
+                  Close
+                </v-btn>
+              </v-snackbar>
             </v-row>
           </v-container>
         </v-card>
       </v-col>
+    </v-row>
+
+    <!-- Dialog Delete Confirmation - Evaluation Factors -->
+    <v-row justify="center">
+      <v-dialog
+        v-model="dialogDeleteEvaluationFactor"
+        persistent
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="headline">Delete Confirmation</v-card-title>
+          <v-card-text>Do You Reallly Want to Delete this ?</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color=""
+              small
+              text
+              @click="dialogDeleteEvaluationFactor = false"
+              >Cancel</v-btn
+            >
+            <v-btn
+              color="red darken-2"
+              small
+              dark
+              @click="removeEvaluationFactor"
+              >Delete</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+    <!-- Dialog Delete Confirmation - Additional Documents / Document Description -->
+    <v-row justify="center">
+      <v-dialog
+        v-model="dialogDeleteDocumentDescription"
+        persistent
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="headline">Delete Confirmation</v-card-title>
+          <v-card-text>Do You Reallly Want to Delete this ?</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color=""
+              small
+              text
+              @click="dialogDeleteDocumentDescription = false"
+              >Cancel</v-btn
+            >
+            <v-btn
+              color="red darken-2"
+              small
+              dark
+              @click="removeDocumentDescription"
+              >Delete</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
   </v-container>
 </template>
@@ -318,6 +558,7 @@ import { required } from "vuelidate/lib/validators";
 
 */
 
+import firebsase from "firebase";
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
@@ -334,21 +575,134 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    panel: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    items: 5,
     datasheet: {
-      purchaser: "University of Colombo School of Computing",
-      address: "No 35 Reid Avenue Colombo 00700",
-      dateValidTill: "",
-      timeEndQuotations: null
+      itvCR_1_1: {
+        purchaser: "University of Colombo School of Computing",
+        address: "No 35 Reid Avenue Colombo 00700"
+      },
+      itvCR_5_1: "",
+      itvCR_7_3: "Manufacture’s Authorization is required",
+      itvCR_8: {
+        quotationValidUntil: ""
+      },
+      itvCR_11_1: {
+        address: "",
+        deadlineDate: "",
+        deadlineTime: ""
+      },
+      itvCR_3_1: {
+        additionalDocuments: []
+      },
+      itvCR_13: {
+        quotationOpenAddress: ""
+      },
+      itvCR_16: {
+        evaluationFactors: []
+      },
+      itvCR_20: {
+        methodsAndConditionsOfPayment:
+          "Advance payment will not be allowed. \nPayment shall be made in Sri Lanka Rupees within Thirty (30) days of presentation of claim supported by a certificate from the Purchaser declaring that the Goods have been delivered and that all other contracted Services have been performed."
+      },
+      itvCR_21: {
+        addresseeOfTheBidSecurity:
+          "Director University of Colombo School of Computing",
+        bidSecurityAmount: 0.0,
+        bidSecurityValidiUntil: ""
+      }
     },
+    alphabet: "abcdefghijklmnopqrstuvwxyz".split(""),
     itemsRef_5_1: ["Should be quoted for total Items", "Ask For the Option"],
+
+    // Menu
     menuValidTill: false,
-    manuTimePicker: false
+    menuTimePicker: false,
+    menuDeadlineDate: false,
+
+    // Section 3.1
+    listItem_3_1: null,
+    documentDescription: "",
+    deletePointer: null,
+
+    // Section 16
+    listItem_16: null,
+    statement: "",
+
+    // Dialogs
+    dialogDeleteEvaluationFactor: false,
+    dialogDeleteDocumentDescription: false,
+
+    // Snackbar
+    snackbar: {
+      show: false,
+      text: "",
+      color: "",
+      timeout: 4000
+    }
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    // Section 3.1
+    addDocumentDescription() {
+      this.datasheet.itvCR_3_1.additionalDocuments.push(
+        this.documentDescription.trim()
+      );
+
+      this.documentDescription = "";
+    },
+
+    // Section 16
+    addEvaluationFactor() {
+      this.datasheet.itvCR_16.evaluationFactors.push(this.statement.trim());
+      this.statement = "";
+    },
+    removeEvaluationFactor(deletePointer) {
+      this.datasheet.itvCR_16.evaluationFactors.splice(deletePointer, 1);
+      this.dialogDeleteEvaluationFactor = false;
+      // Snackbar Error
+      this.snackbar.text = "Evaluation Factor Deleted";
+      this.snackbar.color = "";
+      this.snackbar.timeout = 4000;
+      this.snackbar.show = true;
+    },
+    removeDocumentDescription(deletePointer) {
+      this.datasheet.itvCR_3_1.splice(deletePointer, 1);
+      this.dialogDeleteDocumentDescription = false;
+      // Snackbar Error
+      this.snackbar.text = "Document Description Deleted";
+      this.snackbar.color = "";
+      this.snackbar.timeout = 4000;
+      this.snackbar.show = true;
+    },
+    showDeleteDialogEvaluationFactor(index) {
+      this.dialogDeleteEvaluationFactor = true;
+      this.deletePointer = index;
+    },
+    showDeleteDialogDocumentDescription(index) {
+      this.dialogDeleteDocumentDescription = true;
+      this.deletePointer = index;
+    },
+
+    saveDatasheet() {
+      return new Promise((resolve, reject) => {
+        let db = firebsase.firestore();
+
+        let datasheet = { ...this.datasheet };
+
+        db.collection("ScheduleOfRequirements")
+          .doc("nzeQSViDCYS9mRpM9oXA")
+          .update(datasheet)
+          .then(() => {
+            resolve();
+            console.log("Updated");
+          })
+          .catch(err => {
+            reject(err);
+            console.log(err);
+          });
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},

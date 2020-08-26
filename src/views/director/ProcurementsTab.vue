@@ -148,12 +148,11 @@ export default {
       {
         text: "Procurement ID",
         align: "start",
-        value: "procurement_id"
+        value: "procurementId"
       },
       { text: "Status", value: "status" },
-      { text: "Description", value: "description" },
+      { text: "Description", value: "prod_desc" },
       { text: "Procurement Method", value: "procurement_method" },
-      { text: "Bid Opening Date", value: "bid_opening_date" },
       { text: "Actions", value: "controls", sortable: false }
     ]
   }),
@@ -161,21 +160,22 @@ export default {
   // Custom Methods and Functions
   methods: {
     onButtonClick: function(event) {
-      var proc_id = event.procurement_id;
+      var proc_id = event.procurementId;
 
       if (event.procurement_method == "shopping") {
         this.$router.push({
-          path: `procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
+          path: `/director/procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
           query: {
-            proc_id: event.procurement_id,
+            proc_id: event.procurementId,
             stepper: event.step
           }
         });
+        // this.$router.go(-1)
       } else {
         this.$router.push({
-          path: `procurements/direct/${proc_id.replace(/[/]/g, "")}`,
+          path: `/director/procurements/direct/${proc_id.replace(/[/]/g, "")}`,
           query: {
-            proc_id: event.procurement_id,
+            proc_id: event.procurementId,
             stepper: event.step
           }
         });
@@ -184,13 +184,13 @@ export default {
 
     getProcurements() {
       this.ongoingProcurements = this.procurementsList.filter(
-        item => item.status == "on-going"
+        item => item.status == "on-going" && item.bidStatus == "approved"
       );
       this.completedProcurements = this.procurementsList.filter(
-        item => item.status == "completed"
+        item => item.status == "completed" && item.bidStatus == "approved"
       );
       this.terminatedProcurements = this.procurementsList.filter(
-        item => item.status == "terminated"
+        item => item.status == "terminated" && item.bidStatus == "approved"
       );
       this.isMounted = true;
     }

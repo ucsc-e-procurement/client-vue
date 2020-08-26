@@ -240,7 +240,7 @@ export default {
       this.loaderProducts = true;
       return new Promise((resolve, reject) => {
         this.$http
-          .get("/api/admin/get_all_requisitions")
+          .get("/api/admin/requisitions")
           .then(res => {
             console.log("Users: ", res.data);
             let index = 0;

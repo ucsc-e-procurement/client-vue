@@ -223,19 +223,19 @@ export default {
   },
   created() {
     axios
-      .get(`http://localhost:5000/api/hod/dir_empid`)
+      .get(`${baseURL}/api/hod/dir_empid`)
       .then(response => {
         this.director_id = response.data[0].employee_id;
       })
       .catch(error => console.log(error));
     axios
-      .get(`http://localhost:5000/api/hod/db_empid`)
+      .get(`${baseURL}/api/hod/db_empid`)
       .then(response => {
         this.deputy_bursar_id = response.data[0].employee_id;
       })
       .catch(error => console.log(error));
     axios
-      .get(`http://localhost:5000/api/hod/products`)
+      .get(`${baseURL}/api/hod/products`)
       .then(response => {
         this.products = response.data[0].employee_id;
       })
@@ -282,7 +282,7 @@ export default {
           this.checkbox ? (this.reorder = true) : (this.reorder = false);
         }
         axios
-          .post("http://localhost:5000/api/hod/create_req", {
+          .post(`${baseURL}/api/hod/create_req`, {
             description: this.descript,
             procurement_type: this.procurement_type,
             head_of_division_id: this.head_of_division_id,
