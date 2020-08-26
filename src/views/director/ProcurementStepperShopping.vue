@@ -37,45 +37,45 @@
                             <BidOpeningTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.bid_opening_team_id != null" />
                         </v-stepper-content> -->
 
-                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
-                        <v-stepper-content step="5">
-                            <RFQ  :rfqData = 'this.rfqData' v-if="rfqMounted && procurementState > 5" />
+                        <v-stepper-step :complete="procurementState > 4" :editable="procurementState > 4 ? true : false" step="4" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Tec Specification</v-stepper-step>
+                        <v-stepper-content step="4">
+                            <RFQ  :rfqData = 'this.rfqData' v-if="rfqMounted && procurementState > 4" />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">TEC Evaluation</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Request for Quotation</v-stepper-step>
+                        <v-stepper-content step="5">
+                            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
+                            <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
+                            <v-btn text>Cancel</v-btn>
+                        </v-stepper-content>
+
+                        <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">Tec Evaluation Report</v-stepper-step>
                         <v-stepper-content step="6">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
                             <v-btn text>Cancel</v-btn>
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 7" :editable="procurementState > 7 ? true : false" step="7" :edit-icon="procurementState > 7 ? '$complete' : '$edit' "  :complete-icon="procurementState > 7 ? '$edit' : '$edit' ">Recommendation</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 7" step="7" :editable="procurementState > 6 ? true : false" :edit-icon="procurementState > 7 ? '$complete' : '$edit' "  :complete-icon="procurementState > 7 ? '$edit' : '$edit' ">Recommendation</v-stepper-step>
                         <v-stepper-content step="7">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
                             <v-btn text>Cancel</v-btn>
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState >= 8" step="8" :editable="procurementState > 7 ? true : false" :edit-icon="procurementState > 8 ? '$complete' : '$edit' "  :complete-icon="procurementState > 8 ? '$edit' : '$edit' ">Director Approval</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 8" :editable="procurementState > 8 ? true : false" step="8" :edit-icon="procurementState > 8 ? '$complete' : '$edit' "  :complete-icon="procurementState > 8 ? '$edit' : '$edit' ">Director Approval</v-stepper-step>
                         <v-stepper-content step="8">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
                             <v-btn text>Cancel</v-btn>
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 9" :editable="procurementState > 9 ? true : false" step="9" :edit-icon="procurementState > 9 ? '$complete' : '$edit' "  :complete-icon="procurementState > 9 ? '$edit' : '$edit' ">Purchase Order</v-stepper-step>
-                        <v-stepper-content step="9">
-                            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-                            <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
-                            <v-btn text>Cancel</v-btn>
-                        </v-stepper-content>
-
-                        <v-stepper-step :complete="procurementState > 10" :editable="procurementState > 10 ? true : false" step="10" :edit-icon="procurementState > 10 ? '$complete' : '$edit' "  :complete-icon="procurementState > 10 ? '$edit' : '$edit' ">Product Acquisition</v-stepper-step>
+                        <!-- <v-stepper-step :complete="procurementState > 10" :editable="procurementState > 10 ? true : false" step="10" :edit-icon="procurementState > 10 ? '$complete' : '$edit' "  :complete-icon="procurementState > 10 ? '$edit' : '$edit' ">Product Acquisition</v-stepper-step>
                         <v-stepper-content step="10">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
                             <v-btn text>Cancel</v-btn>
-                        </v-stepper-content>
+                        </v-stepper-content> -->
 
                     </v-stepper>
                 </v-col>
