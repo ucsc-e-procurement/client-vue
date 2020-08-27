@@ -11,12 +11,18 @@
                 </v-alert>
               </v-col>
               <v-col v-else cols="12">
+                <v-text-field
+                  v-model="search"
+                  outlined
+                  dense
+                  label="Search"
+                  clearable
+                />
                 <v-data-table
                   :headers="headers"
                   :items="procurements"
                   :search="search"
                   :items-per-page="10"
-                  @click:row="onclickTableRowTeacher"
                   no-data-text="Please Add Items"
                 >
                   <template v-slot:item.action="{ item }">

@@ -32,7 +32,37 @@
                     </v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="tab">
-                    <v-tab-item v-for="i in 4" :key="i">
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <on-going />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <completed />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <terminated />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+
+                    <v-tab-item>
                       <v-container class="ma-0 ">
                         <v-row no-gutters>
                           <v-col cols="12">
@@ -82,6 +112,9 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 import ProcurementOnGoing from "./components/Procurement_On_Going";
+import ProcurementCompleted from "./components/Procurement_Completed";
+import ProcurementTerminated from "./components/Procurement_Terminated";
+
 /*
 
 // Validation Library - Vuelidate
@@ -103,7 +136,9 @@ export default {
 
   // Imported Components
   components: {
-    "on-going": ProcurementOnGoing
+    "on-going": ProcurementOnGoing,
+    completed: ProcurementCompleted,
+    terminated: ProcurementTerminated
   },
 
   // Data Variables and Values

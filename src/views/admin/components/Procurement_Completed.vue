@@ -7,16 +7,22 @@
             <v-row no-gutters>
               <v-col v-if="procurements.length == 0" cols="12">
                 <v-alert type="info" outlined border="left">
-                  No Any Ongoing Procurements Available
+                  No Any Completed Procurements Available
                 </v-alert>
               </v-col>
               <v-col v-else cols="12">
+                <v-text-field
+                  v-model="search"
+                  outlined
+                  dense
+                  label="Search"
+                  clearable
+                />
                 <v-data-table
                   :headers="headers"
                   :items="procurements"
                   :search="search"
                   :items-per-page="10"
-                  @click:row="onclickTableRowTeacher"
                   no-data-text="Please Add Items"
                 >
                   <template v-slot:item.action="{ item }">
@@ -144,7 +150,7 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.getOngoingProcurements("on-going")
+    this.getOngoingProcurements("completed")
       .then(res => {
         console.log(res);
         this.procurements = res;
