@@ -61,6 +61,7 @@ import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest
 import Director_Notifications from "../views/director/Notifications";
 import Director_Supplier_List from "../views/director/SupplierList.vue";
 import Director_Supplier_Details from "../views/director/SupplierDetails.vue";
+import Director_Department_List from "../views/director/DepartmentList.vue"
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -245,6 +246,11 @@ const routes = [
         path: "suppliers/:id",
         name: "d_sup_d",
         component: Director_Supplier_Details
+      },
+      {
+        path: "departments",
+        name: "d_dep",
+        component: Director_Department_List
       }
     ]
   },

@@ -51,7 +51,7 @@
           <v-list-item-title>Statistics</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/departments">
+      <v-list-item link to="/director/departments">
         <v-list-item-action>
           <v-icon>mdi-view-grid</v-icon>
         </v-list-item-action>
