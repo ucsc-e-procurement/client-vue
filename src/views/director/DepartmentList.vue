@@ -88,9 +88,10 @@ export default {
     onButtonClick: function(event) {
       console.log(event)
       this.$router.push({
-          path: `departments/${event.supplier_id.replace(/[/]/g, "")}`,
+          path: `departments/${event.department.replace(/[/]/g, "")}`,
           query: {
-            supplierId: event.supplier_id
+            department: event.department,
+            departmentname: event.departmentname
           }
       });
     },
