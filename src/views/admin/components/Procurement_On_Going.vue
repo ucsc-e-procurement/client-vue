@@ -3,37 +3,30 @@
     <v-row no-gutters>
       <v-col cols="12">
         <v-card flat>
-          <v-container>
-            <!-- Page Title -->
+          <v-container class="ma-0 pa-0">
             <v-row no-gutters>
-              <h5 class="headline">Ongoing Procurements</h5>
-            </v-row>
-            <v-divider class="mt-1"></v-divider>
-
-            <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
               <v-col v-if="procurements.length == 0" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Ongoing Procurements Available
                 </v-alert>
               </v-col>
               <v-col v-else cols="12">
+                <v-text-field
+                  v-model="search"
+                  outlined
+                  dense
+                  label="Search"
+                  clearable
+                />
                 <v-data-table
                   :headers="headers"
                   :items="procurements"
                   :search="search"
                   :items-per-page="10"
-                  @click:row="onclickTableRowTeacher"
                   no-data-text="Please Add Items"
                 >
                   <template v-slot:item.action="{ item }">
-                    <v-icon
-                      small
-                      color="red"
-                      @click="deleteMaterial(item.path, item.id)"
-                    >
-                      mdi-delete
-                    </v-icon>
+                    <v-btn color="primary" text>View</v-btn>
                   </template>
                 </v-data-table>
               </v-col>
@@ -74,53 +67,62 @@ export default {
 
   // Data Variables and Values
   data: () => ({
+    tab: null,
     //   Data Table
     headers: [
       {
         text: "#",
-        value: "no",
+        value: "index",
         sortable: false,
         align: "start",
-        divider: true,
+        // divider: true,
         groupable: true
       },
       {
-        text: "Description / Title",
-        value: "cat1",
+        text: "Procurement ID",
+        value: "procurement_id",
         sortable: false,
         align: "start",
-        divider: true,
+        // divider: true,
         groupable: true
       },
       {
-        text: "Tender No.",
-        value: "cat1",
+        text: "Category",
+        value: "category",
         sortable: false,
         align: "start",
-        divider: true,
+        // divider: true,
         groupable: true
       },
       {
-        text: "Date Started",
-        value: "cat2",
+        text: "Bid Opening Date",
+        value: "bid_opening_date",
         sortable: false,
-        align: "center",
-        divider: true,
-        groupable: true
+        align: "center"
+        // divider: true
       },
       {
         text: "Procurement Method",
-        value: "subject",
+        value: "procurement_method",
         sortable: false,
-        align: "center",
-        divider: true
+        align: "center"
+        // divider: true
       },
       {
-        text: "Actions",
-        value: "",
+        text: "Finance Method",
+        value: "finance_method",
         sortable: false,
         align: "center",
-        divider: true
+        // divider: true,
+        groupable: true
+      },
+
+      {
+        text: "Actions",
+        value: "action",
+        sortable: false,
+        align: "center"
+        // divider: true
       }
     ],
     procurements: [],
@@ -128,11 +130,42 @@ export default {
   }),
 
   // Custom Methods and Functions
-  methods: {},
+  methods: {
+    getOngoingProcurements(status) {
+      return new Promise((resolve, reject) => {
+        this.$http
+          .get(`/api/admin/procurements/status?status=${status}`)
+          .then(res => {
+            console.log(res.data);
+            resolve(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    }
+  },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.getOngoingProcurements("on-going")
+      .then(res => {
+        console.log(res);
+        this.procurements = res;
+        let index = 0;
+        this.procurements = this.procurements.map(procurement => {
+          index++;
+          let temp = { ...procurement, index, action: "" };
+          temp.bid_opening_date = temp.bid_opening_date.split("T")[0];
+          return temp;
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
