@@ -90,7 +90,7 @@
 </template>
 <script>
 export default {
-    props: ['deadline']
+    props: ['deadline', 'data']
 }
 </script>
 
