@@ -3,6 +3,9 @@ const admin = require("firebase-admin");
 const express = require("express");
 const bodyParser = require("body-parser");
 
+// Decryption with CTR
+const crypto = require('crypto');
+
 //initialize express server
 const app = express();
 
@@ -31,29 +34,71 @@ app.get("/test", (req, res) => {
   });
 });
 
+// Encrypt
+// app.post("/encrypt", async (req, res) => {
+//   try {
+//     const { data } = req.body;
+
+//     const algorithm = 'aes256';
+
+//     const key = crypto.randomBytes(32); 
+//     var cipher = crypto.createCipher(algorithm,key.toString('hex'));
+//     var endata = cipher.update(data,'utf8','hex') + cipher.final('hex');
+
+//     await admin.firestore().collection('bids').doc('test').set({
+//         [key.toString('hex')]: endata
+//     }, {merge: true});
+
+//     res.json({
+//         'msg': 'working'
+//     }).status(200);
+
+//   }catch(error){
+//       console.log(error);
+//       res.json({'error':error}).status(500);
+//   }
+
+// })
+
+
 // Invoke -> https://us-central1-ucsc-e-procurement.cloudfunctions.net/api/decrypt
+// Decrypts the price schedule and adds to a separate collection
 app.post("/decrypt", async (req, res) => {
   try {
     const { bidOpeningDate, data } = req.body;
 
+    const algorithm = 'aes256';
+
     await admin.firestore().collection('bids').doc(bidOpeningDate).get().then((doc) => {
 
+      // Document data | encrypted key -> encrypted price schedule
       var keys = doc.data();
 
       for (let key in keys) {
-        // console.log(key, keys[key]);
+
         // Decrypt
+        var decipher = crypto.createDecipher(algorithm,data[key]);
+        decipher.setAutoPadding(false);
+        var decryptedPriceSchedule = decipher.update(keys[key],'hex','utf8') + decipher.final('utf8');
+        
+        var priceSchedule = JSON.parse(decryptedPriceSchedule)
+
+        // Add the decrypted price schedule to the collection with the bid id as the dcument key
+        admin.firestore().collection('priceSchedule').doc(priceSchedule.bid_id).set({
+          [priceSchedule.bid_id] : priceSchedule
+        });
       }
       return keys;
     });
 
     res.json({
-        'msg': 'working'
+        'msg': 'success'
     }).status(200);
 
-}catch(error){
-    res.json({'error':error}).status(500);
-}
+  }catch(error){
+      console.log(error);
+      res.json({'error':error}).status(500);
+  }
 
 })
 
