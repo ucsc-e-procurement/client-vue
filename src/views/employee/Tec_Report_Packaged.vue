@@ -16,377 +16,388 @@
             </v-row>
             <v-divider class="mt-1"></v-divider> -->
         <v-form ref="form">
-             <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">Procurement Details</h5>
-            </v-row>    
-            <v-row>
-                <v-col cols="12" sm="6">
-                <v-text-field
-                    :value="this.procurement.procurement_id"
-                    label="Procurement ID"
-                    outlined
-                    readonly
-                ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                <v-text-field
-                    value="Goods"
-                    label="Procurement Type"
-                    outlined
-                    readonly
-                ></v-text-field>
-                </v-col>
+          <v-stepper :value="stepperStep" class="mt-12">
+              <v-stepper-header>
+                <v-stepper-step step="1" :complete="stepperStep > 1">Procurement Details</v-stepper-step>
 
-                <v-col cols="12" sm="12">
-                <v-text-field
-                    value="Description"
-                    label="Procurement Description"
-                    outlined
-                    readonly
-                ></v-text-field>
-                </v-col>
+                <v-divider></v-divider>
+
+                <v-stepper-step step="2" :complete="stepperStep > 2">Evaluation Committee Members</v-stepper-step>
+
+                <v-divider></v-divider>
+
+                <v-stepper-step step="3" :complete="stepperStep > 3">Bids Recieved Before Closing Time</v-stepper-step>
                 
-            </v-row>
-            <v-row class="justify-center">
-                <v-col  class="justify-center">
-                    <v-card>
-                        <v-simple-table>
-                        <template v-slot:default>
-                            <thead>
-                            <tr>
-                                <th class="text-h6 text-left" width="300px">Item</th>
-                                <th class="text-h6 text-left" width="250px">Quantity</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="product in requisition.products" :key="product.product_id">
-                                <td>{{ product.product_name }}</td>
-                                <td>{{ product.qty }}</td>
-                            </tr>
-                            </tbody>
-                        </template>
-                        </v-simple-table>
-                    </v-card>
-                </v-col>
-            </v-row>
-            <br/>
-            <v-divider class="mt-1"></v-divider>
-            <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">Evaluation Committee Members</h5>
-            </v-row>
-            <v-row class="justify-center">
-                <v-col>
-                <v-card>
-                <v-simple-table>
-                  <template v-slot:default>
-                    <thead>
-                      <tr>
-                        <th class="text-h6 text-left" width="500px">Name</th>
-                        <th class="text-h6 text-left" width="250px">Designation</th>
-                        <th class="text-h6 text-left" width="250px">Capacity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="item in tec_team" :key="item.name">
-                        <td>{{ item.employee_name }}</td>
-                        <td>{{ item.designation }}</td>
-                        <td>{{ item.capacity }}</td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-                </v-card>
-                </v-col>
-            </v-row>
-            <br/>
-            <v-divider class="mt-1"></v-divider>
-            <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">Bids Recieved Before Closing Time</h5>
-            </v-row>
-            <v-row>
-                <v-col  class="justify-center">
-                <template v-for="(bid,key) in bid_data">
-                    <div :key="key">
-                    <v-card flat>
-                        <div class="text-h6">
-                            Supplier {{key+1}} - {{bid.name}}
-                        </div>
-                        <v-simple-table>
-                        <template v-slot:default>
-                            <thead>
-                            <tr>
-                                <th class="text-h6 text-left" width="300px">Item</th>
-                                <th class="text-h6 text-left" width="250px">Quantity</th>
-                                <th class="text-h6 text-left" width="250px">Unit Price</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="item in bid.bids" :key="item.product_id">
-                                <td>{{ item.product_name }}</td>
-                                <td>{{ item.qty }}</td>
-                                <td>{{ item.unit_price }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td class="text-h6 text-left">Total with VAT</td>
-                              <td class="text-h6 text-left">{{ bid.total_with_vat }}</td>
-                            </tr>
-                            </tbody>
-                        </template>
-                        </v-simple-table>
-                    </v-card>
-                    <br/>
-                    </div>
-                </template>
-                </v-col>
-            </v-row>
-            <br/>
-            <v-divider class="mt-1"></v-divider>
-            <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">TEC Meeting Minutes</h5>
-            </v-row>
-            <v-divider class="mt-1"></v-divider>
-             <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">Bid Evaluation</h5>
-            </v-row>
-            <v-divider class="mt-1"></v-divider>
-            <v-col  class="justify-center">
-                <v-row no-gutters>
-                    <h5 class="headline pt-5 pb-5">Rejected Bids</h5>
+                <v-divider></v-divider>
+
+                <v-stepper-step step="4" :complete="stepperStep > 4">Bid Evaluation</v-stepper-step>
+                
+                <v-divider></v-divider>
+
+                <v-stepper-step step="5" :complete="stepperStep > 5">TEC Recommendation</v-stepper-step>
+              </v-stepper-header>
+
+              <v-stepper-content step="1">
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                    <v-text-field
+                        :value="this.procurement.procurement_id"
+                        label="Procurement ID"
+                        outlined
+                        readonly
+                    ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                    <v-text-field
+                        value="Goods"
+                        label="Procurement Type"
+                        outlined
+                        readonly
+                    ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="12">
+                    <v-text-field
+                        value="Description"
+                        label="Procurement Description"
+                        outlined
+                        readonly
+                    ></v-text-field>
+                    </v-col>
                 </v-row>
-                <v-row v-if="!tec_report_data">
-                  <v-col>
-                  <v-select
-                    item-text="supplier_name"
-                    item-value="bid_id"
-                    :items="bids"
-                    label="Select suppliers to reject their bids"
-                    v-model="rejected"
-                    multiple
-                    outlined
-                    :rules="[rules.required]"
-                  ></v-select>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <template v-for="(bid,key) in rejected_bids">
-                        <div :key="key">
-                        {{bid.name}}
-                        <v-text-field
-                            :value="tec_report_data ? rejected_reasons[key] : rejectReasons[key]"
-                            label="Reason for rejecting supplier"
-                            outlined
-                            :rules="[rules.required]"
-                            :readonly="tec_report_data && tec_report_data.status == 'saved'"
-                            @input="getReasonForRejecting($event, key)"
-                        ></v-text-field>
-                      </div>
-                    </template>
-                    <v-card>
-                    <v-simple-table>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-h6 text-left" width="500px">Supplier</th>
-                            <th class="text-h6 text-left" width="250px">Total with VAT</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(item) in rejected_bids" :key="item.name">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.total_with_vat }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                    </v-card>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
-                    <h5 class="headline pt-5 pb-5">Evaluated Substantially Responsive Bidders</h5>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-card >
-                    <v-simple-table>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-h6 text-left" width="500px">Supplier</th>
-                            <th class="text-h6 text-left" width="250px">Total with VAT</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(item) in responsive_bids" :key="item.name">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.total_with_vat }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                    </v-card>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
-                    <h5 class="headline pt-5 pb-5">Recommended Bidder</h5>
-                </v-row>
-                <v-row v-if="!tec_report_data">
-                  <v-col>
-                  <v-select
-                    item-text="supplier_name"
-                    item-value="bid_id"
-                    :items="responsive_bid_selection"
-                    label="Select suppliers to recommend their bid"
-                    v-model="recommended"
-                    outlined
-                    :rules="[rules.required]"
-                    required
-                  ></v-select>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <template v-for="(bid,key) in recommended_bids">
-                        <div :key="key">
-                        {{bid.name}}
-                        <v-text-field
-                            :value="tec_report_data ? recommended_reasons[key] : recommendReasons[key]"
-                            label="Reason for recommending supplier"
-                            outlined
-                            :rules="[rules.required]"
-                            :readonly="tec_report_data && tec_report_data.status == 'saved'"
-                            @input="getReasonForRecommending($event, key)"
-                        ></v-text-field>
-                      </div>
-                    </template>
-                    <v-card>
-                    <v-simple-table>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-h6 text-left" width="500px">Supplier</th>
-                            <th class="text-h6 text-left" width="500px">Address</th>
-                            <th class="text-h6 text-left" width="250px">Total with VAT</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(item) in recommended_bids" :key="item.name">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.address }}</td>
-                            <td>{{ item.total_with_vat }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                    </v-card> 
-                  </v-col>
+                <v-row class="justify-center">
+                    <v-col  class="justify-center">
+                        <v-card>
+                            <v-simple-table>
+                            <template v-slot:default>
+                                <thead>
+                                <tr>
+                                    <th class="text-h6 text-left" width="300px">Item</th>
+                                    <th class="text-h6 text-left" width="250px">Quantity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="product in requisition.products" :key="product.product_id">
+                                    <td>{{ product.product_name }}</td>
+                                    <td>{{ product.qty }}</td>
+                                </tr>
+                                </tbody>
+                            </template>
+                            </v-simple-table>
+                        </v-card>
+                    </v-col>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <br/>
-            </v-col>
-            <v-divider class="mt-1"></v-divider>
-            <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">TEC Team Recommendation</h5>
-            </v-row>
-            <v-row>
-              <v-col>
-                <template v-for="(member,key) in this.tec_team">
-                  <div :key="key">
-                    {{member.employee_name}} - {{member.capacity}}
-                    <!-- radio group if not logged in user -->
-                    <v-radio-group 
-                      v-if="user != member.employee_id" 
-                      :value="tec_approval[key]"  
-                      row 
-                      disabled 
-                      @input="tecRecommendation(key)" 
-                    >
-                      <v-radio label="Agree" value="agree"></v-radio>
-                      <v-radio label="Disagree" value="disagree"></v-radio>
-                    </v-radio-group>
-                    <!-- radio group if logged in user -->
-                    <v-radio-group 
-                      v-if="user == member.employee_id"
-                      :value="tec_report_data ? tec_approval[key] : row[key]"
-                      row  
-                      :rules="[rules.required]"
-                      :readonly="tec_report_data && tec_report_data.status == 'saved' && filled"
-                      @change="tecApproval($event, key)"
-                    >
-                      <v-radio label="Agree" value="agree"></v-radio>
-                      <v-radio label="Disagree" value="disagree"></v-radio>
-                    </v-radio-group>
+                <v-row no-gutters>
+                  <v-btn color="primary" @click="nextStep" rounded>
+                    Next
+                  </v-btn>
+                </v-row>
+              </v-stepper-content>
 
-                    <v-text-field
-                        v-if="user != member.employee_id"
-                        :value="tec_remarks[key]"
-                        label="Remarks"
-                        outlined
-                        @input="tecRecommendation(key)"
-                        disabled
-                    ></v-text-field>
-                    <v-text-field
-                        v-else
-                        :value="tec_report_data ? tec_remarks[key] : tecTeamRemarks[key]"
-                        label="Remarks"
+              <v-stepper-content step="2">
+                  <v-row class="justify-center">
+                    <v-col>
+                    <v-card>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-h6 text-left" width="500px">Name</th>
+                            <th class="text-h6 text-left" width="250px">Designation</th>
+                            <th class="text-h6 text-left" width="250px">Capacity</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="item in tec_team" :key="item.name">
+                            <td>{{ item.employee_name }}</td>
+                            <td>{{ item.designation }}</td>
+                            <td>{{ item.capacity }}</td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                    </v-card>
+                    </v-col>
+                </v-row>
+                <v-divider class="mt-1"></v-divider>
+                <br/>
+                <v-row no-gutters>
+                  <v-btn color="primary" @click="prevStep" rounded>
+                    Back
+                  </v-btn>
+                  <v-btn color="primary" @click="nextStep" rounded absolute right>
+                    Next
+                  </v-btn>
+                </v-row>
+              </v-stepper-content>
+
+              <v-stepper-content step="3">
+                  <v-row>
+                    <v-col  class="justify-center">
+                    <template v-for="(bid,key) in bid_data">
+                        <div :key="key">
+                        <v-card flat>
+                            <div class="text-h6">
+                                Supplier {{key+1}} - {{bid.name}}
+                            </div>
+                            <v-simple-table>
+                            <template v-slot:default>
+                                <thead>
+                                <tr>
+                                    <th class="text-h6 text-left" width="300px">Item</th>
+                                    <th class="text-h6 text-left" width="250px">Quantity</th>
+                                    <th class="text-h6 text-left" width="250px">Unit Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in bid.bids" :key="item.product_id">
+                                    <td>{{ item.product_name }}</td>
+                                    <td>{{ item.qty }}</td>
+                                    <td>{{ item.unit_price }}</td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td class="text-h6 text-left">Total with VAT</td>
+                                  <td class="text-h6 text-left">{{ bid.total_with_vat }}</td>
+                                </tr>
+                                </tbody>
+                            </template>
+                            </v-simple-table>
+                        </v-card>
+                        <br/>
+                        </div>
+                    </template>
+                    </v-col>
+                </v-row>
+                <v-divider class="mt-1"></v-divider>
+                <br/>
+                <v-row no-gutters>
+                  <v-btn color="primary" @click="prevStep" rounded>
+                    Back
+                  </v-btn>
+                  <v-btn color="primary" @click="nextStep" rounded absolute right>
+                    Next
+                  </v-btn>
+                </v-row>
+              </v-stepper-content>
+
+              <v-stepper-content step="4">
+                <v-form ref="form1">
+                  <v-col  class="justify-center">
+                    <v-row no-gutters>
+                        <h5 class="headline pt-5 pb-5">Rejected Bids</h5>
+                    </v-row>
+                    <v-row v-if="!tec_report_data">
+                      <v-col>
+                      <v-select
+                        item-text="supplier_name"
+                        item-value="bid_id"
+                        :items="bids"
+                        label="Select suppliers to reject their bids"
+                        v-model="rejected"
+                        multiple
                         outlined
                         :rules="[rules.required]"
-                        :readonly="tec_report_data && tec_report_data.status == 'saved' && filled"
-                        @input="tecRecommendation($event, key)"
-                    ></v-text-field>
-                  </div>
-                </template>
-              </v-col>
-            </v-row>
-            <v-divider class="mt-1"></v-divider>
-            <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">Deputy Bursar Recommendation</h5>
-            </v-row>
-            <v-row>
-                <v-col cols="12" sm="12">
-                <v-text-field
-                    value=""
-                    label="Deputy Bursar Remarks"
-                    outlined
-                    disabled
-                ></v-text-field>
+                      ></v-select>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <template v-for="(bid,key) in rejected_bids">
+                            <div :key="key">
+                            {{bid.name}}
+                            <v-text-field
+                                :value="tec_report_data ? rejected_reasons[key] : rejectReasons[key]"
+                                label="Reason for rejecting supplier"
+                                outlined
+                                :rules="[rules.required]"
+                                :readonly="tec_report_data && tec_report_data.status == 'saved'"
+                                @input="getReasonForRejecting($event, key)"
+                            ></v-text-field>
+                          </div>
+                        </template>
+                        <v-card>
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-h6 text-left" width="500px">Supplier</th>
+                                <th class="text-h6 text-left" width="250px">Total with VAT</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(item) in rejected_bids" :key="item.name">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.total_with_vat }}</td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <h5 class="headline pt-5 pb-5">Evaluated Substantially Responsive Bidders</h5>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-card >
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-h6 text-left" width="500px">Supplier</th>
+                                <th class="text-h6 text-left" width="250px">Total with VAT</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(item) in responsive_bids" :key="item.name">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.total_with_vat }}</td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <h5 class="headline pt-5 pb-5">Recommended Bidder</h5>
+                    </v-row>
+                    <v-row v-if="!tec_report_data">
+                      <v-col>
+                      <v-select
+                        item-text="supplier_name"
+                        item-value="bid_id"
+                        :items="responsive_bid_selection"
+                        label="Select suppliers to recommend their bid"
+                        v-model="recommended"
+                        outlined
+                        :rules="[rules.required]"
+                        required
+                      ></v-select>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <template v-for="(bid,key) in recommended_bids">
+                            <div :key="key">
+                            {{bid.name}}
+                            <v-text-field
+                                :value="tec_report_data ? recommended_reasons[key] : recommendReasons[key]"
+                                label="Reason for recommending supplier"
+                                outlined
+                                :rules="[rules.required]"
+                                :readonly="tec_report_data && tec_report_data.status == 'saved'"
+                                @input="getReasonForRecommending($event, key)"
+                            ></v-text-field>
+                          </div>
+                        </template>
+                        <v-card>
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-h6 text-left" width="500px">Supplier</th>
+                                <th class="text-h6 text-left" width="500px">Address</th>
+                                <th class="text-h6 text-left" width="250px">Total with VAT</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(item) in recommended_bids" :key="item.name">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.address }}</td>
+                                <td>{{ item.total_with_vat }}</td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        </v-card> 
+                      </v-col>
+                    </v-row>
+                    <v-divider class="mt-1"></v-divider>
+                    <br/>
                 </v-col>
-                <v-col cols="12" sm="6">
-                <v-text-field
-                    value=""
-                    label="Deputy Bursar Recommendation"
-                    outlined
-                    disabled
-                ></v-text-field>
-                </v-col>
-            </v-row>
+                </v-form>
+                <v-divider class="mt-1"></v-divider>
+                <br/>
+                <v-row no-gutters>
+                  <v-btn color="primary" @click="prevStep" rounded>
+                    Back
+                  </v-btn>
+                  <v-btn color="primary" @click="nextStep" rounded absolute right>
+                    Next
+                  </v-btn>
+                </v-row>
+              </v-stepper-content>
 
-            <v-divider class="mt-1"></v-divider>
-            <v-row no-gutters>
-                <h5 class="headline pt-5 pb-5">Director Approval</h5>
-            </v-row>
-            <v-row>
-                <v-col cols="12" sm="12">
-                <v-text-field
-                    value=""
-                    label="Derector Remarks"
-                    outlined
-                    disabled
-                ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                <v-text-field
-                    value=""
-                    label="Director Approval"
-                    outlined
-                    disabled
-                ></v-text-field>
-                </v-col> 
-            </v-row> 
-            <v-btn v-if="! filled" large class="mx-2" small color="success" @click="save">
-                SAVE
-            </v-btn>           
+              <v-stepper-content step="5">
+                  <v-row>
+                    <v-col>
+                      <template v-for="(member,key) in this.tec_team">
+                        <div :key="key">
+                          {{member.employee_name}} - {{member.capacity}}
+                          <!-- radio group if not logged in user -->
+                          <v-radio-group 
+                            v-if="user != member.employee_id" 
+                            :value="tec_approval[key]"  
+                            row 
+                            disabled 
+                            @input="tecRecommendation(key)" 
+                          >
+                            <v-radio label="Agree" value="agree"></v-radio>
+                            <v-radio label="Disagree" value="disagree"></v-radio>
+                          </v-radio-group>
+                          <!-- radio group if logged in user -->
+                          <v-radio-group 
+                            v-if="user == member.employee_id"
+                            :value="tec_report_data ? tec_approval[key] : row[key]"
+                            row  
+                            :rules="[rules.required]"
+                            :readonly="tec_report_data && tec_report_data.status == 'saved' && filled"
+                            @change="tecApproval($event, key)"
+                          >
+                            <v-radio label="Agree" value="agree"></v-radio>
+                            <v-radio label="Disagree" value="disagree"></v-radio>
+                          </v-radio-group>
+
+                          <v-text-field
+                              v-if="user != member.employee_id"
+                              :value="tec_remarks[key]"
+                              label="Remarks"
+                              outlined
+                              @input="tecRecommendation(key)"
+                              disabled
+                          ></v-text-field>
+                          <v-text-field
+                              v-else
+                              :value="tec_report_data ? tec_remarks[key] : tecTeamRemarks[key]"
+                              label="Remarks"
+                              outlined
+                              :rules="[rules.required]"
+                              :readonly="tec_report_data && tec_report_data.status == 'saved' && filled"
+                              @input="tecRecommendation($event, key)"
+                          ></v-text-field>
+                        </div>
+                      </template>
+                    </v-col>
+                  </v-row>
+                  <v-row no gutters>
+                    <v-btn v-if="! filled" large class="mx-2" small color="success" @click="save">
+                        SAVE
+                    </v-btn>
+                  </v-row>
+                  <v-divider class="mt-1"></v-divider>
+                  <br/>
+                  <v-row no-gutters>
+                    <v-btn color="primary" @click="prevStep" rounded>
+                      Back
+                    </v-btn>
+                  </v-row>
+              </v-stepper-content>
+            </v-stepper>
         </v-form>   
         </v-container>
     </v-card>
@@ -420,11 +431,29 @@ export default {
     tecTeamRemarks: [],
     row: [],
     tec_recommendation:[],
-    rules: {required: value => !!value || 'Required.'}
+    rules: {required: value => !!value || 'Required.'},
+    stepperStep: 1
   }),
 
   // Custom Methods and Functions
   methods: {
+
+    nextStep() {
+      var valid = this.$refs.form1.validate()
+      if(this.stepperStep == 4) {
+        if(valid){
+          this.stepperStep = this.stepperStep + 1
+        }
+      }
+      else{
+          this.stepperStep = this.stepperStep + 1
+      }
+    },
+
+    prevStep() {
+      this.stepperStep = this.stepperStep - 1
+    },
+
     getReasonForRejecting(val, key) {
       this.rejectReasons[key] = val
       this.reason_for_rejecting[key] = {bid_id: this.rejected_bids[key].bid_id, name: this.rejected_bids[key].name, reason: this.rejectReasons[key]}
