@@ -36,13 +36,10 @@
                   >
 
                   <v-stepper-content step="2">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
+                    <procurement-initialization
+                      :procurementId="procurementId"
+                    />
                     <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-                    <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
                   <v-stepper-step :complete="e6 > 3" step="3"
@@ -133,6 +130,8 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 import ProductRequisition from "./components/ProcurementOverview_Product_Requisition";
+import ProcurementInitialization from "./components//ProcurementOverview_Initialization";
+
 /*
 
 // Validation Library - Vuelidate
@@ -154,7 +153,8 @@ export default {
 
   // Imported Components
   components: {
-    "product-requisition": ProductRequisition
+    "product-requisition": ProductRequisition,
+    "procurement-initialization": ProcurementInitialization
   },
 
   // Data Variables and Values
@@ -170,7 +170,7 @@ export default {
     getProcurement(procurementId) {
       return new Promise((resolve, reject) => {
         this.$http
-          .get(`/api/admin/procurement?procurementId=${procurementId}`)
+          .get(`/api/admin/procurement?id=${procurementId}`)
           .then(res => {
             resolve(res.data);
           })
@@ -188,11 +188,12 @@ export default {
 
     this.getProcurement(this.procurementId)
       .then(res => {
-        console.log(res);
         this.procurement = res;
         this.isLoaded = true;
       })
-      .catch();
+      .catch(err => {
+        console.log(err);
+      });
   },
   beforeMount() {},
   mounted() {},
