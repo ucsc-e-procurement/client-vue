@@ -104,15 +104,13 @@
                       <template v-slot:default>
                         <thead>
                           <tr>
-                            <th class="text-h6 text-left" width="500px">Name</th>
-                            <th class="text-h6 text-left" width="250px">Designation</th>
+                            <th class="text-h6 text-left" width="250px">Name</th>
                             <th class="text-h6 text-left" width="250px">Capacity</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr v-for="item in tec_team" :key="item.name">
                             <td>{{ item.employee_name }}</td>
-                            <td>{{ item.designation }}</td>
                             <td>{{ item.capacity }}</td>
                           </tr>
                         </tbody>
