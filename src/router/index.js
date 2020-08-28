@@ -5,7 +5,7 @@ import store from "../store";
 // Admin
 import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
-import Admin_Procurements_Ongoing from "../views/admin/Procurements_Ongoing.vue";
+import Admin_Procurements from "../views/admin/Procurements.vue";
 import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminated.vue";
 import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
@@ -46,9 +46,8 @@ import Employee_Tec_team_procurements from "../views/employee/Tec_team.vue";
 // import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 
 import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
-import Employee_Procurement from "../views/employee/Tec_team_procurment.vue"
-import Employee_Tec_teams from "../views/employee/Tec_team_teams.vue"
-
+import Employee_Procurement from "../views/employee/Tec_team_procurment.vue";
+import Employee_Tec_teams from "../views/employee/Tec_team_teams.vue";
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -62,6 +61,8 @@ import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest
 import Director_Notifications from "../views/director/Notifications";
 import Director_Supplier_List from "../views/director/SupplierList.vue";
 import Director_Supplier_Details from "../views/director/SupplierDetails.vue";
+import Director_Department_List from "../views/director/DepartmentList.vue";
+import Director_Department_Details from "../views/director/DepartmentDetails.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -117,7 +118,7 @@ const routes = [
       {
         path: "ongoing_procurements",
         name: "ongoing procurements",
-        component: Admin_Procurements_Ongoing
+        component: Admin_Procurements
       },
       {
         path: "terminated_procurements",
@@ -246,7 +247,17 @@ const routes = [
         path: "suppliers/:id",
         name: "d_sup_d",
         component: Director_Supplier_Details
-      }
+      },
+      {
+        path: "departments",
+        name: "d_dep",
+        component: Director_Department_List
+      },
+      {
+        path: "departments/:id",
+        name: "d_dep_d",
+        component: Director_Department_Details
+      },
     ]
   },
 
