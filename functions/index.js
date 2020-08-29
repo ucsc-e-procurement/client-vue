@@ -81,10 +81,13 @@ app.post("/decrypt", async (req, res) => {
         decipher.setAutoPadding(false);
         var decryptedPriceSchedule = decipher.update(keys[key],'hex','utf8') + decipher.final('utf8');
         
-        var priceSchedule = JSON.parse(decryptedPriceSchedule)
+        // var priceSchedule = JSON.parse(decryptedPriceSchedule)
 
         // Add the decrypted price schedule to the collection with the bid id as the dcument key
-        admin.firestore().collection('priceSchedule').doc(priceSchedule.bid_id).set(priceSchedule);
+        admin.firestore().collection('decrypted_bids').add({
+          is_processed: false,
+          data: decryptedPriceSchedule
+        });
       }
       return keys;
     });
