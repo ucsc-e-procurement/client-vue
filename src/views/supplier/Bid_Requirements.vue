@@ -19,7 +19,7 @@
             </tbody>
         </table>
         <v-row no-gutters class="mt-4 caption">
-            If exceeds the delivery period :<b>[ Insert Delivery Period ]</b> weeks, Late delivery charges 0.5% per week of 
+            If exceeds the delivery period 6-8 weeks, Late delivery charges 0.5% per week of 
             the total contract sum.
             <ul><li>The maximum amount of Late Delivery charges shall be 10% of the total contract sum.</li></ul>
         </v-row>
