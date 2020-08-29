@@ -32,7 +32,7 @@
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <datasheet v-if="this.method" :deadline='this.procurement.deadline' :data='this.fbData' />
+              <datasheet v-if="this.method" :deadline='this.procurement.deadline' :data='this.fbData[0].doc' />
               <v-btn class="mt-3" text @click.native="step = 1">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step=3">Continue</v-btn>
             </v-stepper-content>
@@ -478,7 +478,7 @@ export default {
       let invRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
-        doc: await invRef.where("InvitationNo", "==", 'UCSC/SP/ADMTC/2019/099').get()
+        doc: await invRef.where("InvitationNo", "==", 'UCSC/SP/ADMTC/2020/001').get()
           .then(function(querySnapshot) {
             let docArr;
 

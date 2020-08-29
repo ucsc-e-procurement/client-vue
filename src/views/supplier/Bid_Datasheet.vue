@@ -13,62 +13,55 @@
                 <tr>
                     <td width="10%" class="text-center">1.1</td>
                     <td>
-                        The Purchaser is : <b>[ University of Colombo School of Computing ]</b><br>
-                        Address: <b>No:35, Reid Avenue, Colombo 07.</b>
+                        The Purchaser is : <b>{{ this.data.itvCR_1_1.purchaser }}</b><br>
+                        Address: <b>{{ this.data.itvCR_1_1.address }}</b>
                     </td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">5.1</td>
                     <td>
                         If the bidder is allowed to quote for less than the all the items specified, indicate the details:<br>
-                        <b>[ Should be quote for total Items ]</b>
+                        <b>{{ this.data.itvCR_5_1 }}</b>
                     </td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">7.3</td>
-                    <td>Manufacture’s Authorization is required</td>
+                    <td>{{ this.data.itvCR_7_3 }}</td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">8</td>
-                    <td>The Quotation shall be valid until: <b>{{ this.deadline }}</b></td>
+                    <td>The Quotation shall be valid until: <b>{{ this.data.itvCR_8.quotationValidUntil }}</b></td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">11.1</td>
                     <td>
                         Address for submission of Quotations is:<br>
-                        <b>Assistant Bursar – Procurement<br>
-                        University of Colombo School of Computing<br>
-                        No 35 Reid Avenue Colombo 00700.</b><br>
-                        Deadline for submission of quoted items is: <b>{{ this.deadline }}</b>
+                        <b>{{ this.data.itvCR_11_1.address }}</b><br>
+                        Deadline for submission of quoted items is: <b>{{ this.data.itvCR_11_1.deadlineDate }} - {{ this.data.itvCR_11_1.deadlineTime }}</b>
                     </td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">3.1</td>
                     <td>
                         The Bidder shall submit the following additional documents:<br>
-                        a) Bidder should have a proven track record in selling and maintaining of Office Chairs for a
-                        minimum period of 03 Years.<br>
-                        b) Comprehensive Warranty confirmation from the Vendor<br>
-                        c) Vendor should provide documentary evidence to substantiate these conditions.<br>
+                        <ul v-for="(doc, index) in this.data.itvCR_3_1.additionalDocuments" :key="index">
+                            <li>{{ doc }}</li>
+                        </ul>
                     </td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">13</td>
                     <td>
-                        The sealed quotation dropped into the tender box at the Finance branch UCSC on or before <b>{{ this.deadline }}</b>
+                        The sealed quotation dropped into the tender box at the Finance branch UCSC on or before <b>{{ this.data.itvCR_13.quotationOpenAddress }}</b>
                     </td>
                 </tr>
                 <tr>
                     <td width="10%" class="text-center">16</td>
                     <td>
                         Other factors that will be considered for evaluation are (List and describe the methodology):<br>
-                        a) The Price as quoted;<br>
-                        b) Price adjustment for correction of arithmetical errors;<br>
-                        c) Price adjustment due to discounts offered.<br>
-                        d) Bidder should have a proven track record in selling and maintaining <b>[ Insert goods name ]</b> 
-                        for a minimum period of <b>[ Insert no of years ]</b> Years.<br>
-                        e) Bidder shall not be allowed to quote part of the bid.<br>
-                        f) Sample should be according to the specification &amp; good quality.
+                        <ul v-for="(doc, index) in this.data.itvCR_16.evaluationFactors" :key="index">
+                            <li>{{ doc }}</li>
+                        </ul>
                     </td>
                 </tr>
                 <tr>
@@ -76,12 +69,7 @@
                     <td>
                         The method and conditions of payment to be made to the Supplier under this Contract shall
                         be as follows:<br>
-                        <ul>
-                            <li>Advance payment will not be allowed.</li>
-                            <li>Payment shall be made in Sri Lanka Rupees within Thirty (30) days of presentation of claim
-                            supported by a certificate from the Purchaser declaring that the Goods have been
-                            delivered and that all other contracted Services have been performed.</li>
-                        </ul>
+                        {{ this.data.itvCR_20.methodsAndConditionsOfPayment }}
                     </td>
                 </tr>
             </tbody>
