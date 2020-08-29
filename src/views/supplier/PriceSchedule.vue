@@ -713,12 +713,9 @@ export default {
     },
 
     validateBidGuarantee() {
-      if(Object.values(this.fbData[0].doc.itvCR_3_1.additionalDocuments).indexOf("Bid Guarantee") > -1) {
-        if(this.$refs.form2.validate()) {
-          this.step = 9;
-        }
+      if(this.$refs.form2.validate()) {
+        this.step = 9;
       }
-      else this.step = 9;  
     },
 
     validateAuthorization() {
