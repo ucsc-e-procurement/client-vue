@@ -18,12 +18,12 @@
                             Product Requisition
                         </v-stepper-step>
                         <v-stepper-content step="1">
-                            <requisition :requisitionData = 'this.requisitionData' v-if="isMounted"/>
+                          <requisition :requisitionData = 'this.requisitionData' v-if="isMounted"/>
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 2" step="2" :editable="procurementState > 2 ? true : false" :edit-icon="procurementState > 2 ? '$complete' : '$edit' "  :complete-icon="procurementState > 2 ? '$edit' : '$edit' ">Procurement Initialization</v-stepper-step>
                         <v-stepper-content step="2">
-                            <ProcurementMethod :requisitionData = 'this.requisitionData' />
+                          <ProcurementMethod :requisitionData = 'this.requisitionData' />
                         </v-stepper-content>
 
                         <!-- <v-stepper-step :complete="procurementState >= 3" step="3" :editable="true" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Tech Team</v-stepper-step>
@@ -34,12 +34,12 @@
 
                         <v-stepper-step :complete="procurementState > 3" step="3" :editable="procurementState > 3 ? true : false" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Request For Quotations</v-stepper-step>
                         <v-stepper-content step="3">
-                            <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
+                          <RFQ :rfqData = 'this.rfqData' v-if="rfqMounted" />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 4" step="4" :editable="procurementState > 4 ? true : false" :edit-icon="procurementState > 4 ? '$complete' : '$edit' "  :complete-icon="procurementState > 4 ? '$edit' : '$edit' ">Quotation Evaluation</v-stepper-step>
                         <v-stepper-content step="4">
-            
+                          <QuotationEvaluationDirect :procurementId='this.procurementId' />
                         </v-stepper-content>
 
                         <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Head Of Department Recommendation</v-stepper-step>
@@ -76,9 +76,10 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-    import Requisition from "./Requisition"
-    import ProcurementMethod from './ProcurementMethod'
-    import Rfq from "./Rfq"
+    import Requisition from "./Requisition";
+    import ProcurementMethod from './ProcurementMethod';
+    import Rfq from "./Rfq";
+    import QuotationEvaluationDirect from "./QuotationEvaluationDirect";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -90,6 +91,7 @@ export default {
       requisition: Requisition,
       ProcurementMethod: ProcurementMethod,
       RFQ: Rfq,
+      QuotationEvaluationDirect: QuotationEvaluationDirect
   },
 
   // Data Variables and Values
