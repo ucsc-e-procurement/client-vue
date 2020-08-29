@@ -117,7 +117,6 @@
 </template>
 
 <script>
-
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
@@ -127,7 +126,7 @@ export default {
   // validations: {},
 
   // Props Received
-  props: ['procurements'],
+  props: ["procurements"],
 
   // Imported Components
   components: {},
@@ -137,7 +136,7 @@ export default {
     search: "",
     isMounted: false,
     tab: null,
-    procurementsList: '',
+    procurementsList: "",
     ongoingProcurements: [],
     completedProcurements: [],
     terminatedProcurements: [],
@@ -164,7 +163,10 @@ export default {
 
       if (event.procurement_method == "shopping") {
         this.$router.push({
-          path: `/director/procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
+          path: `/director/procurements/shopping/${proc_id.replace(
+            /[/]/g,
+            ""
+          )}`,
           query: {
             proc_id: event.procurementId,
             stepper: event.step

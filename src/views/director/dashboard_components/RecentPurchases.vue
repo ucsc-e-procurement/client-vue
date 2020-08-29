@@ -1,24 +1,23 @@
 <template>
-    <v-container>
-        <v-card>
-            <!-- <v-card-title class="headline">Recently Purchased Products</v-card-title> -->
-            <v-card-title class="text-center justify-center py-6">
-            <h4 class="font-weight-bold ">Recent Purchases</h4>
-            </v-card-title>
-            <v-data-table
-            :headers="headers"
-            :items="recentPurchases"
-            :search="search"
-            :items-per-page=5
-            v-if="isMounted"
-            >
-            </v-data-table>
-        </v-card>
-    </v-container>
+  <v-container>
+    <v-card>
+      <!-- <v-card-title class="headline">Recently Purchased Products</v-card-title> -->
+      <v-card-title class="text-center justify-center py-6">
+        <h4 class="font-weight-bold ">Recent Purchases</h4>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="recentPurchases"
+        :search="search"
+        :items-per-page="5"
+        v-if="isMounted"
+      >
+      </v-data-table>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-
 export default {
   // Mixins
   // mixins: [validationMixin],
@@ -36,7 +35,7 @@ export default {
   data: () => ({
     recentPurchases: [],
     isMounted: false,
-    search: '',
+    search: "",
 
     headers: [
       {
@@ -45,14 +44,14 @@ export default {
         value: "product_name"
       },
       { text: "Supplier", value: "name" },
-      { text: "Quantity", value: "quantity"},
-      { text: "Delivery Date", value: "delivery_date" },
+      { text: "Quantity", value: "quantity" },
+      { text: "Delivery Date", value: "delivery_date" }
     ]
   }),
 
   // Custom Methods and Functions
   methods: {
-    getRecentProducts(){
+    getRecentProducts() {
       this.isMounted = true;
       this.$http
         .get("/api/director/get_recent_products")
@@ -63,14 +62,14 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        })
-    },
+        });
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-      this.getRecentProducts();
+    this.getRecentProducts();
   },
   beforeMount() {},
   mounted() {},

@@ -45,9 +45,8 @@ import Employee_Dashboard from "../views/employee/Dashboard.vue";
 import Employee_Tec_team from "../views/employee/Tec_team.vue";
 
 import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
-import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
-import Employee_Procurement from "../views/employee/Tec_team_procurment.vue"
-
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
+import Employee_Procurement from "../views/employee/Tec_team_procurment.vue";
 
 // Director
 import Director from "../views/director/Director.vue";

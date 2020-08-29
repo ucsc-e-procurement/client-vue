@@ -9,8 +9,12 @@
               {{ item.category }}
             </p>
             <div class="text--primary">Bid ID : {{ item.bid_id }}</div>
-            <div class="text--primary">Description : {{ item.description }}</div>
-            <div class="text--primary"><b>Total : Rs. {{ item.total_with_vat }}</b></div>
+            <div class="text--primary">
+              Description : {{ item.description }}
+            </div>
+            <div class="text--primary">
+              <b>Total : Rs. {{ item.total_with_vat }}</b>
+            </div>
           </v-card-text>
           <v-card-actions>
             <v-btn text color="blue darken-3" @click="openDialog(key)">
@@ -18,7 +22,10 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-        <v-divider :key="key" v-if="key != pendingOrders.length - 1"></v-divider>
+        <v-divider
+          :key="key"
+          v-if="key != pendingOrders.length - 1"
+        ></v-divider>
       </template>
     </v-card>
     <v-dialog
@@ -56,9 +63,7 @@
 </template>
 
 <script>
-
 export default {
-
   // Props Received
   props: [],
 
@@ -82,22 +87,23 @@ export default {
     },
 
     getPendingOrders(supplier_id) {
-        this.$http.get("/api/supplier/get_pending_orders", {
-            params: {
-                id: supplier_id
-            }
+      this.$http
+        .get("/api/supplier/get_pending_orders", {
+          params: {
+            id: supplier_id
+          }
         })
-            .then(response => {
-            this.pendingOrders = response.data;
-            console.log(this.pendingOrders)
-            })
-            .catch(error => {
-            console.log(error);
-            });
+        .then(response => {
+          this.pendingOrders = response.data;
+          console.log(this.pendingOrders);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
 
     processOrder(status) {
-        this.dialog = false;
+      this.dialog = false;
     }
   },
 
@@ -106,7 +112,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.getPendingOrders('sale@gamestreet.lk');
+    this.getPendingOrders("sale@gamestreet.lk");
     //this.fetchRequests(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},

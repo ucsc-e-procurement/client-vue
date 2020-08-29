@@ -1,41 +1,47 @@
 <template>
   <v-container>
-        <v-card flat>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    label="Search"
-                    single-line
-                    hide-details
-                ></v-text-field>
-            </v-card-title>
-            <v-data-table
-            :headers="headers"
-            :items="procurements"
-            :search="search"
-            >
-                <template v-slot:item.controls="props">
-                <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
+    <v-card flat>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers" :items="procurements" :search="search">
+        <template v-slot:item.controls="props">
+          <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
                     Requisition
                 </v-btn> -->
-                <v-btn class="mx-2" small color="primary" @click="openProcurement(props.item)">
-                    View
-                </v-btn>
-                </template>
-            </v-data-table>
-        </v-card>
-        <v-dialog v-model="viewRequisition" fullscreen hide-overlay transition="dialog-bottom-transition">
-            <v-card>
-                <v-toolbar dark color="primary">
-                <v-btn icon dark @click="viewRequisition = false">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-toolbar-title>Requisition</v-toolbar-title>
-                <v-spacer></v-spacer>
-                </v-toolbar>
-                <Requisition v-if="procurement" v-bind:requisition="requisition"/>
-            </v-card>
-        </v-dialog>
+          <v-btn
+            class="mx-2"
+            small
+            color="primary"
+            @click="openProcurement(props.item)"
+          >
+            View
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <v-dialog
+      v-model="viewRequisition"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="viewRequisition = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Requisition</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <Requisition v-if="procurement" v-bind:requisition="requisition" />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -43,7 +49,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-import Requisition from "./Requisition.vue"
+import Requisition from "./Requisition.vue";
 
 /*
 
@@ -76,15 +82,20 @@ export default {
     procurement: null,
     requisition: null,
     tec_team: null,
-    search: '',
+    search: "",
     headers: [
-        { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
-        { text: 'Category', value: 'category' },
-        { text: 'Status', value: 'procurement_status' },
-        { text: 'Date Initiated', value: 'date' },
-        { text: "Actions", value: "controls", sortable: false }
+      {
+        text: "Procurement ID",
+        align: "start",
+        filterable: true,
+        value: "procurement_id"
+      },
+      { text: "Category", value: "category" },
+      { text: "Status", value: "procurement_status" },
+      { text: "Date Initiated", value: "date" },
+      { text: "Actions", value: "controls", sortable: false }
     ],
-    procurements: [],
+    procurements: []
   }),
 
   // Custom Methods and Functions
@@ -116,21 +127,22 @@ export default {
     // },
 
     fetchLockedProcurements(employee_id) {
-      this.$http.get('/api/tec_team/get_locked_procurements', {
-        params: {
-          id: employee_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.procurements = response.data
-        console.log(this.procurements)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+      this.$http
+        .get("/api/tec_team/get_locked_procurements", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.procurements = response.data;
+          console.log(this.procurements);
+          //console.log(Object.values(this.ongoingProcurements[0].bids))
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
 
     // fetchRequisition(requisition_id) {
     //   this.$http.get('/api/tec_team/get_requisition', {
@@ -174,8 +186,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchLockedProcurements('emp00005')
-      //this.fetchLockedProcurements(this.$store.getters.user.employee_id)
+    this.fetchLockedProcurements("emp00005");
+    //this.fetchLockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},
