@@ -42,22 +42,13 @@
                           <QuotationEvaluationDirect :procurementId='this.procurementId' />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Head Of Department Recommendation</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 5" :editable="procurementState > 5 ? true : false" step="5" :edit-icon="procurementState > 5 ? '$complete' : '$edit' "  :complete-icon="procurementState > 5 ? '$edit' : '$edit' ">Recommendation</v-stepper-step>
                         <v-stepper-content step="5">
-                            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-                            <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
-                            <v-btn text>Cancel</v-btn>
+                          <DirectMethodRecommendation />
                         </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">Deputy Bursar Recommendation</v-stepper-step>
+                        <v-stepper-step :complete="procurementState > 6" :editable="procurementState > 6 ? true : false" step="6" :edit-icon="procurementState > 6 ? '$complete' : '$edit' "  :complete-icon="procurementState > 6 ? '$edit' : '$edit' ">Director Approval</v-stepper-step>
                         <v-stepper-content step="6">
-                            <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-                            <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
-                            <v-btn text>Cancel</v-btn>
-                        </v-stepper-content>
-
-                        <v-stepper-step :complete="procurementState > 7" :editable="procurementState > 7 ? true : false" step="7" :edit-icon="procurementState > 7 ? '$complete' : '$edit' "  :complete-icon="procurementState > 7 ? '$edit' : '$edit' ">Director Approval</v-stepper-step>
-                        <v-stepper-content step="7">
                             <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
                             <v-btn color="primary" @click="stepperValue = 1">Continue</v-btn>
                             <v-btn text>Cancel</v-btn>
@@ -80,6 +71,7 @@
     import ProcurementMethod from './ProcurementMethod';
     import Rfq from "./Rfq";
     import QuotationEvaluationDirect from "./QuotationEvaluationDirect";
+    import DirectMethodRecommendation from "./DirectMethodRecommendation";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -91,7 +83,8 @@ export default {
       requisition: Requisition,
       ProcurementMethod: ProcurementMethod,
       RFQ: Rfq,
-      QuotationEvaluationDirect: QuotationEvaluationDirect
+      QuotationEvaluationDirect: QuotationEvaluationDirect,
+      DirectMethodRecommendation: DirectMethodRecommendation
   },
 
   // Data Variables and Values
