@@ -149,7 +149,7 @@
                           Description of Materials/Services required
                         </th>
                         <th width="5%" scope="col" rowspan="2">Qty</th>
-                        <th width="20%" scope="col" colspan="2">
+                        <th width="20%" scope="col" colspan="3">
                           Unit Price (Rs.)
                         </th>
                         <th width="10%" scope="col" rowspan="2">
@@ -167,8 +167,9 @@
                         <th width="10%" rowspan="2">Action</th>
                       </tr>
                       <tr>
-                        <th width="10%">In figures(without VAT)</th>
+                        <th width="10%">Without VAT</th>
                         <th width="10%">VAT</th>
+                        <th width="10%">Discount (if any)</th>
                       </tr>
                     </thead>
                     <tbody class="text-center">
@@ -216,6 +217,18 @@
                               min="0"
                               oninput="validity.valid||(value='')"
                               v-model.number="item.vat"
+                            />
+                          </span>
+                        </td>
+                        <td>
+                          <span v-if="editIndex !== index">{{ item.discount }}</span>
+                          <span v-if="editIndex === index">
+                            <v-text-field
+                              type="number"
+                              step=".01"
+                              min="0"
+                              oninput="validity.valid||(value='')"
+                              v-model.number="item.discount"
                             />
                           </span>
                         </td>
@@ -320,7 +333,6 @@
 
                   <v-col cols="12" sm="5" class="ml-6">
                     <v-form
-                      @submit.prevent="registerUser"
                       ref="form"
                       v-model="valid"
                     >
@@ -337,7 +349,7 @@
                 </v-row>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 4">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step = 6"
+              <v-btn color="primary mt-3 float-right" @click="validatePriceSchedule"
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -367,17 +379,22 @@
                     >mdi-package-down</v-icon
                   >
                 </v-row>
-                <v-file-input
-                  v-model="manufacturerDoc"
-                  accept="image/jpg, image/png"
-                  placeholder="Attach manufacturer's authorization"
-                  hint="This should be a scanned image document"
-                  persistent-hint
-                  :rules="[rules.general]"
-                ></v-file-input>
+                <v-form
+                    ref="form1"
+                    v-model="valid"
+                  >
+                  <v-file-input
+                    v-model="manufacturerDoc"
+                    accept="image/jpg, image/png"
+                    placeholder="Attach manufacturer's authorization"
+                    hint="This should be a scanned image document"
+                    persistent-hint
+                    :rules="[rules.general]"
+                  ></v-file-input>
+                </v-form>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 6">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step = 8"
+              <v-btn color="primary mt-3 float-right" @click="validateManAuth"
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -393,6 +410,10 @@
                     >mdi-package-down</v-icon
                   >
                 </v-row>
+                <v-form
+                  ref="form2"
+                  v-model="valid"
+                >
                 <v-file-input
                   v-model="bidGuarantee"
                   accept="image/jpg, image/png"
@@ -401,73 +422,79 @@
                   persistent-hint
                   :rules="[rules.general]"
                 ></v-file-input>
+                </v-form>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 7">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step = 9"
+              <v-btn color="primary mt-3 float-right" @click="validateBidGuarantee"
                 >Continue</v-btn
               >
             </v-stepper-content>
 
             <v-stepper-content step="9">
-              <v-container class="elevation-1">
-                <v-row no-gutters>
-                  <h5 class="headline">Authorization to sign the Bid</h5>
-                </v-row>
-                <v-divider class="mt-1"></v-divider>
-                <v-row no-gutters class="caption mt-4">
-                  Chairman – DPC<br />
-                  University of Colombo School of Computing<br />
-                  No 35 Reid Avenue Colombo 00700.
-                </v-row>
-                <v-row no-gutters class="caption mt-4">
-                  Dear Sir
-                </v-row>
-                <v-row no-gutters class="subheading mt-4">
-                  {{ this.procurement.description }} [
-                  {{ this.procurement.procurement_id }} ]
-                </v-row>
-                <v-row no-gutters class="caption my-4">
-                  This is to authorize that the under mentioned person, to sign
-                  the documents pertaining to the above bid on behalf of your
-                  organization.
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="authorizedName"
-                      label="Authorized Person"
-                      placeholder="Name of authorized person"
-                      outlined
-                      dense
-                      :rules="[rules.general]"
-                    />
-                  </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="authorizedNIC"
-                      label="NIC No."
-                      placeholder="NIC number of authorized person"
-                      outlined
-                      dense
-                      :rules="[rules.general]"
-                    />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="6">
-                    <v-text-field
-                      v-model="authorizedDesignation"
-                      label="Designation"
-                      placeholder="Designation of authorized person"
-                      outlined
-                      dense
-                      :rules="[rules.general]"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
+              <v-form
+                ref="form3"
+                v-model="valid"
+              >
+                <v-container class="elevation-1">
+                  <v-row no-gutters>
+                    <h5 class="headline">Authorization to sign the Bid</h5>
+                  </v-row>
+                  <v-divider class="mt-1"></v-divider>
+                  <v-row no-gutters class="caption mt-4">
+                    Chairman – DPC<br />
+                    University of Colombo School of Computing<br />
+                    No 35 Reid Avenue Colombo 00700.
+                  </v-row>
+                  <v-row no-gutters class="caption mt-4">
+                    Dear Sir
+                  </v-row>
+                  <v-row no-gutters class="subheading mt-4">
+                    {{ this.procurement.description }} [
+                    {{ this.procurement.procurement_id }} ]
+                  </v-row>
+                  <v-row no-gutters class="caption my-4">
+                    This is to authorize that the under mentioned person, to sign
+                    the documents pertaining to the above bid on behalf of your
+                    organization.
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        v-model="authorizedName"
+                        label="Authorized Person"
+                        placeholder="Name of authorized person"
+                        outlined
+                        dense
+                        :rules="[rules.general]"
+                      />
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="authorizedNIC"
+                        label="NIC No."
+                        placeholder="NIC number of authorized person"
+                        outlined
+                        dense
+                        :rules="[rules.general]"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="authorizedDesignation"
+                        label="Designation"
+                        placeholder="Designation of authorized person"
+                        outlined
+                        dense
+                        :rules="[rules.general]"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
               <v-btn class="mt-3" text @click.native="step = 8">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step = 10"
+              <v-btn color="primary mt-3 float-right" @click="validateAuthorization"
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -532,7 +559,7 @@ export default {
     step: 1,
     method: true,
     valid: true,
-    vatNo: "",
+    vatNo: null,
     authorizedName: "",
     authorizedDesignation: "",
     authorizedNIC: "",
@@ -601,6 +628,7 @@ export default {
           qty: products[index]["qty"],
           figures: 0,
           vat: 0,
+          discount: 0,
           make: "-",
           date: new Date().toISOString().substr(0, 10),
           validity: 0,
@@ -634,11 +662,17 @@ export default {
     },
 
     subtotal(item) {
-      return item.qty * item.figures;
+      return item.qty * (item.figures - item.discount);
     },
 
     subtotalVAT(item) {
-      return item.qty * (item.figures + item.vat);
+      return item.qty * (item.figures + item.vat - item.discount);
+    },
+
+    validatePriceSchedule() {
+      if(this.$refs.form.validate()) {
+        this.step = 6;
+      }
     },
 
     downloadLetter() {
@@ -667,6 +701,30 @@ export default {
           document.body.appendChild(fileLink);
           fileLink.click();
         });
+    },
+
+    validateManAuth() {
+      if(Object.values(this.fbData[0].doc.itvCR_3_1.additionalDocuments).indexOf("Manufacturer's Authorization") > -1) {
+        if(this.$refs.form1.validate()) {
+          this.step = 8;
+        }
+      }
+      else this.step = 8;  
+    },
+
+    validateBidGuarantee() {
+      if(Object.values(this.fbData[0].doc.itvCR_3_1.additionalDocuments).indexOf("Bid Guarantee") > -1) {
+        if(this.$refs.form2.validate()) {
+          this.step = 9;
+        }
+      }
+      else this.step = 9;  
+    },
+
+    validateAuthorization() {
+      if(this.$refs.form3.validate()) {
+        this.step = 10;
+      }
     },
 
     submitBid() {
