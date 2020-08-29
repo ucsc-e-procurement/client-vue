@@ -84,9 +84,7 @@ app.post("/decrypt", async (req, res) => {
         var priceSchedule = JSON.parse(decryptedPriceSchedule)
 
         // Add the decrypted price schedule to the collection with the bid id as the dcument key
-        admin.firestore().collection('priceSchedule').doc(priceSchedule.bid_id).set({
-          [priceSchedule.bid_id] : priceSchedule
-        });
+        admin.firestore().collection('priceSchedule').doc(priceSchedule.bid_id).set(priceSchedule);
       }
       return keys;
     });
