@@ -8,7 +8,9 @@
             <v-row no-gutters>
               <h5 class="headline">Procurements</h5>
               <v-spacer />
-              <v-btn small text color="primary">Advanced Search</v-btn>
+              <v-btn @click="tab = 3" small text color="primary"
+                >Advanced Search</v-btn
+              >
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -198,11 +200,7 @@ export default {
   }),
 
   // Custom Methods and Functions
-  methods: {
-    getOngoingProcurements() {
-      return new Promise((resolve, reject) => {});
-    }
-  },
+  methods: {},
 
   // Life Cycle Hooks
   beforeCreate() {},

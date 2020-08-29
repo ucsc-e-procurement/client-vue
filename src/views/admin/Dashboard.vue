@@ -15,9 +15,7 @@
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
               <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Ongoing </v-card-title>
-                </v-card>
+                <info-card />
               </v-col>
               <v-col cols="3">
                 <v-card height="100">
@@ -67,7 +65,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-
+import InfoCard_A from "./components/InfoCard_A";
 /*
 
 // Validation Library - Vuelidate
@@ -97,7 +95,9 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    "info-card": InfoCard_A
+  },
 
   // Data Variables and Values
   data: () => ({

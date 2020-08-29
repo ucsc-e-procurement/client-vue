@@ -26,7 +26,12 @@
                   no-data-text="Please Add Items"
                 >
                   <template v-slot:item.action="{ item }">
-                    <v-btn color="primary" text>View</v-btn>
+                    <v-btn
+                      @click="getoProcurement(item.procurement_id)"
+                      color="primary"
+                      text
+                      >View</v-btn
+                    >
                   </template>
                 </v-data-table>
               </v-col>
@@ -144,6 +149,11 @@ export default {
             reject(err);
           });
       });
+    },
+    getoProcurement(procurementId) {
+      this.$router
+        .push("/admin/procurement_overview/" + btoa(procurementId))
+        .catch(() => {});
     }
   },
 
