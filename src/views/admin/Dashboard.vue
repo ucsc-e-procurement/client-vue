@@ -14,23 +14,8 @@
 
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
-              <v-col cols="3">
-                <info-card />
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Terminated</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Completed</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Other</v-card-title>
-                </v-card>
+              <v-col cols="12">
+                <procurement-count />
               </v-col>
             </v-row>
 
@@ -69,8 +54,9 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-import InfoCard_A from "./components/InfoCard_A";
+// import InfoCard_A from "./components/InfoCard_A";
 import TestChart from "./components/Test_Chart";
+import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
 /*
 
 // Validation Library - Vuelidate
@@ -101,8 +87,9 @@ export default {
 
   // Imported Components
   components: {
-    "info-card": InfoCard_A,
-    "test-chart": TestChart
+    // "info-card": InfoCard_A,
+    "test-chart": TestChart,
+    "procurement-count": ProcurementCount_Cards
   },
 
   // Data Variables and Values
