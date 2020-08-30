@@ -31,6 +31,9 @@
                   <v-expansion-panel-content>
                     <TecReport v-if="this.$route.query.type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data"/>
                     <TecReportPackaged v-if="this.$route.query.type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data"/>
+
+                    <TecEvaluationItemwise v-if="this.$route.query.type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data" v-bind:spec_data="spec_data"/>
+                    <TecEvaluationPackaged v-if="this.$route.query.type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data" v-bind:spec_data="spec_data"/>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -50,7 +53,11 @@
 
 import TecReport from "./Tec_Report"
 import TecReportPackaged from "./Tec_Report_Packaged"
+import TecEvaluationPackaged from "./Tec_evaluation_packaged"
+import TecEvaluationItemwise from "./Tec_evaluation_itemwise"
 import Requisition from "./Requisition"
+
+import firebase from 'firebase';
 
 /*
 
@@ -72,7 +79,7 @@ export default {
   props: [],
 
   // Imported Components
-  components: { TecReport, Requisition, TecReportPackaged },
+  components: { TecReport, Requisition, TecReportPackaged, TecEvaluationPackaged, TecEvaluationItemwise },
 
   // Data Variables and Values
   data: () => ({
@@ -81,10 +88,48 @@ export default {
     tec_team: null,
     bid_data: null,
     tec_report_data: null,
+    spec_data: null
   }),
 
   // Custom Methods and Functions
   methods: {
+    async getBidData() {
+      let ref = firebase.firestore().collection("ScheduleOfRequirements");
+      console.log('ref',ref)
+      let doc_id;
+      this.spec_data = {
+        data: await ref.where("InvitationNo", "==", 'UCSC/SP/ADMTC/2019/099').get()
+          .then(function(querySnapshot) {
+            let doc;
+            console.log('snapshot', querySnapshot)
+            querySnapshot.forEach(function(document) {
+              doc = document.data();
+              doc_id = document.id;
+            });
+            console.log('doc',doc_id)
+            return doc;
+          }),
+        items: await ref.doc(doc_id).collection("Items").get()
+          .then(function(querySnapshot) {
+            let items = [];
+            //let i = 0;
+
+            querySnapshot.forEach(function(doc) {
+              items.push(doc.data());
+              // items[i].bidderResponse = [];
+              // for(const index in doc.data().Features) {
+              //   items[i].bidderResponse.push("No");
+              // }
+              // console.log(items[i]);
+              // i++;
+            });
+            console.log('items',items)
+            return items;
+          }) 
+      };
+      console.log('spec_data', this.spec_data)
+    },
+
     fetchItemWiseBids(procurement_id) {
       this.$http.get('/api/tec_team/get_itemwise_bids', {
         params: {
@@ -207,6 +252,7 @@ export default {
     this.fetchRequisition(this.$route.query.requisition_id)
     this.fetchTecTeam(this.$route.query.tec_team_id)
     this.fetchTecReport(this.$route.query.procurement_id)
+    this.getBidData()
     if(this.$route.query.type == 'items'){
       this.fetchItemWiseBids(this.$route.query.procurement_id)
     }
