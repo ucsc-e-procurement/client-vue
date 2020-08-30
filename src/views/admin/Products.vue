@@ -171,17 +171,7 @@ export default {
         width: "300"
       }
     ],
-    products: [
-      {
-        no: 1,
-        user_id: "test@gmail.com",
-        password: "********",
-        user_role: "admin",
-        status: true,
-        date_created: new Date(),
-        actions: ""
-      }
-    ],
+    products: [],
     search: "",
 
     // Snackbar

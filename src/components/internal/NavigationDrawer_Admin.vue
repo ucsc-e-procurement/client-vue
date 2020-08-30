@@ -19,7 +19,10 @@
             <v-list-item-title>Users</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item
+          link
+          @click="$router.push('/admin/suppliers').catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -67,55 +70,10 @@
             <v-icon>mdi-timeline-clock-outline</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Ongoing</v-list-item-title>
+            <v-list-item-title>Procurements</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!-- <v-divider class="my-0" /> -->
-        <v-list-item
-          link
-          @click="
-            $router.push('/admin/terminated_procurements').catch(() => {})
-          "
-        >
-          <v-list-item-action>
-            <v-icon>mdi-alert-octagon-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Terminated</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <!-- <v-divider class="my-0" /> -->
-        <v-list-item
-          link
-          @click="$router.push('/admin/completed_procurements').catch(() => {})"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-check-circle-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Completed</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <!-- <v-divider class="my-0" /> -->
-        <v-list-item
-          link
-          @click="$router.push('/admin/pending_approvals').catch(() => {})"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-file-clock-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Pending Approvals</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Purchase Orders</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list-item-group>
     </v-list>
     <v-divider />
