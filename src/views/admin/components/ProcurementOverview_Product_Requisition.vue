@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col cols="12">
         <v-card color="" outlined>
-          <v-container fluid class="ma-0 px-5">
+          <v-container fluid class="ma-0 px-5" v-if="isLoaded">
             <!-- <v-row no-gutters>
               <v-text-field
                 v-model="requisition.requisition_id"

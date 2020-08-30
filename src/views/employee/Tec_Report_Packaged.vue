@@ -1,5 +1,5 @@
 <template>
-    <v-card v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500>
+    <!-- <v-card v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500> -->
         <!-- <v-app-bar dark color="primary" fixed>
           <v-btn icon dark @click="closeTecReport">
               <v-icon>mdi-close</v-icon>
@@ -10,7 +10,7 @@
               <v-btn dark text @click="save">Save</v-btn>
           </v-toolbar-items>
           </v-app-bar> -->
-        <v-container> 
+        <v-container v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500> 
             <!-- <v-row no-gutters>
                 <h3 class="text-h4 justify-center">Bid Evaluation Report</h3>
             </v-row>
@@ -206,6 +206,7 @@
                         <template v-for="(bid,key) in rejected_bids">
                             <div :key="key">
                             {{bid.name}}
+                            <br/><br/>
                             <v-text-field
                                 :value="tec_report_data ? rejected_reasons[key] : rejectReasons[key]"
                                 label="Reason for rejecting supplier"
@@ -283,6 +284,7 @@
                         <template v-for="(bid,key) in recommended_bids">
                             <div :key="key">
                             {{bid.name}}
+                            <br/><br/>
                             <v-text-field
                                 :value="tec_report_data ? recommended_reasons[key] : recommendReasons[key]"
                                 label="Reason for recommending supplier"
@@ -398,7 +400,7 @@
             </v-stepper>
         </v-form>   
         </v-container>
-    </v-card>
+    <!-- </v-card> -->
 </template>
 
 <script>
@@ -406,7 +408,7 @@ export default {
     // Form Validations
   // validations: {},
   // Props Received
-  name: 'Tec_Report',
+  name: 'Tec_Report_Packaged',
 
   props: ['procurement', 'bid_data','requisition', 'tec_team', 'tec_report_data','closeTecReport'],
 

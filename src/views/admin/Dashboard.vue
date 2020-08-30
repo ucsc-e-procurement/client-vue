@@ -14,25 +14,8 @@
 
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Ongoing </v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Terminated</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Completed</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Other</v-card-title>
-                </v-card>
+              <v-col cols="12">
+                <procurement-count />
               </v-col>
             </v-row>
 
@@ -56,6 +39,10 @@
                 </v-card>
               </v-col>
             </v-row>
+
+            <v-row>
+              <test-chart />
+            </v-row>
           </v-container>
         </v-card>
       </v-col>
@@ -67,7 +54,9 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-
+// import InfoCard_A from "./components/InfoCard_A";
+import TestChart from "./components/Test_Chart";
+import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
 /*
 
 // Validation Library - Vuelidate
@@ -88,7 +77,7 @@ const gradients = [
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
-  // mixins: [validationMixin],
+  // mixins: [Bar],
 
   // Form Validations
   // validations: {},
@@ -97,7 +86,11 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    // "info-card": InfoCard_A,
+    "test-chart": TestChart,
+    "procurement-count": ProcurementCount_Cards
+  },
 
   // Data Variables and Values
   data: () => ({

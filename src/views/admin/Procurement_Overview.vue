@@ -39,7 +39,9 @@
                     <procurement-initialization
                       :procurementId="procurementId"
                     />
-                    <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+                    <v-btn class="ml-3 my-2" color="primary" @click="e6 = 3"
+                      >Next</v-btn
+                    >
                   </v-stepper-content>
 
                   <v-stepper-step :complete="e6 > 3" step="3"
@@ -47,13 +49,13 @@
                   >
 
                   <v-stepper-content step="3">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
-                    <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
-                    <v-btn text>Cancel</v-btn>
+                    <tech-team
+                      :techTeamId="procurement.tec_team_id"
+                      v-if="isLoaded"
+                    />
+                    <v-btn class="ml-3 my-2" color="primary" @click="e6 = 4"
+                      >Next</v-btn
+                    >
                   </v-stepper-content>
 
                   <v-stepper-step step="4">Tec Specification</v-stepper-step>
@@ -63,7 +65,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
+                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
@@ -76,7 +78,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
+                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
@@ -89,7 +91,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
+                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
@@ -100,7 +102,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
+                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
@@ -111,7 +113,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
+                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
                 </v-stepper>
@@ -130,7 +132,8 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 import ProductRequisition from "./components/ProcurementOverview_Product_Requisition";
-import ProcurementInitialization from "./components//ProcurementOverview_Initialization";
+import ProcurementInitialization from "./components/ProcurementOverview_Initialization";
+import ProcurementTechTeam from "./components/ProcurementOverview_TechTeam";
 
 /*
 
@@ -154,7 +157,8 @@ export default {
   // Imported Components
   components: {
     "product-requisition": ProductRequisition,
-    "procurement-initialization": ProcurementInitialization
+    "procurement-initialization": ProcurementInitialization,
+    "tech-team": ProcurementTechTeam
   },
 
   // Data Variables and Values
@@ -188,6 +192,7 @@ export default {
 
     this.getProcurement(this.procurementId)
       .then(res => {
+        console.log(">>>>>>>>>>>>>>>>>>>> ", this.procurementId, res);
         this.procurement = res;
         this.isLoaded = true;
       })

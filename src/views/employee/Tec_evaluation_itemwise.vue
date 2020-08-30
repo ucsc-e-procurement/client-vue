@@ -16,7 +16,7 @@
             </v-row>
             <v-divider class="mt-1"></v-divider> -->
         <v-form ref="form">
-            <v-stepper :value="stepperStep" class="mt-12">
+          <v-stepper :value="stepperStep" class="mt-12">
               <v-stepper-header>
                 <v-stepper-step step="1" :complete="stepperStep > 1">Procurement Details</v-stepper-step>
 
@@ -26,15 +26,19 @@
 
                 <v-divider></v-divider>
 
-                <v-stepper-step step="3" :complete="stepperStep > 3">Bids Recieved Before Closing Time</v-stepper-step>
+                <v-stepper-step step="3" :complete="stepperStep > 3">Recieved Valid Bids</v-stepper-step>
                 
                 <v-divider></v-divider>
 
-                <v-stepper-step step="4" :complete="stepperStep > 4">Bid Evaluation</v-stepper-step>
+                <v-stepper-step step="4" :complete="stepperStep > 4">Technical Evaluation</v-stepper-step>
                 
                 <v-divider></v-divider>
 
-                <v-stepper-step step="5" :complete="stepperStep > 5">TEC Recommendation</v-stepper-step>
+                <v-stepper-step step="5" :complete="stepperStep > 5">Supplier Selection</v-stepper-step>
+                
+                <v-divider></v-divider>
+
+                <v-stepper-step step="6" :complete="stepperStep > 6">TEC Recommendation</v-stepper-step>
               </v-stepper-header>
 
               <v-stepper-content step="1">
@@ -64,7 +68,6 @@
                         readonly
                     ></v-text-field>
                     </v-col>
-                    
                 </v-row>
                 <v-row class="justify-center">
                     <v-col  class="justify-center">
@@ -178,6 +181,55 @@
               </v-stepper-content>
 
               <v-stepper-content step="4">
+                <v-row>
+                  <v-col  class="justify-center">
+                    <template v-for="(item,key) in spec_data.items">
+                      <div :key="key">
+                        <div class="text-h6">
+                            Item {{key+1}} - {{item.ItemName}}
+                        </div>
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-h6 text-left" width="250px">Feature</th>
+                                <th class="text-h6 text-left" width="500px">Minimum Requirement</th>
+                                <template v-for="(supplier) in Object.keys(item)">
+                                    <th v-if="supplier != 'Features' && supplier != 'MinimumRequirement'  && supplier != 'ItemName'" class="text-h6 text-left" width="250px" :key="supplier">{{supplier}}</th>
+                                </template>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(feature, key) in item.Features" :key="feature">
+                                <td>{{ feature }}</td>
+                                <td>{{ item.MinimumRequirement[key] }}</td>
+                                <template v-for="[index, supplier] of Object.entries(item)">
+                                  <td  v-if="index != 'Features' && index != 'MinimumRequirement'  && index != 'ItemName'" :key="index">{{ supplier[key] }}</td>
+                                </template>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        <br/>
+                        <v-divider class="mt-1"></v-divider>
+                        <br/>
+                      </div>
+                    </template>
+                  </v-col>
+                </v-row>
+                <v-divider class="mt-1"></v-divider>
+                <br/>
+                <v-row no-gutters>
+                  <v-btn color="primary" @click="prevStep" rounded>
+                    Back
+                  </v-btn>
+                  <v-btn color="primary" @click="nextStep" rounded absolute right>
+                    Next
+                  </v-btn>
+                </v-row>
+              </v-stepper-content>
+
+              <v-stepper-content step="5">
                 <v-form ref="form1">
                   <v-col  class="justify-center">
                     <template v-for="(product,key) in bid_data">
@@ -334,12 +386,13 @@
                 </v-row>
               </v-stepper-content>
 
-              <v-stepper-content step="5">
+              <v-stepper-content step="6">
                   <v-row>
                     <v-col>
                       <template v-for="(member,key) in this.tec_team">
                         <div :key="key">
                           {{member.employee_name}} - {{member.capacity}}
+                          <!-- radio group if not logged in user -->
                           <v-radio-group 
                             v-if="user != member.employee_id" 
                             :value="tec_approval[key]"  
@@ -350,6 +403,7 @@
                             <v-radio label="Agree" value="agree"></v-radio>
                             <v-radio label="Disagree" value="disagree"></v-radio>
                           </v-radio-group>
+                          <!-- radio group if logged in user -->
                           <v-radio-group 
                             v-if="user == member.employee_id"
                             :value="tec_report_data ? tec_approval[key] : row[key]"
@@ -382,7 +436,7 @@
                         </div>
                       </template>
                     </v-col>
-                  </v-row> 
+                  </v-row>
                   <v-row no gutters>
                     <v-btn v-if="! filled" large class="mx-2" small color="success" @click="save">
                         SAVE
@@ -407,9 +461,9 @@ export default {
     // Form Validations
   // validations: {},
   // Props Received
-  name: 'Tec_Report_Itemwise',
+  name: 'Tec_Evaluation_Itemwise',
 
-  props: ['procurement', 'bid_data','requisition', 'tec_team', 'closeTecReport', 'tec_report_data'],
+  props: ['procurement', 'bid_data','requisition', 'tec_team', 'closeTecReport', 'tec_report_data', 'spec_data'],
 
   // Imported Components
   components: {},
@@ -421,8 +475,6 @@ export default {
     //tec_team: this.tec_team,
     user: "emp00005",
     //user: this.$store.getters.user.employee_id,
-    items: [{product_name:'prod 1', qty: '5'}],
-    team: [{name: 'name1', designation: 'designation 1', capasity: 'chairman'}, {name: 'name2', designation: 'designation 2', capasity: 'member'}],
     rejected: [],
     recommended: [],
     reason_for_rejecting: [],
@@ -430,7 +482,7 @@ export default {
     rejectReasons: [],
     recommendReasons: [],
     tecTeamRemarks: [],
-    row:[],
+    row: [],
     tec_recommendation:[],
     rules: {required: value => !!value || 'Required.'},
     stepperStep: 1
@@ -441,7 +493,7 @@ export default {
 
     nextStep() {
       var valid = this.$refs.form1.validate()
-      if(this.stepperStep == 4) {
+      if(this.stepperStep == 5) {
         if(valid){
           this.stepperStep = this.stepperStep + 1
         }
@@ -563,7 +615,7 @@ export default {
   beforeDestroy() {},
   destroyed() {},
   // Computed Properties
-  computed: {
+   computed: {
 
     maxBids () {
       var len = this.bids.length

@@ -10,7 +10,7 @@ import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminate
 import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
-import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
+// import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
 import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
@@ -19,6 +19,7 @@ import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
 import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 import Admin_Add_User from "../views/admin/Add_User.vue";
+import Admin_View_Suppliers from "../views/admin/Suppliers.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -185,6 +186,10 @@ const routes = [
         path: "add_user",
         component: Admin_Add_User
       },
+      {
+        path: "suppliers",
+        component: Admin_View_Suppliers
+      },
       // Developmnet Purposes Only
       { path: "test", component: Bidding_Doc_Data_Sheet },
       // TODO Redirect to Page Not Found Or Dashborad
@@ -257,7 +262,7 @@ const routes = [
         path: "departments/:id",
         name: "d_dep_d",
         component: Director_Department_Details
-      },
+      }
     ]
   },
 
