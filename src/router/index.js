@@ -17,6 +17,7 @@ import Admin_Purchase_Orders from "../views/admin/Purchase_Orders.vue";
 import Admin_Generate_Purchase_Order from "../views/admin/Generate_Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
+import RFQ from "../views/admin/RFQ.vue";
 // import Add_Signature from "../views/admin/Add_Signature.vue";
 
 // Head of department
@@ -178,6 +179,11 @@ const routes = [
         name: "view products requisition",
         component: Admin_View_Requisition,
         props: true
+      },
+      {
+        path: "rfq",
+        name: "RFQ",
+        component: RFQ,
       },
       // {
       //   path: "signature/add",

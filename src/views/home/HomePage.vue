@@ -179,7 +179,7 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-      this.getOngoingProcurements();
+    this.getOngoingProcurements();
   },
   beforeMount() {},
   mounted() {},
