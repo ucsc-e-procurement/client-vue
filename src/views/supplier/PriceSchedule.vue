@@ -90,7 +90,6 @@
                             v-for="(requirement,
                             index) in item.MinimumRequirement"
                             :key="index"
-                            style="list-style-type: none"
                           >
                             <li class="py-2">{{ requirement }}</li>
                           </ul>
@@ -510,7 +509,6 @@
                   placeholder="Attach any other drawings/attachments"
                   hint="This should be a pdf file"
                   persistent-hint
-                  :rules="[rules.general]"
                 ></v-file-input>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 9">Back</v-btn>
@@ -573,7 +571,9 @@ export default {
       general: v => !!v || "This is required"
     },
     items: [],
-    menu: false
+    menu: false,
+    doc_id: null,
+    encrypted: null
   }),
 
   // Custom Methods and Functions
@@ -616,6 +616,7 @@ export default {
             return itemArr;
           })
       });
+      this.doc_id = doc_id;
     },
 
     createTable() {
@@ -704,7 +705,7 @@ export default {
     },
 
     validateManAuth() {
-      if(Object.values(this.fbData[0].doc.itvCR_3_1.additionalDocuments).indexOf("Manufacturer's Authorization") > -1) {
+      if(this.fbData[0].doc.itvCR_7_3 == "Manufacture’s Authorization is required") {
         if(this.$refs.form1.validate()) {
           this.step = 8;
         }
@@ -725,23 +726,54 @@ export default {
     },
 
     submitBid() {
-      if (this.$refs.form.validate()) {
-        this.$http
-          .post("/api/supplier/price_schedule/:procurement", {
-            supplier_id: this.procurement.supplier_id,
-            procurement_id: this.procurement.procurement_id,
+      let form = new FormData();
+
+      form.append("supplier_id", this.procurement.supplier_id);
+      form.append("procurement_id", this.procurement.procurement_id);
+      form.append("vat_no", this.vatNo);
+      form.append("authorized", this.authorizedName);
+      form.append("designation", this.authorizedDesignation);
+      form.append("nic", this.authorizedNIC);
+      form.append("auth", this.manufacturerDoc);
+      form.append("guarantee", this.bidGuarantee);
+      form.append("extra", this.otherDoc);
+      
+      this.$http
+        .get("/api/supplier/price_schedule/encryption_data", {
+          params: {
             items: this.items,
-            subtotal: this.subTotal,
-            total_with_vat: this.total,
-            vat_no: this.vatNo,
-            authorized: this.authorizedName
-          })
-          .then(res => {
-            console.log(res);
-            // this.$router.go(-1);
-          });
-      }
-    }
+            subTotal: this.subTotal,
+            total: this.total
+          }
+        })
+        .then(res => {
+          this.encrypted = res.data.encrypted;
+          this.$http
+            .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
+              clientKey: res.data.key, 
+              bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
+            })
+            .then(res => {
+              this.$http
+                .post("/api/supplier/price_schedule/update_firebase", {
+                  supplier_id: this.procurement.supplier_id,
+                  doc_id: this.doc_id,
+                  items: this.fbData[0].items,
+                  bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
+                  key: res.data.encryptedKey, 
+                  encrypted: this.encrypted
+                })
+                .then(res => {
+                  this.$http
+                    .post("/api/supplier/price_schedule/:procurement", form)
+                    .then(res => {
+                      console.log(res);
+                      // this.$router.go(-1);
+                    });
+                });
+            });
+        })
+    },
   },
 
   // Life Cycle Hooks
@@ -749,7 +781,7 @@ export default {
   created() {},
   beforeMount() {
     this.createTable();
-    this.getBidData();
+    this.getBidData();   
   },
   mounted() {},
   beforeUpdate() {},
@@ -775,23 +807,23 @@ export default {
 </script>
 
 <style scoped>
-input[type="number"] {
-  text-align: right;
-}
+  input[type="number"] {
+    text-align: right;
+  }
 
-th {
-  border: 1px solid #000;
-}
+  th {
+    border: 1px solid #000;
+  }
 
-.v-icon {
-  color: #000;
-}
+  .v-icon {
+    color: #000;
+  }
 
-#schedule {
-  font-size: 12px;
-}
+  #schedule {
+    font-size: 12px;
+  }
 
-table .v-text-field {
-  font-size: 12px;
-}
+  table .v-text-field {
+    font-size: 12px;
+  }
 </style>
