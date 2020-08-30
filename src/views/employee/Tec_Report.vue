@@ -206,6 +206,7 @@
                             <template v-for="(bid,key1) in rejected_bids[key]">
                                 <div :key="key1">
                                 {{bid.supplier_name}}
+                                <br/><br/>
                                 <v-text-field
                                     :value="tec_report_data ? rejected_reasons[key][key1] : rejectReasons[(key * maxBids) + key1]"
                                     label="Reason for rejecting supplier"
@@ -282,6 +283,7 @@
                             <template v-for="(bid,key1) in recommended_bids[key]">
                                 <div :key="key1">
                                 {{bid.supplier_name}}
+                                <br/><br/>
                                 <v-text-field
                                     :value="tec_report_data ? recommended_reasons[key][key1] : recommendReasons[(key * maxBids) + key1]"
                                     label="Reason for recommending supplier"

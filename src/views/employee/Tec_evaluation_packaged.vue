@@ -26,15 +26,19 @@
 
                 <v-divider></v-divider>
 
-                <v-stepper-step step="3" :complete="stepperStep > 3">Bids Recieved Before Closing Time</v-stepper-step>
+                <v-stepper-step step="3" :complete="stepperStep > 3">Recieved Valid Bids</v-stepper-step>
                 
                 <v-divider></v-divider>
 
-                <v-stepper-step step="4" :complete="stepperStep > 4">Bid Evaluation</v-stepper-step>
+                <v-stepper-step step="4" :complete="stepperStep > 4">Technical Evaluation</v-stepper-step>
                 
                 <v-divider></v-divider>
 
-                <v-stepper-step step="5" :complete="stepperStep > 5">TEC Recommendation</v-stepper-step>
+                <v-stepper-step step="5" :complete="stepperStep > 5">Supplier Selection</v-stepper-step>
+                
+                <v-divider></v-divider>
+
+                <v-stepper-step step="6" :complete="stepperStep > 6">TEC Recommendation</v-stepper-step>
               </v-stepper-header>
 
               <v-stepper-content step="1">
@@ -182,6 +186,55 @@
               </v-stepper-content>
 
               <v-stepper-content step="4">
+                <v-row>
+                  <v-col  class="justify-center">
+                    <template v-for="(item,key) in spec_data.items">
+                      <div :key="key">
+                        <div class="text-h6">
+                            Item {{key+1}} - {{item.ItemName}}
+                        </div>
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-h6 text-left" width="250px">Feature</th>
+                                <th class="text-h6 text-left" width="500px">Minimum Requirement</th>
+                                <template v-for="(supplier) in Object.keys(item)">
+                                    <th v-if="supplier != 'Features' && supplier != 'MinimumRequirement'  && supplier != 'ItemName'" class="text-h6 text-left" width="250px" :key="supplier">{{supplier}}</th>
+                                </template>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(feature, key) in item.Features" :key="feature">
+                                <td>{{ feature }}</td>
+                                <td>{{ item.MinimumRequirement[key] }}</td>
+                                <template v-for="[index, supplier] of Object.entries(item)">
+                                  <td  v-if="index != 'Features' && index != 'MinimumRequirement'  && index != 'ItemName'" :key="index">{{ supplier[key] }}</td>
+                                </template>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        <br/>
+                        <v-divider class="mt-1"></v-divider>
+                        <br/>
+                      </div>
+                    </template>
+                  </v-col>
+                </v-row>
+                <v-divider class="mt-1"></v-divider>
+                <br/>
+                <v-row no-gutters>
+                  <v-btn color="primary" @click="prevStep" rounded>
+                    Back
+                  </v-btn>
+                  <v-btn color="primary" @click="nextStep" rounded absolute right>
+                    Next
+                  </v-btn>
+                </v-row>
+              </v-stepper-content>
+
+              <v-stepper-content step="5">
                 <v-form ref="form1">
                   <v-col  class="justify-center">
                     <v-row no-gutters>
@@ -205,7 +258,7 @@
                       <v-col>
                         <template v-for="(bid,key) in rejected_bids">
                             <div :key="key">
-                            {{bid.name}}
+                            {{bid.name}} - {{bid.email}}
                             <br/><br/>
                             <v-text-field
                                 :value="tec_report_data ? rejected_reasons[key] : rejectReasons[key]"
@@ -283,7 +336,7 @@
                       <v-col>
                         <template v-for="(bid,key) in recommended_bids">
                             <div :key="key">
-                            {{bid.name}}
+                            {{bid.name}} - {{bid.email}}
                             <br/><br/>
                             <v-text-field
                                 :value="tec_report_data ? recommended_reasons[key] : recommendReasons[key]"
@@ -333,7 +386,7 @@
                 </v-row>
               </v-stepper-content>
 
-              <v-stepper-content step="5">
+              <v-stepper-content step="6">
                   <v-row>
                     <v-col>
                       <template v-for="(member,key) in this.tec_team">
@@ -410,7 +463,7 @@ export default {
   // Props Received
   name: 'Tec_Report',
 
-  props: ['procurement', 'bid_data','requisition', 'tec_team', 'tec_report_data','closeTecReport'],
+  props: ['procurement', 'bid_data','requisition', 'tec_team', 'tec_report_data','closeTecReport', 'spec_data'],
 
   // Imported Components
   components: {},
@@ -440,7 +493,7 @@ export default {
 
     nextStep() {
       var valid = this.$refs.form1.validate()
-      if(this.stepperStep == 4) {
+      if(this.stepperStep == 5) {
         if(valid){
           this.stepperStep = this.stepperStep + 1
         }
