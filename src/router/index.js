@@ -20,6 +20,7 @@ import Add_Signature from "../views/admin/Add_Signature.vue";
 import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 import Admin_Add_User from "../views/admin/Add_User.vue";
 import Admin_View_Suppliers from "../views/admin/Suppliers.vue";
+import Admin_View_Supplier from "../views/admin/Supplier.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -189,6 +190,11 @@ const routes = [
       {
         path: "suppliers",
         component: Admin_View_Suppliers
+      },
+      {
+        path: "supplier/:encodedSupplierId",
+        component: Admin_View_Supplier,
+        props: true
       },
       // Developmnet Purposes Only
       { path: "test", component: Bidding_Doc_Data_Sheet },
