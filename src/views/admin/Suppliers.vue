@@ -52,7 +52,14 @@
                   </template>
 
                   <template v-slot:item.actions="{ item }">
-                    <v-btn small text color="primary" class="ml-5">View</v-btn>
+                    <v-btn
+                      @click="gotoSupplierProfile(item.supplier_id)"
+                      small
+                      text
+                      color="primary"
+                      class="ml-5"
+                      >View</v-btn
+                    >
                   </template>
                 </v-data-table>
               </v-col>
@@ -215,6 +222,10 @@ export default {
             reject(err);
           });
       });
+    },
+    gotoSupplierProfile(supplierId) {
+      //   console.log(supplierId, atob(supplierId), btoa(supplierId));
+      this.$router.push(`/admin/supplier/${btoa(supplierId)}`).catch(() => {});
     }
   },
 

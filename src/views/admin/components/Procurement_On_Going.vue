@@ -27,7 +27,7 @@
                 >
                   <template v-slot:item.action="{ item }">
                     <v-btn
-                      @click="getoProcurement(item.procurement_id)"
+                      @click="gotoProcurement(item.procurement_id)"
                       color="primary"
                       text
                       >View</v-btn
@@ -150,7 +150,7 @@ export default {
           });
       });
     },
-    getoProcurement(procurementId) {
+    gotoProcurement(procurementId) {
       this.$router
         .push("/admin/procurement_overview/" + btoa(procurementId))
         .catch(() => {});

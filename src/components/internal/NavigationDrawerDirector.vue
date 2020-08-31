@@ -35,7 +35,12 @@
       </v-list-item>
       <v-list-item link to="/director/notifications">
         <v-list-item-action>
-          <v-badge color="blue" :content="this.requisitionRequests.length + tecAppointmentRequests.length" >
+          <v-badge
+            color="blue"
+            :content="
+              this.requisitionRequests.length + tecAppointmentRequests.length
+            "
+          >
             <v-icon>mdi-bell</v-icon>
           </v-badge>
         </v-list-item-action>
@@ -114,7 +119,7 @@ export default {
   data: () => ({
     requisitionRequests: [],
     POApprovalRequests: [],
-    tecAppointmentRequests: [],
+    tecAppointmentRequests: []
   }),
 
   // Custom Methods and Functions
@@ -124,26 +129,28 @@ export default {
         this.$router.push("/login");
       });
     },
-    getRequisitionRequests(){
+    getRequisitionRequests() {
       this.$http
         .get("/api/director/get_requisition_requests")
         .then(response => {
           // console.log(response)
           this.requisitionRequests = response.data;
-        }).catch(err => {
-          console.log(err)
         })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    getTecTeamRequests(){
+    getTecTeamRequests() {
       this.$http
         .get("/api/director/get_tec_appointment_requests")
         .then(response => {
-        //   console.log(response)
+          //   console.log(response)
           this.tecAppointmentRequests = response.data;
-        }).catch(err => {
-          console.log(err)
         })
-    },
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
 
   // Life Cycle Hooks

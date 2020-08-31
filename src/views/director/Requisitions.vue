@@ -11,100 +11,90 @@
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-card class="mx-auto" max-width=1500>
-                <v-container> 
-                <v-form>    
-                    <v-row>
-                        <v-col cols="12" sm="6">
-                        <v-text-field
-                            value="UCSC/NCB/W/ENG/2020/0004"
-                            label="Procurement ID"
-                            outlined
-                            readonly
-                        ></v-text-field>
-                        </v-col>
+            <v-card class="mx-auto" max-width="1500">
+              <v-container>
+                <v-form>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        value="UCSC/NCB/W/ENG/2020/0004"
+                        label="Procurement ID"
+                        outlined
+                        readonly
+                      ></v-text-field>
+                    </v-col>
 
-                        <v-col cols="12" sm="6">
-                        <v-text-field
-                            value="Goods"
-                            label="Procurement Type"
-                            outlined
-                            readonly
-                        ></v-text-field>
-                        </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        value="Goods"
+                        label="Procurement Type"
+                        outlined
+                        readonly
+                      ></v-text-field>
+                    </v-col>
 
-                        <v-col cols="12" sm="6">
-                        <v-text-field
-                            value="Direct Method"
-                            label="Procurement Method"
-                            outlined
-                            readonly
-                        ></v-text-field>
-                        </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        value="Direct Method"
+                        label="Procurement Method"
+                        outlined
+                        readonly
+                      ></v-text-field>
+                    </v-col>
 
-                        <v-col cols="12" sm="12">
-                        <v-text-field
-                            value="Description"
-                            label="Procurement Description"
-                            outlined
-                            readonly
-                        ></v-text-field>
-                        </v-col>
-                        
-                    </v-row>
-                    <v-divider class="mt-1"></v-divider>
-                    <v-row no-gutters>
-                        <h5 class="headline pt-5 pb-5">Deputy Bursar Recommendation</h5>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" sm="12">
-                        <v-text-field
-                            value="Remarks"
-                            label="Deputy Bursar Remarks"
-                            outlined
-                            readonly
-                        ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                        <v-text-field
-                            value="Granted"
-                            label="Deputy Bursar Approval"
-                            outlined
-                            readonly
-                        ></v-text-field>
-                        </v-col>
-                    </v-row>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        value="Description"
+                        label="Procurement Description"
+                        outlined
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-divider class="mt-1"></v-divider>
+                  <v-row no-gutters>
+                    <h5 class="headline pt-5 pb-5">
+                      Deputy Bursar Recommendation
+                    </h5>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        value="Remarks"
+                        label="Deputy Bursar Remarks"
+                        outlined
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        value="Granted"
+                        label="Deputy Bursar Approval"
+                        outlined
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                    <v-divider class="mt-1"></v-divider>
-                    <v-row no-gutters>
-                        <h5 class="headline pt-5 pb-5">Director Recommendation</h5>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" sm="12">
-                            <v-text-field
-                                label="Remarks"
-                                outlined
-                            ></v-text-field>
-                        </v-col>
-                        
-                        <v-btn
-                            color="success"
-                            class="mr-4 ml-4"
-                            
-                        >
-                            Approve
-                        </v-btn>
+                  <v-divider class="mt-1"></v-divider>
+                  <v-row no-gutters>
+                    <h5 class="headline pt-5 pb-5">Director Recommendation</h5>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="12">
+                      <v-text-field label="Remarks" outlined></v-text-field>
+                    </v-col>
 
-                        <v-btn
-                            color="error"
-                            class="mr-4"
-                        >
-                            Reject
-                        </v-btn>
-                    </v-row>
-                    
-                </v-form>   
-                </v-container>
+                    <v-btn color="success" class="mr-4 ml-4">
+                      Approve
+                    </v-btn>
+
+                    <v-btn color="error" class="mr-4">
+                      Reject
+                    </v-btn>
+                  </v-row>
+                </v-form>
+              </v-container>
             </v-card>
             <v-row> </v-row>
           </v-container>
@@ -118,7 +108,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-    
+
 /*
 
 // Validation Library - Vuelidate

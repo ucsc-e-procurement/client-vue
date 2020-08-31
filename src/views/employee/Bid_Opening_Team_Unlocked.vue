@@ -1,27 +1,32 @@
 <template>
   <v-container>
-        <v-card flat>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    label="Search"
-                    single-line
-                    hide-details
-                ></v-text-field>
-            </v-card-title>
-            <v-data-table
-            :headers="completedHeaders"
-            :items="procurements"
-            :search="search"
-            >
-                <template v-slot:item.controls="props">
-                <v-btn class="mx-2" small color="primary" @click="openBidOpeningSchedule(props.item)">
-                    Bid Opening Schedule
-                </v-btn>
-                </template>
-            </v-data-table>
-        </v-card>
-        <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
+    <v-card flat>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="completedHeaders"
+        :items="procurements"
+        :search="search"
+      >
+        <template v-slot:item.controls="props">
+          <v-btn
+            class="mx-2"
+            small
+            color="primary"
+            @click="openBidOpeningSchedule(props.item)"
+          >
+            Bid Opening Schedule
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
             <v-card>
                 
                 <v-card-title>
@@ -77,18 +82,27 @@
                 </v-card-actions>
             </v-card>
         </v-dialog> -->
-        <v-dialog v-model="viewBidOpeningSchedule" fullscreen hide-overlay transition="dialog-bottom-transition">
-            <v-card>
-                <v-toolbar dark color="primary">
-                <v-btn icon dark @click="viewBidOpeningSchedule = false">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-toolbar-title>Bid Opening Schedule</v-toolbar-title>
-                <v-spacer></v-spacer>
-                </v-toolbar>
-                <BidOpeningSchedule v-if="procurement" v-bind:procurement="procurement" v-bind:bid_opening_team="bid_opening_team"/>
-            </v-card>
-        </v-dialog>
+    <v-dialog
+      v-model="viewBidOpeningSchedule"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="viewBidOpeningSchedule = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Bid Opening Schedule</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <BidOpeningSchedule
+          v-if="procurement"
+          v-bind:procurement="procurement"
+          v-bind:bid_opening_team="bid_opening_team"
+        />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -96,7 +110,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-import BidOpeningSchedule from "./Opening_Schedule"
+import BidOpeningSchedule from "./Opening_Schedule";
 
 /*
 
@@ -118,7 +132,7 @@ export default {
   props: [],
 
   // Imported Components
-  components: {BidOpeningSchedule},
+  components: { BidOpeningSchedule },
 
   // Data Variables and Values
   data: () => ({
@@ -128,15 +142,20 @@ export default {
     viewBidOpeningSchedule: false,
     procurement: null,
     bid_opening_team: null,
-    search: '',
+    search: "",
     completedHeaders: [
-        { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
-        { text: 'Category', value: 'category' },
-        { text: 'Date Initiated', value: 'date' },
-        { text: 'Date Unlocked', value: 'bid_opening_date' },
-        { text: "Actions", value: "controls", sortable: false }
+      {
+        text: "Procurement ID",
+        align: "start",
+        filterable: true,
+        value: "procurement_id"
+      },
+      { text: "Category", value: "category" },
+      { text: "Date Initiated", value: "date" },
+      { text: "Date Unlocked", value: "bid_opening_date" },
+      { text: "Actions", value: "controls", sortable: false }
     ],
-    procurements: [],
+    procurements: []
   }),
 
   // Custom Methods and Functions
@@ -147,57 +166,58 @@ export default {
     //   console.log(item)
     // },
 
-    openBidOpeningSchedule: function (item) {
-      this.procurement = item
-      this.fetchBidOpeningTeam(this.procurement.bid_opening_team_id)
-      this.viewBidOpeningSchedule = true
-      console.log(item)
+    openBidOpeningSchedule: function(item) {
+      this.procurement = item;
+      this.fetchBidOpeningTeam(this.procurement.bid_opening_team_id);
+      this.viewBidOpeningSchedule = true;
+      console.log(item);
     },
 
     fetchUnlockedProcurements(employee_id) {
-      this.$http.get('/api/bid_opening_team/get_unlocked_procurements', {
-        params: {
-          id: employee_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.procurements = response.data
-        this.procurements.forEach(element => {
-            element.bids = JSON.parse(element.bids)
+      this.$http
+        .get("/api/bid_opening_team/get_unlocked_procurements", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.procurements = response.data;
+          this.procurements.forEach(element => {
+            element.bids = JSON.parse(element.bids);
             element.bids = element.bids.reduce((r, a) => {
-                console.log("a", a);
-                console.log('r', r);
-                r[a.product_id] = [...r[a.product_id] || [], a];
-                return r;
-            }, {})
+              console.log("a", a);
+              console.log("r", r);
+              r[a.product_id] = [...(r[a.product_id] || []), a];
+              return r;
+            }, {});
+          });
+          console.log(this.procurements);
+          console.log(Object.values(this.procurements[0].bids));
+        })
+        .catch(error => {
+          console.log(error);
         });
-        console.log(this.procurements)
-        console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
     },
 
     fetchBidOpeningTeam(bid_opening_team_id) {
-      this.$http.get('/api/bid_opening_team/get_bid_opening_team', {
-        params: {
-          id: bid_opening_team_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.bid_opening_team = response.data
-        //this.bid_opening_team = JSON.parse(this.tec_team.team)
-        console.log(this.bid_opening_team)
-        //console.log(Object.values(this.ongoingProcurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
-
+      this.$http
+        .get("/api/bid_opening_team/get_bid_opening_team", {
+          params: {
+            id: bid_opening_team_id
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.bid_opening_team = response.data;
+          //this.bid_opening_team = JSON.parse(this.tec_team.team)
+          console.log(this.bid_opening_team);
+          //console.log(Object.values(this.ongoingProcurements[0].bids))
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   },
 
   // Life Cycle Hooks
@@ -205,8 +225,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchUnlockedProcurements('emp00005')
-      //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
+    this.fetchUnlockedProcurements("emp00005");
+    //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

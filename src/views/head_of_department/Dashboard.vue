@@ -78,7 +78,7 @@ export default {
   // Data Variables and Values
   data() {
     return {
-      deptName: "Engineering Division", //needs to be retrieved from store
+      deptName: "Engineering Division" //needs to be retrieved from store
     };
   },
   // Custom Methods and Functions
@@ -90,7 +90,7 @@ export default {
       if (event) {
         alert(event.target.tagName);
       }
-    },
+    }
   },
 
   // Life Cycle Hooks
@@ -104,7 +104,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 

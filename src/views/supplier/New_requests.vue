@@ -180,11 +180,11 @@ export default {
     openDialog: function(key) {
       this.procurement = key;
       this.dialog = true;
-      console.log(this.dialog)
+      console.log(this.dialog);
     },
 
     fetchRequests(supplier_id) {
-      console.log(supplier_id)
+      console.log(supplier_id);
       this.$http
         .get("/api/supplier/get_new_requests", {
           params: {
@@ -203,7 +203,8 @@ export default {
     },
     gotoPriceSchedule() {
       this.dialog = false;
-      this.$router.push({ name: "price_schedule", 
+      this.$router.push({
+        name: "price_schedule",
         params: { procurement: this.newRequests[this.procurement] }
       });
     }
