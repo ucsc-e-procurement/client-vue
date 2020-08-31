@@ -274,6 +274,10 @@
                         </tr>
                       </tbody>
                     </template>
+                    </v-simple-table>
+                  <br />
+                </div>
+                </template>
                   </v-col>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
