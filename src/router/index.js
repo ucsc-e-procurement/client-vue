@@ -21,6 +21,7 @@ import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_S
 import Admin_Add_User from "../views/admin/Add_User.vue";
 import Admin_View_Suppliers from "../views/admin/Suppliers.vue";
 import Admin_View_Supplier from "../views/admin/Supplier.vue";
+import Admin_View_Bid from "../views/admin/Bid.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -194,6 +195,11 @@ const routes = [
       {
         path: "supplier/:encodedSupplierId",
         component: Admin_View_Supplier,
+        props: true
+      },
+      {
+        path: "bid/:encodedBidId",
+        component: Admin_View_Bid,
         props: true
       },
       // Developmnet Purposes Only

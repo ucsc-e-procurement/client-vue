@@ -27,7 +27,7 @@
                       General Information
                     </v-tab>
                     <v-tab>
-                      Procurements
+                      Bid Placements
                     </v-tab>
                     <v-tab>
                       Registrations
@@ -127,7 +127,7 @@
                             >
                               <template v-slot:item.action="{ item }">
                                 <v-btn
-                                  @click="getoProcurement(item.procurement_id)"
+                                  @click="gotoBid(item.bid_id)"
                                   color="primary"
                                   text
                                   >View</v-btn
@@ -331,10 +331,8 @@ export default {
           });
       });
     },
-    gotoProcurement(procurementId) {
-      this.$router
-        .push("/admin/procurement_overview/" + btoa(procurementId))
-        .catch(() => {});
+    gotoBid(bidId) {
+      this.$router.push("/admin/bid/" + btoa(bidId)).catch(() => {});
     }
     // ---------------------------------------------
     //           Tab 03
