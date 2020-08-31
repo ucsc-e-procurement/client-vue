@@ -20,8 +20,8 @@
               <v-col cols="8">
                 <recentPurchases />
               </v-col>
-              <v-col cols="4">   
-                <approvedRequisitions />           
+              <v-col cols="4">
+                <approvedRequisitions />
                 <v-row>
                   <infoCardThisMonth />
                 </v-row>
@@ -29,8 +29,7 @@
             </v-row>
             <v-divider></v-divider>
             <v-row>
-              <v-col cols="12" md="12">
-              </v-col>
+              <v-col cols="12" md="12"> </v-col>
             </v-row>
           </v-container>
         </v-card>
@@ -43,11 +42,11 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-  import Requisition from "./Requisition"
-  import InfoCardThisYear from "./dashboard_components/InfoCardThisYear"
-  import RecentPurchases from "./dashboard_components/RecentPurchases"
-  import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions"
-  import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth"
+import Requisition from "./Requisition";
+import InfoCardThisYear from "./dashboard_components/InfoCardThisYear";
+import RecentPurchases from "./dashboard_components/RecentPurchases";
+import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions";
+import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth";
 /*
 
 // Validation Library - Vuelidate
@@ -81,12 +80,12 @@ export default {
     infoCardThisYear: InfoCardThisYear,
     recentPurchases: RecentPurchases,
     approvedRequisitions: ApprovedRequisitions,
-    infoCardThisMonth: InfoCardThisMonth,
+    infoCardThisMonth: InfoCardThisMonth
   },
 
   // Data Variables and Values
   data: () => ({
-    isMounted: false,
+    isMounted: false
   }),
 
   // Custom Methods and Functions
@@ -109,7 +108,7 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  .scroll {
-    overflow-y: scroll
-  }
+.scroll {
+  overflow-y: scroll;
+}
 </style>

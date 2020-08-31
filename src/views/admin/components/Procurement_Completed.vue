@@ -25,7 +25,7 @@
                   :items-per-page="10"
                   no-data-text="Please Add Items"
                 >
-                  <template v-slot:item.action="{ item }">
+                  <template v-slot:item.action="{}">
                     <v-btn color="primary" text>View</v-btn>
                   </template>
                 </v-data-table>

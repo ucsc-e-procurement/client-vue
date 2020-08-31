@@ -30,7 +30,7 @@ import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
 // Deputy Bursar
 import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar";
 import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition";
-import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
+// import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
 import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
 //Supplier

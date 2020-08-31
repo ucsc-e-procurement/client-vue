@@ -1,10 +1,7 @@
 <template>
-  <v-container fluid>
-    <v-row no-gutters>
-      <v-col cols="12">
-        <nav_drawer_internal :drawer="navDrawerInternal" />
-        <router-view />
-      </v-col>
+  <v-container>
+    <v-row>
+      <v-col cols="12"></v-col>
     </v-row>
   </v-container>
 </template>
@@ -13,7 +10,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-import NavigationDrawer_Internal from "../../components/internal/NavigationDrawer_hod";
+
 /*
 
 // Validation Library - Vuelidate
@@ -34,11 +31,11 @@ export default {
   props: [],
 
   // Imported Components
-  components: { nav_drawer_internal: NavigationDrawer_Internal },
+  components: {},
 
   // Data Variables and Values
   data: () => ({
-    navDrawerInternal: true
+    //
   }),
 
   // Custom Methods and Functions

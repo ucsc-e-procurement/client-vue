@@ -97,9 +97,7 @@ export default {
   props: [],
 
   // Imported Components
-  components: {
-
-  },
+  components: {},
 
   // Data Variables and Values
   data: () => ({
@@ -120,7 +118,6 @@ export default {
   // Custom Methods and Functions
   methods: {
     // viewPurchaseRequests:function(){
-
     // }
   },
 

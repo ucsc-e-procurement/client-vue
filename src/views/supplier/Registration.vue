@@ -55,7 +55,9 @@
                 :to="{ name: 'login' }"
                 >Login here</router-link
               >
-              <v-btn color="primary float-right" @click="proceedToForm2">Continue</v-btn>
+              <v-btn color="primary float-right" @click="proceedToForm2"
+                >Continue</v-btn
+              >
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-form ref="form2" v-model="valid">
@@ -142,7 +144,9 @@
                   </v-col>
                 </v-row>
               </v-form>
-              <v-btn color="primary float-right" @click="proceedToForm3">Continue</v-btn>
+              <v-btn color="primary float-right" @click="proceedToForm3"
+                >Continue</v-btn
+              >
               <v-btn text @click.native="step = 1">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
@@ -194,7 +198,9 @@
                   label="Experience in the industry ( No. of Years )"
                 ></v-select>
               </v-form>
-              <v-btn color="primary float-right" @click="proceedToForm4">Continue</v-btn>
+              <v-btn color="primary float-right" @click="proceedToForm4"
+                >Continue</v-btn
+              >
               <v-btn text @click.native="step = 2">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="4">
@@ -263,9 +269,7 @@
               <v-btn color="primary float-right" @click="registerUser"
                 >Submit</v-btn
               >
-              <v-btn text @click.native="step = 3"
-                >Back</v-btn
-              >
+              <v-btn text @click.native="step = 3">Back</v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -388,11 +392,12 @@ export default {
                 );
               } else {
                 this.user_state = "renew";
-                this.$http.get("api/supplier/registration/get_current_info", {
-                  params: { email: this.formdata.email }
-                })
+                this.$http
+                  .get("api/supplier/registration/get_current_info", {
+                    params: { email: this.formdata.email }
+                  })
                   .then(res => {
-                    this.formdata.legal =  res.data[0].legal;
+                    this.formdata.legal = res.data[0].legal;
                     this.formdata.business_address = res.data[0].address;
                     this.formdata.contact_name = res.data[0].name;
                     this.formdata.contact = res.data[0].contact_number;
@@ -411,7 +416,7 @@ export default {
                     this.formdata.credit_period = res.data[0].credit_period;
                     this.formdata.experience = res.data[0].experience;
                     this.formdata.cat_selection = res.data[0].category;
-                  })
+                  });
                 this.step = 2;
               }
             } else this.step = 2;
@@ -460,11 +465,11 @@ export default {
         form.append("payment_type", this.formdata.payment_type);
         form.append("user_state", this.user_state);
         this.$http.post("/api/supplier/registration", form).then(res => {
-          if(res.data == "Successful") {
+          if (res.data == "Successful") {
             alert(
-            "You have successfully registered to our system. Await verification of your request."
+              "You have successfully registered to our system. Await verification of your request."
             );
-            this.$router.push('/login');
+            this.$router.push("/login");
           } else console.log(res);
         });
       }
@@ -488,15 +493,15 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  .bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: url("../../assets/ucsc.jpg") no-repeat center center;
-    background-size: cover;
+.bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../../assets/ucsc.jpg") no-repeat center center;
+  background-size: cover;
 
-    transform: scale(1);
-  }
+  transform: scale(1);
+}
 </style>

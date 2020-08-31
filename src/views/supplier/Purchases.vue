@@ -14,17 +14,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-card class="mx-auto" min-width=1000>
-        <v-tabs
-          v-model="tab"
-          background-color="transparent"
-          height=60
-          grow
-        >
-          <v-tab
-            v-for="tab in tabs"
-            :key="tab"
-          >
+      <v-card class="mx-auto" min-width="1000">
+        <v-tabs v-model="tab" background-color="transparent" height="60" grow>
+          <v-tab v-for="tab in tabs" :key="tab">
             {{ tab }}
           </v-tab>
         </v-tabs>
@@ -43,12 +35,10 @@
 </template>
 
 <script>
-
-import Pending from './Pending_Orders';
-import Completed from './Completed_Orders';
+import Pending from "./Pending_Orders";
+import Completed from "./Completed_Orders";
 
 export default {
-
   // Props Received
   props: [],
 
@@ -61,26 +51,25 @@ export default {
     tab: null,
     dialog: false,
     procurement: null,
-    tabs: [
-      'Pending Orders', 'Completed orders'
-    ],
+    tabs: ["Pending Orders", "Completed orders"],
     supplier: null
   }),
 
   // Custom Methods and Functions
   methods: {
     getSupplier(supplier_id) {
-      this.$http.get('/api/supplier/get_supplier', {
-        params: {
-          id: supplier_id
-        }
-      })
-      .then(response => {
-        this.supplier = response.data
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      this.$http
+        .get("/api/supplier/get_supplier", {
+          params: {
+            id: supplier_id
+          }
+        })
+        .then(response => {
+          this.supplier = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
 
@@ -89,7 +78,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.getSupplier('sale@gamestreet.lk')
+    this.getSupplier("sale@gamestreet.lk");
     //this.getSupplier(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},

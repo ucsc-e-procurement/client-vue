@@ -32,13 +32,13 @@
             </v-row> -->
             <v-row class="justify-space-between">
               <v-col cols="3">
-                <v-card
-                  color="#1976d2"
-                  dark
-                >
+                <v-card color="#1976d2" dark>
                   <div class="d-flex flex-no-wrap justify-space-between">
                     <div>
-                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                      <v-card-title
+                        class="headline font-weight-bold"
+                        style="padding-top: 40px;"
+                      >
                         <div style="font-size: 50px;">
                           60
                         </div>
@@ -48,29 +48,26 @@
                       </v-card-actions>
                     </div>
                     <v-avatar
-                    class="ma-3"
-                    slot="icon"
-                    color="blue darken-4"
-                    size="125"
-                  >
-                    <v-icon
-                      icon="mdi-lock"
-                      color="white"
+                      class="ma-3"
+                      slot="icon"
+                      color="blue darken-4"
+                      size="125"
                     >
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
+                      <v-icon icon="mdi-lock" color="white">
+                        mdi-lock
+                      </v-icon>
+                    </v-avatar>
                   </div>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card
-                  color="#1976d2"
-                  dark
-                >
+                <v-card color="#1976d2" dark>
                   <div class="d-flex flex-no-wrap justify-space-between">
                     <div>
-                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                      <v-card-title
+                        class="headline font-weight-bold"
+                        style="padding-top: 40px;"
+                      >
                         <div style="font-size: 50px;">
                           20
                         </div>
@@ -80,29 +77,26 @@
                       </v-card-actions>
                     </div>
                     <v-avatar
-                    class="ma-3"
-                    slot="icon"
-                    color="yellow darken-3"
-                    size="125"
-                  >
-                    <v-icon
-                      icon="mdi-lock"
-                      color="white"
+                      class="ma-3"
+                      slot="icon"
+                      color="yellow darken-3"
+                      size="125"
                     >
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
+                      <v-icon icon="mdi-lock" color="white">
+                        mdi-lock
+                      </v-icon>
+                    </v-avatar>
                   </div>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card
-                  color="#1976d2"
-                  dark
-                >
+                <v-card color="#1976d2" dark>
                   <div class="d-flex flex-no-wrap justify-space-between">
                     <div>
-                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                      <v-card-title
+                        class="headline font-weight-bold"
+                        style="padding-top: 40px;"
+                      >
                         <div style="font-size: 50px;">
                           70%
                         </div>
@@ -112,29 +106,26 @@
                       </v-card-actions>
                     </div>
                     <v-avatar
-                    class="ma-3"
-                    slot="icon"
-                    color="green lighten-1"
-                    size="125"
-                  >
-                    <v-icon
-                      icon="mdi-lock"
-                      color="white"
+                      class="ma-3"
+                      slot="icon"
+                      color="green lighten-1"
+                      size="125"
                     >
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
+                      <v-icon icon="mdi-lock" color="white">
+                        mdi-lock
+                      </v-icon>
+                    </v-avatar>
                   </div>
                 </v-card>
               </v-col>
               <v-col cols="3">
-                <v-card
-                  color="#1976d2"
-                  dark
-                >
+                <v-card color="#1976d2" dark>
                   <div class="d-flex flex-no-wrap justify-space-between">
                     <div>
-                      <v-card-title class="headline font-weight-bold" style="padding-top: 40px;">
+                      <v-card-title
+                        class="headline font-weight-bold"
+                        style="padding-top: 40px;"
+                      >
                         <div style="font-size: 50px;">
                           30%
                         </div>
@@ -144,18 +135,15 @@
                       </v-card-actions>
                     </div>
                     <v-avatar
-                    class="ma-3"
-                    slot="icon"
-                    color="red lighten-1"
-                    size="125"
-                  >
-                    <v-icon
-                      icon="mdi-lock"
-                      color="white"
+                      class="ma-3"
+                      slot="icon"
+                      color="red lighten-1"
+                      size="125"
                     >
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
+                      <v-icon icon="mdi-lock" color="white">
+                        mdi-lock
+                      </v-icon>
+                    </v-avatar>
                   </div>
                 </v-card>
               </v-col>
@@ -164,44 +152,52 @@
             <v-row>
               <v-col cols="12" sm="6">
                 <v-row no-gutters>
-                    <h5 class="headline">New Appointments</h5>
+                  <h5 class="headline">New Appointments</h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <v-alert
-                    border="top"
-                    colored-border
-                    prominent
-                    type="info"
-                    elevation="2"
-                    v-for="item in this.pendingSpec" :key="item.procurement_id"
+                  border="top"
+                  colored-border
+                  prominent
+                  type="info"
+                  elevation="2"
+                  v-for="item in this.pendingSpec"
+                  :key="item.procurement_id"
                 >
-                    <v-row align="center">
-                        <v-col class="grow">Specification Report Pending for {{item.procurement_id}}</v-col>
-                        <v-col class="shrink">
-                            <v-btn @click="openProcurement(item)">View</v-btn>
-                        </v-col>
-                    </v-row>
+                  <v-row align="center">
+                    <v-col class="grow"
+                      >Specification Report Pending for
+                      {{ item.procurement_id }}</v-col
+                    >
+                    <v-col class="shrink">
+                      <v-btn @click="openProcurement(item)">View</v-btn>
+                    </v-col>
+                  </v-row>
                 </v-alert>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-row no-gutters>
-                    <h5 class="headline">New Bid Openings</h5>
+                  <h5 class="headline">New Bid Openings</h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <v-alert
-                    border="top"
-                    colored-border
-                    prominent
-                    type="info"
-                    elevation="2"
-                    v-for="item in this.pendingEval" :key="item.procurement_id"
+                  border="top"
+                  colored-border
+                  prominent
+                  type="info"
+                  elevation="2"
+                  v-for="item in this.pendingEval"
+                  :key="item.procurement_id"
                 >
-                    <v-row align="center">
-                        <v-col class="grow">Evaluation Report Pending for {{item.procurement_id}}</v-col>
-                        <v-col class="shrink">
-                            <v-btn @click="openProcurement(item)">View</v-btn>
-                        </v-col>
-                    </v-row>
+                  <v-row align="center">
+                    <v-col class="grow"
+                      >Evaluation Report Pending for
+                      {{ item.procurement_id }}</v-col
+                    >
+                    <v-col class="shrink">
+                      <v-btn @click="openProcurement(item)">View</v-btn>
+                    </v-col>
+                  </v-row>
                 </v-alert>
               </v-col>
             </v-row>
@@ -306,45 +302,47 @@ export default {
     },
 
     fetchNewProcurements(employee_id) {
-      this.$http.get('/api/tec_team/get_new_appointments', {
-        params: {
-          id: employee_id
-        }
-      })
-      .then(response => {
-        console.log('new', response.data);
-        this.pendingSpec = response.data
-        console.log(this.pendingSpec)
-        //console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      this.$http
+        .get("/api/tec_team/get_new_appointments", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log("new", response.data);
+          this.pendingSpec = response.data;
+          console.log(this.pendingSpec);
+          //console.log(Object.values(this.procurements[0].bids))
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
 
     fetchNewBidOpenings(employee_id) {
-      this.$http.get('/api/tec_team/get_new_bidopenings', {
-        params: {
-          id: employee_id
-        }
-      })
-      .then(response => {
-        console.log('new', response.data);
-        this.pendingEval = response.data
-        console.log(this.pendingSpec)
-        //console.log(Object.values(this.procurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+      this.$http
+        .get("/api/tec_team/get_new_bidopenings", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log("new", response.data);
+          this.pendingEval = response.data;
+          console.log(this.pendingSpec);
+          //console.log(Object.values(this.procurements[0].bids))
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.fetchNewProcurements(this.user)
-    this.fetchNewBidOpenings(this.user)
+    this.fetchNewProcurements(this.user);
+    this.fetchNewBidOpenings(this.user);
   },
   beforeMount() {},
   mounted() {},

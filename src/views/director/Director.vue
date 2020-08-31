@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row no-gutters>
       <v-col cols="12">
-        <nav_drawer_director :drawer="navDrawerInternal"/>
+        <nav_drawer_director :drawer="navDrawerInternal" />
         <router-view />
       </v-col>
     </v-row>
@@ -13,7 +13,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-  import NavigationDrawer_Internal_Director from "../../components/internal/NavigationDrawerDirector";
+import NavigationDrawer_Internal_Director from "../../components/internal/NavigationDrawerDirector";
 
 /*
 
@@ -41,7 +41,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    navDrawerInternal: true,
+    navDrawerInternal: true
   }),
 
   // Custom Methods and Functions

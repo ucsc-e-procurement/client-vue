@@ -1,47 +1,62 @@
 <template>
   <v-container>
-        <v-card flat>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    label="Search"
-                    single-line
-                    hide-details
-                ></v-text-field>
-            </v-card-title>
-            <v-data-table
-            :headers="ongoingHeaders"
-            :items="procurements"
-            :search="search"
-            >
-                <template v-slot:item.controls="props">
-                <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
+    <v-card flat>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="ongoingHeaders"
+        :items="procurements"
+        :search="search"
+      >
+        <template v-slot:item.controls="props">
+          <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
                     Requisition
                 </v-btn>
                 <v-btn class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
                     TEC-Report
                 </v-btn> -->
-                <v-btn class="mx-2" small color="primary" @click="openProcurement(props.item)">
-                    View
-                </v-btn>
-                </template>
-            </v-data-table>
-        </v-card>
-        <v-dialog v-model="viewRequisition" fullscreen hide-overlay transition="dialog-bottom-transition">
-            <v-card>
-                <v-toolbar dark color="primary">
-                <v-btn icon dark @click="viewRequisition = false">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-toolbar-title>Requisition</v-toolbar-title>
-                <v-spacer></v-spacer>
-                </v-toolbar>
-                <Requisition v-if="procurement" v-bind:requisition="requisition"/>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="tecReport" fullscreen hide-overlay transition="dialog-bottom-transition">
-            <v-card>
-                <!-- <v-app-bar dark color="primary" fixed>
+          <v-btn
+            class="mx-2"
+            small
+            color="primary"
+            @click="openProcurement(props.item)"
+          >
+            View
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <v-dialog
+      v-model="viewRequisition"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="viewRequisition = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Requisition</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <Requisition v-if="procurement" v-bind:requisition="requisition" />
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="tecReport"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <!-- <v-app-bar dark color="primary" fixed>
                 <v-btn icon dark @click="tecReport = false">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -51,10 +66,26 @@
                     <v-btn dark text @click="tecReport = false">Save</v-btn>
                 </v-toolbar-items>
                 </v-app-bar> -->
-                <TecReport v-if="procurement && procurement.bid_type == 'items'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data" v-bind:closeTecReport="closeTecReport"/>
-                <TecReportPackaged v-if="procurement && procurement.bid_type == 'packaged'" v-bind:procurement="procurement" v-bind:bid_data="bid_data" v-bind:requisition="requisition" v-bind:tec_team="tec_team" v-bind:tec_report_data="tec_report_data" v-bind:closeTecReport="closeTecReport"/>
-            </v-card>
-        </v-dialog>
+        <TecReport
+          v-if="procurement && procurement.bid_type == 'items'"
+          v-bind:procurement="procurement"
+          v-bind:bid_data="bid_data"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:tec_report_data="tec_report_data"
+          v-bind:closeTecReport="closeTecReport"
+        />
+        <TecReportPackaged
+          v-if="procurement && procurement.bid_type == 'packaged'"
+          v-bind:procurement="procurement"
+          v-bind:bid_data="bid_data"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:tec_report_data="tec_report_data"
+          v-bind:closeTecReport="closeTecReport"
+        />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -63,9 +94,9 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-import TecReport from "./Tec_Report"
-import TecReportPackaged from "./Tec_Report_Packaged"
-import Requisition from "./Requisition"
+import TecReport from "./Tec_Report";
+import TecReportPackaged from "./Tec_Report_Packaged";
+import Requisition from "./Requisition";
 
 /*
 
@@ -101,15 +132,20 @@ export default {
     tec_team: null,
     bid_data: null,
     tec_report_data: null,
-    search: '',
+    search: "",
     ongoingHeaders: [
-        { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
-        { text: 'Category', value: 'category' },
-        { text: 'Status', value: 'procurement_status' },
-        { text: 'Date Initiated', value: 'date' },
-        { text: "Actions", value: "controls", sortable: false }
+      {
+        text: "Procurement ID",
+        align: "start",
+        filterable: true,
+        value: "procurement_id"
+      },
+      { text: "Category", value: "category" },
+      { text: "Status", value: "procurement_status" },
+      { text: "Date Initiated", value: "date" },
+      { text: "Actions", value: "controls", sortable: false }
     ],
-    procurements: [],
+    procurements: []
   }),
 
   // Custom Methods and Functions
@@ -160,15 +196,16 @@ export default {
     // },
 
     fetchUnlockedProcurements(employee_id) {
-      this.$http.get('/api/tec_team/get_unlocked_procurements', {
-        params: {
-          id: employee_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.procurements = response.data
-        this.procurements.forEach(element => {
+      this.$http
+        .get("/api/tec_team/get_unlocked_procurements", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.procurements = response.data;
+          this.procurements.forEach(element => {
             // if(element.bids) {
             //     element.bids = JSON.parse(element.bids)
             //     element.supplier_bids = element.bids.reduce((r, a) => {
@@ -182,19 +219,18 @@ export default {
             //         return r;
             //     }, {})
             // }
-            if(element.step == 7){
-              element.btn = "success"
+            if (element.step == 7) {
+              element.btn = "success";
+            } else {
+              element.btn = "primary";
             }
-            else{
-              element.btn = "primary"
-            }
+          });
+          console.log(this.procurements);
+        })
+        .catch(error => {
+          console.log(error);
         });
-        console.log(this.procurements)
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
+    }
 
     // fetchItemWiseBids(procurement_id) {
     //   this.$http.get('/api/tec_team/get_itemwise_bids', {
@@ -299,8 +335,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchUnlockedProcurements('emp00005')
-      //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
+    this.fetchUnlockedProcurements("emp00005");
+    //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

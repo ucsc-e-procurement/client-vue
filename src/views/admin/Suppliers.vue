@@ -224,7 +224,8 @@ export default {
       });
     },
     gotoSupplierProfile(supplierId) {
-      this.$router.push(`/admin/supplier/${atob(supplierId)}`).catch(() => {});
+      //   console.log(supplierId, atob(supplierId), btoa(supplierId));
+      this.$router.push(`/admin/supplier/${btoa(supplierId)}`).catch(() => {});
     }
   },
 

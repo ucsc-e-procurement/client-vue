@@ -85,8 +85,6 @@
 // Imported Components
 import Footer from "./components/common/Footer";
 
-import firebase from "firebase";
-
 // For Internal Parties
 //import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
 //import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
