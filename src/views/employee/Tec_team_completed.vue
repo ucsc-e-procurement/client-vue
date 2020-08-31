@@ -275,8 +275,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchCompletedProcurements('emp00005')
-      //this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
+    //   this.fetchCompletedProcurements('emp00005')
+      this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

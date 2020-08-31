@@ -299,8 +299,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchUnlockedProcurements('emp00005')
-      //this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
+      // this.fetchUnlockedProcurements('emp00005')
+      this.fetchUnlockedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

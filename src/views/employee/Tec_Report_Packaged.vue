@@ -184,10 +184,13 @@
               <v-stepper-content step="4">
                 <v-form ref="form1">
                   <v-col  class="justify-center">
+                    <div v-if="!tec_report_data">
+                      To Be Completed By TEC Chairman
+                    </div>
                     <v-row no-gutters>
                         <h5 class="headline pt-5 pb-5">Rejected Bids</h5>
                     </v-row>
-                    <v-row v-if="!tec_report_data">
+                    <v-row v-if="!tec_report_data && user == procurement.chairman">
                       <v-col>
                       <v-select
                         item-text="supplier_name"
@@ -265,7 +268,7 @@
                     <v-row no-gutters>
                         <h5 class="headline pt-5 pb-5">Recommended Bidder</h5>
                     </v-row>
-                    <v-row v-if="!tec_report_data">
+                    <v-row v-if="!tec_report_data && user == procurement.chairman">
                       <v-col>
                       <v-select
                         item-text="supplier_name"
@@ -341,7 +344,7 @@
                           {{member.employee_name}} - {{member.capacity}}
                           <!-- radio group if not logged in user -->
                           <v-radio-group 
-                            v-if="user != member.employee_id" 
+                            v-if="user != member.employee_id || (user!=procurement.chairman && !tec_report_data)" 
                             :value="tec_approval[key]"  
                             row 
                             disabled 
@@ -352,7 +355,7 @@
                           </v-radio-group>
                           <!-- radio group if logged in user -->
                           <v-radio-group 
-                            v-if="user == member.employee_id"
+                            v-else
                             :value="tec_report_data ? tec_approval[key] : row[key]"
                             row  
                             :rules="[rules.required]"
@@ -364,7 +367,7 @@
                           </v-radio-group>
 
                           <v-text-field
-                              v-if="user != member.employee_id"
+                              v-if="user != member.employee_id || (user!=procurement.chairman && !tec_report_data)"
                               :value="tec_remarks[key]"
                               label="Remarks"
                               outlined
@@ -385,7 +388,7 @@
                     </v-col>
                   </v-row>
                   <v-row no gutters>
-                    <v-btn v-if="! filled" large class="mx-2" small color="success" @click="save">
+                    <v-btn v-if="(user!=procurement.chairman && tec_report_data && !filled) || (user==procurement.chairman && !filled)" large class="mx-2" small color="success" @click="save">
                         SAVE
                     </v-btn>
                   </v-row>
@@ -420,8 +423,8 @@ export default {
     //procurement: this.procurement,
     //requisition: this.requisition,
     //tec_team: this.tec_team,
-    user: "emp00005",
-    //user: this.$store.getters.user.employee_id,
+    // user: "emp00005",
+    user: null,
     rejected: [],
     recommended: [],
     reason_for_rejecting: [],
@@ -539,7 +542,9 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.user = this.$store.getters.user.employee_id
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

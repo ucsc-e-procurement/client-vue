@@ -163,8 +163,8 @@ export default {
     tabs: [
       'Current Teams','Past Teams'
     ],
-    user: "emp00005",
-    //user: this.$store.getters.user.employee_id,
+    // user: "emp00005",
+    user: null,
     procurement: null,
     tec_team: null,
     dialog:false,
@@ -265,6 +265,7 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
+    this.user = this.$store.getters.user.employee_id
     this.fetchCurrentTeams(this.user)
     this.fetchPastTeams(this.user)
   },
