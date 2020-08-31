@@ -280,8 +280,8 @@ export default {
     type: "trend",
     autoLineWidth: false,
 
-    user: "emp00005",
-    //user: this.$store.getters.user.employee_id,
+    // user: "emp00005",
+    user: null,
     pendingSpec: null,
     pendingEval: null
   }),
@@ -341,8 +341,9 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.fetchNewProcurements(this.user);
-    this.fetchNewBidOpenings(this.user);
+    this.user = this.$store.getters.user.employee_id
+    this.fetchNewProcurements(this.user)
+    this.fetchNewBidOpenings(this.user)
   },
   beforeMount() {},
   mounted() {},
