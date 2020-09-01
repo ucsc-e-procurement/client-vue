@@ -151,7 +151,7 @@
                 <v-card flat>
                   <v-card outlined>
                     <v-card-title>
-                      Quoted Producs / Services / Works
+                      Quoted Products / Services / Works
                       <v-spacer></v-spacer>
                       <v-text-field
                         v-model="searchProduct"
