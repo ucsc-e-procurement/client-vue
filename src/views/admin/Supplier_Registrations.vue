@@ -50,7 +50,7 @@
                   no-data-text="No Users Available"
                   :loading="loaderUsers"
                 >
-                  <template v-slot:item.status="{ item }">
+                  <template v-slot:item.verified="{ item }">
                     <v-chip
                       small
                       outlined
@@ -63,7 +63,7 @@
 
                   <template v-slot:item.actions="{ item }">
                     <v-btn
-                      @click="gotoSupplierProfile(item.supplier_id)"
+                      @click="gotoSupplierRegistration(item.registration_no)"
                       small
                       text
                       color="primary"
@@ -244,9 +244,11 @@ export default {
           });
       });
     },
-    gotoSupplierProfile(supplierId) {
+    gotoSupplierRegistration(registrationId) {
       //   console.log(supplierId, atob(supplierId), btoa(supplierId));
-      this.$router.push(`/admin/supplier/${btoa(supplierId)}`).catch(() => {});
+      this.$router
+        .push(`/admin/supplier-registration/${btoa(registrationId)}`)
+        .catch(() => {});
     },
     generateYearList(startYear) {
       let years = [];
