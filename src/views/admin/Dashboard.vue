@@ -20,22 +20,9 @@
             </v-row>
 
             <v-row>
-              <v-col cols="6">
-                <v-card>
-                  <v-sparkline
-                    :value="value"
-                    :gradient="gradient"
-                    :smooth="radius || false"
-                    :padding="padding"
-                    :line-width="width"
-                    :stroke-linecap="lineCap"
-                    :gradient-direction="gradientDirection"
-                    :fill="fill"
-                    :type="type"
-                    :auto-line-width="autoLineWidth"
-                    auto-draw
-                    height="150"
-                  ></v-sparkline>
+              <v-col cols="12">
+                <v-card class="px-2">
+                  <monthly-product-requisitions :height="150" />
                 </v-card>
               </v-col>
             </v-row>
@@ -57,6 +44,7 @@
 // import InfoCard_A from "./components/InfoCard_A";
 import TestChart from "./components/Test_Chart";
 import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
+import MonthlyProductRequisitionChart from "./analytics/Monthly_Product_Requisition_Chart";
 /*
 
 // Validation Library - Vuelidate
@@ -89,7 +77,8 @@ export default {
   components: {
     // "info-card": InfoCard_A,
     "test-chart": TestChart,
-    "procurement-count": ProcurementCount_Cards
+    "procurement-count": ProcurementCount_Cards,
+    "monthly-product-requisitions": MonthlyProductRequisitionChart
   },
 
   // Data Variables and Values
