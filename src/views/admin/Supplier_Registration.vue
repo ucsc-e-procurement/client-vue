@@ -10,9 +10,9 @@
               <v-spacer />
               <v-chip
                 :color="
-                  registration.status === 'approved'
+                  registration.verified === 'verified'
                     ? 'success'
-                    : registration.status === 'pending'
+                    : registration.verified === 'pending'
                     ? 'primary'
                     : 'error'
                 "
@@ -20,22 +20,31 @@
                 class="mx-5"
                 ><v-avatar left>
                   <v-icon size="20">{{
-                    registration.status === "approved"
+                    registration.verified === "verified"
                       ? "mdi-checkbox-marked-circle"
-                      : registration.status === "pending"
+                      : registration.verified === "pending"
                       ? "mdi-clock-time-four"
                       : "mdi-close-circle"
                   }}</v-icon> </v-avatar
                 >{{
-                  registration.status === "approved"
-                    ? "Approved"
-                    : registration.status === "pending"
+                  registration.verified === "verified"
+                    ? "Verified"
+                    : registration.verified === "pending"
                     ? "Pending"
                     : "Rejected"
                 }}</v-chip
               >
-              <v-btn color="primary" outlined small>Supplier Profile</v-btn>
-              <v-btn color="primary" small class="ml-5">Verify</v-btn>
+              <v-btn color="primary" outlined small @click="gotoSupplierProfile"
+                >Supplier Profile</v-btn
+              >
+              <v-btn
+                v-if="registration.verified !== 'verified'"
+                color="primary"
+                small
+                class="ml-5"
+                @click="dialogVerifySupplier = true"
+                >Verify</v-btn
+              >
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -181,6 +190,36 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Dialog - Verification Confiramtion -->
+    <v-row justify="center">
+      <v-dialog v-model="dialogVerifySupplier" persistent max-width="400">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" dark v-bind="attrs" v-on="on">
+            Open Dialog
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="headline">Supplier Verification</v-card-title>
+          <v-card-text
+            >Do you really want to verify this supplier ?
+            <br />
+            Note: This process cannot be
+            <strong>undone</strong>. Please make sure that all prerequisites are
+            met including documentations.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="" text @click="dialogVerifySupplier = false" small
+              >Cancel</v-btn
+            >
+            <v-btn color="primary" small @click="verifyRegistration"
+              >Proceed</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
   </v-container>
 </template>
 
@@ -217,7 +256,10 @@ export default {
   // Data Variables and Values
   data: () => ({
     registration: {},
-    isLoaded: false
+    isLoaded: false,
+
+    // Dialogs
+    dialogVerifySupplier: false
   }),
 
   // Custom Methods and Functions
@@ -235,6 +277,26 @@ export default {
             reject(err);
           });
       });
+    },
+    gotoSupplierProfile() {
+      //   console.log(supplierId, atob(supplierId), btoa(supplierId));
+      this.$router
+        .push(`/admin/supplier/${btoa(this.registration.supplier_id)}`)
+        .catch(() => {});
+    },
+    verifyRegistration() {
+      this.$http
+        .put(`/api/admin/supplier-registration/verification-status`, {
+          registrationNo: this.registration.registration_no,
+          status: "verified"
+        })
+        .then(res => {
+          console.log(res);
+          this.registration.verified = "verified";
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   // Life Cycle Hooks
