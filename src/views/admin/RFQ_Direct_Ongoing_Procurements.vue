@@ -32,18 +32,18 @@
                     <br><br>
                 </div>
                 <br/>
-                <br/><br/>
                 <v-text-field
+                  class="deadline"
                   label="deadline"
-                  placeholder=" "
+                  placeholder="yyyy/mm/dd"
                   outlined
                   v-model="deadline"
                 ></v-text-field>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-row class="mb-3">
-                    <v-btn color="primary" width="30%" @click="sendRFQDirectOngoingProcurements(picked)">Send</v-btn>
-                    <v-btn color="primary" width="30%" class="ml-3" @click="dialog1 = false">Close</v-btn>
+                    <v-btn color="primary" width="30%" @click="sendRFQDirectOngoingProcurements(picked), dialog1 = false">Send</v-btn>
+                    <v-btn color="primary" width="30%" class="ml-3" @click="dialog1 = false, picked= '', deadline= ''">Close</v-btn>
                   </v-row>
                 </v-card-actions>
                 </v-container>
@@ -170,4 +170,8 @@ export default {
     padding: 12px;
     text-align: center;
     border-bottom: 1px solid #ddd;
-}</style>
+  }
+  .deadline {
+    width: 70%;
+  }
+</style>

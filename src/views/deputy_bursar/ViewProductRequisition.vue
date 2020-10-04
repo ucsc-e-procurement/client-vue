@@ -117,7 +117,7 @@
                 :disabled="isDisabled"
                 >Submit
               </v-btn>
-              <v-btn color="secondary" @click="dialog2 = false">Cancel</v-btn>
+              <v-btn color="secondary" @click="dialog2 = false, remarks= ''">Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
