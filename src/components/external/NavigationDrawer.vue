@@ -33,6 +33,14 @@
           <v-list-item-title>Procurements</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item exact="" link to="/supplier/purchases">
+        <v-list-item-action>
+          <v-icon>mdi-note</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Purchases</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item link>
         <v-list-item-action>
           <v-badge color="blue" content="1">

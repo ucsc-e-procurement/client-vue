@@ -38,7 +38,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    navDrawerInternal: true,
+    navDrawerInternal: true
   }),
 
   // Custom Methods and Functions
@@ -55,7 +55,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 

@@ -85,6 +85,8 @@
 // Imported Components
 import Footer from "./components/common/Footer";
 
+import firebase from "firebase";
+
 // For Internal Parties
 //import NavigationDrawer_Internal from "./components/internal/NavigationDrawer";
 //import NavigationDrawer_Employee from "./components/internal/NavigationDrawer_Employee";
@@ -95,7 +97,7 @@ export default {
 
   // Components Registration
   components: {
-    app_footer: Footer,
+    app_footer: Footer
     //nav_drawer_internal: NavigationDrawer_Internal,
     //nav_drawer_internal: NavigationDrawer_Employee,
     //nav_drawer_external: NavigationDrawer_External
@@ -108,8 +110,9 @@ export default {
     // navDrawerExternal: false
     // For Controlling External And Internal Views (Later this should be done using Vuex + Authentication)
   }),
+  methods: {},
   created() {
-    this.$http.interceptors.response.use(undefined, (err) => {
+    this.$http.interceptors.response.use(undefined, err => {
       return new Promise(() => {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("logout");
@@ -117,6 +120,6 @@ export default {
         throw err;
       });
     });
-  },
+  }
 };
 </script>

@@ -16,7 +16,7 @@
     </template>
 
     <v-divider></v-divider>
-    <v-list dense>
+    <v-list dense rounded>
       <v-list-item exact="" link to="/director">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
@@ -33,16 +33,24 @@
           <v-list-item-title>Procurements</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/director/requests">
+      <!-- <v-list-item link to="/director/requests">
         <v-list-item-action>
-          <!-- <v-tab> -->
           <v-badge color="blue" content="2">
             <v-icon>mdi-email</v-icon>
           </v-badge>
-          <!-- </v-tab>  -->
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>Requests</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item> -->
+      <v-list-item link to="/director/notifications">
+        <v-list-item-action>
+          <v-badge color="blue" content="2">
+            <v-icon>mdi-bell</v-icon>
+          </v-badge>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Notifications</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item link to="/statistics">
@@ -53,6 +61,32 @@
           <v-list-item-title>Statistics</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item link to="/departments">
+        <v-list-item-action>
+          <v-icon>mdi-view-grid</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Departments</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link to="/director/suppliers">
+        <v-list-item-action>
+          <v-icon>mdi-account-multiple</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Suppliers</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <!-- <v-list-item link to="/director/notifications">
+        <v-list-item-action>
+          <v-badge color="blue" content="2">
+            <v-icon>mdi-bell</v-icon>
+          </v-badge>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Notifications</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item> -->
     </v-list>
     <template v-slot:append>
       <v-list>

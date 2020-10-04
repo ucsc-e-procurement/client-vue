@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row no-gutters>
       <v-col cols="12">
-        <nav_drawer_employee :drawer="navDrawerEmployee"/>
+        <nav_drawer_employee :drawer="navDrawerEmployee" />
         <router-view />
       </v-col>
     </v-row>
@@ -35,12 +35,12 @@ export default {
   props: [],
 
   // Imported Components
-  components: {nav_drawer_employee: NavigationDrawer_Employee},
+  components: { nav_drawer_employee: NavigationDrawer_Employee },
 
   // Data Variables and Values
   data: () => ({
     //
-    navDrawerEmployee: true,
+    navDrawerEmployee: true
   }),
 
   // Custom Methods and Functions

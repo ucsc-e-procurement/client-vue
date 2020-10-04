@@ -64,8 +64,7 @@
                                 />
                               </v-col>
                             </v-row>
-                          </v-col> 
-                          </v-row
+                          </v-col> </v-row
                       ></v-container>
                     </v-card>
                   </v-container>
