@@ -11,6 +11,8 @@ Front-End of the UCSC E-Procurement System
 
 
 TERMS AND CONDITIONS
+
+
 0. Definitions.
 
 “This License” refers to version 3 of the GNU General Public License.
