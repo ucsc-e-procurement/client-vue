@@ -19,6 +19,14 @@
             <v-row>
               <v-col cols="8">
                 <recentPurchases />
+                <v-row>
+                  <v-col cols="6">
+                    <ChartLastYearProcurements />
+                  </v-col>
+                  <v-col cols="6">
+                    <ChartLastYearProcurements />
+                  </v-col>
+                </v-row>
               </v-col>
               <v-col cols="4">   
                 <approvedRequisitions />           
@@ -48,6 +56,7 @@
   import RecentPurchases from "./dashboard_components/RecentPurchases"
   import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions"
   import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth"
+  import ChartLastYearProcurements from "./dashboard_components/ChartLastYearProcurements"
 /*
 
 // Validation Library - Vuelidate
@@ -82,6 +91,7 @@ export default {
     recentPurchases: RecentPurchases,
     approvedRequisitions: ApprovedRequisitions,
     infoCardThisMonth: InfoCardThisMonth,
+    ChartLastYearProcurements: ChartLastYearProcurements
   },
 
   // Data Variables and Values
