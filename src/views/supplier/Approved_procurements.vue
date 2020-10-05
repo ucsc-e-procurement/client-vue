@@ -153,6 +153,7 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user: null,
     tab: null,
     dialog: false,
     procurement: null,
@@ -215,8 +216,9 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchCompletedProcurements("s000001");
-    //this.fetchCompletedProcurements(this.$store.getters.user.supplier_id)
+    // this.fetchCompletedProcurements("s000001");
+    this.user = this.$store.getters.user.user_id
+    this.fetchCompletedProcurements(this.user)
   },
   beforeUpdate() {},
   updated() {},

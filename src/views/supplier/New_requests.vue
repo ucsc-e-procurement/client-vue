@@ -156,6 +156,7 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user: null,
     tab: null,
     dialog: false,
     procurement: null,
@@ -217,8 +218,9 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchRequests("sale@gamestreet.lk");
-    //this.fetchRequests(this.$store.getters.user.supplier_id)
+    // this.fetchRequests("sale@gamestreet.lk");
+    this.user = this.$store.getters.user.user_id
+    this.fetchRequests(this.user)
   },
   beforeUpdate() {},
   updated() {},

@@ -151,6 +151,7 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user:null,
     tab: null,
     dialog: false,
     procurement: null,
@@ -208,8 +209,10 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchOngoingProcurements("s000001");
-    //this.fetchOngoingProcurements(this.$store.getters.user.supplier_id)
+    // this.fetchOngoingProcurements("s000001");
+    this.user = this.$store.getters.user.user_id
+    console.log('sup id', this.$store.getters.user.user_id)
+    this.fetchOngoingProcurements(this.user)
   },
   beforeUpdate() {},
   updated() {},

@@ -76,6 +76,7 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user:null,
     tab: null,
     dialog: false,
     procurement: null,
@@ -113,8 +114,9 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.getCompletedOrders("sale@gamestreet.lk");
-    //this.fetchCompletedProcurements(this.$store.getters.user.supplier_id)
+    // this.getCompletedOrders("sale@gamestreet.lk");
+    this.user = this.$store.getters.user.user_id
+    this.fetchCompletedProcurements(this.user)
   },
   beforeUpdate() {},
   updated() {},

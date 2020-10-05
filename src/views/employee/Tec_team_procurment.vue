@@ -38,7 +38,7 @@
                     >Bid Evaluation Report</v-expansion-panel-header
                   >
                   <v-expansion-panel-content>
-                    <TecReport
+                    <!-- <TecReport
                       v-if="this.$route.query.type == 'items'"
                       v-bind:procurement="procurement"
                       v-bind:bid_data="bid_data"
@@ -53,7 +53,7 @@
                       v-bind:requisition="requisition"
                       v-bind:tec_team="tec_team"
                       v-bind:tec_report_data="tec_report_data"
-                    />
+                    /> -->
 
 
                     <TecEvaluationItemwise

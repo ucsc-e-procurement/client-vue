@@ -16,7 +16,7 @@
     </template>
 
     <v-divider></v-divider>
-    <v-list dense>
+    <v-list rounded>
       <v-list-item exact="" link to="/supplier">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
@@ -41,7 +41,7 @@
           <v-list-item-title>Purchases</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link>
+      <!-- <v-list-item link>
         <v-list-item-action>
           <v-badge color="blue" content="1">
             <v-icon>mdi-bell</v-icon>
@@ -50,7 +50,7 @@
         <v-list-item-content>
           <v-list-item-title>Notifications</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
     </v-list>
     <template v-slot:append>
       <v-list>
