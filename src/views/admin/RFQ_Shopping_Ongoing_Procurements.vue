@@ -19,13 +19,13 @@
                   <v-text-field
                     class="deadline mt-6"
                     label="Deadline"
-                    placeholder="yyyy/mm/dd"
+                    placeholder="YYYY/MM/DD"
                     outlined
                     v-model="deadline"
                   ></v-text-field>
                 </td>
                 <td>
-                  <v-btn color="primary" class="mb-4 mt-4" @click="sendRFQShoppingOngoingProcurements(result.procurement_id)">Send RFQ</v-btn>
+                  <v-btn color="primary" class="mb-4 mt-4" @click="sendRFQShoppingOngoingProcurements(result.procurement_id)">SEND RFQ</v-btn>
                 </td>
             </tr> 
         </tbody>           
@@ -100,6 +100,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
+        this.$router.go()
     },
   },
   // Life Cycle Hooks

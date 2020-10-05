@@ -34,7 +34,7 @@
                 <v-text-field
                   class="deadline"
                   label="Deadline"
-                  placeholder="yyyy/mm/dd"
+                  placeholder="YYYY/MM/DD"
                   outlined
                   v-model="deadline"
                 ></v-text-field>
