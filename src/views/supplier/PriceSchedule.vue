@@ -882,6 +882,7 @@ export default {
       this.doc_id = doc_id;
     },
 
+    // Price schedule table creation
     createTable() {
       let products = JSON.parse(this.procurement.products);
       this.originalData = null;
@@ -939,6 +940,7 @@ export default {
       }
     },
 
+    // Manufacture authorization pdf download
     downloadLetter() {
       this.$http.get("/api/supplier/price_schedule/get_file").then(res => {
         let bytes = new Uint8Array(res.data.data);
@@ -952,6 +954,7 @@ export default {
       });
     },
 
+    // Download bid guarantee
     downloadBid() {
       this.$http
         .get("/api/supplier/price_schedule/get_bid_guarantee")
@@ -967,6 +970,7 @@ export default {
         });
     },
 
+    // Form validation methods
     validateManAuth() {
       if(this.fbData[0].doc.itvCR_7_3 == "Manufacture’s Authorization is required") {
         if(this.$refs.form1.validate()) {
@@ -988,6 +992,7 @@ export default {
       }
     },
 
+    // Shopping method bid submission
     submitBid() {
       let form = new FormData();
 
@@ -1011,12 +1016,14 @@ export default {
         })
         .then(res => {
           this.encrypted = res.data.encrypted;
+          // Get encrypted client key
           this.$http
             .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
               clientKey: res.data.key, 
               bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
             })
             .then(res => {
+              // Save data in firebase
               this.$http
                 .post("/api/supplier/price_schedule/update_firebase", {
                   supplier_id: this.procurement.supplier_id,
@@ -1030,6 +1037,7 @@ export default {
                   this.$http
                     .post("/api/supplier/price_schedule/:procurement", form)
                     .then(res => {
+                      // store images in firebase
                       let storageRef = firebase.storage().ref();
                       storageRef.child('man_auth/'+'bid0001').put(this.manufacturerDoc).then(function(snapshot) {
                         console.log(snapshot);
@@ -1052,6 +1060,7 @@ export default {
         })
     },
 
+    // Direct submission function
     submitQuotation() {
       if(this.$refs.form_quo.validate()) {
         this.$http.post('/api/supplier/price_schedule_direct/:procurement', {
@@ -1067,7 +1076,8 @@ export default {
         })
           .then(res => {
             console.log(res);
-            // this.$router.go(-1);
+            alert('Quotation submission successful');
+            this.$router.go(-1);
           })
       }
     }
