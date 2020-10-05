@@ -14,24 +14,16 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-card class="mx-auto" min-width=1000>
-        <v-tabs
-          v-model="tab"
-          background-color="transparent"
-          height=60
-          grow
-        >
-          <v-tab
-            v-for="tab in tabs"
-            :key="tab"
-          >
+      <v-card class="mx-auto" min-width="1000">
+        <v-tabs v-model="tab" background-color="transparent" height="60" grow>
+          <v-tab v-for="tab in tabs" :key="tab">
             {{ tab }}
           </v-tab>
         </v-tabs>
         <v-divider></v-divider>
         <v-tabs-items v-model="tab">
           <v-tab-item>
-            <NewRequests v-if="supplier" v-bind:supplier="supplier[0]"/>
+            <NewRequests v-if="supplier" v-bind:supplier="supplier[0]" />
           </v-tab-item>
           <v-tab-item>
             <OngoingProcurements />
@@ -81,27 +73,26 @@ export default {
     tab: null,
     dialog: false,
     procurement: null,
-    tabs: [
-      'New Requests', 'On-Going', 'Completed'
-    ],
+    tabs: ["New Requests", "On-Going", "Completed"],
     supplier: null
   }),
 
   // Custom Methods and Functions
   methods: {
     getSupplier(supplier_id) {
-      this.$http.get('/api/supplier/get_supplier', {
-        params: {
-          id: supplier_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.supplier = response.data
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      this.$http
+        .get("/api/supplier/get_supplier", {
+          params: {
+            id: supplier_id
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.supplier = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
 
@@ -110,7 +101,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.getSupplier('sale@gamestreet.lk')
+    this.getSupplier("sale@gamestreet.lk");
     //this.getSupplier(this.$store.getters.user.supplier_id)
   },
   beforeUpdate() {},

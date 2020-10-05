@@ -20,6 +20,10 @@ import Add_Signature from "../views/admin/Add_Signature.vue";
 import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 import Admin_Add_User from "../views/admin/Add_User.vue";
 import Admin_View_Suppliers from "../views/admin/Suppliers.vue";
+import Admin_View_Supplier from "../views/admin/Supplier.vue";
+import Admin_View_Bid from "../views/admin/Bid.vue";
+import Admin_View_Supplier_Registrations from "../views/admin/Supplier_Registrations.vue";
+import Admin_View_Supplier_Registration from "../views/admin/Supplier_Registration.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -29,7 +33,7 @@ import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
 // Deputy Bursar
 import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar";
 import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition";
-import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
+// import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
 import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
 //Supplier
@@ -189,6 +193,25 @@ const routes = [
       {
         path: "suppliers",
         component: Admin_View_Suppliers
+      },
+      {
+        path: "supplier/:encodedSupplierId",
+        component: Admin_View_Supplier,
+        props: true
+      },
+      {
+        path: "bid/:encodedBidId",
+        component: Admin_View_Bid,
+        props: true
+      },
+      {
+        path: "supplier-registrations",
+        component: Admin_View_Supplier_Registrations
+      },
+      {
+        path: "supplier-registration/:encodedRegistrationId",
+        component: Admin_View_Supplier_Registration,
+        props: true
       },
       // Developmnet Purposes Only
       { path: "test", component: Bidding_Doc_Data_Sheet },

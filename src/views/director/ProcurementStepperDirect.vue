@@ -6,27 +6,45 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Procurement {{this.procurementId}}</h5>
+              <h5 class="headline">Procurement {{ this.procurementId }}</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row class="justify-space-between"> 
-                <v-col cols="12">
-                    <v-stepper v-model="stepperValue" vertical>
-                        <v-stepper-step complete step="1" :editable="true" :edit-icon="'$complete'" :complete-icon="'$edit'">
-                            Product Requisition
-                        </v-stepper-step>
-                        <v-stepper-content step="1">
-                          <requisition :requisitionData = 'this.requisitionData' v-if="isMounted"/>
-                        </v-stepper-content>
+            <v-row class="justify-space-between">
+              <v-col cols="12">
+                <v-stepper v-model="stepperValue" vertical>
+                  <v-stepper-step
+                    complete
+                    step="1"
+                    :editable="true"
+                    :edit-icon="'$complete'"
+                    :complete-icon="'$edit'"
+                  >
+                    Product Requisition
+                  </v-stepper-step>
+                  <v-stepper-content step="1">
+                    <requisition
+                      :requisitionData="this.requisitionData"
+                      v-if="isMounted"
+                    />
+                  </v-stepper-content>
 
-                        <v-stepper-step :complete="procurementState > 2" step="2" :editable="procurementState > 2 ? true : false" :edit-icon="procurementState > 2 ? '$complete' : '$edit' "  :complete-icon="procurementState > 2 ? '$edit' : '$edit' ">Procurement Initialization</v-stepper-step>
-                        <v-stepper-content step="2">
-                          <ProcurementMethod :requisitionData = 'this.requisitionData' />
-                        </v-stepper-content>
+                  <v-stepper-step
+                    :complete="procurementState > 2"
+                    step="2"
+                    :editable="procurementState > 2 ? true : false"
+                    :edit-icon="procurementState > 2 ? '$complete' : '$edit'"
+                    :complete-icon="procurementState > 2 ? '$edit' : '$edit'"
+                    >Procurement Initialization</v-stepper-step
+                  >
+                  <v-stepper-content step="2">
+                    <ProcurementMethod
+                      :requisitionData="this.requisitionData"
+                    />
+                  </v-stepper-content>
 
-                        <!-- <v-stepper-step :complete="procurementState >= 3" step="3" :editable="true" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Tech Team</v-stepper-step>
+                  <!-- <v-stepper-step :complete="procurementState >= 3" step="3" :editable="true" :edit-icon="procurementState > 3 ? '$complete' : '$edit' "  :complete-icon="procurementState > 3 ? '$edit' : '$edit' ">Tech Team</v-stepper-step>
                         <v-stepper-content step="3">
                             <AppointTechTeam :requisitionData = 'this.requisitionData' :stepper = 3 @tecTeamUpdated="childUpdated" v-if="isMounted && this.requisitionData.tec_team_id == null" />
                             <TechTeam :requisitionData = 'this.requisitionData' v-if="isMounted && this.requisitionData.tec_team_id != null"/>
@@ -75,7 +93,6 @@
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
-
   props: [],
 
   // Imported Components
@@ -89,21 +106,26 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-      stepperValue: 1,
-      procurementState: '',
-      procurementId: '',
-      requisitionData: '',
-      rfqData: [],
-      isMounted: false,
-      rfqMounted: false,
-      test: 0,
+    stepperValue: 1,
+    procurementState: "",
+    procurementId: "",
+    requisitionData: "",
+    rfqData: [],
+    isMounted: false,
+    rfqMounted: false,
+    test: 0
   }),
 
   // Custom Methods and Functions
   methods: {
-    getRequisition(){
+    getRequisition() {
       this.$http
-        .get(`/api/director/procurements/${this.$route.query.proc_id.replace(/[/]/g, '')}?procId=${this.$route.query.proc_id}`)
+        .get(
+          `/api/director/procurements/${this.$route.query.proc_id.replace(
+            /[/]/g,
+            ""
+          )}?procId=${this.$route.query.proc_id}`
+        )
         .then(response => {
           this.requisitionData = response.data[0];
           this.procurementState = response.data[0].step;
@@ -115,28 +137,30 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        })
+        });
     },
     editIcon(event) {
-      console.log(event)
+      console.log(event);
     },
-    childUpdated(stepVal){
+    childUpdated(stepVal) {
       this.test = stepVal;
       this.isMounted = false;
       this.getRequisition();
     },
-    getRfq(){
+    getRfq() {
       this.$http
-        .get(`/api/director/get_rfq_details?procId=${this.$route.query.proc_id}`)
+        .get(
+          `/api/director/get_rfq_details?procId=${this.$route.query.proc_id}`
+        )
         .then(response => {
-          this.rfqData = response.data
+          this.rfqData = response.data;
           this.rfqMounted = true;
           console.log(this.rfq);
         })
         .catch(err => {
           console.log(err);
-        })
-    },
+        });
+    }
   },
 
   // Life Cycle Hooks
@@ -151,19 +175,14 @@ export default {
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
-  updated() {
-
-  },
+  updated() {},
   beforeDestroy() {},
   destroyed() {},
 
   // Computed Properties
-  computed: {},
-
+  computed: {}
 };
 </script>
 
 // Custom CSS Rules and Classes
 <style scoped></style>
-
-

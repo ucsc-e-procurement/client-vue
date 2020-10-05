@@ -35,18 +35,24 @@
           <v-divider></v-divider>
 
           <v-stepper-step step="3" :complete="stepperStep > 3"
-            >Bids Recieved Before Closing Time</v-stepper-step
+            >Recieved Valid Bids</v-stepper-step
           >
 
           <v-divider></v-divider>
 
           <v-stepper-step step="4" :complete="stepperStep > 4"
-            >Bid Evaluation</v-stepper-step
+            >Technical Evaluation</v-stepper-step
           >
 
           <v-divider></v-divider>
 
           <v-stepper-step step="5" :complete="stepperStep > 5"
+            >Supplier Selection</v-stepper-step
+          >
+
+          <v-divider></v-divider>
+
+          <v-stepper-step step="6" :complete="stepperStep > 6"
             >TEC Recommendation</v-stepper-step
           >
         </v-stepper-header>
@@ -152,43 +158,127 @@
           </v-row>
         </v-stepper-content>
 
-              <v-stepper-content step="3">
-                  <v-row>
-                    <v-col  class="justify-center">
-                    <template v-for="(bid,key) in bid_data">
-                        <div :key="key">
-                        <v-card flat>
-                            <div class="text-h6">
-                                Supplier {{key+1}} - {{bid.name}}
-                            </div>
-                            <v-simple-table>
-                            <template v-slot:default>
-                                <thead>
-                                <tr>
-                                    <th class="text-h6 text-left" width="300px">Item</th>
-                                    <th class="text-h6 text-left" width="250px">Quantity</th>
-                                    <th class="text-h6 text-left" width="250px">Unit Price</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="item in bid.bids" :key="item.product_id">
-                                    <td>{{ item.product_name }}</td>
-                                    <td>{{ item.qty }}</td>
-                                    <td>{{ item.unit_price }}</td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td class="text-h6 text-left">Total with VAT</td>
-                                  <td class="text-h6 text-left">{{ bid.total_with_vat }}</td>
-                                </tr>
-                                </tbody>
-                            </template>
-                            </v-simple-table>
-                        </v-card>
-                        <br/>
-                        </div>
+        <v-stepper-content step="3">
+          <v-row>
+            <v-col class="justify-center">
+              <template v-for="(bid, key) in bid_data">
+                <div :key="key">
+                  <v-card flat>
+                    <div class="text-h6">
+                      Supplier {{ key + 1 }} - {{ bid.name }}
+                    </div>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-h6 text-left" width="300px">
+                              Item
+                            </th>
+                            <th class="text-h6 text-left" width="250px">
+                              Quantity
+                            </th>
+                            <th class="text-h6 text-left" width="250px">
+                              Unit Price
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="item in bid.bids" :key="item.product_id">
+                            <td>{{ item.product_name }}</td>
+                            <td>{{ item.qty }}</td>
+                            <td>{{ item.unit_price }}</td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td class="text-h6 text-left">Total with VAT</td>
+                            <td class="text-h6 text-left">
+                              {{ bid.total_with_vat }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-card>
+                  <br />
+                </div>
+              </template>
+            </v-col>
+          </v-row>
+          <v-divider class="mt-1"></v-divider>
+          <br />
+          <v-row no-gutters>
+            <v-btn color="primary" @click="prevStep" rounded>
+              Back
+            </v-btn>
+            <v-btn color="primary" @click="nextStep" rounded absolute right>
+              Next
+            </v-btn>
+          </v-row>
+        </v-stepper-content>
+
+        <v-stepper-content step="4">
+          <v-row>
+            <v-col class="justify-center">
+              <template v-for="(item, key) in spec_data.items">
+                <div :key="key">
+                  <div class="text-h6">
+                    Item {{ key + 1 }} - {{ item.ItemName }}
+                  </div>
+                  <v-simple-table>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-h6 text-left" width="250px">
+                            Feature
+                          </th>
+                          <th class="text-h6 text-left" width="500px">
+                            Minimum Requirement
+                          </th>
+                          <template v-for="supplier in Object.keys(item)">
+                            <th
+                              v-if="
+                                supplier != 'Features' &&
+                                  supplier != 'MinimumRequirement' &&
+                                  supplier != 'ItemName'
+                              "
+                              class="text-h6 text-left"
+                              width="250px"
+                              :key="supplier"
+                            >
+                              {{ supplier }}
+                            </th>
+                          </template>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="(feature, key) in item.Features"
+                          :key="feature"
+                        >
+                          <td>{{ feature }}</td>
+                          <td>{{ item.MinimumRequirement[key] }}</td>
+                          <template
+                            v-for="[index, supplier] of Object.entries(item)"
+                          >
+                            <td
+                              v-if="
+                                index != 'Features' &&
+                                  index != 'MinimumRequirement' &&
+                                  index != 'ItemName'
+                              "
+                              :key="index"
+                            >
+                              {{ supplier[key] }}
+                            </td>
+                          </template>
+                        </tr>
+                      </tbody>
                     </template>
-                    </v-col>
+                    </v-simple-table>
+                  <br />
+                </div>
+                </template>
+                  </v-col>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <br/>
@@ -202,7 +292,7 @@
                 </v-row>
               </v-stepper-content>
 
-              <v-stepper-content step="4">
+              <v-stepper-content step="5">
                 <v-form ref="form1">
                   <v-col  class="justify-center">
                     <div v-if="!tec_report_data">
@@ -229,7 +319,7 @@
                       <v-col>
                         <template v-for="(bid,key) in rejected_bids">
                             <div :key="key">
-                            {{bid.name}}
+                            {{bid.name}} - {{bid.email}}
                             <br/><br/>
                             <v-text-field
                                 :value="tec_report_data ? rejected_reasons[key] : rejectReasons[key]"
@@ -307,7 +397,7 @@
                       <v-col>
                         <template v-for="(bid,key) in recommended_bids">
                             <div :key="key">
-                            {{bid.name}}
+                            {{bid.name}} - {{bid.email}}
                             <br/><br/>
                             <v-text-field
                                 :value="tec_report_data ? recommended_reasons[key] : recommendReasons[key]"
@@ -357,7 +447,7 @@
                 </v-row>
               </v-stepper-content>
 
-              <v-stepper-content step="5">
+              <v-stepper-content step="6">
                   <v-row>
                     <v-col>
                       <template v-for="(member,key) in this.tec_team">
@@ -432,7 +522,7 @@ export default {
   // Form Validations
   // validations: {},
   // Props Received
-  name: "Tec_Report_Packaged",
+  name: "Tec_Evaluation_Packaged",
 
   props: [
     "procurement",
@@ -440,7 +530,8 @@ export default {
     "requisition",
     "tec_team",
     "tec_report_data",
-    "closeTecReport"
+    "closeTecReport",
+    "spec_data"
   ],
 
   // Imported Components
@@ -470,7 +561,7 @@ export default {
   methods: {
     nextStep() {
       var valid = this.$refs.form1.validate();
-      if (this.stepperStep == 4) {
+      if (this.stepperStep == 5) {
         if (valid) {
           this.stepperStep = this.stepperStep + 1;
         }
@@ -601,13 +692,13 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {
-    this.user = this.$store.getters.user.employee_id
-  },
+  created() {},
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
-  updated() {},
+  updated() {
+    this.user = this.$store.getters.user.employee_id
+  },
   beforeDestroy() {},
   destroyed() {},
   // Computed Properties

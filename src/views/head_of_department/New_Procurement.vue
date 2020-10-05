@@ -52,7 +52,7 @@ export default {
 
   // Imported Components
   components: {
-    RequestForm,
+    RequestForm
   },
 
   // Data Variables and Values
@@ -60,7 +60,7 @@ export default {
     return {
       deptName: "Department Name",
       pageTitle: "New Purchase Request",
-      dialog: false,
+      dialog: false
     };
   },
   // Custom Methods and Functions
@@ -77,7 +77,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 

@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 // Decryption with CTR
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 //initialize express server
 const app = express();
@@ -41,7 +41,7 @@ app.get("/test", (req, res) => {
 
 //     const algorithm = 'aes256';
 
-//     const key = crypto.randomBytes(32); 
+//     const key = crypto.randomBytes(32);
 //     var cipher = crypto.createCipher(algorithm,key.toString('hex'));
 //     var endata = cipher.update(data,'utf8','hex') + cipher.final('hex');
 
@@ -60,48 +60,54 @@ app.get("/test", (req, res) => {
 
 // })
 
-
 // Invoke -> https://us-central1-ucsc-e-procurement.cloudfunctions.net/api/decrypt
 // Decrypts the price schedule and adds to a separate collection
 app.post("/decrypt", async (req, res) => {
   try {
     const { bidOpeningDate, data } = req.body;
 
-    const algorithm = 'aes256';
+    const algorithm = "aes256";
 
-    await admin.firestore().collection('bids').doc(bidOpeningDate).get().then((doc) => {
+    await admin
+      .firestore()
+      .collection("bids")
+      .doc(bidOpeningDate)
+      .get()
+      .then(doc => {
+        // Document data | encrypted key -> encrypted price schedule
+        var keys = doc.data();
 
-      // Document data | encrypted key -> encrypted price schedule
-      var keys = doc.data();
+        for (let key in keys) {
+          // Decrypt
+          var decipher = crypto.createDecipher(algorithm, data[key]);
+          decipher.setAutoPadding(false);
+          var decryptedPriceSchedule =
+            decipher.update(keys[key], "hex", "utf8") + decipher.final("utf8");
 
-      for (let key in keys) {
+          // var priceSchedule = JSON.parse(decryptedPriceSchedule)
 
-        // Decrypt
-        var decipher = crypto.createDecipher(algorithm,data[key]);
-        decipher.setAutoPadding(false);
-        var decryptedPriceSchedule = decipher.update(keys[key],'hex','utf8') + decipher.final('utf8');
-        
-        // var priceSchedule = JSON.parse(decryptedPriceSchedule)
+          // Add the decrypted price schedule to the collection with the bid id as the dcument key
+          admin
+            .firestore()
+            .collection("decrypted_bids")
+            .add({
+              is_processed: false,
+              data: decryptedPriceSchedule
+            });
+        }
+        return keys;
+      });
 
-        // Add the decrypted price schedule to the collection with the bid id as the dcument key
-        admin.firestore().collection('decrypted_bids').add({
-          is_processed: false,
-          data: decryptedPriceSchedule
-        });
-      }
-      return keys;
-    });
-
-    res.json({
-        'msg': 'success'
-    }).status(200);
-
-  }catch(error){
-      console.log(error);
-      res.json({'error':error}).status(500);
+    res
+      .json({
+        msg: "success"
+      })
+      .status(200);
+  } catch (error) {
+    console.log(error);
+    res.json({ error: error }).status(500);
   }
-
-})
+});
 
 // ###########################################################################################################################################
 //                                                  Firestore Database Triggers - Functions

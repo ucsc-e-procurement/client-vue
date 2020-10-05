@@ -25,33 +25,49 @@
             <v-stepper-step step="10"></v-stepper-step>
           </v-stepper-header>
           <v-stepper-items>
-
             <v-stepper-content step="1">
               <instructions v-if="this.method" />
-              <v-btn color="primary mt-3" @click="step=2">Continue</v-btn>
+              <v-btn color="primary mt-3" @click="step = 2">Continue</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <datasheet v-if="this.method" :deadline='this.procurement.deadline' :data='this.fbData' />
+              <datasheet
+                v-if="this.method"
+                :deadline="this.procurement.deadline"
+                :data="this.fbData"
+              />
               <v-btn class="mt-3" text @click.native="step = 1">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=3">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 3"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <schedule :products='JSON.parse(this.procurement.products)' />
+              <schedule :products="JSON.parse(this.procurement.products)" />
               <v-btn class="mt-3" text @click.native="step = 2">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=4">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 4"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="4">
               <v-container class="elevation-1">
                 <v-row no-gutters>
-                  <h5 class="headline">Technical Specification and Compliance</h5>
+                  <h5 class="headline">
+                    Technical Specification and Compliance
+                  </h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
-                <v-container v-for="(item, index) in this.fbData[0].items" :key="index">
+                <v-container
+                  v-for="(item, index) in this.fbData[0].items"
+                  :key="index"
+                >
                   <table class="mt-4" style="width: 100%; font-size: 12px">
-                    <caption>{{ item.ItemName }}</caption>
+                    <caption>
+                      {{
+                        item.ItemName
+                      }}
+                    </caption>
                     <thead>
                       <tr>
                         <th wdith="15%">Features</th>
@@ -62,20 +78,37 @@
                     <tbody>
                       <tr>
                         <td>
-                          <ul v-for="(feature, index) in item.Features" :key="index">
+                          <ul
+                            v-for="(feature, index) in item.Features"
+                            :key="index"
+                          >
                             <li class="py-2">{{ feature }}</li>
                           </ul>
                         </td>
                         <td>
-                          <ul v-for="(requirement, index) in item.MinimumRequirement" :key="index" style="list-style-type: none">
+                          <ul
+                            v-for="(requirement,
+                            index) in item.MinimumRequirement"
+                            :key="index"
+                            style="list-style-type: none"
+                          >
                             <li class="py-2">{{ requirement }}</li>
                           </ul>
                         </td>
                         <td>
-                          <ul v-for="(response, index) in item.bidderResponse" :key="index" style="list-style-type: none">
+                          <ul
+                            v-for="(response, index) in item.bidderResponse"
+                            :key="index"
+                            style="list-style-type: none"
+                          >
                             <li class="py-2 text-center">
-                             <input type="checkbox" true-value="Yes" false-value="No" v-model="item.bidderResponse[index]">
-                             <span> {{ response }}</span>
+                              <input
+                                type="checkbox"
+                                true-value="Yes"
+                                false-value="No"
+                                v-model="item.bidderResponse[index]"
+                              />
+                              <span> {{ response }}</span>
                             </li>
                           </ul>
                         </td>
@@ -85,13 +118,17 @@
                 </v-container>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 3">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=5">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 5"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="5">
-              <quotationForm :procurement='this.procurement' />
+              <quotationForm :procurement="this.procurement" />
               <v-btn class="mt-3" text @click.native="step = 4">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=6">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 6"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="6">
@@ -108,7 +145,7 @@
                   <h5>Tender Number : {{ this.procurement.procurement_id }}</h5>
                 </v-row>
                 <v-row no-gutters>
-                  <h5> Closing Date & Time : {{ this.procurement.deadline }}</h5>
+                  <h5>Closing Date & Time : {{ this.procurement.deadline }}</h5>
                 </v-row>
 
                 <v-card class="my-2 py-2 px-1" id="schedule">
@@ -120,7 +157,9 @@
                           Description of Materials/Services required
                         </th>
                         <th width="5%" scope="col" rowspan="2">Qty</th>
-                        <th width="20%" scope="col" colspan="2">Unit Price (Rs.)</th>
+                        <th width="20%" scope="col" colspan="2">
+                          Unit Price (Rs.)
+                        </th>
                         <th width="10%" scope="col" rowspan="2">
                           Make/Model & Trademark
                         </th>
@@ -163,7 +202,9 @@
                           </span>
                         </td>
                         <td>
-                          <span v-if="editIndex !== index">{{ item.figures }}</span>
+                          <span v-if="editIndex !== index">{{
+                            item.figures
+                          }}</span>
                           <span v-if="editIndex === index">
                             <v-text-field
                               type="number"
@@ -187,13 +228,17 @@
                           </span>
                         </td>
                         <td>
-                          <span v-if="editIndex !== index">{{ item.make }}</span>
+                          <span v-if="editIndex !== index">{{
+                            item.make
+                          }}</span>
                           <span v-if="editIndex === index">
                             <v-text-field v-model="item.make" />
                           </span>
                         </td>
                         <td>
-                          <span v-if="editIndex !== index">{{ item.date }}</span>
+                          <span v-if="editIndex !== index">{{
+                            item.date
+                          }}</span>
                           <span v-if="editIndex === index">
                             <v-menu
                               v-model="menu"
@@ -219,7 +264,9 @@
                           </span>
                         </td>
                         <td>
-                          <span v-if="editIndex !== index">{{ item.validity }}</span>
+                          <span v-if="editIndex !== index">{{
+                            item.validity
+                          }}</span>
                           <span v-if="editIndex === index">
                             <v-text-field
                               type="number"
@@ -230,7 +277,9 @@
                           </span>
                         </td>
                         <td>
-                          <span v-if="editIndex !== index">{{ item.credit }}</span>
+                          <span v-if="editIndex !== index">{{
+                            item.credit
+                          }}</span>
                           <span v-if="editIndex === index">
                             <v-text-field
                               type="number"
@@ -278,7 +327,11 @@
                   </v-col>
 
                   <v-col cols="12" sm="5" class="ml-6">
-                    <v-form @submit.prevent="registerUser" ref="form" v-model="valid">
+                    <v-form
+                      @submit.prevent="registerUser"
+                      ref="form"
+                      v-model="valid"
+                    >
                       <v-text-field
                         v-model="vatNo"
                         label="Vat Registration No."
@@ -292,7 +345,9 @@
                 </v-row>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 5">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=7">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 7"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="7">
@@ -302,7 +357,11 @@
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <v-row no-gutters class="py-2">
-                  Download the document<v-icon @click="downloadLetter" class="mx-2">mdi-package-down</v-icon>
+                  Download the document<v-icon
+                    @click="downloadLetter"
+                    class="mx-2"
+                    >mdi-package-down</v-icon
+                  >
                 </v-row>
                 <v-file-input
                   v-model="manufacturerDoc"
@@ -314,7 +373,9 @@
                 ></v-file-input>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 6">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=8">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 8"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="8">
@@ -324,7 +385,9 @@
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <v-row no-gutters class="py-2">
-                  Download the document<v-icon @click="downloadBid" class="mx-2">mdi-package-down</v-icon>
+                  Download the document<v-icon @click="downloadBid" class="mx-2"
+                    >mdi-package-down</v-icon
+                  >
                 </v-row>
                 <v-file-input
                   v-model="bidGuarantee"
@@ -336,7 +399,9 @@
                 ></v-file-input>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 7">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=9">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 9"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="9">
@@ -346,18 +411,21 @@
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
                 <v-row no-gutters class="caption mt-4">
-                  Chairman  – DPC<br/>
-                  University of Colombo School of Computing<br/>
+                  Chairman – DPC<br />
+                  University of Colombo School of Computing<br />
                   No 35 Reid Avenue Colombo 00700.
                 </v-row>
                 <v-row no-gutters class="caption mt-4">
                   Dear Sir
                 </v-row>
                 <v-row no-gutters class="subheading mt-4">
-                  {{this.procurement.description}} [ {{ this.procurement.procurement_id }} ]
+                  {{ this.procurement.description }} [
+                  {{ this.procurement.procurement_id }} ]
                 </v-row>
                 <v-row no-gutters class="caption my-4">
-                  This is to authorize that the under mentioned person, to sign the documents pertaining to the above bid on behalf of your organization.
+                  This is to authorize that the under mentioned person, to sign
+                  the documents pertaining to the above bid on behalf of your
+                  organization.
                 </v-row>
                 <v-row>
                   <v-col>
@@ -395,7 +463,9 @@
                 </v-row>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 8">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="step=10">Continue</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 10"
+                >Continue</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-content step="10">
@@ -413,10 +483,11 @@
                 ></v-file-input>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 9">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="submitBid">Submit</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="submitBid"
+                >Submit</v-btn
+              >
             </v-stepper-content>
-
-            </v-stepper-items>
+          </v-stepper-items>
         </v-stepper>
       </v-col>
     </v-row>
@@ -424,20 +495,23 @@
 </template>
 
 <script>
-import instructions from './Bid_Instructions';
-import datasheet from './Bid_Datasheet';
-import schedule from './Bid_Requirements';
-import quotationForm from './Bid_QuotationForm';
+import instructions from "./Bid_Instructions";
+import datasheet from "./Bid_Datasheet";
+import schedule from "./Bid_Requirements";
+import quotationForm from "./Bid_QuotationForm";
 
-import firebase from 'firebase';
+import firebase from "firebase";
 
 export default {
   // Props Received
-  props: ['procurement'],
+  props: ["procurement"],
 
   // Imported Components
   components: {
-    instructions, datasheet, schedule, quotationForm
+    instructions,
+    datasheet,
+    schedule,
+    quotationForm
   },
 
   filters: {
@@ -473,12 +547,13 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-
     async getBidData() {
       let invRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
-        doc: await invRef.where("InvitationNo", "==", 'UCSC/SP/ADMTC/2019/099').get()
+        doc: await invRef
+          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .get()
           .then(function(querySnapshot) {
             let docArr;
 
@@ -489,7 +564,10 @@ export default {
 
             return docArr;
           }),
-        items: await invRef.doc(doc_id).collection("Items").get()
+        items: await invRef
+          .doc(doc_id)
+          .collection("Items")
+          .get()
           .then(function(querySnapshot) {
             let itemArr = [];
             let iterator = 0;
@@ -497,7 +575,7 @@ export default {
             querySnapshot.forEach(function(doc) {
               itemArr.push(doc.data());
               itemArr[iterator].bidderResponse = [];
-              for(const index in doc.data().Features) {
+              for (const index in doc.data().Features) {
                 itemArr[iterator].bidderResponse.push("No");
               }
               console.log(itemArr[iterator]);
@@ -505,7 +583,7 @@ export default {
             });
 
             return itemArr;
-          }) 
+          })
       });
     },
 
@@ -514,9 +592,9 @@ export default {
       this.originalData = null;
       for (const index in products) {
         this.items.push({
-          prod_id: products[index]['product_id'],
-          description: products[index]['product_name'],
-          qty: products[index]['qty'],
+          prod_id: products[index]["product_id"],
+          description: products[index]["product_name"],
+          qty: products[index]["qty"],
           figures: 0,
           vat: 0,
           make: "-",
@@ -560,56 +638,58 @@ export default {
     },
 
     downloadLetter() {
-      this.$http.get('/api/supplier/price_schedule/get_file')
-        .then(res => {
-          let bytes = new Uint8Array(res.data.data);
-          let blob = new Blob([bytes], { type: 'application/pdf' });
-          let fileURL = window.URL.createObjectURL(blob)
-          let fileLink = document.createElement('a');
-          fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'manufacturer_auth.pdf');
-          document.body.appendChild(fileLink);
-          fileLink.click();
-        })
+      this.$http.get("/api/supplier/price_schedule/get_file").then(res => {
+        let bytes = new Uint8Array(res.data.data);
+        let blob = new Blob([bytes], { type: "application/pdf" });
+        let fileURL = window.URL.createObjectURL(blob);
+        let fileLink = document.createElement("a");
+        fileLink.href = fileURL;
+        fileLink.setAttribute("download", "manufacturer_auth.pdf");
+        document.body.appendChild(fileLink);
+        fileLink.click();
+      });
     },
 
     downloadBid() {
-      this.$http.get('/api/supplier/price_schedule/get_bid_guarantee')
+      this.$http
+        .get("/api/supplier/price_schedule/get_bid_guarantee")
         .then(res => {
           let bytes = new Uint8Array(res.data.data);
-          let blob = new Blob([bytes], { type: 'application/pdf' });
-          let fileURL = window.URL.createObjectURL(blob)
-          let fileLink = document.createElement('a');
+          let blob = new Blob([bytes], { type: "application/pdf" });
+          let fileURL = window.URL.createObjectURL(blob);
+          let fileLink = document.createElement("a");
           fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'bid_guarantee.pdf');
+          fileLink.setAttribute("download", "bid_guarantee.pdf");
           document.body.appendChild(fileLink);
           fileLink.click();
-        })
+        });
     },
 
     submitBid() {
       if (this.$refs.form.validate()) {
-        this.$http.post('/api/supplier/price_schedule/:procurement',
-        {
-          supplier_id: this.procurement.supplier_id,
-          procurement_id: this.procurement.procurement_id,
-          items: this.items,
-          subtotal: this.subTotal,
-          total_with_vat: this.total,
-          vat_no: this.vatNo,
-          authorized: this.authorizedName
-        })
+        this.$http
+          .post("/api/supplier/price_schedule/:procurement", {
+            supplier_id: this.procurement.supplier_id,
+            procurement_id: this.procurement.procurement_id,
+            items: this.items,
+            subtotal: this.subTotal,
+            total_with_vat: this.total,
+            vat_no: this.vatNo,
+            authorized: this.authorizedName
+          })
           .then(res => {
             console.log(res);
             // this.$router.go(-1);
-          })
+          });
       }
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.user = this.$store.getters.user.employee_id
+  },
   beforeMount() {
     this.createTable();
     this.getBidData();
@@ -638,23 +718,23 @@ export default {
 </script>
 
 <style scoped>
-  input[type="number"] {
-    text-align: right;
-  }
+input[type="number"] {
+  text-align: right;
+}
 
-  th {
-    border: 1px solid #000;
-  }
+th {
+  border: 1px solid #000;
+}
 
-  .v-icon {
-    color: #000;
-  }
+.v-icon {
+  color: #000;
+}
 
-  #schedule {
-    font-size: 12px;
-  }
+#schedule {
+  font-size: 12px;
+}
 
-  table .v-text-field {
-    font-size: 12px;
-  }
+table .v-text-field {
+  font-size: 12px;
+}
 </style>

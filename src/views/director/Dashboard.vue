@@ -28,8 +28,8 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col cols="4">   
-                <approvedRequisitions />           
+              <v-col cols="4">
+                <approvedRequisitions />
                 <v-row>
                   <infoCardThisMonth />
                 </v-row>
@@ -37,8 +37,7 @@
             </v-row>
             <v-divider></v-divider>
             <v-row>
-              <v-col cols="12" md="12">
-              </v-col>
+              <v-col cols="12" md="12"> </v-col>
             </v-row>
           </v-container>
         </v-card>
@@ -96,7 +95,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    isMounted: false,
+    isMounted: false
   }),
 
   // Custom Methods and Functions
@@ -119,7 +118,7 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  .scroll {
-    overflow-y: scroll
-  }
+.scroll {
+  overflow-y: scroll;
+}
 </style>

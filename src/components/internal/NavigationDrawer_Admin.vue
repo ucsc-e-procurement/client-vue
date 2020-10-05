@@ -30,6 +30,18 @@
             <v-list-item-title>Suppliers</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item
+          link
+          @click="$router.push('/admin/supplier-registrations').catch(() => {})"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Supplier Registrations</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item
           link
           @click="$router.push('/admin/products').catch(() => {})"

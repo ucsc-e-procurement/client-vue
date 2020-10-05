@@ -6,16 +6,26 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Supplier</h5>
+              <h5 class="headline">Supplier Registrations</h5>
               <v-spacer />
-              <v-btn color="primary" small outlined>Registrations</v-btn>
+              <v-btn color="primary" small outlined>Registered Suppliers</v-btn>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row class="">
-              <v-spacer />
               <v-col cols="6">
+                <v-select
+                  v-model="selectedYear"
+                  :items="years"
+                  label="Registration Year"
+                  outlined
+                  dense
+                  class="pt-5"
+                ></v-select>
+              </v-col>
+              <v-spacer />
+              <v-col cols="3">
                 <v-text-field
                   v-model="search"
                   label="Search"
@@ -26,7 +36,7 @@
                   clearable
                 ></v-text-field>
               </v-col>
-              <v-col v-if="suppliers.length == 0" cols="12">
+              <v-col v-if="registrations.length == 0" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Suppliers Available
                 </v-alert>
@@ -34,13 +44,13 @@
               <v-col v-else cols="12">
                 <v-data-table
                   :headers="headers"
-                  :items="suppliers"
+                  :items="registrations"
                   :search="search"
                   :items-per-page="10"
                   no-data-text="No Users Available"
                   :loading="loaderUsers"
                 >
-                  <template v-slot:item.status="{ item }">
+                  <template v-slot:item.verified="{ item }">
                     <v-chip
                       small
                       outlined
@@ -53,7 +63,7 @@
 
                   <template v-slot:item.actions="{ item }">
                     <v-btn
-                      @click="gotoSupplierProfile(item.supplier_id)"
+                      @click="gotoSupplierRegistration(item.registration_no)"
                       small
                       text
                       color="primary"
@@ -136,6 +146,13 @@ export default {
         divider: false
       },
       {
+        text: "Registration No",
+        value: "registration_no",
+        sortable: true,
+        align: "start",
+        divider: false
+      },
+      {
         text: "Name / Company",
         value: "name",
         sortable: true,
@@ -150,22 +167,22 @@ export default {
         divider: false
       },
       {
-        text: "Category",
-        value: "category",
+        text: "Date of Registration",
+        value: "registration_date",
         sortable: false,
         align: "start",
         divider: false
       },
-      {
-        text: "Contact",
-        value: "contact_number",
-        sortable: false,
-        align: "center",
-        divider: false
-      },
+      // {
+      //   text: "Contact",
+      //   value: "contact_number",
+      //   sortable: false,
+      //   align: "center",
+      //   divider: false
+      // },
       {
         text: "Status",
-        value: "status",
+        value: "verified",
         sortable: false,
         align: "center",
         divider: false
@@ -178,8 +195,11 @@ export default {
         divider: false
       }
     ],
-    suppliers: [],
+    registrations: [],
     search: "",
+
+    selectedYear: "",
+    years: [],
 
     // Snackbar
     snackbar: {
@@ -191,50 +211,66 @@ export default {
 
     // Loaders
     loaderOverlay: false,
-    loaderSuppliers: false
+    loaderRegistrations: false
   }),
 
   // Custom Methods and Functions
   methods: {
-    getSuppliers() {
-      this.loaderSuppliers = true;
+    getRegistrationsByYear() {
+      this.loaderRegistrations = true;
       return new Promise((resolve, reject) => {
         this.$http
-          .get("/api/admin/suppliers")
+          .get(`/api/admin/registrations/year?year=${this.selectedYear}`)
           .then(res => {
-            console.log("Users: ", res.data);
+            console.log("Data: ", res.data);
 
-            this.loaderSuppliers = false;
-            let suppliers = res.data;
+            this.loaderRegistrations = false;
+            let registrations = res.data;
 
             let index = 0;
-            suppliers = suppliers.map(supplier => {
+            registrations = registrations.map(registration => {
               index++;
-
-              return { ...supplier, index, actions: "" };
+              let temp = { ...registration, index, actions: "" };
+              temp.registration_date = temp.registration_date.split("T")[0];
+              return temp;
             });
 
-            resolve(suppliers);
+            resolve(registrations);
           })
           .catch(err => {
-            this.loaderSuppliers = false;
+            this.loaderRegistrations = false;
 
             reject(err);
           });
       });
     },
-    gotoSupplierProfile(supplierId) {
+    gotoSupplierRegistration(registrationId) {
       //   console.log(supplierId, atob(supplierId), btoa(supplierId));
-      this.$router.push(`/admin/supplier/${btoa(supplierId)}`).catch(() => {});
+      this.$router
+        .push(`/admin/supplier-registration/${btoa(registrationId)}`)
+        .catch(() => {});
+    },
+    generateYearList(startYear) {
+      let years = [];
+      const d = new Date();
+      for (let year = startYear; year <= d.getFullYear(); year++) {
+        years.push(year);
+      }
+
+      return { currentYear: d.getFullYear(), yearList: years };
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.getSuppliers().then(supplier => {
-      this.suppliers = supplier;
-      console.log(">>>>>>>>>>>>>>> ", this.suppliers);
+    const yearData = this.generateYearList(2019);
+    this.years = yearData.yearList;
+    this.selectedYear = yearData.currentYear;
+
+    this.getRegistrationsByYear().then(registrations => {
+      this.registrations = registrations;
+      console.log(">>>>>>>>>>>>>>> ", this.registrations);
     });
   },
   beforeMount() {},
