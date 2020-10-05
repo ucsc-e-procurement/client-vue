@@ -6,160 +6,38 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">This Month</h5>
+              <h5 class="headline">THIS YEAR</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
 
             <!-- Info Card Row -->
-            <v-row class="justify-space-between">
-              <v-col cols="3">
-                <v-card height="100" color="deep-purple lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                      Purchase Requisitions
-                      <v-chip
-                        class="ma-2"
-                        color="deep-purple lighten-2"
-                      >
-                        {{this.requisitionCount}}
-                      </v-chip>
-                  </v-card-text>
-                </v-card>
+            <v-row>
+              <infoCardThisYear />
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <recentPurchases />
+                <v-row>
+                  <v-col cols="6">
+                    <ChartLastYearProcurements />
+                  </v-col>
+                  <v-col cols="6">
+                    <ChartLastYearProcurements />
+                  </v-col>
+                </v-row>
               </v-col>
-              <v-col cols="3">
-                <v-card height="100" color="orange lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                    Ongoing Procurements
-                    <v-chip
-                      class="ma-2"
-                      color="orange lighten-2"
-                    >
-                      {{ongoingProcurementCount}}
-                    </v-chip>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100" color="green lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                    Completed Procurements
-                    <v-chip
-                      class="ma-2"
-                      color="green lighten-2"
-                    >
-                      {{completedProcurementCount}}
-                    </v-chip>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100" color="red lighten-3">
-                  <v-card-title></v-card-title>
-                  <v-card-text class="headline font-weight-bold" style="text-align: center;">
-                    Terminated Procurements
-                    <v-chip
-                      class="ma-2"
-                      color="red lighten-2"
-                    >
-                      {{terminatedProcurementCount}}
-                    </v-chip>
-                  </v-card-text>
-                </v-card>
+              <v-col cols="4">
+                <approvedRequisitions />
+                <v-row>
+                  <infoCardThisMonth />
+                </v-row>
               </v-col>
             </v-row>
-            <v-row></v-row>
+            <v-divider></v-divider>
             <v-row>
-              <v-col cols="6">
-                <v-card class="scroll" min-height="450px">
-                  <v-card-title class="text-center justify-center py-6" height="50%" color="blue lighten-2">
-                      <h4 class="font-weight-bold ">Approved Requisitions</h4>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-banner two-line :key="item.requisition_id" v-for="item in this.approvedRequisitions">
-                      <v-avatar
-                        slot="icon"
-                        color="deep-purple accent-4"
-                        size="40"
-                      >
-                        <v-icon
-                          icon="mdi-lock"
-                          color="white"
-                        >
-                          mdi-lock
-                        </v-icon>
-                      </v-avatar>
-                        Description: {{item.description}} <br/>
-                        Department: {{item.department}} <br/>
-                        Date Requested: {{new Date(item.date).getDate() + '/' + new Date(item.date).getMonth() + '/' + new Date(item.date).getFullYear()}}
-                      <template v-slot:actions>
-                        <v-btn text color="deep-purple accent-4" @click="OpenApprovedRequisitionsDialog(item)">View</v-btn>
-                      </template>
-                    </v-banner>
-                  </v-card-text>
-                </v-card>
-                <v-dialog
-                  v-model="approvedRequisitionsDialog"
-                  max-width="800px"
-                >
-                  <v-card>
-                    <v-card-title class="headline">Product Requisition</v-card-title>
-
-                    <v-card-text>
-                      <requisition :requisitionData = 'this.approvedRequisition' v-if="isMounted"/>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="approvedRequisitionsDialog = false"
-                      >
-                        Close
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-col>
-              <v-col cols="6">
-                <v-card
-                  class="mx-auto text-center"
-                  color="blue"
-                  dark
-                >
-                <v-card-text>
-                  <v-sheet color="rgba(0, 0, 0, .12)">
-                    <v-sparkline
-                      :value="values"
-                      color="rgba(255, 255, 255, .7)"
-                      height="100"
-                      padding="24"
-                      stroke-linecap="round"
-                      smooth
-                    >
-                      <template v-slot:label="item">
-                        ${{ item.value }}
-                      </template>
-                    </v-sparkline>
-                  </v-sheet>
-                </v-card-text>
-
-                <v-card-text>
-                  <div class="display-1 font-weight-thin">Sales Last 24h</div>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions class="justify-center">
-                  <v-btn block text>Go to Report</v-btn>
-                </v-card-actions>
-              </v-card>
-              </v-col>
+              <v-col cols="12" md="12"> </v-col>
             </v-row>
           </v-container>
         </v-card>
@@ -173,7 +51,11 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
   import Requisition from "./Requisition"
-
+  import InfoCardThisYear from "./dashboard_components/InfoCardThisYear"
+  import RecentPurchases from "./dashboard_components/RecentPurchases"
+  import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions"
+  import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth"
+  import ChartLastYearProcurements from "./dashboard_components/ChartLastYearProcurements"
 /*
 
 // Validation Library - Vuelidate
@@ -204,84 +86,24 @@ export default {
 
   // Imported Components
   components: {
-    requisition: Requisition,
+    infoCardThisYear: InfoCardThisYear,
+    recentPurchases: RecentPurchases,
+    approvedRequisitions: ApprovedRequisitions,
+    infoCardThisMonth: InfoCardThisMonth,
+    ChartLastYearProcurements: ChartLastYearProcurements
   },
 
   // Data Variables and Values
   data: () => ({
-    // Dummy Data
-    width: 2,
-    radius: 10,
-    padding: 8,
-    lineCap: "round",
-    gradient: gradients[5],
-    value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
-    gradientDirection: "top",
-    gradients,
-    fill: false,
-    type: "trend",
-    autoLineWidth: false,
-    values: [
-        423,
-        446,
-        675,
-        510,
-        590,
-        610,
-        760,
-    ],
-    requisitionCount: '',
-    ongoingProcurementCount: '',
-    completedProcurementCount: '',
-    terminatedProcurementCount: '',
-    approvedRequisitions: [],
-    isMounted: false,
-    approvedRequisitionsDialog: false,
-    approvedRequisition: '',
+    isMounted: false
   }),
 
   // Custom Methods and Functions
-  methods: {
-    getProcurements(){
-      this.$http
-        .get("/api/director/procurements")
-        .then(response => {
-          // console.log(response);
-          this.ongoingProcurementCount = response.data.filter(item => item.status == 'on-going').length;
-          this.completedProcurementCount = response.data.filter(item => item.status == 'completed').length;
-          this.terminatedProcurementCount = response.data.filter(item => item.status == 'terminated').length;
-          this.requisitionCount = response.data.filter(item => new Date(item.date).getMonth() == new Date().getMonth() && new Date(item.date).getFullYear() == new Date().getFullYear()).length;
-          // this.isMounted = true;
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    },
-
-    getApprovedRequisitions(){
-      this.$http
-        .get("/api/director/get_approved_requisitions")
-        .then(response => {
-          // console.log(response)
-          this.approvedRequisitions = response.data;
-        }).catch(err => {
-          console.log(err)
-        })
-    },
-
-    OpenApprovedRequisitionsDialog(item){
-      this.approvedRequisition = item;
-      this.isMounted = true;
-      this.approvedRequisitionsDialog = true;
-    }
-  },
+  methods: {},
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {
-    this.getProcurements();
-    this.getApprovedRequisitions();
-  },
+  created() {},
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
@@ -296,7 +118,7 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  .scroll {
-    overflow-y: scroll
-  }
+.scroll {
+  overflow-y: scroll;
+}
 </style>

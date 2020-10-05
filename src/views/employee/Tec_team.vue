@@ -6,35 +6,31 @@
           <v-container>
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row class="justify-space-between">
-                <v-col cols="12">
-                    <v-card>
-                      <v-card-title class="text-center justify-center py-6">
-                        <h4 class="font-weight-bold ">Participation as TEC team member</h4>
-                      </v-card-title>
+              <v-col cols="12">
+                <v-card>
+                  <v-card-title class="text-center justify-center py-6">
+                    <h4 class="font-weight-bold ">Procurements</h4>
+                  </v-card-title>
 
-                      <v-tabs
-                        v-model="tab"
-                        background-color="transparent"
-                        grow
-                      >
-                        <v-tab
-                          v-for="tab in tabs"
-                          :key="tab"
-                        >
-                          {{ tab }}
-                        </v-tab>
-                      </v-tabs>
-                      <v-divider></v-divider>
-                      <v-tabs-items v-model="tab">
-                        <v-tab-item>
-                            <TecteamOngoing />
-                        </v-tab-item>
-                        <v-tab-item>
-                            <TecteamCompleted />
-                        </v-tab-item>
-                      </v-tabs-items>
-                    </v-card>
-                </v-col>
+                  <v-tabs v-model="tab" background-color="transparent" grow>
+                    <v-tab v-for="tab in tabs" :key="tab">
+                      {{ tab }}
+                    </v-tab>
+                  </v-tabs>
+                  <v-divider></v-divider>
+                  <v-tabs-items v-model="tab">
+                    <v-tab-item>
+                      <TecteamNew />
+                    </v-tab-item>
+                    <v-tab-item>
+                      <TecteamOngoing />
+                    </v-tab-item>
+                    <v-tab-item>
+                      <TecteamCompleted />
+                    </v-tab-item>
+                  </v-tabs-items>
+                </v-card>
+              </v-col>
             </v-row>
           </v-container>
         </v-card>
@@ -48,8 +44,9 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-import TecteamOngoing from "./Tec_team_ongoing"
-import TecteamCompleted from "./Tec_team_completed"
+import TecteamNew from "./Tec_team_new";
+import TecteamOngoing from "./Tec_team_ongoing";
+import TecteamCompleted from "./Tec_team_completed";
 
 /*
 
@@ -71,21 +68,19 @@ export default {
   props: [],
 
   // Imported Components
-  components: { TecteamOngoing, TecteamCompleted },
+  components: { TecteamNew, TecteamOngoing, TecteamCompleted },
 
   // Data Variables and Values
   data: () => ({
-    search: '',
+    search: "",
     tab: null,
-    tabs: [
-      'Ongoing', 'Completed',
-    ],
+    tabs: ["Locked", "Unlocked", "Completed"]
   }),
 
   // Custom Methods and Functions
   methods: {
-    onButtonClick: function (proc) {
-      console.log(proc.tenderNo)
+    onButtonClick: function(proc) {
+      console.log(proc.tenderNo);
     }
   },
   // Life Cycle Hooks

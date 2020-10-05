@@ -9,7 +9,11 @@
       single-line
       hide-details
     ></v-text-field>
-    <v-data-table :headers="headers" :items="procs" :search="search"></v-data-table>
+    <v-data-table
+      :headers="headers"
+      :items="procs"
+      :search="search"
+    ></v-data-table>
   </v-card>
 </template>
 

@@ -16,7 +16,7 @@
     </template>
 
     <v-divider></v-divider>
-    <v-list dense>
+    <v-list dense rounded>
       <v-list-item exact="" link to="/director">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
@@ -33,16 +33,19 @@
           <v-list-item-title>Procurements</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/director/requests">
+      <v-list-item link to="/director/notifications">
         <v-list-item-action>
-          <!-- <v-tab> -->
-          <v-badge color="blue" content="2">
-            <v-icon>mdi-email</v-icon>
+          <v-badge
+            color="blue"
+            :content="
+              this.requisitionRequests.length + tecAppointmentRequests.length
+            "
+          >
+            <v-icon>mdi-bell</v-icon>
           </v-badge>
-          <!-- </v-tab>  -->
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Requests</v-list-item-title>
+          <v-list-item-title>Notifications</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item link to="/statistics">
@@ -53,14 +56,20 @@
           <v-list-item-title>Statistics</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/director/notifications">
+      <v-list-item link to="/director/departments">
         <v-list-item-action>
-          <v-badge color="blue" content="2">
-            <v-icon>mdi-bell</v-icon>
-          </v-badge>
+          <v-icon>mdi-view-grid</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Notifications</v-list-item-title>
+          <v-list-item-title>Departments</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link to="/director/suppliers">
+        <v-list-item-action>
+          <v-icon>mdi-account-multiple</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Suppliers</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -108,7 +117,9 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    //
+    requisitionRequests: [],
+    POApprovalRequests: [],
+    tecAppointmentRequests: []
   }),
 
   // Custom Methods and Functions
@@ -117,12 +128,37 @@ export default {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");
       });
+    },
+    getRequisitionRequests() {
+      this.$http
+        .get("/api/director/get_requisition_requests")
+        .then(response => {
+          // console.log(response)
+          this.requisitionRequests = response.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getTecTeamRequests() {
+      this.$http
+        .get("/api/director/get_tec_appointment_requests")
+        .then(response => {
+          //   console.log(response)
+          this.tecAppointmentRequests = response.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.getRequisitionRequests();
+    this.getTecTeamRequests();
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

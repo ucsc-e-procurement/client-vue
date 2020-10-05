@@ -3,8 +3,13 @@
     <!-- <v-toolbar flat color="primary" class="mt-3">
       <v-toolbar-title>Product Requisitions</v-toolbar-title>
       <v-spacer></v-spacer>
+<<<<<<< HEAD
     </v-toolbar> -->
     <!-- <v-card color="#f2f4f2" class="scroll mt-3"> 
+=======
+    </v-toolbar>
+    <v-card color="#f2f4f2" class="scroll mt-5">
+>>>>>>> d78d80515c66e7c92ae7f9828b03dafa768459ea
       <v-col v-for="result in resultsArray" :key="result" cols="12">
         <v-card color="white" class="mt-3">
           <div class="d-flex justify-space-between">
@@ -14,9 +19,22 @@
               <v-text-field v-text="result.date"></v-text-field>
             </v-col>
             <v-col cols="3" class="mr-6">
+<<<<<<< HEAD
               <v-btn class="mr-3 mt-7" color="primary" x-large width="80%" @click="gotoViewRequisition(result.requisition_id)">View</v-btn>
             </v-col> -->
           <!-- </div>
+=======
+              <v-btn
+                class="mr-3 mt-4"
+                color="primary"
+                x-large
+                width="80%"
+                @click="gotoViewRequisition(result.requisition_id)"
+                >View</v-btn
+              >
+            </v-col>
+          </div>
+>>>>>>> d78d80515c66e7c92ae7f9828b03dafa768459ea
         </v-card>
       </v-col>
     </v-card>
@@ -93,21 +111,23 @@ export default {
   components: {},
 
   // Data Variables and Values
-  data: () => ({ 
-    resultsArray:[]    
+  data: () => ({
+    resultsArray: []
   }),
 
   // Custom Methods and Functions
-  methods: {   
-    gotoViewRequisition(id){
-      console.log("test",id)
+  methods: {
+    gotoViewRequisition(id) {
+      console.log("test", id);
 
-      this.$router
-      .push({ query: {id: id}, path: `view_product_requisition/${id.replace(/[/]/g, '')}`})
+      this.$router.push({
+        query: { id: id },
+        path: `view_product_requisition/${id.replace(/[/]/g, "")}`
+      });
     },
 
     // get product requisition list
-    getList(){
+    getList() {
       this.$http
         .get(`/api/deputy_bursar/product_requisition`)
         .then(response => {
@@ -117,13 +137,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.getList()
+    this.getList();
   },
   beforeMount() {},
   mounted() {},

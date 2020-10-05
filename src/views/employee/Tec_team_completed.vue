@@ -1,27 +1,38 @@
 <template>
   <v-container>
-        <v-card flat>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    label="Search"
-                    single-line
-                    hide-details
-                ></v-text-field>
-            </v-card-title>
-            <v-data-table
-            :headers="completedHeaders"
-            :items="completedProcurements"
-            :search="search"
-            >
-                <template v-slot:item.controls="props">
-                <v-btn class="mx-2" small color="primary" @click="openDialog(props.item)">
-                    VIEW
+    <v-card flat>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="completedHeaders"
+        :items="completedProcurements"
+        :search="search"
+      >
+        <template v-slot:item.controls="props">
+          <!-- <v-btn class="mx-2" small color="primary" @click="openRequisition(props.item)">
+                    Requisition
                 </v-btn>
-                </template>
-            </v-data-table>
-        </v-card>
-        <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
+                <v-btn :disabled="!props.item.bids" class="mx-2" small :color="props.item.btn" @click="openTecReport(props.item)">
+                    TEC-Report
+                </v-btn> -->
+          <v-btn
+            class="mx-2"
+            small
+            color="primary"
+            @click="openProcurement(props.item)"
+          >
+            View
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <!-- <v-dialog  v-if="dialog" :procurement="procurement" v-model="dialog" width="600px">
             <v-card>
                 
                 <v-card-title>
@@ -70,16 +81,56 @@
                     </v-simple-table>
                     <br :key="product[0].product_name"/>
                 </template>
-                <!-- <p class="text--primary text-center">
-                    Total Amount(LKR): {{completedProcurements[procurement].total_with_vat}}
-                </p> -->
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-3" text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
+    <v-dialog
+      v-model="viewRequisition"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="viewRequisition = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Requisition</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <Requisition v-if="procurement" v-bind:requisition="requisition" />
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="tecReport"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <!-- <v-toolbar dark color="primary">
+                <v-btn icon dark @click="tecReport = false">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-toolbar-title>TEC Report</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                    <v-btn dark text @click="tecReport = false">Save</v-btn>
+                </v-toolbar-items>
+                </v-toolbar> -->
+        <TecReport
+          v-if="procurement"
+          v-bind:procurement="procurement"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:closeTecReport="closeTecReport"
+        />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -87,6 +138,9 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+
+import TecReport from "./Tec_Report";
+import Requisition from "./Requisition";
 
 /*
 
@@ -108,77 +162,136 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: { TecReport, Requisition },
 
   // Data Variables and Values
   data: () => ({
     //
     tab: null,
-    dialog: false,
+    viewRequisition: false,
+    tecReport: false,
     procurement: null,
-    search: '',
+    requisition: null,
+    tec_team: null,
+    search: "",
     completedHeaders: [
-        { text: 'Procurement ID', align: 'start', filterable: true, value: 'procurement_id'},
-        { text: 'Category', value: 'category' },
-        { text: 'Date Initiated', value: 'date' },
-        { text: 'Date Completed', value: 'completed_date' },
-        { text: "Actions", value: "controls", sortable: false }
+      {
+        text: "Procurement ID",
+        align: "start",
+        filterable: true,
+        value: "procurement_id"
+      },
+      { text: "Category", value: "category" },
+      { text: "Date Initiated", value: "date" },
+      { text: "Date Completed", value: "completed_date" },
+      { text: "Actions", value: "controls", sortable: false }
     ],
-    completedProcurements: [
-        {
-        tenderNo: 'UCSC/DIM/G/ENG/2020/0001',
-        category: 'Janitorial Items/ Essential Items',
-        status: 'Completed',
-        init_date: '20-01-2020',
-        comp_date: '30-01-2020',
-        supplier: 'John Keells Holdings',
-        actions: '1%',
-        },
-        {
-        tenderNo: 'UCSC/DIM/G/ENG/2020/0002',
-        category: 'Supply of Refreshment and Foods',
-        status: 'Completed',
-        init_date: '02-04-2020',
-        comp_date: '18-04-2020',
-        supplier: 'SLT',
-        actions: '1%',
-        },
-    ],
+    completedProcurements: []
   }),
 
   // Custom Methods and Functions
   methods: {
-    openDialog: function (item) {
-      this.procurement = item
-      this.dialog = true
-      console.log(item)
+    openProcurement(item) {
+      this.$router.push({
+        path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
+        query: {
+          procurement_id: item.procurement_id,
+          tec_team_id: item.tec_team_id,
+          requisition_id: item.requisition_id,
+          type: item.bid_type,
+          unlocked: true
+        }
+      });
     },
 
+    // openRequisition: function (item) {
+    //   this.procurement = item
+    //   this.fetchRequisition(this.procurement.requisition_id)
+    //   this.viewRequisition = true
+    //   console.log(item)
+    // },
+
+    // openTecReport: function (item) {
+    //   this.procurement = item
+    //   this.fetchRequisition(this.procurement.requisition_id)
+    //   this.fetchTecTeam(this.procurement.tec_team_id)
+    //   this.tecReport = true
+    //   console.log(item)
+    // },
+
+    // closeTecReport: function () {
+    //   this.tecReport = false
+    // },
+
     fetchCompletedProcurements(employee_id) {
-      this.$http.get('/api/tec_team/get_completed_procurements', {
-        params: {
-          id: employee_id
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.completedProcurements = response.data
-        this.completedProcurements.forEach(element => {
-            element.bids = JSON.parse(element.bids)
+      this.$http
+        .get("/api/tec_team/get_completed_procurements", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.completedProcurements = response.data;
+          this.completedProcurements.forEach(element => {
+            element.bids = JSON.parse(element.bids);
+            element.supplier_bids = element.bids.reduce((r, a) => {
+              r[a.supplier_id] = [...(r[a.supplier_id] || []), a];
+              return r;
+            }, {});
             element.bids = element.bids.reduce((r, a) => {
-                console.log("a", a);
-                console.log('r', r);
-                r[a.product_id] = [...r[a.product_id] || [], a];
-                return r;
-            }, {})
+              r[a.product_id] = [...(r[a.product_id] || []), a];
+              return r;
+            }, {});
+            if (element.step == 7) {
+              element.btn = "green darken-1";
+            } else {
+              element.btn = "primary";
+            }
+          });
+          console.log(this.completedProcurements);
+          console.log(Object.values(this.completedProcurements[0].bids));
+        })
+        .catch(error => {
+          console.log(error);
         });
-        console.log(this.completedProcurements)
-        console.log(Object.values(this.completedProcurements[0].bids))
-      })
-      .catch(error => {
-        console.log(error);
-      });
     }
+
+    // fetchRequisition(requisition_id) {
+    //   this.$http.get('/api/tec_team/get_requisition', {
+    //     params: {
+    //       id: requisition_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log('requisition', response.data);
+    //     this.requisition = response.data[0]
+    //     this.requisition.products = JSON.parse(this.requisition.products)
+    //     console.log(this.requisition)
+    //     //console.log(Object.values(this.ongoingProcurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
+
+    // fetchTecTeam(tec_team_id) {
+    //   this.$http.get('/api/tec_team/get_tec_team', {
+    //     params: {
+    //       id: tec_team_id
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     this.tec_team = response.data[0]
+    //     this.tec_team = JSON.parse(this.tec_team.team)
+    //     console.log(this.tec_team)
+    //     //console.log(Object.values(this.ongoingProcurements[0].bids))
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // },
   },
 
   // Life Cycle Hooks
@@ -186,8 +299,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-      this.fetchCompletedProcurements('emp00005')
-      //this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
+    //   this.fetchCompletedProcurements('emp00005')
+      this.fetchCompletedProcurements(this.$store.getters.user.employee_id)
   },
   beforeUpdate() {},
   updated() {},

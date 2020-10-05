@@ -3,7 +3,7 @@
     <!-- Admin Navigation Items -->
     <v-list shaped v-if="$store.getters.userRole == 'AB'" dense>
       <v-list-item-group v-model="listNaviagation" color="primary">
-        <v-list-item link @click="$router.push('/admin')">
+        <v-list-item link @click="$router.push('/admin').catch(() => {})">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -11,7 +11,7 @@
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push('/admin/users')">
+        <v-list-item link @click="$router.push('/admin/users').catch(() => {})">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -19,7 +19,10 @@
             <v-list-item-title>Users</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item
+          link
+          @click="$router.push('/admin/suppliers').catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -27,7 +30,22 @@
             <v-list-item-title>Suppliers</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push('/admin/products')">
+
+        <v-list-item
+          link
+          @click="$router.push('/admin/supplier-registrations').catch(() => {})"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Supplier Registrations</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          link
+          @click="$router.push('/admin/products').catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -35,7 +53,10 @@
             <v-list-item-title>Products</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push('/admin/requisitions')">
+        <v-list-item
+          link
+          @click="$router.push('/admin/requisitions').catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -53,55 +74,18 @@
         </v-list-item>
 
         <!-- <v-divider class="my-0" /> -->
-        <v-list-item link @click="$router.push('/admin/ongoing_procurements')">
+        <v-list-item
+          link
+          @click="$router.push('/admin/ongoing_procurements').catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-timeline-clock-outline</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Ongoing</v-list-item-title>
+            <v-list-item-title>Procurements</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!-- <v-divider class="my-0" /> -->
-        <v-list-item
-          link
-          @click="$router.push('/admin/terminated_procurements')"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-alert-octagon-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Terminated</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <!-- <v-divider class="my-0" /> -->
-        <v-list-item
-          link
-          @click="$router.push('/admin/completed_procurements')"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-check-circle-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Completed</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <!-- <v-divider class="my-0" /> -->
-        <v-list-item link @click="$router.push('/admin/pending_approvals')">
-          <v-list-item-action>
-            <v-icon>mdi-file-clock-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Pending Approvals</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Purchase Orders</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list-item-group>
     </v-list>
     <v-divider />

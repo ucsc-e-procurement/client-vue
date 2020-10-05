@@ -44,7 +44,7 @@
                   :rules="rules.password"
                   :type="show ? 'text' : 'password'"
                   name="input-10-2"
-                  label="Password"
+                  label="New Password"
                   hint="At least 8 characters"
                   @click:append="show = !show"
                   required
@@ -55,7 +55,9 @@
                 :to="{ name: 'login' }"
                 >Login here</router-link
               >
-              <v-btn color="primary float-right" @click="proceedToForm2">Continue</v-btn>
+              <v-btn color="primary float-right" @click="proceedToForm2"
+                >Continue</v-btn
+              >
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-form ref="form2" v-model="valid">
@@ -82,6 +84,7 @@
                       label="Contact Number"
                       v-model="formdata.contact"
                       :rules="rules.contact"
+                      prefix="( +94 )"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -141,7 +144,9 @@
                   </v-col>
                 </v-row>
               </v-form>
-              <v-btn color="primary float-right" @click="proceedToForm3">Continue</v-btn>
+              <v-btn color="primary float-right" @click="proceedToForm3"
+                >Continue</v-btn
+              >
               <v-btn text @click.native="step = 1">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
@@ -193,7 +198,9 @@
                   label="Experience in the industry ( No. of Years )"
                 ></v-select>
               </v-form>
-              <v-btn color="primary float-right" @click="proceedToForm4">Continue</v-btn>
+              <v-btn color="primary float-right" @click="proceedToForm4"
+                >Continue</v-btn
+              >
               <v-btn text @click.native="step = 2">Back</v-btn>
             </v-stepper-content>
             <v-stepper-content step="4">
@@ -262,9 +269,7 @@
               <v-btn color="primary float-right" @click="registerUser"
                 >Submit</v-btn
               >
-              <v-btn text @click.native="step = 3" v-if="user_state == 'new'"
-                >Back</v-btn
-              >
+              <v-btn text @click.native="step = 3">Back</v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -353,7 +358,7 @@ export default {
       ],
       contact: [
         v => !!v || "Contact number is required",
-        v => v.length >= 10 || "Enter valid contact number"
+        v => v.length >= 9 || "Enter valid contact number"
       ],
       password: [
         v => !!v || "Password is required",
@@ -373,7 +378,7 @@ export default {
     proceedToForm2() {
       if (this.$refs.form1.validate()) {
         this.$http
-          .get("api/supplier/registration", {
+          .get("api/supplier/registration/check_supplier", {
             params: { email: this.formdata.email }
           })
           .then(res => {
@@ -387,10 +392,32 @@ export default {
                 );
               } else {
                 this.user_state = "renew";
-                alert(
-                  "Happy to see you renewing your registration. Only fill out the payment information."
-                );
-                this.step = 4;
+                this.$http
+                  .get("api/supplier/registration/get_current_info", {
+                    params: { email: this.formdata.email }
+                  })
+                  .then(res => {
+                    this.formdata.legal = res.data[0].legal;
+                    this.formdata.business_address = res.data[0].address;
+                    this.formdata.contact_name = res.data[0].name;
+                    this.formdata.contact = res.data[0].contact_number;
+                    this.formdata.fax = res.data[0].fax;
+                    this.formdata.official_email = res.data[0].email;
+                    this.formdata.web = res.data[0].web;
+                    this.formdata.business_reg_no = res.data[0].business_reg;
+                    this.formdata.vat_reg_no = res.data[0].vat_reg_no;
+                    this.formdata.ictad_reg_no = res.data[0].ictad_reg_no;
+                    this.formdata.bank = res.data[0].bank;
+                    this.formdata.branch = res.data[0].branch;
+                    this.formdata.business_nature = res.data[0].business_nature;
+                    this.formdata.business_type = res.data[0].business_type;
+                    this.formdata.credit_offered = res.data[0].credit_offered;
+                    this.formdata.maximum_credit = res.data[0].maximum_credit;
+                    this.formdata.credit_period = res.data[0].credit_period;
+                    this.formdata.experience = res.data[0].experience;
+                    this.formdata.cat_selection = res.data[0].category;
+                  });
+                this.step = 2;
               }
             } else this.step = 2;
           });
@@ -438,11 +465,11 @@ export default {
         form.append("payment_type", this.formdata.payment_type);
         form.append("user_state", this.user_state);
         this.$http.post("/api/supplier/registration", form).then(res => {
-          if(res.data == "Successful") {
+          if (res.data == "Successful") {
             alert(
-            "You have successfully registered to our system. Await verification of your request."
+              "You have successfully registered to our system. Await verification of your request."
             );
-            $router.push('/login');
+            this.$router.push("/login");
           } else console.log(res);
         });
       }
@@ -466,15 +493,15 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  .bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: url("../../assets/ucsc.jpg") no-repeat center center;
-    background-size: cover;
+.bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../../assets/ucsc.jpg") no-repeat center center;
+  background-size: cover;
 
-    transform: scale(1);
-  }
+  transform: scale(1);
+}
 </style>

@@ -123,12 +123,17 @@ export default new Vuex.Store({
    * sensitive information.
    */
   getters: {
-    isLoggedIn: state => !!state.token,
+    // isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    userRole: state => state.user.user_role,
-    isInternal: state => state.internal,
+    // userRole: state => state.user.user_role,
+    // isInternal: state => state.internal,
     userId: state => state.user.user_id,
     employeeId: state => state.user.employee_id,
-    user: state => state.user
+    user: state => state.user,
+
+    // Development Purposes Only - ByPass Login
+    isLoggedIn: () => true,
+    isInternal: () => true,
+    userRole: () => "AB"
   }
 });

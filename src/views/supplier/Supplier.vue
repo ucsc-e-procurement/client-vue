@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row no-gutters>
       <v-col cols="12">
-        <nav_drawer_supplier :drawer="navDrawerExternal"/>
+        <nav_drawer_supplier :drawer="navDrawerExternal" />
         <router-view />
       </v-col>
     </v-row>
@@ -34,12 +34,12 @@ export default {
   props: [],
 
   // Imported Components
-  components: { nav_drawer_supplier: NavigationDrawer_External},
+  components: { nav_drawer_supplier: NavigationDrawer_External },
 
   // Data Variables and Values
   data: () => ({
     //
-    navDrawerExternal: true,
+    navDrawerExternal: true
   }),
 
   // Custom Methods and Functions
