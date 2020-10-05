@@ -111,7 +111,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+
           <!-- <v-btn color="green darken-3" text @click="dialog = false">View Purchase Order</v-btn> -->
+
           <v-btn color="blue darken-3" text @click="dialog = false"
             >Close</v-btn
           >

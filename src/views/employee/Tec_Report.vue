@@ -1,6 +1,8 @@
 <template>
+
   <!-- <v-card v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500> -->
   <!-- <v-app-bar dark color="primary" fixed>
+
           <v-btn icon dark @click="closeTecReport">
               <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -10,6 +12,7 @@
               <v-btn dark text @click="save">Save</v-btn>
           </v-toolbar-items>
           </v-app-bar> -->
+
   <v-container
     v-if="this.requisition && this.procurement && this.bid_data"
     class="mx-auto"
@@ -161,15 +164,18 @@
                     <div class="text-h6">
                       Item {{ key + 1 }} - {{ product.product_name }}
                     </div>
+
                     <v-simple-table>
                       <template v-slot:default>
                         <thead>
                           <tr>
+
                             <th class="text-h6 text-left" width="300px">
                               Supplier
                             </th>
                             <th class="text-h6 text-left" width="250px">
                               Quantity
+
                             </th>
                             <th class="text-h6 text-left" width="250px">
                               Unit Price
@@ -178,17 +184,20 @@
                         </thead>
                         <tbody>
                           <tr
+
                             v-for="bid in product.bids"
                             :key="bid.supplier_id"
                           >
                             <td>{{ bid.supplier_name }}</td>
                             <td>{{ bid.qty }}</td>
                             <td>{{ bid.unit_price }}</td>
+
                           </tr>
                         </tbody>
                       </template>
                     </v-simple-table>
                   </v-card>
+
                   <br />
                 </div>
               </template>
@@ -433,6 +442,7 @@
     </v-form>
   </v-container>
   <!-- </v-card> -->
+
 </template>
 
 <script>
@@ -440,7 +450,9 @@ export default {
   // Form Validations
   // validations: {},
   // Props Received
+
   name: "Tec_Report_Itemwise",
+
 
   props: [
     "procurement",
@@ -459,10 +471,12 @@ export default {
     //procurement: this.procurement,
     //requisition: this.requisition,
     //tec_team: this.tec_team,
+
     // user: "emp00005",
     user: null,
     items: [{product_name:'prod 1', qty: '5'}],
     team: [{name: 'name1', designation: 'designation 1', capasity: 'chairman'}, {name: 'name2', designation: 'designation 2', capasity: 'member'}],
+
     rejected: [],
     recommended: [],
     reason_for_rejecting: [],
@@ -472,12 +486,15 @@ export default {
     tecTeamRemarks: [],
     row: [],
     tec_recommendation: [],
+
     rules: { required: value => !!value || "Required." },
     stepperStep: 1
+
   }),
 
   // Custom Methods and Functions
   methods: {
+
     nextStep() {
       var valid = this.$refs.form1.validate();
       if (this.stepperStep == 4) {
@@ -492,6 +509,7 @@ export default {
     prevStep() {
       this.stepperStep = this.stepperStep - 1;
     },
+
 
     getReasonForRejecting(val, key, key1) {
       var itemwiseReject = [];
@@ -574,6 +592,7 @@ export default {
               };
             }
           });
+
           this.tec_team.forEach((item, key) => {
             if (!this.tec_recommendation[key].decision) {
               complete = false;
@@ -585,11 +604,14 @@ export default {
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               procurementId: this.procurement.procurement_id,
               complete: complete
+
             })
             .then(response => {
               console.log(response);
               this.people = response.data;
+
               this.$router.go();
+
             })
             .catch(err => {
               console.log(err);
@@ -610,14 +632,18 @@ export default {
             .then(response => {
               console.log(response);
               this.people = response.data;
+
               this.$router.go();
+
             })
             .catch(err => {
               console.log(err);
             });
         }
+
         // this.closeTecReport()
         // this.$router.go()
+
       }
       console.log(
         "Save",

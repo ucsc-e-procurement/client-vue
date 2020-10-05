@@ -1,6 +1,8 @@
 <template>
+
   <!-- <v-card v-if="this.requisition && this.procurement && this.bid_data" class="mx-auto" max-width=1500> -->
   <!-- <v-app-bar dark color="primary" fixed>
+
           <v-btn icon dark @click="closeTecReport">
               <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -10,6 +12,7 @@
               <v-btn dark text @click="save">Save</v-btn>
           </v-toolbar-items>
           </v-app-bar> -->
+
   <v-container
     v-if="this.requisition && this.procurement && this.bid_data"
     class="mx-auto"
@@ -81,11 +84,13 @@
           </v-row>
           <v-row class="justify-center">
             <v-col class="justify-center">
+
               <v-card>
                 <v-simple-table>
                   <template v-slot:default>
                     <thead>
                       <tr>
+
                         <th class="text-h6 text-left" width="300px">Item</th>
                         <th class="text-h6 text-left" width="250px">
                           Quantity
@@ -126,13 +131,16 @@
                         <th class="text-h6 text-left" width="250px">Name</th>
                         <th class="text-h6 text-left" width="250px">
                           Capacity
+
                         </th>
                       </tr>
                     </thead>
                     <tbody>
+
                       <tr v-for="item in tec_team" :key="item.name">
                         <td>{{ item.employee_name }}</td>
                         <td>{{ item.capacity }}</td>
+
                       </tr>
                     </tbody>
                   </template>
@@ -140,6 +148,7 @@
               </v-card>
             </v-col>
           </v-row>
+
           <v-divider class="mt-1"></v-divider>
           <br />
           <v-row no-gutters>
@@ -425,6 +434,7 @@
         </v-form>   
         </v-container>
     <!-- </v-card> -->
+
 </template>
 
 <script>
@@ -432,7 +442,9 @@ export default {
   // Form Validations
   // validations: {},
   // Props Received
+
   name: "Tec_Report_Packaged",
+
 
   props: [
     "procurement",
@@ -462,8 +474,10 @@ export default {
     tecTeamRemarks: [],
     row: [],
     tec_recommendation: [],
+
     rules: { required: value => !!value || "Required." },
     stepperStep: 1
+
   }),
 
   // Custom Methods and Functions
@@ -543,6 +557,7 @@ export default {
               };
             }
           });
+
           this.tec_team.forEach((item, key) => {
             if (!this.tec_recommendation[key].decision) {
               complete = false;
@@ -554,11 +569,14 @@ export default {
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               procurementId: this.procurement.procurement_id,
               complete: complete
+
             })
             .then(response => {
               console.log(response);
               this.people = response.data;
+
               this.$router.go();
+
             })
             .catch(err => {
               console.log(err);
@@ -579,14 +597,18 @@ export default {
             .then(response => {
               console.log(response);
               this.people = response.data;
+
               this.$router.go();
+
             })
             .catch(err => {
               console.log(err);
             });
         }
+
         // this.closeTecReport()
         // this.$router.go()
+
       }
       console.log(
         "Save",

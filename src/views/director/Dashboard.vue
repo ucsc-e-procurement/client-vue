@@ -50,12 +50,14 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+
   import Requisition from "./Requisition"
   import InfoCardThisYear from "./dashboard_components/InfoCardThisYear"
   import RecentPurchases from "./dashboard_components/RecentPurchases"
   import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions"
   import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth"
   import ChartLastYearProcurements from "./dashboard_components/ChartLastYearProcurements"
+
 /*
 
 // Validation Library - Vuelidate
@@ -89,8 +91,10 @@ export default {
     infoCardThisYear: InfoCardThisYear,
     recentPurchases: RecentPurchases,
     approvedRequisitions: ApprovedRequisitions,
+
     infoCardThisMonth: InfoCardThisMonth,
     ChartLastYearProcurements: ChartLastYearProcurements
+
   },
 
   // Data Variables and Values

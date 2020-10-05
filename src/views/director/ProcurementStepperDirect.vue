@@ -31,11 +31,13 @@
                   </v-stepper-content>
 
                   <v-stepper-step
+
                     :complete="procurementState > 2"
                     step="2"
                     :editable="procurementState > 2 ? true : false"
                     :edit-icon="procurementState > 2 ? '$complete' : '$edit'"
                     :complete-icon="procurementState > 2 ? '$edit' : '$edit'"
+
                     >Procurement Initialization</v-stepper-step
                   >
                   <v-stepper-content step="2">
@@ -73,6 +75,7 @@
                         </v-stepper-content>
                     </v-stepper>
                 </v-col>
+
             </v-row>
           </v-container>
         </v-card>
@@ -85,11 +88,13 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+
     import Requisition from "./Requisition";
     import ProcurementMethod from './ProcurementMethod';
     import Rfq from "./Rfq";
     import QuotationEvaluationDirect from "./QuotationEvaluationDirect";
     import DirectMethodRecommendation from "./DirectMethodRecommendation";
+
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -102,6 +107,7 @@ export default {
       RFQ: Rfq,
       QuotationEvaluationDirect: QuotationEvaluationDirect,
       DirectMethodRecommendation: DirectMethodRecommendation
+
   },
 
   // Data Variables and Values
@@ -131,9 +137,11 @@ export default {
           this.procurementState = response.data[0].step;
           this.stepperValue = 12;
           this.isMounted = true;
+          
           // if(response.data[0].step == 3){
           //   this.stepperValue = response.data[0].step;
           // }
+
         })
         .catch(err => {
           console.log(err);

@@ -51,8 +51,11 @@ import Employee_Tec_team_procurements from "../views/employee/Tec_team.vue";
 // import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 
 import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
+
 import Employee_Procurement from "../views/employee/Tec_team_procurment.vue";
 import Employee_Tec_teams from "../views/employee/Tec_team_teams.vue";
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
+
 
 // Director
 import Director from "../views/director/Director.vue";
