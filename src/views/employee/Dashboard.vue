@@ -53,7 +53,7 @@
                       color="blue darken-4"
                       size="125"
                     >
-                      <v-icon icon="mdi-lock" color="white">
+                      <v-icon icon="mdi-lock" color="white" size="50">
                         mdi-lock
                       </v-icon>
                     </v-avatar>
@@ -82,7 +82,7 @@
                       color="yellow darken-3"
                       size="125"
                     >
-                      <v-icon icon="mdi-lock-open-variant" color="white">
+                      <v-icon icon="mdi-lock-open-variant" color="white" size="50">
                         mdi-lock-open-variant
                       </v-icon>
                     </v-avatar>
@@ -111,7 +111,7 @@
                       color="green lighten-1"
                       size="125"
                     >
-                      <v-icon icon="mdi-book-check" color="white">
+                      <v-icon icon="mdi-book-check" color="white" size="50">
                         mdi-book-check
                       </v-icon>
                     </v-avatar>
@@ -140,7 +140,7 @@
                       color="red lighten-1"
                       size="125"
                     >
-                      <v-icon icon="mdi-account-group" color="white">
+                      <v-icon icon="mdi-account-group" color="white" size="50">
                         mdi-account-group
                       </v-icon>
                     </v-avatar>
@@ -293,7 +293,7 @@ export default {
   methods: {
     openProcurement(item) {
       this.$router.push({
-        path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
+        path: `employee/tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
         query: {
           procurement_id: item.procurement_id,
           tec_team_id: item.tec_team_id,
