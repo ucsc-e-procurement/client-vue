@@ -85,10 +85,15 @@
                     >Tec Specification</v-stepper-step
                   >
                   <v-stepper-content step="4">
-                    <RFQ
-                      :rfqData="this.rfqData"
-                      v-if="rfqMounted && procurementState > 4"
-                    />
+                    <v-card
+                      color="grey lighten-1"
+                      class="mb-12"
+                      height="200px"
+                    ></v-card>
+                    <v-btn color="primary" @click="stepperValue = 1"
+                      >Continue</v-btn
+                    >
+                    <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
                   <v-stepper-step
@@ -102,16 +107,10 @@
                     >Request for Quotation</v-stepper-step
                   >
                   <v-stepper-content step="5">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
-                    <v-btn color="primary" @click="stepperValue = 1"
-                      >Continue</v-btn
-                    >
-                    <v-btn text>Cancel</v-btn>
-
+                    <RFQ
+                      :rfqData="this.rfqData"
+                      v-if="rfqMounted && procurementState > 4"
+                    />
                   </v-stepper-content>
 
                   <v-stepper-step

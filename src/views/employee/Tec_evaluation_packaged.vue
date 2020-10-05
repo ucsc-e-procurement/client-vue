@@ -115,10 +115,12 @@
           <v-divider class="mt-1"></v-divider>
           <br />
           <v-row no-gutters>
+            <v-spacer></v-spacer>
             <v-btn color="primary" @click="nextStep" rounded>
               Next
             </v-btn>
           </v-row>
+          <br/>
         </v-stepper-content>
 
         <v-stepper-content step="2">
@@ -156,6 +158,7 @@
               Next
             </v-btn>
           </v-row>
+          <br/>
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -214,6 +217,7 @@
               Next
             </v-btn>
           </v-row>
+          <br/>
         </v-stepper-content>
 
         <v-stepper-content step="4">
@@ -290,6 +294,7 @@
                     Next
                   </v-btn>
                 </v-row>
+                <br/>
               </v-stepper-content>
 
               <v-stepper-content step="5">
@@ -445,6 +450,7 @@
                     Next
                   </v-btn>
                 </v-row>
+                <br/>
               </v-stepper-content>
 
               <v-stepper-content step="6">
@@ -510,6 +516,7 @@
                       Back
                     </v-btn>
                   </v-row>
+                  <br/>
               </v-stepper-content>
             </v-stepper>
         </v-form>   
