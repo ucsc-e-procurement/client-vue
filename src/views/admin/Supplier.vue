@@ -18,6 +18,40 @@
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
+            <v-row
+              no-gutters
+              class="pt-5"
+              v-show="registrationStatus !== 'VERIFIED'"
+            >
+              <v-col cols="12">
+                <v-alert
+                  v-if="registrationStatus === 'NOT_REGISTERED'"
+                  type="error"
+                  outlined
+                  border="left"
+                  >{{ supplier.name }} is <strong>NOT</strong> Registered for
+                  this Year.</v-alert
+                >
+                <v-alert
+                  v-else-if="registrationStatus === 'DENIED'"
+                  type="error"
+                  outlined
+                  border="left"
+                  >{{ supplier.name }} is Denied. Due to Failure to fulfil
+                  Prerequisites</v-alert
+                >
+
+                <v-alert
+                  v-else-if="
+                    registrationStatus === 'REGISTERED_BUT_NOT_VERIFIED'
+                  "
+                  type="info"
+                  outlined
+                  border="left"
+                  >Pending Verification</v-alert
+                >
+              </v-col>
+            </v-row>
             <v-row no-gutters>
               <v-col cols="12">
                 <v-card flat outlined class="mt-5">
@@ -288,7 +322,10 @@ export default {
       }
     ],
     bids: [],
-    searchBid: ""
+    searchBid: "",
+
+    isRegistered: false,
+    registrationStatus: ""
   }),
 
   // Custom Methods and Functions
@@ -333,7 +370,7 @@ export default {
     },
     gotoBid(bidId) {
       this.$router.push("/admin/bid/" + btoa(bidId)).catch(() => {});
-    }
+    },
     // ---------------------------------------------
     //           Tab 03
     // ---------------------------------------------
@@ -341,11 +378,29 @@ export default {
     // ---------------------------------------------
     //           Tab 04
     // ---------------------------------------------
+
+    // ---------------------------------------------
+    getRegistrationStatus() {
+      this.$http
+        .get(
+          `/api/admin/supplier/registration-status?supplierId=${atob(
+            this.encodedSupplierId
+          )}`
+        )
+        .then(res => {
+          console.log(res.data);
+          this.registrationStatus = res.data.status;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
+    this.getRegistrationStatus();
     this.getSupplierById(atob(this.encodedSupplierId))
       .then(supplier => {
         console.log(supplier);
