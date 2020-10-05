@@ -70,7 +70,7 @@
             class="ml-5"
             width="30%"
             x-large
-            @click.once="dialog2 = true"
+            @click="dialog2 = true"
             :disabled="submitted"
             >Deny</v-btn
           >
@@ -96,8 +96,8 @@
           </v-card>
         </v-dialog>
         <v-alert type="success" v-model="alert1" class="text-md-center">
-          Thank You! Your response has been submitted successfully.</v-alert
-        >
+          Thank You! Your response has been submitted successfully.
+        </v-alert>
         <v-dialog v-model="dialog2" width="500">
           <v-card>
             <v-card-title
@@ -117,7 +117,7 @@
                 :disabled="isDisabled"
                 >Submit
               </v-btn>
-              <v-btn color="secondary" @click="dialog2 = false">Cancel</v-btn>
+              <v-btn color="secondary" @click="dialog2 = false, remarks= ''">Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

@@ -13,9 +13,10 @@ import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue"
 // import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
-import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
 import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
+import RFQ from "../views/admin/RFQ.vue";
+// import Add_Signature from "../views/admin/Add_Signature.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
 import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 import Admin_Add_User from "../views/admin/Add_User.vue";
@@ -80,6 +81,7 @@ import Director_Department_Details from "../views/director/DepartmentDetails.vue
 // Login
 import Login from "../views/login/Login.vue";
 import Home from "../views/home/Home.vue";
+import HomePage from "../views/home/HomePage.vue";
 
 Vue.use(VueRouter);
 
@@ -88,6 +90,11 @@ const routes = [
     path: "",
     name: "home",
     component: Home
+  },
+  {
+    path: "/home_page",
+    name: "homePage",
+    component: HomePage
   },
   {
     path: "/login",
@@ -168,12 +175,6 @@ const routes = [
         props: true
       },
       {
-        path: "purchase_order",
-        name: "generate purchase order",
-        component: Admin_Purchase_Order,
-        props: true
-      },
-      {
         path: "requisitions",
         name: "view all products requisitions",
         component: Admin_Requisitions,
@@ -186,9 +187,14 @@ const routes = [
         props: true
       },
       {
-        path: "signature/add",
-        component: Add_Signature
+        path: "rfq",
+        name: "RFQ",
+        component: RFQ,
       },
+      // {
+      //   path: "signature/add",
+      //   component: Add_Signature
+      // },
       {
         path: "add_user",
         component: Admin_Add_User
@@ -384,10 +390,15 @@ const routes = [
     name: "deputy_bursar",
     component: Deputy_Bursar,
     children: [
+      // {
+      //   path: "",
+      //   name: "default",
+      //   component: Director_Dashboard
+      // },
       {
         path: "",
         name: "default",
-        component: Director_Dashboard
+        component: HomePage
       },
       {
         path: "product_requisitions",
