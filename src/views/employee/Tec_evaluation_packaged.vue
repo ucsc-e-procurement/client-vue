@@ -498,7 +498,7 @@
                       </template>
                     </v-col>
                   </v-row>
-                  <v-row no gutters>
+                  <v-row no gutters v-if="user!='emp00001'">
                     <v-btn v-if="(user!=procurement.chairman && tec_report_data && !filled) || (user==procurement.chairman && !filled)" large class="mx-2" small color="success" @click="save">
                         SAVE
                     </v-btn>
