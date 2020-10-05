@@ -11,15 +11,17 @@
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
-              <v-col cols="12">
-                <bid-calender />
-              </v-col>
-            </v-row>
+
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
               <v-col cols="12">
                 <procurement-count />
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <bid-calender />
               </v-col>
             </v-row>
 

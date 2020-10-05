@@ -1,16 +1,18 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-row no-gutters>
       <v-col cols="12">
         <v-card class="px-5 pb-5">
-          <v-card-title class="px-0">Bid Openings </v-card-title>
+          <v-card-title class="px-0"
+            >Bid Openings of {{ currentMonth }}</v-card-title
+          >
           <v-calendar
+            ref="calendar"
+            :now="today"
+            :value="today"
             :events="events"
             color="primary"
             type="month"
-            :now="today"
-            :event-overlap-mode="mode"
-            :event-overlap-threshold="30"
           ></v-calendar>
         </v-card>
       </v-col>
@@ -48,18 +50,25 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
-    today: "2020-10-05",
-    events: [
-      {
-        name: "Weekly Meeting",
-        start: "2019-10-07 09:00",
-        end: "2019-10-12 10:00"
-      },
-      {
-        name: "Thomas' Birthday",
-        start: "2019-10-05"
-      }
-    ]
+    today: "",
+    events: [],
+
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+
+    currentMonth: ""
   }),
 
   // Custom Methods and Functions
@@ -81,20 +90,25 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    // this.getBidOpeningDates()
-    //   .then(res => {
-    //     console.log("Result: ", res);
-    //     this.events = res.map(procurement => {
-    //       return {
-    //         name: procurement.procurement_id,
-    //         start: "2019-10-02"
-    //       };
-    //     });
-    //     console.log("Events: ", this.events);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    //   Set Today Date
+    let d = new Date();
+    this.today = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate() + 1}`;
+
+    // Set Month
+    this.currentMonth = this.months[d.getMonth()];
+
+    this.getBidOpeningDates()
+      .then(res => {
+        res.forEach(procurement => {
+          this.events.push({
+            name: procurement.procurement_id,
+            start: procurement.bid_opening_date.split("T")[0]
+          });
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   beforeMount() {},
   mounted() {},
