@@ -368,6 +368,126 @@ export default {
       });
     },
 
+     async getProcData() {
+      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+      let doc_id;
+      this.fbData.push({
+        doc: await invRef
+          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .get()
+          .then(function(querySnapshot) {
+            let docArr;
+
+            querySnapshot.forEach(function(doc) {
+              docArr = doc.data();
+              doc_id = doc.id;
+            });
+
+            return docArr;
+          }),
+        items: await invRef
+          .doc(doc_id)
+          .collection("Items")
+          .get()
+          .then(function(querySnapshot) {
+            let itemArr = [];
+            let iterator = 0;
+
+            querySnapshot.forEach(function(doc) {
+              itemArr.push(doc.data());
+              itemArr[iterator].bidderResponse = [];
+              for (const index in doc.data().Features) {
+                itemArr[iterator].bidderResponse.push("No");
+              }
+              console.log(itemArr[iterator]);
+              iterator++;
+            });
+
+            return itemArr;
+          })
+      });
+    },
+
+     async addProcData() {
+      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+      let doc_id;
+      this.fbData.push({
+        doc: await invRef
+          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .get()
+          .then(function(querySnapshot) {
+            let docArr;
+
+            querySnapshot.forEach(function(doc) {
+              docArr = doc.data();
+              doc_id = doc.id;
+            });
+
+            return docArr;
+          }),
+        items: await invRef
+          .doc(doc_id)
+          .collection("Items")
+          .get()
+          .then(function(querySnapshot) {
+            let itemArr = [];
+            let iterator = 0;
+
+            querySnapshot.forEach(function(doc) {
+              itemArr.push(doc.data());
+              itemArr[iterator].bidderResponse = [];
+              for (const index in doc.data().Features) {
+                itemArr[iterator].bidderResponse.push("No");
+              }
+              console.log(itemArr[iterator]);
+              iterator++;
+            });
+
+            return itemArr;
+          })
+      });
+    },
+
+     async deleteProcData() {
+      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+      let doc_id;
+      this.fbData.push({
+        doc: await invRef
+          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .get()
+          .then(function(querySnapshot) {
+            let docArr;
+
+            querySnapshot.forEach(function(doc) {
+              docArr = doc.data();
+              doc_id = doc.id;
+            });
+
+            return docArr;
+          }),
+        items: await invRef
+          .doc(doc_id)
+          .collection("Items")
+          .get()
+          .then(function(querySnapshot) {
+            let itemArr = [];
+            let iterator = 0;
+
+            querySnapshot.forEach(function(doc) {
+              itemArr.push(doc.data());
+              itemArr[iterator].bidderResponse = [];
+              for (const index in doc.data().Features) {
+                itemArr[iterator].bidderResponse.push("No");
+              }
+              console.log(itemArr[iterator]);
+              iterator++;
+            });
+
+            return itemArr;
+          })
+      });
+    },
+
     nextStep(n) {
       if (this.itemNull == true){
         this.dialog2 = true;
