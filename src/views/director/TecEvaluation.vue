@@ -1,24 +1,25 @@
 <template>
-  <v-col>
-    <TecEvaluationItemwise
-        v-if="this.type == 'items'"
-        v-bind:procurement="procurement"
-        v-bind:bid_data="bid_data"
-        v-bind:requisition="requisition"
-        v-bind:tec_team="tec_team"
-        v-bind:tec_report_data="tec_report_data"
-        v-bind:spec_data="spec_data"
-    />
-    <TecEvaluationPackaged
-        v-if="this.type == 'packaged'"
-        v-bind:procurement="procurement"
-        v-bind:bid_data="bid_data"
-        v-bind:requisition="requisition"
-        v-bind:tec_team="tec_team"
-        v-bind:tec_report_data="tec_report_data"
-        v-bind:spec_data="spec_data"
-    />
-  </v-col>
+    <v-container>
+      <TecEvaluationItemwise
+          v-if="this.type == 'items'"
+          v-bind:procurement="procurement"
+          v-bind:bid_data="bid_data"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:tec_report_data="tec_report_data"
+          v-bind:spec_data="spec_data"
+      />
+
+      <TecEvaluationPackaged
+          v-if="this.type == 'packaged'"
+          v-bind:procurement="procurement"
+          v-bind:bid_data="bid_data"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:tec_report_data="tec_report_data"
+          v-bind:spec_data="spec_data"
+      />
+    </v-container>
 </template>
 
 <script>
