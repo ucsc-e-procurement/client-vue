@@ -748,31 +748,44 @@ export default {
         })
         .then(res => {
           this.encrypted = res.data.encrypted;
-          this.$http
-            .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
-              clientKey: res.data.key, 
-              bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
-            })
-            .then(res => {
-              this.$http
-                .post("/api/supplier/price_schedule/update_firebase", {
-                  supplier_id: this.procurement.supplier_id,
-                  doc_id: this.doc_id,
-                  items: this.fbData[0].items,
-                  bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
-                  key: res.data.encryptedKey, 
-                  encrypted: this.encrypted
-                })
-                .then(res => {
+          // this.$http
+          //   .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
+          //     clientKey: res.data.key, 
+          //     bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
+          //   })
+          //   .then(res => {
+          //     this.$http
+          //       .post("/api/supplier/price_schedule/update_firebase", {
+          //         supplier_id: this.procurement.supplier_id,
+          //         doc_id: this.doc_id,
+          //         items: this.fbData[0].items,
+          //         bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
+          //         key: res.data.encryptedKey, 
+          //         encrypted: this.encrypted
+          //       })
+          //       .then(res => {
                   this.$http
                     .post("/api/supplier/price_schedule/:procurement", form)
                     .then(res => {
-                      console.log(res);
+                      let storageRef = firebase.storage().ref();
+                      storageRef.child('man_auth/'+'bid0001').put(this.manufacturerDoc).then(function(snapshot) {
+                        console.log(snapshot);
+                      });
+                      if(this.bidGuarantee != null) {
+                        storageRef.child('bid_guarantee/'+'bid0001').put(this.bidGuarantee).then(function(snapshot) {
+                          console.log(snapshot);
+                        });
+                      }
+                      if(this.otherDoc != null) {
+                        storageRef.child('other/'+'bid0001').put(this.otherDoc).then(function(snapshot) {
+                          console.log(snapshot);
+                        });
+                      }
                       // this.$router.go(-1);
                     });
                 });
-            });
-        })
+        //     });
+        // })
     },
   },
 
