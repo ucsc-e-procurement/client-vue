@@ -18,8 +18,8 @@
               </v-card-actions>
             </div>
             <v-avatar class="ma-3" slot="icon" color="blue darken-4" size="125">
-              <v-icon icon="mdi-lock" color="white">
-                mdi-lock
+              <v-icon icon="mdi-lock" color="white" size="50">
+                mdi-account-multiple
               </v-icon>
             </v-avatar>
           </div>
@@ -47,8 +47,8 @@
               color="yellow darken-3"
               size="125"
             >
-              <v-icon icon="mdi-lock" color="white">
-                mdi-lock
+              <v-icon icon="mdi-lock" color="white" size="50">
+                mdi-bookmark-plus
               </v-icon>
             </v-avatar>
           </div>
@@ -79,8 +79,8 @@
               color="green lighten-1"
               size="125"
             >
-              <v-icon icon="mdi-lock" color="white">
-                mdi-lock
+              <v-icon icon="mdi-lock" color="white" size="50">
+                mdi-checkbox-multiple-marked
               </v-icon>
             </v-avatar>
           </div>
@@ -108,8 +108,8 @@
               </v-card-actions>
             </div>
             <v-avatar class="ma-3" slot="icon" color="red lighten-1" size="125">
-              <v-icon icon="mdi-lock" color="white">
-                mdi-lock
+              <v-icon icon="mdi-lock" color="white" size="50">
+                mdi-minus-box
               </v-icon>
             </v-avatar>
           </div>

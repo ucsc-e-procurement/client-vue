@@ -21,6 +21,12 @@
 
             <v-row>
               <v-col cols="12">
+                <bid-calender />
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
                 <v-card class="px-2">
                   <monthly-product-requisitions :height="150" />
                 </v-card>
@@ -59,6 +65,9 @@ import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
 import MonthlyProductRequisitionChart from "./analytics/Monthly_Product_Requisition_Chart";
 import AnnualCategoryWiseProcurementsCount from "./analytics/Annual_Category_Wise_Procurements_Chart";
 
+// Bid Opening Calender Component
+import BidCalender from "./components/Bid_Opening_Calender";
+
 /*
 
 // Validation Library - Vuelidate
@@ -93,7 +102,8 @@ export default {
     "test-chart": TestChart,
     "procurement-count": ProcurementCount_Cards,
     "monthly-product-requisitions": MonthlyProductRequisitionChart,
-    "annual-category-wise-procurements-count": AnnualCategoryWiseProcurementsCount
+    "annual-category-wise-procurements-count": AnnualCategoryWiseProcurementsCount,
+    "bid-calender": BidCalender
   },
 
   // Data Variables and Values
