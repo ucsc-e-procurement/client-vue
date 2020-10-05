@@ -9,7 +9,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>Employee Name</v-list-item-title>
+          <v-list-item-title>{{user.name}}</v-list-item-title>
           <v-list-item-subtitle>Employee</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -17,7 +17,7 @@
 
     <v-divider></v-divider>
     <v-list rounded>
-      <v-list-item exact="" link to="/employee/">
+      <v-list-item exact="" link to="/employee">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
@@ -114,6 +114,7 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user: null
   }),
 
   // Custom Methods and Functions
@@ -127,7 +128,10 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.user = this.$store.getters.user
+    console.log('user', this.user)
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},

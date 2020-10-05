@@ -156,22 +156,12 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user: null,
     tab: null,
     dialog: false,
     procurement: null,
     tabs: ["New Requests", "On-Going", "Completed"],
-    newRequests: [
-      {
-        tenderNo: "UCSC/DIM/G/ENG/2020/0006",
-        publishedDate: "18-06-2020",
-        category: "Sports Goods",
-        expiryDate: "01-07-2020",
-        items: [
-          { name: "Bats", qty: "5" },
-          { name: "Balls", qty: "5" }
-        ]
-      }
-    ]
+    newRequests: null
     //fetched: null,
   }),
 
@@ -217,8 +207,9 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchRequests("sale@gamestreet.lk");
-    //this.fetchRequests(this.$store.getters.user.supplier_id)
+    // this.fetchRequests("sale@gamestreet.lk");
+    this.user = this.$store.getters.user.supplier_id
+    this.fetchRequests(this.user)
   },
   beforeUpdate() {},
   updated() {},

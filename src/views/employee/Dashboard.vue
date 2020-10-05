@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="px-0 py-0">
+  <v-container fluid class="px-0 py-0" v-if="user">
     <v-row no-gutters>
       <v-col cols="12">
         <v-card flat>
@@ -39,8 +39,8 @@
                         class="headline font-weight-bold"
                         style="padding-top: 40px;"
                       >
-                        <div style="font-size: 50px;">
-                          60
+                        <div style="font-size: 50px;" v-if="locked || locked == 0">
+                          {{this.locked.count}}
                         </div>
                       </v-card-title>
                       <v-card-actions>
@@ -53,7 +53,7 @@
                       color="blue darken-4"
                       size="125"
                     >
-                      <v-icon icon="mdi-lock" color="white">
+                      <v-icon icon="mdi-lock" color="white" size="50">
                         mdi-lock
                       </v-icon>
                     </v-avatar>
@@ -68,8 +68,8 @@
                         class="headline font-weight-bold"
                         style="padding-top: 40px;"
                       >
-                        <div style="font-size: 50px;">
-                          20
+                        <div style="font-size: 50px;" v-if="unlocked || unlocked == 0">
+                          {{this.unlocked.count}}
                         </div>
                       </v-card-title>
                       <v-card-actions>
@@ -82,8 +82,8 @@
                       color="yellow darken-3"
                       size="125"
                     >
-                      <v-icon icon="mdi-lock" color="white">
-                        mdi-lock
+                      <v-icon icon="mdi-lock-open-variant" color="white" size="50">
+                        mdi-lock-open-variant
                       </v-icon>
                     </v-avatar>
                   </div>
@@ -97,8 +97,8 @@
                         class="headline font-weight-bold"
                         style="padding-top: 40px;"
                       >
-                        <div style="font-size: 50px;">
-                          70%
+                        <div style="font-size: 50px;" v-if="completed || completed == 0">
+                          {{completed.count}}
                         </div>
                       </v-card-title>
                       <v-card-actions>
@@ -111,8 +111,8 @@
                       color="green lighten-1"
                       size="125"
                     >
-                      <v-icon icon="mdi-lock" color="white">
-                        mdi-lock
+                      <v-icon icon="mdi-book-check" color="white" size="50">
+                        mdi-book-check
                       </v-icon>
                     </v-avatar>
                   </div>
@@ -126,8 +126,8 @@
                         class="headline font-weight-bold"
                         style="padding-top: 40px;"
                       >
-                        <div style="font-size: 50px;">
-                          30%
+                        <div style="font-size: 50px;" v-if="(unlocked && locked) || unlocked == 0 || locked ==0">
+                          {{locked.count + unlocked.count}}
                         </div>
                       </v-card-title>
                       <v-card-actions>
@@ -140,8 +140,8 @@
                       color="red lighten-1"
                       size="125"
                     >
-                      <v-icon icon="mdi-lock" color="white">
-                        mdi-lock
+                      <v-icon icon="mdi-account-group" color="white" size="50">
+                        mdi-account-group
                       </v-icon>
                     </v-avatar>
                   </div>
@@ -283,14 +283,17 @@ export default {
     // user: "emp00005",
     user: null,
     pendingSpec: null,
-    pendingEval: null
+    pendingEval: null,
+    unlocked: null,
+    locked: null,
+    completed: null,
   }),
 
   // Custom Methods and Functions
   methods: {
     openProcurement(item) {
       this.$router.push({
-        path: `tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
+        path: `employee/tecteam/procurement/${item.procurement_id.replace(/[/]/g, "")}`,
         query: {
           procurement_id: item.procurement_id,
           tec_team_id: item.tec_team_id,
@@ -311,8 +314,6 @@ export default {
         .then(response => {
           console.log("new", response.data);
           this.pendingSpec = response.data;
-          console.log(this.pendingSpec);
-          //console.log(Object.values(this.procurements[0].bids))
         })
         .catch(error => {
           console.log(error);
@@ -329,8 +330,53 @@ export default {
         .then(response => {
           console.log("new", response.data);
           this.pendingEval = response.data;
-          console.log(this.pendingSpec);
-          //console.log(Object.values(this.procurements[0].bids))
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    fetchUnlockedProcurementCount(employee_id) {
+      this.$http
+        .get("/api/tec_team/get_unlocked_procurement_count", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          console.log('res', response.data);
+          this.unlocked = response.data[0];
+          console.log(this.unlocked.count);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    fetchLockedProcurementCount(employee_id) {
+      this.$http
+        .get("/api/tec_team/get_locked_procurement_count", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          this.locked = response.data[0];
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    fetchCompletedProcurementCount(employee_id) {
+      this.$http
+        .get("/api/tec_team/get_completed_procurement_count", {
+          params: {
+            id: employee_id
+          }
+        })
+        .then(response => {
+          this.completed = response.data[0];
         })
         .catch(error => {
           console.log(error);
@@ -344,6 +390,9 @@ export default {
     this.user = this.$store.getters.user.employee_id
     this.fetchNewProcurements(this.user)
     this.fetchNewBidOpenings(this.user)
+    this.fetchLockedProcurementCount(this.user)
+    this.fetchUnlockedProcurementCount(this.user)
+    this.fetchCompletedProcurementCount(this.user)
   },
   beforeMount() {},
   mounted() {},

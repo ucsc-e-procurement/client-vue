@@ -16,15 +16,15 @@
     </template>
 
     <v-divider></v-divider>
-    <v-list dense>
-      <v-list-item exact="" link to="/supplier">
+    <v-list rounded>
+      <!-- <v-list-item exact="" link to="/supplier">
         <v-list-item-action>
           <v-icon>mdi-home</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item exact="" link to="/supplier/procurements">
         <v-list-item-action>
           <v-icon>mdi-email</v-icon>
@@ -41,7 +41,7 @@
           <v-list-item-title>Purchases</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link>
+      <!-- <v-list-item link>
         <v-list-item-action>
           <v-badge color="blue" content="1">
             <v-icon>mdi-bell</v-icon>
@@ -50,7 +50,7 @@
         <v-list-item-content>
           <v-list-item-title>Notifications</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
     </v-list>
     <template v-slot:append>
       <v-list>
@@ -96,7 +96,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    user: { name: "Supplier Name" }
+    user: null
   }),
 
   // Custom Methods and Functions
@@ -110,7 +110,10 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.user = this.$store.getters.user
+    console.log('user', this.user)
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
