@@ -24,7 +24,6 @@
                 <v-card-title>
                     <span class="headline mt-3">Suppliers List</span>
                 </v-card-title>
-                <br/> 
                 <v-container class="ml-3">
                 <div v-for="result1 in resultsArray1" :key="result1" cols="12">    
                     <input type="radio" id="result1.supplier_id" :value="result1.supplier_id" v-model="picked">
@@ -34,7 +33,7 @@
                 <br/>
                 <v-text-field
                   class="deadline"
-                  label="deadline"
+                  label="Deadline"
                   placeholder="yyyy/mm/dd"
                   outlined
                   v-model="deadline"

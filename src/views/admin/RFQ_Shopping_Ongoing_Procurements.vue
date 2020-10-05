@@ -8,13 +8,25 @@
                 <th>Procurement ID</th>
                 <th>Category</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>  
         <tbody>
             <tr v-for="result in resultsArray" :key="result" cols="12">
                 <td>{{result.procurement_id}}</td>
                 <td>{{result.category}}</td>
-                <td><v-btn color="primary" class="mb-4 mt-4">Send RFQ</v-btn></td>
+                <td>                
+                  <v-text-field
+                    class="deadline mt-6"
+                    label="Deadline"
+                    placeholder="yyyy/mm/dd"
+                    outlined
+                    v-model="deadline"
+                  ></v-text-field>
+                </td>
+                <td>
+                  <v-btn color="primary" class="mb-4 mt-4" @click="sendRFQShoppingOngoingProcurements(result.procurement_id)">Send RFQ</v-btn>
+                </td>
             </tr> 
         </tbody>           
     </table>
@@ -53,7 +65,8 @@ export default {
   // Data Variables and Values
   data: () => ({
     search: '',
-    resultsArray: []
+    resultsArray: [],
+    date: new Date().toISOString().substr(0, 10),
   }),
 
   // Custom Methods and Functions
@@ -67,6 +80,22 @@ export default {
         .then(response => {
           this.resultsArray = response.data; 
           console.log("resultsArray",this.resultsArray)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    // send rfq
+    sendRFQShoppingOngoingProcurements(procurementId) {
+      this.procurementId = procurementId
+      console.log("test1",this.date,this.deadline)
+      this.$http
+        .post(
+          `/api/admin/shopping_ongoing_procurements/suppliers/send_rfq?date=${this.date}&deadline=${this.deadline}&procurementId=${this.procurementId}`
+        )
+        .then(res => {
+          console.log(res);
         })
         .catch(err => {
           console.log(err);
