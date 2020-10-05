@@ -687,7 +687,9 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.user = this.$store.getters.user.employee_id
+  },
   beforeMount() {
     this.createTable();
     this.getBidData();
