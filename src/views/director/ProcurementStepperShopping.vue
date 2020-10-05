@@ -125,15 +125,13 @@
 
                   >
                   <v-stepper-content step="6">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
-                    <v-btn color="primary" @click="stepperValue = 1"
-                      >Continue</v-btn
-                    >
-                    <v-btn text>Cancel</v-btn>
+                    <TecEvaluation 
+                    :procurement_id="this.procurementId"
+                    :tec_team_id="this.tec_team_id"
+                    :requisition_id="this.requisition_id"
+                    :type="this.bidType"
+                    v-if="isMounted && procurementState > 6" 
+                    />
                   </v-stepper-content>
 
                   <v-stepper-step
@@ -208,6 +206,7 @@ import AppointTechTeam from "./AppointTechTeam";
 import TechTeam from "./TechTeam";
 // import BidOpeningTeam from "./BidOpeningTeam";
 import Rfq from "./Rfq";
+import TecEvaluation from "./TecEvaluation";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -218,10 +217,11 @@ export default {
     requisition: Requisition,
     AppointTechTeam: AppointTechTeam,
     // AppointBidOpeningTeam: AppointBidOpeningTeam,
+    // BidOpeningTeam: BidOpeningTeam,
     ProcurementMethod: ProcurementMethod,
     TechTeam: TechTeam,
-    // BidOpeningTeam: BidOpeningTeam,
-    RFQ: Rfq
+    RFQ: Rfq,
+    TecEvaluation: TecEvaluation
   },
 
   // Data Variables and Values
@@ -230,6 +230,9 @@ export default {
     procurementState: "",
     procurementId: "",
     requisitionData: "",
+    tec_team_id: "",
+    requisition_id: "",
+    bidType: "",
     isMounted: false,
     rfqMounted: false,
     test: 0
@@ -248,6 +251,9 @@ export default {
         .then(response => {
           this.requisitionData = response.data[0];
           this.procurementState = response.data[0].step;
+          this.tec_team_id = response.data[0].tec_team_id;
+          this.requisition_id = response.data[0].requisition_id;
+          this.bidType = response.data[0].bid_type;
           this.stepperValue = 12;
           this.isMounted = true;
           //  || response.data[0].step == 4
