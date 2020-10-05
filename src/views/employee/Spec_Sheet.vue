@@ -38,6 +38,7 @@
 
             <!-- Info Card Row -->
             <div>
+
               <v-card flat>
                 <v-container>
                   <v-form>
@@ -72,6 +73,7 @@
                     v-model="steps"
                     :items="[1, 2, 3, 4, 5]"
                     label="Select number of items in procurement"
+
                   ></v-select>
                 </v-card-text>
               </v-card>
@@ -82,8 +84,7 @@
                       :key="`${n}-step`"
                       :complete="e1 > n"
                       :step="n"
-                      
-                    >
+               >
                       Item {{ n }}
                     </v-stepper-step>
 
@@ -97,6 +98,7 @@
                     :key="`${n}-content`"
                     :step="n"
                   >
+
                     <v-card class="mb-12" >
                       <!--Add insert item logic here-->
 
@@ -113,6 +115,7 @@
                         <v-col cols="4">
                           <v-text-field
                             v-model="feature"
+
                             dense
                             label="Feature"
                             outlined
@@ -120,13 +123,16 @@
                         </v-col>
                         <v-col cols="8">
                           <v-text-field
+                          
                             v-model="minRequirement"
+
                             label="Min Requirement"
                             outlined
                             dense
                           />
                         </v-col>
                       </v-row>
+
 
                       <v-btn
                         class="ma-2"
@@ -146,6 +152,7 @@
                       >
 
                       
+
                       <!-- </ValidationObserver> -->
                       <v-simple-table
                         :dense="dense"
@@ -162,11 +169,13 @@
                           </thead>
                           <tbody>
                             <tr
+
                               v-for="item in tableData"
                               :key="item.feature"
                             >
                               <td>{{ item.feature }}</td>
                               <td>{{ item.minrequirement }}</td>
+
                             </tr>
                           </tbody>
                         </template>
@@ -309,6 +318,7 @@ export default {
     tableData: [],
     // Dummy Data
     e1: 1,
+
     steps: 1,
     finalize: false,
     dialog: false,
@@ -316,6 +326,7 @@ export default {
     itemNull: true,
     empid: "",
     procs: [],
+
   }),
 
   watch: {
@@ -328,6 +339,7 @@ export default {
 
   // Custom Methods and Functions
   methods: {
+
      async getBidData() {
       let invRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
@@ -407,6 +419,7 @@ export default {
           })
       });
     },
+
 
      async addProcData() {
       let invRef = firebase.firestore().collection("ScheduleOfRequirements");

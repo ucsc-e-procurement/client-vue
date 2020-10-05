@@ -214,6 +214,7 @@ export default {
     // reqId: this.requisitionId,
     requisition: [],
     options: ["Approve", "Deny"],
+
     products: "",
     headers: [
       {
@@ -246,6 +247,7 @@ export default {
           directorRemarks: this.directorRemarks,
           directorRecommendation:
             this.directorApproval == "Approve" ? "Approved" : "Denied"
+
         })
         .then(response => {
           console.log(response);

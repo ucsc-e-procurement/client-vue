@@ -22,6 +22,7 @@
       accordance with the Delivery Schedules specified in the Schedule of
       Requirements the following Goods and Related Services Supply &amp;
       Delivery of
+
       <b
         >[ {{ this.procurement.description }} ] [
         {{ this.procurement.procurement_id }} ]</b
@@ -30,6 +31,7 @@
       offered is: Total before VAT <br />
       (d) Total price of our quotation including VAT, and any discounts offered
       is: Total After VAT.<br />
+
       (e) Our quotation shall be valid for the period of time specified in ITV
       Sub-Clause 8.1, from the date fixed for the quotation submission deadline
       in accordance with ITV Sub-Clause 11.1, and it shall remain binding upon
@@ -47,6 +49,7 @@
       (l) We understand that you are not bound to accept the lowest evaluated
       quotation or any other quotation that you may receive.<br />
     </v-row>
+
     <v-row no-gutters class="mt-4 caption">
       Signed:
     </v-row>
@@ -56,10 +59,13 @@
       Duly Authorize to sign the quotation for and on behalf of:<br />
       Dated on ____________ day of __________________
     </v-row>
+
   </v-container>
 </template>
 <script>
 export default {
+
   props: ["procurement"]
+
 };
 </script>

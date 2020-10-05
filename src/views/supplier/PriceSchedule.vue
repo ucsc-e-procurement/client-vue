@@ -34,7 +34,9 @@
               <datasheet
                 v-if="this.method"
                 :deadline="this.procurement.deadline"
+
                 :data="this.fbData"
+
               />
               <v-btn class="mt-3" text @click.native="step = 1">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step = 3"
@@ -90,7 +92,9 @@
                             v-for="(requirement,
                             index) in item.MinimumRequirement"
                             :key="index"
+
                             style="list-style-type: none"
+
                           >
                             <li class="py-2">{{ requirement }}</li>
                           </ul>
@@ -124,6 +128,7 @@
             </v-stepper-content>
 
             <v-stepper-content step="5">
+
               <quotationForm :procurement="this.procurement" />
               <v-btn class="mt-3" text @click.native="step = 4">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step = 6"
@@ -132,6 +137,7 @@
             </v-stepper-content>
 
             <v-stepper-content step="6">
+
               <v-container class="elevation-1">
                 <v-row no-gutters>
                   <h5 class="headline">Price Schedule</h5>
@@ -157,7 +163,9 @@
                           Description of Materials/Services required
                         </th>
                         <th width="5%" scope="col" rowspan="2">Qty</th>
+
                         <th width="20%" scope="col" colspan="2">
+
                           Unit Price (Rs.)
                         </th>
                         <th width="10%" scope="col" rowspan="2">
@@ -175,8 +183,9 @@
                         <th width="10%" rowspan="2">Action</th>
                       </tr>
                       <tr>
-                        <th width="10%">In figures(without VAT)</th>
+                        <th width="10%">Without VAT</th>
                         <th width="10%">VAT</th>
+                        <th width="10%">Discount (if any)</th>
                       </tr>
                     </thead>
                     <tbody class="text-center">
@@ -228,6 +237,8 @@
                           </span>
                         </td>
                         <td>
+
+
                           <span v-if="editIndex !== index">{{
                             item.make
                           }}</span>
@@ -328,7 +339,9 @@
 
                   <v-col cols="12" sm="5" class="ml-6">
                     <v-form
+
                       @submit.prevent="registerUser"
+
                       ref="form"
                       v-model="valid"
                     >
@@ -344,6 +357,18 @@
                   </v-col>
                 </v-row>
               </v-container>
+              <v-btn class="mt-3" text @click.native="step = 4">Back</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="validatePriceSchedule"
+                >Continue</v-btn
+              >
+            </v-stepper-content>
+
+            <v-stepper-content step="6">
+              <quotationForm
+                :procurement="this.procurement"
+                :subtotal="this.subTotal | money"
+                :total="this.total | money"
+              />
               <v-btn class="mt-3" text @click.native="step = 5">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step = 7"
                 >Continue</v-btn
@@ -363,17 +388,24 @@
                     >mdi-package-down</v-icon
                   >
                 </v-row>
-                <v-file-input
-                  v-model="manufacturerDoc"
-                  accept="image/jpg, image/png"
-                  placeholder="Attach manufacturer's authorization"
-                  hint="This should be a scanned image document"
-                  persistent-hint
-                  :rules="[rules.general]"
-                ></v-file-input>
+                <v-form
+                    ref="form1"
+                    v-model="valid"
+                  >
+                  <v-file-input
+                    v-model="manufacturerDoc"
+                    accept="image/jpg, image/png"
+                    placeholder="Attach manufacturer's authorization"
+                    hint="This should be a scanned image document"
+                    persistent-hint
+                    :rules="[rules.general]"
+                  ></v-file-input>
+                </v-form>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 6">Back</v-btn>
+
               <v-btn color="primary mt-3 float-right" @click="step = 8"
+
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -389,6 +421,10 @@
                     >mdi-package-down</v-icon
                   >
                 </v-row>
+                <v-form
+                  ref="form2"
+                  v-model="valid"
+                >
                 <v-file-input
                   v-model="bidGuarantee"
                   accept="image/jpg, image/png"
@@ -397,14 +433,18 @@
                   persistent-hint
                   :rules="[rules.general]"
                 ></v-file-input>
+                </v-form>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 7">Back</v-btn>
+
               <v-btn color="primary mt-3 float-right" @click="step = 9"
+
                 >Continue</v-btn
               >
             </v-stepper-content>
 
             <v-stepper-content step="9">
+
               <v-container class="elevation-1">
                 <v-row no-gutters>
                   <h5 class="headline">Authorization to sign the Bid</h5>
@@ -464,6 +504,7 @@
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 8">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step = 10"
+
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -479,7 +520,6 @@
                   placeholder="Attach any other drawings/attachments"
                   hint="This should be a pdf file"
                   persistent-hint
-                  :rules="[rules.general]"
                 ></v-file-input>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 9">Back</v-btn>
@@ -528,7 +568,7 @@ export default {
     step: 1,
     method: true,
     valid: true,
-    vatNo: "",
+    vatNo: null,
     authorizedName: "",
     authorizedDesignation: "",
     authorizedNIC: "",
@@ -542,7 +582,9 @@ export default {
       general: v => !!v || "This is required"
     },
     items: [],
-    menu: false
+    menu: false,
+    doc_id: null,
+    encrypted: null
   }),
 
   // Custom Methods and Functions
@@ -552,7 +594,9 @@ export default {
       let doc_id;
       this.fbData.push({
         doc: await invRef
+
           .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+
           .get()
           .then(function(querySnapshot) {
             let docArr;
@@ -585,6 +629,7 @@ export default {
             return itemArr;
           })
       });
+      this.doc_id = doc_id;
     },
 
     createTable() {
@@ -597,6 +642,7 @@ export default {
           qty: products[index]["qty"],
           figures: 0,
           vat: 0,
+          discount: 0,
           make: "-",
           date: new Date().toISOString().substr(0, 10),
           validity: 0,
@@ -630,11 +676,17 @@ export default {
     },
 
     subtotal(item) {
-      return item.qty * item.figures;
+      return item.qty * (item.figures - item.discount);
     },
 
     subtotalVAT(item) {
-      return item.qty * (item.figures + item.vat);
+      return item.qty * (item.figures + item.vat - item.discount);
+    },
+
+    validatePriceSchedule() {
+      if(this.$refs.form.validate()) {
+        this.step = 6;
+      }
     },
 
     downloadLetter() {
@@ -663,6 +715,7 @@ export default {
           document.body.appendChild(fileLink);
           fileLink.click();
         });
+
     },
 
     submitBid() {
@@ -683,6 +736,7 @@ export default {
           });
       }
     }
+
   },
 
   // Life Cycle Hooks
@@ -692,7 +746,7 @@ export default {
   },
   beforeMount() {
     this.createTable();
-    this.getBidData();
+    this.getBidData();   
   },
   mounted() {},
   beforeUpdate() {},

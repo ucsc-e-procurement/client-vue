@@ -55,6 +55,7 @@
                       v-bind:tec_report_data="tec_report_data"
                     />
 
+
                     <TecEvaluationItemwise
                       v-if="this.$route.query.type == 'items'"
                       v-bind:procurement="procurement"
@@ -73,6 +74,7 @@
                       v-bind:tec_report_data="tec_report_data"
                       v-bind:spec_data="spec_data"
                     />
+
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -92,11 +94,13 @@
 
 import TecReport from "./Tec_Report";
 import TecReportPackaged from "./Tec_Report_Packaged";
+
 import TecEvaluationPackaged from "./Tec_evaluation_packaged";
 import TecEvaluationItemwise from "./Tec_evaluation_itemwise";
 import Requisition from "./Requisition";
 
 import firebase from "firebase";
+
 
 /*
 
@@ -132,8 +136,10 @@ export default {
     requisition: null,
     tec_team: null,
     bid_data: null,
+
     tec_report_data: null,
     spec_data: null
+
   }),
 
   // Custom Methods and Functions
@@ -186,6 +192,7 @@ export default {
           params: {
             id: procurement_id
           }
+
         })
         .then(response => {
           console.log("item-wise bids", response.data);
@@ -196,6 +203,7 @@ export default {
           console.log(this.bid_data);
           //console.log(Object.values(this.procurements[0].bids))
         })
+
         .catch(error => {
           console.log(error);
         });
@@ -317,7 +325,9 @@ export default {
     this.fetchRequisition(this.$route.query.requisition_id);
     this.fetchTecTeam(this.$route.query.tec_team_id);
     this.fetchTecReport(this.$route.query.procurement_id);
+
     this.getBidData();
+
     if (this.$route.query.type == "items") {
       this.fetchItemWiseBids(this.$route.query.procurement_id);
     } else {
