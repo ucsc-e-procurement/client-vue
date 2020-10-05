@@ -194,11 +194,6 @@
     <!-- Dialog - Verification Confiramtion -->
     <v-row justify="center">
       <v-dialog v-model="dialogVerifySupplier" persistent max-width="400">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on">
-            Open Dialog
-          </v-btn>
-        </template>
         <v-card>
           <v-card-title class="headline">Supplier Verification</v-card-title>
           <v-card-text
@@ -229,6 +224,7 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 import KeyVal_A from "./components/Key_Value_Typo_A";
 
+import firebase from "firebase";
 /*
 
 // Validation Library - Vuelidate
@@ -302,12 +298,36 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
+    const storageRef = firebase.storage().ref();
+
     this.getRegistrationById(atob(this.encodedRegistrationId))
       .then(res => {
-        console.log(res);
+        console.log(res, res.registration_date.split("T")[0]);
         this.registration = res;
 
+        // Preprocess Date to fix Issue
+        let date = new Date(res.registration_date.split("T")[0]);
+
+        console.log(date);
+        date.setDate(date.getDate() + 1);
+        let dateStr = `${date.getFullYear()}-${
+          String(date.getMonth() + 1).length < 2
+            ? "0" + String(date.getMonth() + 1)
+            : String(date.getMonth() + 1)
+        }-${
+          String(date.getDate()).length < 2
+            ? "0" + String(date.getDate())
+            : String(date.getDate())
+        }`;
+        console.log("New DateString: ", dateStr);
         this.isLoaded = true;
+        return storageRef
+          .child(`payment/${dateStr}${res.email}`)
+          .getDownloadURL();
+      })
+      .then(url => {
+        console.log("URL: ", url);
+        this.registration.payment = url;
       })
       .catch(err => {
         this.isLoaded = true;
