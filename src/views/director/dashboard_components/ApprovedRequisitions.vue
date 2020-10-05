@@ -66,7 +66,6 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <v-col v-if="approvedRequisitions.length > 0"></v-col>
   </v-container>
 </template>
 

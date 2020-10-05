@@ -28,4 +28,12 @@
       </v-snackbar>
     </v-row>
 
+
+
+
     ------------------------------------------------------------------------------------------------------------------
+
+    <!-- Fullscreen Overlay - Loader -->
+    <v-overlay :value="loaderOverlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>

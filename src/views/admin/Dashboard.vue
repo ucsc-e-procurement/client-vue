@@ -14,47 +14,33 @@
 
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Ongoing </v-card-title>
-                </v-card>
+              <v-col cols="12">
+                <procurement-count />
               </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Terminated</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Completed</v-card-title>
-                </v-card>
-              </v-col>
-              <v-col cols="3">
-                <v-card height="100">
-                  <v-card-title>Other</v-card-title>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <v-card class="px-2">
+                  <monthly-product-requisitions :height="150" />
                 </v-card>
               </v-col>
             </v-row>
 
             <v-row>
               <v-col cols="6">
-                <v-card>
-                  <v-sparkline
-                    :value="value"
-                    :gradient="gradient"
-                    :smooth="radius || false"
-                    :padding="padding"
-                    :line-width="width"
-                    :stroke-linecap="lineCap"
-                    :gradient-direction="gradientDirection"
-                    :fill="fill"
-                    :type="type"
-                    :auto-line-width="autoLineWidth"
-                    auto-draw
-                    height="150"
-                  ></v-sparkline>
+                <v-card class="px-2">
+                  <annual-category-wise-procurements-count :height="200" />
                 </v-card>
               </v-col>
+            </v-row>
+
+            <v-row>
+              <test-chart />
+            </v-row>
+
+            <v-row>
+              <test-chart />
             </v-row>
           </v-container>
         </v-card>
@@ -67,6 +53,11 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+// import InfoCard_A from "./components/InfoCard_A";
+import TestChart from "./components/Test_Chart";
+import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
+import MonthlyProductRequisitionChart from "./analytics/Monthly_Product_Requisition_Chart";
+import AnnualCategoryWiseProcurementsCount from "./analytics/Annual_Category_Wise_Procurements_Chart";
 
 /*
 
@@ -88,7 +79,7 @@ const gradients = [
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
-  // mixins: [validationMixin],
+  // mixins: [Bar],
 
   // Form Validations
   // validations: {},
@@ -97,7 +88,13 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    // "info-card": InfoCard_A,
+    "test-chart": TestChart,
+    "procurement-count": ProcurementCount_Cards,
+    "monthly-product-requisitions": MonthlyProductRequisitionChart,
+    "annual-category-wise-procurements-count": AnnualCategoryWiseProcurementsCount
+  },
 
   // Data Variables and Values
   data: () => ({

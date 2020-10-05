@@ -34,7 +34,9 @@
               <datasheet
                 v-if="this.method"
                 :deadline="this.procurement.deadline"
-                :data="this.fbData[0].doc"
+
+                :data="this.fbData"
+
               />
               <v-btn class="mt-3" text @click.native="step = 1">Back</v-btn>
               <v-btn color="primary mt-3 float-right" @click="step = 3"
@@ -90,6 +92,9 @@
                             v-for="(requirement,
                             index) in item.MinimumRequirement"
                             :key="index"
+
+                            style="list-style-type: none"
+
                           >
                             <li class="py-2">{{ requirement }}</li>
                           </ul>
@@ -123,6 +128,16 @@
             </v-stepper-content>
 
             <v-stepper-content step="5">
+
+              <quotationForm :procurement="this.procurement" />
+              <v-btn class="mt-3" text @click.native="step = 4">Back</v-btn>
+              <v-btn color="primary mt-3 float-right" @click="step = 6"
+                >Continue</v-btn
+              >
+            </v-stepper-content>
+
+            <v-stepper-content step="6">
+
               <v-container class="elevation-1">
                 <v-row no-gutters>
                   <h5 class="headline">Price Schedule</h5>
@@ -148,7 +163,9 @@
                           Description of Materials/Services required
                         </th>
                         <th width="5%" scope="col" rowspan="2">Qty</th>
-                        <th width="20%" scope="col" colspan="3">
+
+                        <th width="20%" scope="col" colspan="2">
+
                           Unit Price (Rs.)
                         </th>
                         <th width="10%" scope="col" rowspan="2">
@@ -220,18 +237,8 @@
                           </span>
                         </td>
                         <td>
-                          <span v-if="editIndex !== index">{{ item.discount }}</span>
-                          <span v-if="editIndex === index">
-                            <v-text-field
-                              type="number"
-                              step=".01"
-                              min="0"
-                              oninput="validity.valid||(value='')"
-                              v-model.number="item.discount"
-                            />
-                          </span>
-                        </td>
-                        <td>
+
+
                           <span v-if="editIndex !== index">{{
                             item.make
                           }}</span>
@@ -332,6 +339,9 @@
 
                   <v-col cols="12" sm="5" class="ml-6">
                     <v-form
+
+                      @submit.prevent="registerUser"
+
                       ref="form"
                       v-model="valid"
                     >
@@ -393,7 +403,9 @@
                 </v-form>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 6">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="validateManAuth"
+
+              <v-btn color="primary mt-3 float-right" @click="step = 8"
+
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -424,76 +436,75 @@
                 </v-form>
               </v-container>
               <v-btn class="mt-3" text @click.native="step = 7">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="validateBidGuarantee"
+
+              <v-btn color="primary mt-3 float-right" @click="step = 9"
+
                 >Continue</v-btn
               >
             </v-stepper-content>
 
             <v-stepper-content step="9">
-              <v-form
-                ref="form3"
-                v-model="valid"
-              >
-                <v-container class="elevation-1">
-                  <v-row no-gutters>
-                    <h5 class="headline">Authorization to sign the Bid</h5>
-                  </v-row>
-                  <v-divider class="mt-1"></v-divider>
-                  <v-row no-gutters class="caption mt-4">
-                    Chairman – DPC<br />
-                    University of Colombo School of Computing<br />
-                    No 35 Reid Avenue Colombo 00700.
-                  </v-row>
-                  <v-row no-gutters class="caption mt-4">
-                    Dear Sir
-                  </v-row>
-                  <v-row no-gutters class="subheading mt-4">
-                    {{ this.procurement.description }} [
-                    {{ this.procurement.procurement_id }} ]
-                  </v-row>
-                  <v-row no-gutters class="caption my-4">
-                    This is to authorize that the under mentioned person, to sign
-                    the documents pertaining to the above bid on behalf of your
-                    organization.
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="authorizedName"
-                        label="Authorized Person"
-                        placeholder="Name of authorized person"
-                        outlined
-                        dense
-                        :rules="[rules.general]"
-                      />
-                    </v-col>
-                    <v-col>
-                      <v-text-field
-                        v-model="authorizedNIC"
-                        label="NIC No."
-                        placeholder="NIC number of authorized person"
-                        outlined
-                        dense
-                        :rules="[rules.general]"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="authorizedDesignation"
-                        label="Designation"
-                        placeholder="Designation of authorized person"
-                        outlined
-                        dense
-                        :rules="[rules.general]"
-                      />
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-form>
+
+              <v-container class="elevation-1">
+                <v-row no-gutters>
+                  <h5 class="headline">Authorization to sign the Bid</h5>
+                </v-row>
+                <v-divider class="mt-1"></v-divider>
+                <v-row no-gutters class="caption mt-4">
+                  Chairman – DPC<br />
+                  University of Colombo School of Computing<br />
+                  No 35 Reid Avenue Colombo 00700.
+                </v-row>
+                <v-row no-gutters class="caption mt-4">
+                  Dear Sir
+                </v-row>
+                <v-row no-gutters class="subheading mt-4">
+                  {{ this.procurement.description }} [
+                  {{ this.procurement.procurement_id }} ]
+                </v-row>
+                <v-row no-gutters class="caption my-4">
+                  This is to authorize that the under mentioned person, to sign
+                  the documents pertaining to the above bid on behalf of your
+                  organization.
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      v-model="authorizedName"
+                      label="Authorized Person"
+                      placeholder="Name of authorized person"
+                      outlined
+                      dense
+                      :rules="[rules.general]"
+                    />
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      v-model="authorizedNIC"
+                      label="NIC No."
+                      placeholder="NIC number of authorized person"
+                      outlined
+                      dense
+                      :rules="[rules.general]"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="authorizedDesignation"
+                      label="Designation"
+                      placeholder="Designation of authorized person"
+                      outlined
+                      dense
+                      :rules="[rules.general]"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
               <v-btn class="mt-3" text @click.native="step = 8">Back</v-btn>
-              <v-btn color="primary mt-3 float-right" @click="validateAuthorization"
+              <v-btn color="primary mt-3 float-right" @click="step = 10"
+
                 >Continue</v-btn
               >
             </v-stepper-content>
@@ -583,7 +594,9 @@ export default {
       let doc_id;
       this.fbData.push({
         doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2020/001")
+
+          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+
           .get()
           .then(function(querySnapshot) {
             let docArr;
@@ -702,83 +715,35 @@ export default {
           document.body.appendChild(fileLink);
           fileLink.click();
         });
-    },
 
-    validateManAuth() {
-      if(this.fbData[0].doc.itvCR_7_3 == "Manufacture’s Authorization is required") {
-        if(this.$refs.form1.validate()) {
-          this.step = 8;
-        }
-      }
-      else this.step = 8;  
-    },
-
-    validateBidGuarantee() {
-      if(this.$refs.form2.validate()) {
-        this.step = 9;
-      }
-    },
-
-    validateAuthorization() {
-      if(this.$refs.form3.validate()) {
-        this.step = 10;
-      }
     },
 
     submitBid() {
-      let form = new FormData();
-
-      form.append("supplier_id", this.procurement.supplier_id);
-      form.append("procurement_id", this.procurement.procurement_id);
-      form.append("vat_no", this.vatNo);
-      form.append("authorized", this.authorizedName);
-      form.append("designation", this.authorizedDesignation);
-      form.append("nic", this.authorizedNIC);
-      form.append("auth", this.manufacturerDoc);
-      form.append("guarantee", this.bidGuarantee);
-      form.append("extra", this.otherDoc);
-      
-      this.$http
-        .get("/api/supplier/price_schedule/encryption_data", {
-          params: {
+      if (this.$refs.form.validate()) {
+        this.$http
+          .post("/api/supplier/price_schedule/:procurement", {
+            supplier_id: this.procurement.supplier_id,
+            procurement_id: this.procurement.procurement_id,
             items: this.items,
-            subTotal: this.subTotal,
-            total: this.total
-          }
-        })
-        .then(res => {
-          this.encrypted = res.data.encrypted;
-          this.$http
-            .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
-              clientKey: res.data.key, 
-              bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
-            })
-            .then(res => {
-              this.$http
-                .post("/api/supplier/price_schedule/update_firebase", {
-                  supplier_id: this.procurement.supplier_id,
-                  doc_id: this.doc_id,
-                  items: this.fbData[0].items,
-                  bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
-                  key: res.data.encryptedKey, 
-                  encrypted: this.encrypted
-                })
-                .then(res => {
-                  this.$http
-                    .post("/api/supplier/price_schedule/:procurement", form)
-                    .then(res => {
-                      console.log(res);
-                      // this.$router.go(-1);
-                    });
-                });
-            });
-        })
-    },
+            subtotal: this.subTotal,
+            total_with_vat: this.total,
+            vat_no: this.vatNo,
+            authorized: this.authorizedName
+          })
+          .then(res => {
+            console.log(res);
+            // this.$router.go(-1);
+          });
+      }
+    }
+
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.user = this.$store.getters.user.employee_id
+  },
   beforeMount() {
     this.createTable();
     this.getBidData();   
@@ -807,23 +772,23 @@ export default {
 </script>
 
 <style scoped>
-  input[type="number"] {
-    text-align: right;
-  }
+input[type="number"] {
+  text-align: right;
+}
 
-  th {
-    border: 1px solid #000;
-  }
+th {
+  border: 1px solid #000;
+}
 
-  .v-icon {
-    color: #000;
-  }
+.v-icon {
+  color: #000;
+}
 
-  #schedule {
-    font-size: 12px;
-  }
+#schedule {
+  font-size: 12px;
+}
 
-  table .v-text-field {
-    font-size: 12px;
-  }
+table .v-text-field {
+  font-size: 12px;
+}
 </style>

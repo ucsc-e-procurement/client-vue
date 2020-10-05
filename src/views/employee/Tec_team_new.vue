@@ -186,8 +186,10 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchLockedProcurements("emp00005");
-    //this.fetchLockedProcurements(this.$store.getters.user.employee_id)
+
+      // this.fetchLockedProcurements('emp00005')
+      this.fetchLockedProcurements(this.$store.getters.user.employee_id)
+
   },
   beforeUpdate() {},
   updated() {},

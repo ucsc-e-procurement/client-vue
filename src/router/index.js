@@ -5,12 +5,12 @@ import store from "../store";
 // Admin
 import Admin from "../views/admin/Admin.vue";
 import Admin_Dashboard from "../views/admin/Dashboard.vue";
-import Admin_Procurements_Ongoing from "../views/admin/Procurements_Ongoing.vue";
+import Admin_Procurements from "../views/admin/Procurements.vue";
 import Admin_Procurements_Terminated from "../views/admin/Procurements_Terminated.vue";
 import Admin_Procurements_Completed from "../views/admin/Procurements_Completed.vue";
 import Admin_Pending_Approvals from "../views/admin/Pending_Approvals.vue";
 import Admin_Procurement_Overview from "../views/admin/Procurement_Overview.vue";
-import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
+// import Admin_View_Suppliers from "../views/admin/View_Suppliers.vue";
 import Admin_View_Users from "../views/admin/Users.vue";
 import Admin_Products from "../views/admin/Products.vue";
 import Admin_Purchase_Order from "../views/admin/Purchase_Order.vue";
@@ -19,6 +19,11 @@ import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import Add_Signature from "../views/admin/Add_Signature.vue";
 import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 import Admin_Add_User from "../views/admin/Add_User.vue";
+import Admin_View_Suppliers from "../views/admin/Suppliers.vue";
+import Admin_View_Supplier from "../views/admin/Supplier.vue";
+import Admin_View_Bid from "../views/admin/Bid.vue";
+import Admin_View_Supplier_Registrations from "../views/admin/Supplier_Registrations.vue";
+import Admin_View_Supplier_Registration from "../views/admin/Supplier_Registration.vue";
 
 // Head of department
 import HOD from "../views/head_of_department/Head_Of_Department.vue";
@@ -28,7 +33,7 @@ import HOD_New_Proc from "../views/head_of_department/New_Procurement.vue";
 // Deputy Bursar
 import Deputy_Bursar from "../views/deputy_bursar/DeputyBursar";
 import View_Product_Requisition from "../views/deputy_bursar/ViewProductRequisition";
-import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
+// import Deputy_Bursar_Dashboard from "../views/deputy_bursar/Dashboard";
 import Product_Requisitions from "../views/deputy_bursar/ProductRequisitions";
 
 //Supplier
@@ -42,11 +47,15 @@ import Purchases from "../views/supplier/Purchases.vue";
 //Employee
 import Employee from "../views/employee/Employee.vue";
 import Employee_Dashboard from "../views/employee/Dashboard.vue";
-import Employee_Tec_team from "../views/employee/Tec_team.vue";
+import Employee_Tec_team_procurements from "../views/employee/Tec_team.vue";
+// import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue"
 
 import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
-import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
+
 import Employee_Procurement from "../views/employee/Tec_team_procurment.vue";
+import Employee_Tec_teams from "../views/employee/Tec_team_teams.vue";
+import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
+
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -60,6 +69,8 @@ import AcceptRequisitionRequest from "../views/director/AcceptRequisitionRequest
 import Director_Notifications from "../views/director/Notifications";
 import Director_Supplier_List from "../views/director/SupplierList.vue";
 import Director_Supplier_Details from "../views/director/SupplierDetails.vue";
+import Director_Department_List from "../views/director/DepartmentList.vue";
+import Director_Department_Details from "../views/director/DepartmentDetails.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -115,7 +126,7 @@ const routes = [
       {
         path: "ongoing_procurements",
         name: "ongoing procurements",
-        component: Admin_Procurements_Ongoing
+        component: Admin_Procurements
       },
       {
         path: "terminated_procurements",
@@ -182,6 +193,29 @@ const routes = [
         path: "add_user",
         component: Admin_Add_User
       },
+      {
+        path: "suppliers",
+        component: Admin_View_Suppliers
+      },
+      {
+        path: "supplier/:encodedSupplierId",
+        component: Admin_View_Supplier,
+        props: true
+      },
+      {
+        path: "bid/:encodedBidId",
+        component: Admin_View_Bid,
+        props: true
+      },
+      {
+        path: "supplier-registrations",
+        component: Admin_View_Supplier_Registrations
+      },
+      {
+        path: "supplier-registration/:encodedRegistrationId",
+        component: Admin_View_Supplier_Registration,
+        props: true
+      },
       // Developmnet Purposes Only
       { path: "test", component: Bidding_Doc_Data_Sheet },
       // TODO Redirect to Page Not Found Or Dashborad
@@ -244,6 +278,16 @@ const routes = [
         path: "suppliers/:id",
         name: "d_sup_d",
         component: Director_Supplier_Details
+      },
+      {
+        path: "departments",
+        name: "d_dep",
+        component: Director_Department_List
+      },
+      {
+        path: "departments/:id",
+        name: "d_dep_d",
+        component: Director_Department_Details
       }
     ]
   },
@@ -308,15 +352,20 @@ const routes = [
         component: Employee_Dashboard
       },
       {
-        path: "tecteam",
-        name: "tecteam",
-        component: Employee_Tec_team
+        path: "procurements",
+        name: "procurements",
+        component: Employee_Tec_team_procurements
       },
       {
-        path: "bidopeningteam",
-        name: "bigopeningteam",
-        component: Employee_Bid_Opening_Team
+        path: "tecteams",
+        name: "tecteams",
+        component: Employee_Tec_teams
       },
+      // {
+      //   path: "bidopeningteam",
+      //   name: "bigopeningteam",
+      //   component: Employee_Bid_Opening_Team
+      // },
       {
         path: "specsheet",
         name: "specsheet",

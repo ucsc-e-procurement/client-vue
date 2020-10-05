@@ -32,7 +32,7 @@
                           <v-row class="" no-gutters>
                             <v-col cols="1">
                               <v-select
-                                v-model="title"
+                                v-model="employee.title"
                                 label="Title"
                                 :items="[
                                   'Mr.',
@@ -45,6 +45,9 @@
                                 class="pr-1"
                                 outlined
                                 dense
+                                :error-messages="titleErrors"
+                                @change="$v.employee.title.$touch()"
+                                @blur="$v.employee.title.$touch()"
                               />
                             </v-col>
 
@@ -55,6 +58,9 @@
                                 label="Name"
                                 outlined
                                 dense
+                                :error-messages="nameErrors"
+                                @input="$v.employee.name.$touch()"
+                                @blur="$v.employee.name.$touch()"
                               />
                             </v-col>
                           </v-row>
@@ -76,6 +82,9 @@
                                 label="Division"
                                 outlined
                                 dense
+                                :error-messages="divisionErrors"
+                                @change="$v.employee.division.$touch()"
+                                @blur="$v.employee.division.$touch()"
                               />
                             </v-col>
                           </v-row>
@@ -87,6 +96,9 @@
                                 :items="userRoles"
                                 outlined
                                 dense
+                                :error-messages="userRoleErrors"
+                                @change="$v.employee.role.$touch()"
+                                @blur="$v.employee.role.$touch()"
                               />
                             </v-col>
                           </v-row>
@@ -97,9 +109,30 @@
                                 clearable
                                 label="Email (Official)"
                                 outlined
+                                loading="isCheckingEmail"
                                 dense
+                                :error-messages="emailErrors"
+                                @input="
+                                  $v.employee.email.$touch();
+                                  checkEmailAvailability();
+                                "
+                                @blur="$v.employee.email.$touch()"
                               />
                             </v-col>
+                            <v-chip
+                              v-show="!isCheckingEmail && employee.email !== ''"
+                              :color="isEmailAvailable ? 'success' : 'error'"
+                              dark
+                              class="mx-2 mt-1"
+                              ><v-icon left>{{
+                                isEmailAvailable
+                                  ? "mdi-check-circle"
+                                  : "mdi-close-circle"
+                              }}</v-icon>
+                              {{
+                                isEmailAvailable ? "Available" : "Already Taken"
+                              }}</v-chip
+                            >
                           </v-row>
 
                           <v-row class="" no-gutters>
@@ -110,6 +143,9 @@
                                 label="Temporary Password"
                                 outlined
                                 dense
+                                :error-messages="passwordErrors"
+                                @input="$v.employee.password.$touch()"
+                                @blur="$v.employee.password.$touch()"
                               />
                             </v-col>
                           </v-row>
@@ -117,7 +153,9 @@
                       </v-row>
 
                       <v-card-actions>
-                        <v-btn @click="createUser">Create</v-btn>
+                        <v-btn :disabled="!isEmailAvailable" @click="createUser"
+                          >Create</v-btn
+                        >
                       </v-card-actions>
                     </v-container>
                   </v-card>
@@ -128,6 +166,27 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Snackbar -->
+    <v-row>
+      <v-snackbar
+        v-model="snackbar.show"
+        top
+        right
+        :color="snackbar.color"
+        :timeout="snackbar.timeout"
+      >
+        {{ snackbar.text }}
+        <v-btn text @click="snackbar.show = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+    </v-row>
+
+    <!-- Fullscreen Overlay - Loader -->
+    <v-overlay :value="isCreating">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -136,21 +195,26 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-/*
-
 // Validation Library - Vuelidate
 import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
-
-*/
+import { required, email } from "vuelidate/lib/validators";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
-  // mixins: [validationMixin],
+  mixins: [validationMixin],
 
   // Form Validations
-  // validations: {},
+  validations: {
+    employee: {
+      title: { required },
+      name: { required },
+      division: { required },
+      role: { required },
+      email: { required, email },
+      password: { required }
+    }
+  },
 
   // Props Received
   props: [],
@@ -169,9 +233,22 @@ export default {
       division: "",
       role: "",
       email: "",
-      password: ""
+      password: "ucsc@123"
     },
-    title: ""
+    title: "",
+
+    // Loaders
+    isCheckingEmail: false,
+    isEmailAvailable: true,
+    isCreating: false,
+
+    // Snackbar
+    snackbar: {
+      show: false,
+      text: "",
+      color: "",
+      timeout: 4000
+    }
   }),
 
   // Custom Methods and Functions
@@ -201,7 +278,10 @@ export default {
       });
     },
     createUser() {
-      return new Promise((resolove, reject) => {
+      this.isCreating = true;
+      console.log("Create Invoked");
+      this.$v.employee.$touch();
+      if (!this.$v.employee.$invalid) {
         let tempData = { ...this.employee };
         tempData.name = this.title + this.employee.name;
         tempData.role = this.mapRoleIdToRole.get(this.employee.role);
@@ -210,15 +290,50 @@ export default {
           .post("/api/admin/user", tempData)
           .then(res => {
             if (res.status === 201) {
-              resolove(res.data);
+              // Snackbar Error
+              this.snackbar.text = "User Created Sucessfully";
+              this.snackbar.color = "";
+              this.snackbar.timeout = 4000;
+              this.snackbar.show = true;
+
+              this.$router.push("/admin/users");
             } else {
-              reject();
+              // Snackbar Error
+              this.snackbar.text = "Unable to Create User";
+              this.snackbar.color = "error";
+              this.snackbar.timeout = 4000;
+              this.snackbar.show = true;
             }
+            this.isCreating = false;
           })
-          .catch(err => {
-            reject(err);
+          .catch(() => {
+            // Snackbar Error
+            this.snackbar.text = "Unable to Create User";
+            this.snackbar.color = "error";
+            this.snackbar.timeout = 4000;
+            this.snackbar.show = true;
+
+            this.isCreating = false;
           });
-      });
+      }
+    },
+    checkEmailAvailability() {
+      console.log("checking");
+      this.isCheckingEmail = true;
+
+      this.$http
+        .get("/api/admin/user/email/is-available?email=" + this.employee.email)
+        .then(res => {
+          if (res.status === 200 && res.data.message === "available") {
+            this.isEmailAvailable = true;
+          } else {
+            this.isEmailAvailable = false;
+          }
+          this.isCheckingEmail = false;
+        })
+        .catch(() => {
+          this.isCheckingEmail = false;
+        });
     }
   },
 
@@ -250,7 +365,52 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {}
+  computed: {
+    // Validation Rules
+    titleErrors() {
+      const errors = [];
+      if (!this.$v.employee.title.$dirty) return errors;
+      !this.$v.employee.title.required &&
+        errors.push("Please Select the Title");
+      return errors;
+    },
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.employee.name.$dirty) return errors;
+      !this.$v.employee.name.required &&
+        errors.push("Please Enter the Name of the Employee");
+      return errors;
+    },
+    divisionErrors() {
+      const errors = [];
+      if (!this.$v.employee.division.$dirty) return errors;
+      !this.$v.employee.division.required &&
+        errors.push("Please Select the Division");
+      return errors;
+    },
+    userRoleErrors() {
+      const errors = [];
+      if (!this.$v.employee.role.$dirty) return errors;
+      !this.$v.employee.role.required &&
+        errors.push("Please Select the User Role");
+      return errors;
+    },
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.employee.email.$dirty) return errors;
+      !this.$v.employee.email.required &&
+        errors.push("Please Enter the Official Email");
+      !this.$v.employee.email.email && errors.push("Invalid Email");
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.employee.password.$dirty) return errors;
+      !this.$v.employee.password.required &&
+        errors.push("Please Enter the Temperary Password");
+      return errors;
+    }
+  }
 };
 </script>
 

@@ -9,9 +9,9 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title class="text-center justify-center py-6">
-                    <h4 class="font-weight-bold ">
-                      Participation as TEC team member
-                    </h4>
+
+                    <h4 class="font-weight-bold ">Procurements</h4>
+
                   </v-card-title>
 
                   <v-tabs v-model="tab" background-color="transparent" grow>

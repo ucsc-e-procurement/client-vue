@@ -95,7 +95,12 @@
                 style="padding-top: 40px;"
               >
                 <div style="font-size: 50px;">
-                  {{ Math.round(this.terminatedProcurementCount * 100) / 100 }}%
+
+                  {{
+                    Math.round(this.terminatedProcurementCount * 100 * 100) /
+                      100
+                  }}%
+
                 </div>
               </v-card-title>
               <v-card-actions>

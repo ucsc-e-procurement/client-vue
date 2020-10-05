@@ -6,13 +6,77 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Ongoing Procurements</h5>
+              <h5 class="headline">Procurements</h5>
+              <v-spacer />
+              <v-btn @click="tab = 3" small text color="primary"
+                >Advanced Search</v-btn
+              >
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
-              <v-col v-if="procurements.length == 0" cols="12">
+            <v-row no-gutters>
+              <v-col cols="12">
+                <v-card flat outlined class="mt-5">
+                  <v-tabs v-model="tab" background-color="grey lighten-2" grow>
+                    <v-tabs-slider></v-tabs-slider>
+                    <v-tab>
+                      On-Going
+                    </v-tab>
+                    <v-tab>
+                      Completed
+                    </v-tab>
+                    <v-tab>
+                      Terminated
+                    </v-tab>
+                    <v-tab>
+                      Advanced Search
+                    </v-tab>
+                  </v-tabs>
+                  <v-tabs-items v-model="tab">
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <on-going />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <completed />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <terminated />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+
+                    <v-tab-item>
+                      <v-container class="ma-0 ">
+                        <v-row no-gutters>
+                          <v-col cols="12">
+                            <on-going />
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-tab-item>
+                  </v-tabs-items>
+                </v-card>
+              </v-col>
+              <!-- <v-col v-if="procurements.length == 0" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Ongoing Procurements Available
                 </v-alert>
@@ -36,7 +100,7 @@
                     </v-icon>
                   </template>
                 </v-data-table>
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-container>
         </v-card>
@@ -49,6 +113,9 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
+import ProcurementOnGoing from "./components/Procurement_On_Going";
+import ProcurementCompleted from "./components/Procurement_Completed";
+import ProcurementTerminated from "./components/Procurement_Terminated";
 
 /*
 
@@ -70,10 +137,15 @@ export default {
   props: [],
 
   // Imported Components
-  components: {},
+  components: {
+    "on-going": ProcurementOnGoing,
+    completed: ProcurementCompleted,
+    terminated: ProcurementTerminated
+  },
 
   // Data Variables and Values
   data: () => ({
+    tab: null,
     //   Data Table
     headers: [
       {

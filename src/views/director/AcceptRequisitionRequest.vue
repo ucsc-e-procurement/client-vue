@@ -213,7 +213,8 @@ export default {
   data: () => ({
     // reqId: this.requisitionId,
     requisition: [],
-    options: ["Approved", "Denied"],
+    options: ["Approve", "Deny"],
+
     products: "",
     headers: [
       {
@@ -244,7 +245,9 @@ export default {
         .post(`/api/director/requisitions/approve`, {
           requisitionId: this.$route.query.requisition.requisition_id,
           directorRemarks: this.directorRemarks,
-          directorRecommendation: this.directorApproval
+          directorRecommendation:
+            this.directorApproval == "Approve" ? "Approved" : "Denied"
+
         })
         .then(response => {
           console.log(response);
