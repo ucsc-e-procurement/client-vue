@@ -80,7 +80,7 @@ export default {
   beforeMount() {},
   mounted() {
     // this.getSupplier("sale@gamestreet.lk");
-    this.user = this.$store.getters.user.user_id
+    this.user = this.$store.getters.user.supplier_id
     this.getSupplier(this.user)
   },
   beforeUpdate() {},

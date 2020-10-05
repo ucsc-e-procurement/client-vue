@@ -114,7 +114,7 @@ export default {
   beforeMount() {},
   mounted() {
     // this.getPendingOrders("sale@gamestreet.lk");
-    this.user = this.$store.getters.user.user_id
+    this.user = this.$store.getters.user.supplier_id
     this.fetchRequests(this.user)
   },
   beforeUpdate() {},
