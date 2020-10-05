@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="allCompletedProcurements">
     <v-card flat>
       <template v-for="(item, key) in completedProcurements">
         <v-card :key="item.tenderNo" class="mx-auto" max-width="800" flat>
@@ -153,32 +153,13 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user: null,
     tab: null,
     dialog: false,
     procurement: null,
     page: 1,
     perPage: 10,
-    allCompletedProcurements: [
-      {
-        tenderNo: "UCSC/DIM/G/ENG/2020/0001",
-        publishedDate: "20-01-2020",
-        category: "Janitorial Items/ Essential Items",
-        completedDate: "30-01-2020",
-        status: "Delivered",
-        items: [
-          { name: "Soap", qty: "20", price: "1500.00" },
-          { name: "Hand Sanitizer", qty: "10", price: "1000.00" }
-        ]
-      },
-      {
-        tenderNo: "UCSC/DIM/G/ENG/2020/0002",
-        publishedDate: "02-04-2020",
-        category: "Supply of Refreshment and Foods",
-        completedDate: "18-04-2020",
-        status: "Not Delivered",
-        items: [{ name: "Biscuits", qty: "20", price: "1500.00" }]
-      }
-    ]
+    allCompletedProcurements: null
   }),
 
   // Custom Methods and Functions
@@ -215,8 +196,9 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchCompletedProcurements("s000001");
-    //this.fetchCompletedProcurements(this.$store.getters.user.supplier_id)
+    // this.fetchCompletedProcurements("s000001");
+    this.user = this.$store.getters.user.supplier_id
+    this.fetchCompletedProcurements(this.user)
   },
   beforeUpdate() {},
   updated() {},

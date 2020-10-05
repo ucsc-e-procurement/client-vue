@@ -72,6 +72,7 @@ import Director_Supplier_List from "../views/director/SupplierList.vue";
 import Director_Supplier_Details from "../views/director/SupplierDetails.vue";
 import Director_Department_List from "../views/director/DepartmentList.vue";
 import Director_Department_Details from "../views/director/DepartmentDetails.vue";
+import Director_Reports from "../views/director/Reports.vue";
 
 /* Remove These Routes in Production Mode Before Deployment  */
 // Example Pages - For Developer Purposes Only
@@ -294,7 +295,12 @@ const routes = [
         path: "departments/:id",
         name: "d_dep_d",
         component: Director_Department_Details
-      }
+      },
+      {
+        path: "reports",
+        name: "d_rep",
+        component: Director_Reports
+      },
     ]
   },
 

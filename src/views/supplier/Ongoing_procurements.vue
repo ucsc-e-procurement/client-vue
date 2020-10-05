@@ -151,31 +151,12 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user:null,
     tab: null,
     dialog: false,
     procurement: null,
     tabs: ["New Requests", "On-Going", "Completed"],
-    ongoingProcurements: [
-      {
-        tenderNo: "UCSC/DIM/G/ENG/2020/0004",
-        publishedDate: "05-06-2020",
-        category: "Stationeries and Office Consumables",
-        status: "Quotations Sent",
-        bidOpeningDate: "30-06-2020",
-        items: [
-          { name: "Markers", qty: "20", price: "1500.00" },
-          { name: "Highlighters", qty: "10", price: "1000.00" }
-        ]
-      },
-      {
-        tenderNo: "UCSC/DIM/G/ENG/2020/0005",
-        publishedDate: "05-06-2020",
-        category: "Stationeries and Office Consumables",
-        status: "Bid Approved",
-        bidOpeningDate: "30-06-2020",
-        items: [{ name: "Pens", qty: "100", price: "3000.00" }]
-      }
-    ]
+    ongoingProcurements: null
   }),
 
   // Custom Methods and Functions
@@ -208,8 +189,10 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.fetchOngoingProcurements("s000001");
-    //this.fetchOngoingProcurements(this.$store.getters.user.supplier_id)
+    // this.fetchOngoingProcurements("s000001");
+    this.user = this.$store.getters.user.supplier_id
+    console.log('sup id', this.$store.getters.user.supplier_id)
+    this.fetchOngoingProcurements(this.user)
   },
   beforeUpdate() {},
   updated() {},

@@ -48,12 +48,12 @@
           <v-list-item-title>Notifications</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/statistics">
+      <v-list-item link to="/director/reports">
         <v-list-item-action>
-          <v-icon>mdi-file-chart</v-icon>
+          <v-icon>mdi-magnify</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Statistics</v-list-item-title>
+          <v-list-item-title>Advanced Search</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item link to="/director/departments">
