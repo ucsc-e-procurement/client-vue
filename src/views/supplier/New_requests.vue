@@ -114,7 +114,7 @@
           <v-btn color="green darken-3" text @click="gotoPriceSchedule"
             >Submit Bid</v-btn
           >
-          <v-btn color="grey darken-3" text @click="dialog = false"
+          <v-btn color="grey darken-3" text @click="reject"
             >Not Interested</v-btn
           >
           <v-btn color="blue darken-3" text @click="dialog = false"
@@ -138,7 +138,6 @@ import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 
 */
-
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
@@ -201,6 +200,20 @@ export default {
           console.log(error);
         });
     },
+
+    reject() {
+      this.dialog = false;
+      this.$http.get("/api/supplier/reject_quotation", {
+        params: {
+          id: this.newRequests[this.procurement].rfq_id
+        }
+      })
+        .then(res => {
+          console.log(res)
+          this.$router.go();
+        })
+    },
+
     gotoPriceSchedule() {
       this.dialog = false;
       this.$router.push({
