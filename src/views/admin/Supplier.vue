@@ -10,14 +10,56 @@
                 Supplier Profile of <strong>{{ supplier.name }}</strong>
               </h5>
               <v-spacer />
-              <v-chip color="success" small outlined class="mx-5"
+              <v-chip
+                color="success"
+                small
+                outlined
+                class="mx-5"
+                v-if="registrationStatus === 'VERIFIED'"
                 >Active</v-chip
+              >
+              <v-chip color="error" small outlined class="mx-5" v-else
+                >Inactive</v-chip
               >
               <v-btn small color="red darken-2" dark>Delete</v-btn>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
+            <v-row
+              no-gutters
+              class="pt-5"
+              v-show="registrationStatus !== 'VERIFIED'"
+            >
+              <v-col cols="12">
+                <v-alert
+                  v-if="registrationStatus === 'NOT_REGISTERED'"
+                  type="error"
+                  outlined
+                  border="left"
+                  >{{ supplier.name }} is <strong>NOT</strong> Registered for
+                  this Year.</v-alert
+                >
+                <v-alert
+                  v-else-if="registrationStatus === 'DENIED'"
+                  type="error"
+                  outlined
+                  border="left"
+                  >{{ supplier.name }} is Denied. Due to Failure to fulfil
+                  Prerequisites</v-alert
+                >
+
+                <v-alert
+                  v-else-if="
+                    registrationStatus === 'REGISTERED_BUT_NOT_VERIFIED'
+                  "
+                  type="info"
+                  outlined
+                  border="left"
+                  >Pending Verification</v-alert
+                >
+              </v-col>
+            </v-row>
             <v-row no-gutters>
               <v-col cols="12">
                 <v-card flat outlined class="mt-5">
@@ -29,7 +71,11 @@
                     <v-tab>
                       Bid Placements
                     </v-tab>
-                    <v-tab>
+                    <v-tab
+                      @click="
+                        getRegistrationsBySupplierId(supplier.supplier_id)
+                      "
+                    >
                       Registrations
                     </v-tab>
                     <v-tab>
@@ -143,6 +189,55 @@
                       <v-container class="ma-0 ">
                         <v-row no-gutters>
                           <v-col cols="12"> </v-col>
+
+                          <v-col cols="12">
+                            <v-text-field
+                              v-model="searchRegistration"
+                              outlined
+                              dense
+                              label="Search"
+                              clearable
+                            />
+                            <v-data-table
+                              :headers="headersRegistrations"
+                              :items="registrations"
+                              :search="searchRegistration"
+                              :items-per-page="10"
+                              no-data-text="Please Add Items"
+                            >
+                              <template v-slot:item.action="{ item }">
+                                <v-btn
+                                  @click="
+                                    gotoRegistration(item.registration_no)
+                                  "
+                                  color="primary"
+                                  text
+                                  >View</v-btn
+                                >
+                              </template>
+
+                              <template v-slot:item.verified="{ item }">
+                                <v-chip
+                                  small
+                                  :color="
+                                    item.verified === 'verified'
+                                      ? 'success'
+                                      : item.verified === 'denied'
+                                      ? 'error'
+                                      : 'primary'
+                                  "
+                                >
+                                  {{
+                                    item.verified === "verified"
+                                      ? "Verified"
+                                      : item.verified === "denied"
+                                      ? "Denied"
+                                      : "Pending"
+                                  }}
+                                </v-chip>
+                              </template>
+                            </v-data-table>
+                          </v-col>
                         </v-row>
                       </v-container>
                     </v-tab-item>
@@ -288,7 +383,53 @@ export default {
       }
     ],
     bids: [],
-    searchBid: ""
+    searchBid: "",
+
+    isRegistered: false,
+    registrationStatus: "",
+
+    searchRegistration: "",
+    registrations: [],
+    headersRegistrations: [
+      {
+        text: "#",
+        value: "index",
+        sortable: false,
+        align: "start",
+        // divider: true,
+        groupable: true
+      },
+      {
+        text: "Registration Year",
+        value: "registration_year",
+        sortable: false,
+        align: "start",
+        // divider: true,
+        groupable: true
+      },
+      {
+        text: "Registration Date",
+        value: "registration_date",
+        sortable: false,
+        align: "start",
+        // divider: true,
+        groupable: true
+      },
+      {
+        text: "Status",
+        value: "verified",
+        sortable: false,
+        align: "center"
+        // divider: true
+      },
+      {
+        text: "Actions",
+        value: "action",
+        sortable: false,
+        align: "center"
+        // divider: true
+      }
+    ]
   }),
 
   // Custom Methods and Functions
@@ -333,19 +474,66 @@ export default {
     },
     gotoBid(bidId) {
       this.$router.push("/admin/bid/" + btoa(bidId)).catch(() => {});
-    }
+    },
     // ---------------------------------------------
     //           Tab 03
     // ---------------------------------------------
-
+    getRegistrationsBySupplierId(id) {
+      return new Promise((resolve, reject) => {
+        this.$http
+          .get(`/api/admin/supplier/registrations?supplierId=${id}`)
+          .then(res => {
+            console.log(res.data);
+            let index = 0;
+            this.registrations = res.data.map(registration => {
+              index++;
+              return {
+                ...registration,
+                index,
+                action: "",
+                registration_year: registration.registration_date.split("-")[0]
+              };
+            });
+            resolve(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
     // ---------------------------------------------
     //           Tab 04
     // ---------------------------------------------
+
+    // ---------------------------------------------
+    getRegistrationStatus() {
+      this.$http
+        .get(
+          `/api/admin/supplier/registration-status?supplierId=${atob(
+            this.encodedSupplierId
+          )}`
+        )
+        .then(res => {
+          console.log(res.data);
+          this.registrationStatus = res.data.status;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    gotoRegistration(registrationId) {
+      this.$router
+        .push(`/admin/supplier-registration/${btoa(registrationId)}`)
+        .catch(() => {});
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
+    this.getRegistrationStatus();
     this.getSupplierById(atob(this.encodedSupplierId))
       .then(supplier => {
         console.log(supplier);

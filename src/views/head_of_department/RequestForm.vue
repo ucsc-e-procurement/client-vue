@@ -138,7 +138,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn type="submit" color="green darken-1" text @click="submit"
+              <v-btn type="submit" color="green darken-1" text @click="submit()"
                 >Proceed</v-btn
               >
 
@@ -265,6 +265,7 @@ export default {
     submit() {
       this.$refs.observer.validate().then(success => {
         if (!success) {
+          alert("Your here");
           return;
         }
         switch (this.selectProcType) {
@@ -281,6 +282,8 @@ export default {
         {
           this.checkbox ? (this.reorder = true) : (this.reorder = false);
         }
+        window.location.href = "http://localhost:8080/hod";
+
         axios
           .post(`${baseURL}/api/hod/create_req`, {
             description: this.descript,
@@ -292,11 +295,13 @@ export default {
             reorder: this.reorder
           })
           .then(response => {
-            console.log(response);
+            alert(response);
+            window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(response));
           })
           .catch(error => {
-            console.log(error);
+            alert(error);
+            window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(error));
           });
         window.location.href = "http://localhost:8080/hod";

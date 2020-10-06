@@ -14,7 +14,7 @@
                     <tr v-for="result in resultsArray" :key="result" cols="12">
                         <td>{{result.procurement_id}}</td>
                         <td>{{result.category}}</td>
-                        <td><v-btn color="primary" class="mb-4 mt-4" @click="getSupplierList(result.procurement_id)">Select Supplier</v-btn></td>
+                        <td><v-btn color="primary" class="mb-4 mt-4" @click="getSupplierList(result.procurement_id,result.category)">Select Supplier</v-btn></td>
                     </tr> 
                 </tbody>           
             </table>
@@ -109,16 +109,17 @@ export default {
     },
 
     // get list of suppliers
-    getSupplierList(procurementId) {
+    getSupplierList(procurementId,category) {
       this.procurementId = procurementId
+      this.category = category
+      console.log("testCategory",this.category)
       this.dialog1 = true
       this.$http
         .get(
-          `/api/admin/direct_ongoing_procurements/suppliers`
+          `/api/admin/direct_ongoing_procurements/suppliers?category=${this.category}`
         )
         .then(response => {
           this.resultsArray1 = response.data; 
-          console.log("resultsArray1",this.resultsArray1)
         })
         .catch(err => {
           console.log(err);
