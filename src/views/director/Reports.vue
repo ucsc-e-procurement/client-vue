@@ -116,6 +116,7 @@
                                             <v-date-picker
                                             v-model="toDate"
                                             @input="toMenu = false"
+                                            :min="fromDate"
                                             ></v-date-picker>
                                         </v-menu>
                                     </ValidationProvider>
@@ -133,7 +134,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" v-if="success">
-                <v-card>
+                <v-card v-if="procurements">
                     <v-data-table
                         :headers="headers"
                         :items="procurements"
@@ -209,20 +210,21 @@ export default {
       "SDU",
       "STR"
     ],
-    suppliers: ['supplier'],
-    procurementStatusList: ['All', 'On-going', 'Completed', 'Terminated'],
-    procurementTypes: ["All", "Direct", "Shopping"],
+    suppliers: ['All'],
+    procurementStatusList: ['All', 'on-going', 'completed', 'terminated'],
+    procurementTypes: ["All", "direct", "shopping"],
     supplier: 'All',
     procurementType: 'All',
     procurementStatus: 'All',
     department: 'All',
-    fromDate: new Date().toISOString().substr(0, 10),
+    fromDate: new Date("2019-01-01").toISOString().substr(0, 10),
     toDate: new Date().toISOString().substr(0, 10),
     menu: false,
     modal: false,
     fromMenu: false,
     toMenu: false,
     success: false,
+    noData: 1,
     headers: [
       {
         text: "Procurement ID",
@@ -240,22 +242,30 @@ export default {
   // Custom Methods and Functions
   methods: {
     advancedSearch() {
-        this.success = true;
-      this.$http
-        .get("/api/director/get_suppliers")
-        .then(response => {
-          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
-          this.supplierList = response.data;
-          this.isMounted = true;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        this.procurements = [];
+        var dep = this.department == 'All' ? '' : this.department;
+        var procStatus = this.procurementStatus == 'All' ? '' : this.procurementStatus;
+        var procType = this.procurementType == 'All' ? '' : this.procurementType == 'direct' ? 'DIM' : 'NSP';
+        var sup = this.supplier == 'All' ? '' : this.supplier;
+        this.$http
+          .get(`/api/director/advanced_search?department=${dep}&procurementStatus=${procStatus}&procurementType=${procType}&supplier=${sup}&from=${this.fromDate}&to=${this.toDate}`)
+          .then(response => {
+            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response.data[0]);
+            this.procurements = response.data[0];
+            this.procurements = this.procurements.procurements ? JSON.parse(this.procurements.procurements) : [];
+            this.procurementType = procType == 'DIM' ? 'direct' : procType == 'NSP' ? 'shopping' : 'All',
+            this.procurementStatus = procStatus ? procStatus : 'All',
+            this.department = dep ? dep : 'All',
+            this.success = true;
+          })
+          .catch(err => {
+            console.log(err);
+          });
     },
     onButtonClick: function(event) {
       var proc_id = event.procurementId;
 
-      if (event.procurement_method == "shopping") {
+      if (!event.procurement_method.includes("DIM")) {
         this.$router.push({
           path: `/director/procurements/shopping/${proc_id.replace(
             /[/]/g,
@@ -277,12 +287,23 @@ export default {
         });
       }
     },
+    getSuppliers() {
+      this.$http
+        .get("/api/director/get_suppliers")
+        .then(response => {
+          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", this.suppliers.concat(response.data.map(i => i.name)));
+          this.suppliers = this.suppliers.concat(response.data.map(i => i.name));
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-
+    this.getSuppliers();
   },
   beforeMount() {},
   mounted() {},

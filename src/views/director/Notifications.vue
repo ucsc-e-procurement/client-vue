@@ -166,7 +166,7 @@ export default {
       console.log(event);
       var proc_id = event.procurement_id;
 
-      if (event.procurement_method == "shopping") {
+      if (!event.procurement_method.includes("DIM")) {
         this.$router.push({
           path: `procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
           query: {
