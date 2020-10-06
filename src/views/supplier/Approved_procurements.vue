@@ -8,9 +8,9 @@
             <p class="text-h6">
               {{ item.category }}
             </p>
-            <div class="text--primary">Published Date : {{ item.date }}</div>
+            <div class="text--primary">Published Date : {{ ('0' + new Date(item.date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(item.date).getMonth()+1)).slice(-2) + ' - ' + new Date(item.date).getFullYear() }}}</div>
             <div class="text--primary">
-              Completed Date : {{ item.completed_date }}
+              Completed Date : {{ ('0' + new Date(item.completed_date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(item.completed_date).getMonth()+1)).slice(-2) + ' - ' + new Date(item.completed_date).getFullYear() }}
             </div>
             <div class="text--primary">
               Status : {{ item.procurement_status }}
@@ -65,15 +65,15 @@
             {{ completedProcurements[procurement].category }}
           </p>
           <div class="text--primary">
-            Published Date : {{ completedProcurements[procurement].date }}
+            Published Date : {{ ('0' + new Date(completedProcurements[procurement].date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(completedProcurements[procurement].date).getMonth()+1)).slice(-2) + ' - ' + new Date(completedProcurements[procurement].date).getFullYear() }}
           </div>
           <div class="text--primary">
-            Bid Opening Date :
-            {{ completedProcurements[procurement].bid_opening_date }}
+            Bid Opened Date :
+            {{ ('0' + new Date(completedProcurements[procurement].bid_opening_date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(completedProcurements[procurement].bid_opening_date).getMonth()+1)).slice(-2) + ' - ' + new Date(completedProcurements[procurement].bid_opening_date).getFullYear() }}
           </div>
           <div class="text--primary">
             Completed Date :
-            {{ completedProcurements[procurement].completed_date }}
+            {{ ('0' + new Date(completedProcurements[procurement].completed_date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(completedProcurements[procurement].completed_date).getMonth()+1)).slice(-2) + ' - ' + new Date(completedProcurements[procurement].completed_date).getFullYear() }}
           </div>
           <div class="text--primary">
             Status : {{ completedProcurements[procurement].procurement_status }}
