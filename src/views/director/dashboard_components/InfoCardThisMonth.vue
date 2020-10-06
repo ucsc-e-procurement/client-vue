@@ -8,12 +8,12 @@
         <v-col cols="12">
           <v-row>
             <v-col cols="6">
-              <v-card height="150" color="deep-purple lighten-3">
+              <v-card height="150" color="blue lighten-3">
                 <v-card-title
                   class="headline font-weight-bold"
                   style="justify-content: center;"
                 >
-                  <div style="font-size: 50px; padding-top: 10px">
+                  <div style="font-size: 60px; padding-top: 10px; color: #3c3c3c">
                     {{ this.requisitionCount }}
                   </div>
                 </v-card-title>
@@ -28,7 +28,7 @@
                   class="headline font-weight-bold"
                   style="justify-content: center;"
                 >
-                  <div style="font-size: 50px; padding-top: 10px">
+                  <div style="font-size: 60px; padding-top: 10px; color: #3c3c3c">
                     {{ ongoingProcurementCount }}
                   </div>
                 </v-card-title>
@@ -47,7 +47,7 @@
                   class="headline font-weight-bold"
                   style="justify-content: center;"
                 >
-                  <div style="font-size: 50px; padding-top: 10px">
+                  <div style="font-size: 60px; padding-top: 10px; color: #3c3c3c">
                     {{ completedProcurementCount }}
                   </div>
                 </v-card-title>
@@ -62,7 +62,7 @@
                   class="headline font-weight-bold"
                   style="justify-content: center;"
                 >
-                  <div style="font-size: 50px; padding-top: 10px">
+                  <div style="font-size: 60px; padding-top: 10px; color: #3c3c3c">
                     {{ terminatedProcurementCount }}
                   </div>
                 </v-card-title>
