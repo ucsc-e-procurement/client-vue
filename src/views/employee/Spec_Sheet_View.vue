@@ -1,31 +1,7 @@
 <template>
   <v-container fluid class="px-0 py-0">
     <v-row>
-      <v-col cols="2">
-        <v-card class="mb-4">
-          <v-container>
-            <v-list dense>
-              <v-subheader>PROCUREMENTS</v-subheader>
-              <v-list-item-group
-                v-model="item"
-                color="primary"
-              >
-                <v-list-item
-                  v-for="item in procs"
-                  :key="item.procurement_id"
-                  @click="updateSelected(item.procurement_id)"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.procurement_id"></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-container>
-        </v-card>
-      </v-col>
-
-      <v-col cols="10">
+      <v-col cols="12">
         <v-card class="mb-4">
           <v-container>
             <!-- Page Title -->
@@ -66,7 +42,7 @@
                 </v-container>        
               </v-card>
 
-              <v-card flat>
+              <!-- <v-card flat>
                 <v-card-text>
                   <v-select
                     v-model="steps"
@@ -74,7 +50,7 @@
                     label="Select number of items in procurement"
                   ></v-select>
                 </v-card-text>
-              </v-card>
+              </v-card> -->
               <v-stepper v-model="e1">
                 <v-stepper-header>
                   <template v-for="n in steps">
@@ -100,7 +76,7 @@
                     <v-card class="mb-12" >
                       <!--Add insert item logic here-->
 
-                      <v-row align="center">
+                      <!-- <v-row align="center">
                         <v-col cols="12">
                           <v-text-field
                             v-model="itemName"
@@ -143,7 +119,7 @@
                         color=""
                         @click="reset"
                         >Reset</v-btn
-                      >
+                      > -->
 
                       
                       <!-- </ValidationObserver> -->
