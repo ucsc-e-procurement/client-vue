@@ -5,7 +5,7 @@
         <v-card class="mb-4">
           <v-container>
             <v-list dense>
-              <v-subheader>PROCUREMENTS</v-subheader>
+              <v-subheader>PROCUREMENTS NEEDED ATTENTION</v-subheader>
               <v-list-item-group
                 v-model="item"
                 color="primary"
@@ -282,6 +282,8 @@
 <script>
 // Componenets
 import axios from "axios";
+
+import firebase from "firebase";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -316,7 +318,7 @@ export default {
     featureList: [],
     minRequirementList: [],
     tableData: [],
-    // Dummy Data
+   
     e1: 1,
 
     steps: 1,
@@ -326,6 +328,9 @@ export default {
     itemNull: true,
     empid: "",
     procs: [],
+
+    // Dummy Data
+    testdata: "Test",
 
   }),
 
@@ -340,168 +345,94 @@ export default {
   // Custom Methods and Functions
   methods: {
 
-     async getBidData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
-      let doc_id;
-      this.fbData.push({
-        doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
-          .get()
-          .then(function(querySnapshot) {
-            let docArr;
-
-            querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
-              doc_id = doc.id;
-            });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
-          })
+    //initialize a document
+     async initializeDoc(proc_id) {
+      var doc = firebase.firestore().collection('ScheduleOfRequirements').add({
+        InvitationNo: proc_id,
+        Name: ""
       });
     },
 
-     async getProcData() {
+    //set items
+     async setItem() {
       let invRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
         doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
-            let docArr;
-
             querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
               doc_id = doc.id;
             });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
+            return;
           })
+      });
+      await docRef.document(doc_id).collection('Items').add({
+        ItemName: this.itemName,
+        Features: this.featureList,
+        MinimumRequirement: this.minRequirementList
       });
     },
 
+    //  async fbTest(){
+    //   this.procs.forEach((element) =>{
+    //     //this.initializeDoc(element.procurement_id);
+    //     firebase.firestore().collection("test_col").add({
+    //       first: "Alan",
+    //       middle: "Mathison",
+    //       last: "Turing",
+    //       born: 1912,
+    //       lt: element.procurement_id
+    //     });
+    //     //console.log(element.procurement_id);
+    //   });
+    //  },
 
-     async addProcData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+    //Add name
+     async addProcName() {
+      let db = firebase.firestore();
+      let docRef = db.collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
         doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
-            let docArr;
-
             querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
               doc_id = doc.id;
             });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
+            return;
           })
+      });
+      await docRef.document(doc_id).update({
+        Name: this.procName
       });
     },
 
      async deleteProcData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+      let db = firebase.firestore();
+      let docRef = db.collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
         doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
-            let docArr;
-
             querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
               doc_id = doc.id;
             });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
+            return;
           })
       });
+      await docRef.document(doc_id).delete();
     },
 
     nextStep(n) {
+      // if(n == 1){
+      //    this.initializeDoc(this.invitationNo);
+      // }
+
       if (this.itemNull == true){
         this.dialog2 = true;
         return;
@@ -518,6 +449,7 @@ export default {
 
     updateSelected(invNo) {
       this.invitationNo = invNo;
+      this.initializeDoc(invNo);
     },
 
     reset() {
@@ -548,9 +480,8 @@ export default {
   },
 
   // Life Cycle Hooks
-  beforeCreate() {},
-  created() {
-    //this.empid = this.$store.getters.user.employee_id
+  beforeCreate() {
+     //this.empid = this.$store.getters.user.employee_id
     this.empid = "emp00004";
     axios
       .get(`http://localhost:5000/api/hod/procforspec/${this.empid}`)
@@ -559,8 +490,13 @@ export default {
       })
       .catch(error => console.log(error));
   },
-  beforeMount() {},
-  mounted() {},
+  created() {
+  },
+  beforeMount() {
+  },
+  mounted() {
+    this.fbTest();
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},
