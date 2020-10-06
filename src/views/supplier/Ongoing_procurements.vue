@@ -24,7 +24,7 @@
             </p>
             <div class="text--primary">Status : {{ item.bid_status }}</div>
             <div class="text--primary">
-              Bid Opening Date : {{ item.bid_opening_date }}
+              Bid Opening Date : {{ ('0' + new Date(item.bid_opening_date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(item.bid_opening_date).getMonth()+1)).slice(-2) + ' - ' + new Date(item.bid_opening_date).getFullYear() }}
             </div>
           </v-card-text>
           <v-card-actions>
@@ -67,11 +67,11 @@
             {{ ongoingProcurements[procurement].category }}
           </p>
           <div class="text--primary">
-            Published Date : {{ ongoingProcurements[procurement].date }}
+            Published Date : {{ ('0' + new Date(ongoingProcurements[procurement].date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(ongoingProcurements[procurement].date).getMonth()+1)).slice(-2) + ' - ' + new Date(ongoingProcurements[procurement].date).getFullYear() }}
           </div>
           <div class="text--primary">
             Bid opening Date :
-            {{ ongoingProcurements[procurement].bid_opening_date }}
+            {{ ('0' + new Date(ongoingProcurements[procurement].bid_opening_date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(ongoingProcurements[procurement].bid_opening_date).getMonth()+1)).slice(-2) + ' - ' + new Date(ongoingProcurements[procurement].bid_opening_date).getFullYear() }}
           </div>
           <div class="text--primary">
             Status : {{ ongoingProcurements[procurement].bid_status }}
