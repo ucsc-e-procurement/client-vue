@@ -8,7 +8,13 @@
             <v-row no-gutters>
               <h5 class="headline">Supplier Registrations</h5>
               <v-spacer />
-              <v-btn color="primary" small outlined>Registered Suppliers</v-btn>
+              <v-btn
+                color="primary"
+                small
+                outlined
+                @click="$router.push('/admin/suppliers')"
+                >Registered Suppliers</v-btn
+              >
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
