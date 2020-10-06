@@ -345,12 +345,7 @@
               @click="dialogInitializeProcurement = false"
               >Cancel</v-btn
             >
-            <v-btn
-              color="primary"
-              small
-              dark
-              @click="initializeProcurement"
-              loading
+            <v-btn color="primary" small dark @click="initializeProcurement"
               >Okay</v-btn
             >
           </v-card-actions>
@@ -540,7 +535,8 @@ export default {
         procurementCategory: this.procurementCategory,
         bidOpeningDate: this.bidOpeningDate,
         bidExpirationDate: this.bidExpirationDate,
-        assistantBursarId: this.$store.getters.employeeId
+        assistantBursarId: this.$store.getters.employeeId,
+        newStepValue: 3
       };
 
       this.$http
