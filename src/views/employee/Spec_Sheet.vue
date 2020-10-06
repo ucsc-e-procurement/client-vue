@@ -186,7 +186,7 @@
                       Continue
                     </v-btn>
 
-                    <v-btn text>Cancel</v-btn>
+                    <v-btn text @click="deleteProcData()">Cancel</v-btn>
                   </v-stepper-content>
                 </v-stepper-items>
               </v-stepper>
@@ -228,7 +228,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
 
-                <v-btn type="submit" color="green darken-1" text @click="submit"
+                <v-btn type="submit" color="green darken-1" text @click="submit(this.invitationNo)"
                   >Proceed</v-btn
                 >
 
@@ -353,22 +353,24 @@ export default {
       });
     },
 
-    //set items
+    //set items including featurelist and MinRequirements
      async setItem() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+      let docRef = firebase.firestore().collection("ScheduleOfRequirements")
       let doc_id;
-      this.fbData.push({
-        doc: await invRef
+      await docRef
           .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-              doc_id = doc.id;
+              doc_id = doc.id;       
+              //window.alert(doc_id);
             });
-            return;
           })
-      });
-      await docRef.document(doc_id).collection('Items').add({
+          .catch(function(error) {
+            console.log("Error getting documents: ", error);
+          });
+          
+      await docRef.doc('doc_id').collection('Items').add({
         ItemName: this.itemName,
         Features: this.featureList,
         MinimumRequirement: this.minRequirementList
@@ -389,33 +391,36 @@ export default {
     //   });
     //  },
 
-    //Add name
+    //Add name for procurement
      async addProcName() {
       let db = firebase.firestore();
       let docRef = db.collection("ScheduleOfRequirements");
       let doc_id;
-      this.fbData.push({
-        doc: await invRef
+      await docRef
           .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-              doc_id = doc.id;
+              doc_id = doc.id;       
+              window.alert(doc_id);
             });
-            return;
           })
-      });
+          .catch(function(error) {
+            window.alert("Error getting documents: ", error);
+          });
+
       await docRef.document(doc_id).update({
         Name: this.procName
       });
     },
 
+     //delete all data if cancelled.
      async deleteProcData() {
       let db = firebase.firestore();
       let docRef = db.collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
-        doc: await invRef
+        doc: await docRef
           .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
@@ -426,32 +431,41 @@ export default {
           })
       });
       await docRef.document(doc_id).delete();
+      
+      //clear all data
+      this.reset();
+
+      //set stepper to 1
+      this.steps = 1;
     },
 
     nextStep(n) {
-      // if(n == 1){
-      //    this.initializeDoc(this.invitationNo);
-      // }
+      if(n == 1){
+         this.initializeDoc(this.invitationNo);
+      }
 
       if (this.itemNull == true){
         this.dialog2 = true;
         return;
       }
       else if (n === this.steps) {
+         this.setItem(); //set item data
          this.finalize = true;
       } else {
         this.e1 = n + 1;
+        this.setItem(); //set item data
         this.itemNull = true;
       }
-      //firestore function
       this.reset();
     },
 
+    //selecting proc
     updateSelected(invNo) {
       this.invitationNo = invNo;
-      this.initializeDoc(invNo);
+      // this.initializeDoc(invNo);
     },
 
+    //reset data in following states
     reset() {
       this.itemName = "";
       this.feature = "";
@@ -459,6 +473,15 @@ export default {
       this.featureList = [];
       this.minRequirementList = [];
       this.tableData = [];
+    },
+
+    //final proceed
+    submit(invitationNo){
+      this.addProcName();
+      var removeIndex = this.procs.map(function(item) { return item.procurement_id; }).indexOf(invitationNo);
+      this.procs.splice(removeIndex, 1);
+      this.reset();
+      this.invitationNo = "";
     },
 
     addFeatureRequirementSet() {
