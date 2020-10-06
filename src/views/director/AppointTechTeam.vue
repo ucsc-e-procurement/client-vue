@@ -368,8 +368,9 @@ export default {
       this.$http
         .get(`/api/director/getemployees`)
         .then(response => {
-          console.log(response);
           this.people = response.data;
+          this.people = this.people.filter(i => i.employee_id != 'emp00001' && i.employee_id != 'emp00004' && i.employee_id != 'emp00005');
+          // console.log("wgewg", this.people);
         })
         .catch(err => {
           console.log(err);
