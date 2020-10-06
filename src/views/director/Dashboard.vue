@@ -19,6 +19,8 @@
             <v-row>
               <v-col cols="8">
                 <recentPurchases />
+                <br/>
+                <Calendar />
                 <v-row>
                   <v-col cols="6">
                     <ChartLastYearProcurements />
@@ -29,7 +31,7 @@
                 </v-row>
               </v-col>
               <v-col cols="4">
-                <approvedRequisitions />
+                  <approvedRequisitions />
                 <v-row>
                   <infoCardThisMonth />
                 </v-row>
@@ -37,7 +39,9 @@
             </v-row>
             <v-divider></v-divider>
             <v-row>
-              <v-col cols="12" md="12"> </v-col>
+              <v-col cols="8"> 
+                
+              </v-col>
             </v-row>
           </v-container>
         </v-card>
@@ -57,6 +61,7 @@
   import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions"
   import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth"
   import ChartLastYearProcurements from "./dashboard_components/ChartLastYearProcurements"
+  import Calendar from "./dashboard_components/Calendar"
 
 /*
 
@@ -91,10 +96,9 @@ export default {
     infoCardThisYear: InfoCardThisYear,
     recentPurchases: RecentPurchases,
     approvedRequisitions: ApprovedRequisitions,
-
     infoCardThisMonth: InfoCardThisMonth,
-    ChartLastYearProcurements: ChartLastYearProcurements
-
+    ChartLastYearProcurements: ChartLastYearProcurements,
+    Calendar: Calendar
   },
 
   // Data Variables and Values
