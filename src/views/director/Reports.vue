@@ -210,13 +210,13 @@ export default {
       "STR"
     ],
     suppliers: ['supplier'],
-    procurementStatusList: ['All', 'On-going', 'Completed', 'Terminated'],
-    procurementTypes: ["All", "Direct", "Shopping"],
-    supplier: 'All',
+    procurementStatusList: ['All', 'on-going', 'completed', 'terminated'],
+    procurementTypes: ["All", "direct", "shopping"],
+    supplier: '',
     procurementType: 'All',
     procurementStatus: 'All',
     department: 'All',
-    fromDate: new Date().toISOString().substr(0, 10),
+    fromDate: new Date("2019-01-01").toISOString().substr(0, 10),
     toDate: new Date().toISOString().substr(0, 10),
     menu: false,
     modal: false,
@@ -242,11 +242,11 @@ export default {
     advancedSearch() {
         this.success = true;
       this.$http
-        .get("/api/director/get_suppliers")
+        .get(`/api/director/advanced_search?department=${this.department}&procurementStatus=${this.procurementStatus}&procurementType=${this.procurementType}&supplier=${this.supplier}&from=${this.fromDate}&to=${this.toDate}`)
         .then(response => {
-          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
-          this.supplierList = response.data;
-          this.isMounted = true;
+          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
+          // this.supplierList = response.data;
+          // this.isMounted = true;
         })
         .catch(err => {
           console.log(err);
