@@ -170,7 +170,7 @@
                       {{ item.procurement_id }}</v-col
                     >
                     <v-col class="shrink">
-                      <v-btn @click="openProcurement(item)">View</v-btn>
+                      <v-btn @click="openSpecSheet(item)">View</v-btn>
                     </v-col>
                   </v-row>
                 </v-alert>
@@ -302,6 +302,10 @@ export default {
           unlocked: item.step >= 7 ? true : false
         }
       });
+    },
+
+    openSpecSheet(item) {
+      this.$router.push(`employee/specsheet`)
     },
 
     fetchNewProcurements(employee_id) {
