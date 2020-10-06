@@ -25,7 +25,7 @@
                   ></v-text-field>
                 </td>
                 <td>
-                  <v-btn color="primary" class="mb-4 mt-4" @click="sendRFQShoppingOngoingProcurements(result.procurement_id)">SEND RFQ</v-btn>
+                  <v-btn color="primary" class="mb-4 mt-4" @click="sendRFQShoppingOngoingProcurements(result.procurement_id,result.category)">SEND RFQ</v-btn>
                 </td>
             </tr> 
         </tbody>           
@@ -87,12 +87,13 @@ export default {
     },
 
     // send rfq
-    sendRFQShoppingOngoingProcurements(procurementId) {
+    sendRFQShoppingOngoingProcurements(procurementId,category) {
       this.procurementId = procurementId
+      this.category = category
       console.log("test1",this.date,this.deadline)
       this.$http
         .post(
-          `/api/admin/shopping_ongoing_procurements/suppliers/send_rfq?date=${this.date}&deadline=${this.deadline}&procurementId=${this.procurementId}`
+          `/api/admin/shopping_ongoing_procurements/suppliers/send_rfq?date=${this.date}&deadline=${this.deadline}&procurementId=${this.procurementId}&category=${this.category}`
         )
         .then(res => {
           console.log(res);
