@@ -182,7 +182,7 @@ export default {
         value: "procurement_id"
       },
       { text: "Category", value: "category" },
-      // { text: "Date Initiated", value: "date" },
+      { text: "Bid Opened Date", value: "bid_opening_date" },
       { text: "Date Completed", value: "completed_date" },
       { text: "Actions", value: "controls", sortable: false }
     ],
@@ -232,6 +232,8 @@ export default {
         })
         .then(response => {
           console.log(response.data);
+          response.data.forEach(i => i.bid_opening_date = new Date(i.bid_opening_date).toJSON().slice(0, 10))
+          response.data.forEach(i => i.completed_date = new Date(i.completed_date).toJSON().slice(0, 10))
           this.completedProcurements = response.data;
           this.completedProcurements.forEach(element => {
             element.bids = JSON.parse(element.bids);
