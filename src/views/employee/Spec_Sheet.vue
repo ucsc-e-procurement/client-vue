@@ -375,20 +375,20 @@ export default {
         .where("InvitationNo", "==", this.invitationNo)
         .get()
         .then((querySnapshot)  => {
-          console.log("==============================================");
+          //console.log("==============================================");
           querySnapshot.forEach((doc) => {
             doc_id = doc.id;
             this.$store.state.sorId = doc.id;
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>", this.$store.state.sorId);
+            //console.log(">>>>>>>>>>>>>>>>>>>>>>>", this.$store.state.sorId);
           });
         })
         .catch(function(error) {
           console.log("Error getting documents: ", error);
         });
 
-      console.log(item);
-      console.log(this.features);
-      console.log(this.minreq);
+      //console.log(item);
+     // console.log(this.features);
+      //console.log(this.minreq);
 
       await docRef
         .doc(doc_id)
@@ -424,7 +424,7 @@ export default {
         .then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc_id = doc.id;
-            console.log(doc_id);
+            //console.log(doc_id);
           });
         })
         .catch(function(error) {
@@ -472,12 +472,12 @@ export default {
           procurement_id: this.invitationNo
         })
         .then(response => {
-          alert(response);
+          //alert(response);
           //window.location.href = "http://localhost:8080/hod";
           // alert(JSON.stringify(response));
         })
         .catch(error => {
-          alert(error);
+          //alert(error);
           //window.location.href = "http://localhost:8080/hod";
           // alert(JSON.stringify(error));
         });
@@ -537,12 +537,12 @@ export default {
           procurement_id: this.invitationNo
         })
         .then(response => {
-          alert(response);
+          //alert(response);
           //window.location.href = "http://localhost:8080/hod";
           // alert(JSON.stringify(response));
         })
         .catch(error => {
-          alert(error);
+          //alert(error);
           //window.location.href = "http://localhost:8080/hod";
           // alert(JSON.stringify(error));
         });
