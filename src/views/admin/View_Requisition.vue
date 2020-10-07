@@ -542,7 +542,16 @@ export default {
     showProcurementInitializationConfirmation() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.dialogInitializeProcurement = true;
+        if (this.bidOpeningDate !== this.bidExpirationDate) {
+          this.dialogInitializeProcurement = true;
+        } else {
+          // Snackbar Error
+          this.snackbar.text =
+            "Bid Opening Date Cannot Be Equal to Bid Expiration Date";
+          this.snackbar.color = "error";
+          this.snackbar.timeout = 100000;
+          this.snackbar.show = true;
+        }
       }
 
       // TODO Check Whether Requisition is met the Initialization Requirements
