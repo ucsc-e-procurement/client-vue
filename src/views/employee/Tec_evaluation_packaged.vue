@@ -394,6 +394,7 @@
                         v-model="recommended"
                         outlined
                         :rules="[rules.required]"
+                        multiple
                         required
                       ></v-select>
                       </v-col>
@@ -628,6 +629,11 @@ export default {
       this.stepperStep = this.stepperStep - 1;
     },
 
+    getRecommendedBids(val) {
+      this.recommended[0] = val
+      console.log('........', this.recommended)
+    },
+
     getReasonForRejecting(val, key) {
       this.rejectReasons[key] = val;
       this.reason_for_rejecting[key] = {
@@ -687,7 +693,7 @@ export default {
           var complete = true;
           var agree =0;
           var disagree = 0;
-          var recommended = false;
+          var tec_recommended = false;
           this.tec_team.forEach((item, key) => {
             console.log(key, item);
             if (!this.tec_recommendation[key]) {
@@ -716,7 +722,7 @@ export default {
             });
 
             if(agree > disagree){
-              recommended = true;
+              tec_recommended = true;
             }
           }
 
@@ -726,7 +732,7 @@ export default {
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               procurementId: this.procurement.procurement_id,
               complete: complete,
-              recommended: recommended
+              recommended: tec_recommended
             })
             .then(response => {
               console.log(response);
@@ -790,6 +796,7 @@ export default {
     bids() {
       var bids = [];
       this.bid_data.forEach(bid => {
+        // this.recommended = [this.recommended];
         if (!this.recommended || !this.recommended.includes(bid.bid_id)) {
           bids.push({ bid_id: bid.bid_id, supplier_name: bid.name });
         }
@@ -856,6 +863,7 @@ export default {
           return this.recommended_fetched.includes(bid.bid_id);
         });
       } else {
+        // this.recommended = [this.recommended];
         bids = this.bid_data.filter(bid => {
           console.log(this.recommended);
           return this.recommended.includes(bid.bid_id);
