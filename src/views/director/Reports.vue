@@ -250,7 +250,7 @@ export default {
         this.$http
           .get(`/api/director/advanced_search?department=${dep}&procurementStatus=${procStatus}&procurementType=${procType}&supplier=${sup}&from=${this.fromDate}&to=${this.toDate}`)
           .then(response => {
-            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response.data[0]);
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response.data[0]);
             this.procurements = response.data[0];
             this.procurements = this.procurements.procurements ? JSON.parse(this.procurements.procurements) : [];
             this.procurementType = procType == 'DIM' ? 'direct' : procType == 'NSP' ? 'shopping' : 'All',
