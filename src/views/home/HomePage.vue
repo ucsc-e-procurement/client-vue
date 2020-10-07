@@ -12,6 +12,12 @@
                             <h4 class="font-weight-bold ">Ongoing Procurements</h4>
                         </v-card-title>
                         <v-divider></v-divider>
+                        <v-col v-if="resultsArray.length == 0" cols="12">
+                          <v-alert type="info" outlined border="left">
+                            On-going Procurements Are Not Available
+                          </v-alert>
+                        </v-col>
+                        <v-col v-else cols="12">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -30,6 +36,7 @@
                                 </tr> 
                             </tbody>           
                         </table>
+                        </v-col>
                     </v-card>
                 </v-col>
             </v-row>
