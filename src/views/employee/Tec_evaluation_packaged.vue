@@ -504,6 +504,26 @@
                       </template>
                     </v-col>
                   </v-row>
+                  <v-col>
+                  <v-row v-if="tec_report_data">
+                    <v-alert
+                      v-if="tec_report_data.tec_recommended=='false'"
+                      dense
+                      outlined
+                      type="error"
+                    >
+                      Majority Recommendation <strong>NOT</strong> Recieved.
+                    </v-alert>
+                    <v-alert
+                      v-if="tec_report_data.tec_recommended=='true'"
+                      dense
+                      outlined
+                      type="success"
+                    >
+                      Majority Recommendation Recieved.
+                    </v-alert>
+                  </v-row>
+                  </v-col>
                   <v-row no gutters v-if="user!='emp00001'">
                     <v-btn v-if="(user!=procurement.chairman && tec_report_data && !filled) || (user==procurement.chairman && !filled)" large class="mx-2" small color="success" @click="save">
                         SAVE
