@@ -154,13 +154,13 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-    async getBidData() {
+    async getBidData(procurement_id) {
       let ref = firebase.firestore().collection("ScheduleOfRequirements");
       console.log("ref", ref);
       let doc_id;
       this.spec_data = {
         data: await ref
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .where("InvitationNo", "==", procurement_id)
           .get()
           .then(function(querySnapshot) {
             let doc;
@@ -336,7 +336,7 @@ export default {
     this.fetchTecTeam(this.$route.query.tec_team_id);
     this.fetchTecReport(this.$route.query.procurement_id);
 
-    this.getBidData();
+    this.getBidData(this.$route.query.procurement_id);
 
     if (this.$route.query.type == "items") {
       this.fetchItemWiseBids(this.$route.query.procurement_id);
