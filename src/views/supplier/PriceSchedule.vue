@@ -1014,6 +1014,7 @@ export default {
       this.$http
         .get("/api/supplier/price_schedule/encryption_data", {
           params: {
+            procurement_id: this.procurement.procurement_id,
             items: this.items,
             subTotal: this.subTotal,
             total: this.total
