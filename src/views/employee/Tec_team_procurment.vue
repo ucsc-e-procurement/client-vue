@@ -30,7 +30,7 @@
                     >Specification</v-expansion-panel-header
                   >
                   <v-expansion-panel-content>
-                    Spec
+                    <SpecSheet/>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
                 <v-expansion-panel v-if="this.$route.query.unlocked">
@@ -108,6 +108,7 @@ import TecReportPackaged from "./Tec_Report_Packaged";
 import TecEvaluationPackaged from "./Tec_evaluation_packaged";
 import TecEvaluationItemwise from "./Tec_evaluation_itemwise";
 import Requisition from "./Requisition";
+import SpecSheet from "./Spec_Sheet_View"
 
 import firebase from "firebase";
 
@@ -137,7 +138,8 @@ export default {
     Requisition,
     TecReportPackaged,
     TecEvaluationPackaged,
-    TecEvaluationItemwise
+    TecEvaluationItemwise,
+    SpecSheet
   },
 
   // Data Variables and Values

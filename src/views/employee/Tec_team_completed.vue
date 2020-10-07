@@ -252,7 +252,7 @@ export default {
             }
           });
           console.log(this.completedProcurements);
-          console.log(Object.values(this.completedProcurements[0].bids));
+          // console.log(Object.values(this.completedProcurements[0].bids));
         })
         .catch(error => {
           console.log(error);
