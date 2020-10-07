@@ -2,7 +2,7 @@
   <v-container fluid class="px-0 py-0">
     <v-row align="center" justify="center">
       <v-col cols="12">
-        <v-stepper v-if="this.procurement.procurement_method == 'shopping'" v-model="step">
+        <v-stepper v-if="this.procurement.procurement_method == 'NSP1' || this.procurement.procurement_method == 'NSP2'" v-model="step">
           <v-stepper-header>
             <v-stepper-step :complete="step > 1" step="1"></v-stepper-step>
             <v-divider></v-divider>
@@ -520,7 +520,7 @@
         </v-stepper>
 
         <!-- View for Direct method quotation submission -->
-        <v-container class="elevation-1" v-if="this.procurement.procurement_method == 'direct'">
+        <v-container class="elevation-1" v-if="this.procurement.procurement_method == 'DIM'">
           <v-row no-gutters>
             <h5 class="headline">Price Schedule</h5>
           </v-row>
@@ -944,16 +944,17 @@ export default {
     // Manufacture authorization pdf download
     downloadLetter() {
       this.$http.get("/api/supplier/price_schedule/get_file").then(res => {
-        if(res.data == "Successful") {
-          let bytes = new Uint8Array(res.data.data);
-          let blob = new Blob([bytes], { type: "application/pdf" });
-          let fileURL = window.URL.createObjectURL(blob);
-          let fileLink = document.createElement("a");
-          fileLink.href = fileURL;
-          fileLink.setAttribute("download", "manufacturer_auth.pdf");
-          document.body.appendChild(fileLink);
-          fileLink.click();
-        } else alert("Something went wrong with downloading the file. Try again later!");
+        if(res.data == "Unsuccessful") alert("Something went wrong with downloading the file. Try again later!");
+          else {
+            let bytes = new Uint8Array(res.data.data);
+            let blob = new Blob([bytes], { type: "application/pdf" });
+            let fileURL = window.URL.createObjectURL(blob);
+            let fileLink = document.createElement("a");
+            fileLink.href = fileURL;
+            fileLink.setAttribute("download", "manufacture_auth.pdf");
+            document.body.appendChild(fileLink);
+            fileLink.click();
+          }
       });
     },
 
@@ -962,7 +963,8 @@ export default {
       this.$http
         .get("/api/supplier/price_schedule/get_bid_guarantee")
         .then(res => {
-          if(res.data == "Successful") {
+          if(res.data == "Unsuccessful") alert("Something went wrong with downloading the file. Try again later!");
+          else {
             let bytes = new Uint8Array(res.data.data);
             let blob = new Blob([bytes], { type: "application/pdf" });
             let fileURL = window.URL.createObjectURL(blob);
@@ -971,7 +973,7 @@ export default {
             fileLink.setAttribute("download", "bid_guarantee.pdf");
             document.body.appendChild(fileLink);
             fileLink.click();
-          } else alert("Something went wrong with downloading the file. Try again later!");
+          }
         });
     },
 
