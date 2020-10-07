@@ -1,131 +1,42 @@
 <template>
-  <v-container fluid class="px-0 py-0">
-    <v-row no-gutters>
-      <v-col cols="12">
-        <v-card flat>
-          <v-container>
-            <!-- Page Title -->
-            <v-row no-gutters>
-              <h5 class="headline">{{ this.$route.query.procurement_id }}</h5>
-            </v-row>
-            <v-divider class="mt-1"></v-divider>
+    <v-container>
+      <TecEvaluationItemwise
+          v-if="this.type == 'items'"
+          v-bind:procurement="procurement"
+          v-bind:bid_data="bid_data"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:tec_report_data="tec_report_data"
+          v-bind:spec_data="spec_data"
+      />
 
-            <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <br />
-            <v-row justify="center">
-              <v-expansion-panels accordion>
-                <v-expansion-panel>
-                  <v-expansion-panel-header class="headline pt-5 pb-5"
-                    >Requisition</v-expansion-panel-header
-                  >
-                  <v-expansion-panel-content>
-                    <Requisition
-                      v-if="procurement"
-                      v-bind:requisition="requisition"
-                    />
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-                <v-expansion-panel>
-                  <v-expansion-panel-header class="headline pt-5 pb-5"
-                    >Specification</v-expansion-panel-header
-                  >
-                  <v-expansion-panel-content>
-                    Spec
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-                <v-expansion-panel v-if="this.$route.query.unlocked">
-                  <v-expansion-panel-header class="headline pt-5 pb-5"
-                    >Bid Evaluation Report</v-expansion-panel-header
-                  >
-                  <v-expansion-panel-content>
-                    <!-- <TecReport
-                      v-if="this.$route.query.type == 'items'"
-                      v-bind:procurement="procurement"
-                      v-bind:bid_data="bid_data"
-                      v-bind:requisition="requisition"
-                      v-bind:tec_team="tec_team"
-                      v-bind:tec_report_data="tec_report_data"
-                    />
-                    <TecReportPackaged
-                      v-if="this.$route.query.type == 'packaged'"
-                      v-bind:procurement="procurement"
-                      v-bind:bid_data="bid_data"
-                      v-bind:requisition="requisition"
-                      v-bind:tec_team="tec_team"
-                      v-bind:tec_report_data="tec_report_data"
-                    /> -->
-
-
-                    <TecEvaluationItemwise
-                      v-if="this.$route.query.type == 'items'"
-                      v-bind:procurement="procurement"
-                      v-bind:bid_data="bid_data"
-                      v-bind:requisition="requisition"
-                      v-bind:tec_team="tec_team"
-                      v-bind:tec_report_data="tec_report_data"
-                      v-bind:spec_data="spec_data"
-                    />
-                    <TecEvaluationPackaged
-                      v-if="this.$route.query.type == 'packaged'"
-                      v-bind:procurement="procurement"
-                      v-bind:bid_data="bid_data"
-                      v-bind:requisition="requisition"
-                      v-bind:tec_team="tec_team"
-                      v-bind:tec_report_data="tec_report_data"
-                      v-bind:spec_data="spec_data"
-                    />
-
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-row>
-            <v-row> </v-row>
-          </v-container>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+      <TecEvaluationPackaged
+          v-if="this.type == 'packaged'"
+          v-bind:procurement="procurement"
+          v-bind:bid_data="bid_data"
+          v-bind:requisition="requisition"
+          v-bind:tec_team="tec_team"
+          v-bind:tec_report_data="tec_report_data"
+          v-bind:spec_data="spec_data"
+      />
+    </v-container>
 </template>
 
 <script>
 // Componenets
 
-// import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-
-import TecReport from "./Tec_Report";
-import TecReportPackaged from "./Tec_Report_Packaged";
-
-import TecEvaluationPackaged from "./Tec_evaluation_packaged";
-import TecEvaluationItemwise from "./Tec_evaluation_itemwise";
-import Requisition from "./Requisition";
+import TecEvaluationPackaged from "../employee/Tec_evaluation_packaged";
+import TecEvaluationItemwise from "../employee/Tec_evaluation_itemwise";
 
 import firebase from "firebase";
 
-
-/*
-
-// Validation Library - Vuelidate
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
-
-*/
-
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
-  // Mixins
-  // mixins: [validationMixin],
 
-  // Form Validations
-  // validations: {},
-
-  // Props Received
-  props: [],
+  props: ["procurement_id", "tec_team_id", "requisition_id", "type"],
 
   // Imported Components
   components: {
-    TecReport,
-    Requisition,
-    TecReportPackaged,
     TecEvaluationPackaged,
     TecEvaluationItemwise
   },
@@ -321,23 +232,23 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
-    this.fetchProcurement(this.$route.query.procurement_id);
-    this.fetchRequisition(this.$route.query.requisition_id);
-    this.fetchTecTeam(this.$route.query.tec_team_id);
-    this.fetchTecReport(this.$route.query.procurement_id);
+    this.fetchProcurement(this.procurement_id);
+    this.fetchRequisition(this.requisition_id);
+    this.fetchTecTeam(this.tec_team_id);
+    this.fetchTecReport(this.procurement_id);
 
     this.getBidData();
 
-    if (this.$route.query.type == "items") {
-      this.fetchItemWiseBids(this.$route.query.procurement_id);
+    if (this.type == "items") {
+      this.fetchItemWiseBids(this.procurement_id);
     } else {
-      this.fetchPackagedBids(this.$route.query.procurement_id);
+      this.fetchPackagedBids(this.procurement_id);
     }
     console.log(
       "created",
-      this.$route.query.procurement_id,
-      this.$route.query.requisition_id,
-      this.$route.query.tec_team_id
+      this.procurement_id,
+      this.requisition_id,
+      this.tec_team_id
     );
   },
   beforeMount() {},

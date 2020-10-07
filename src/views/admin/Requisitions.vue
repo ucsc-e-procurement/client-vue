@@ -25,7 +25,7 @@
                   clearable
                 ></v-text-field>
               </v-col>
-              <v-col v-if="requisitions.length == 10" cols="12">
+              <v-col v-if="requisitions.length === 0" cols="12">
                 <v-alert type="info" outlined border="left">
                   No Any Requisitions Available
                 </v-alert>
@@ -70,7 +70,7 @@
     </v-row>
 
     <!-- Dialog Verify Deactivation -->
-    <v-row justify="center">
+    <!-- <v-row justify="center">
       <v-dialog v-model="dialogDeactivateUser" persistent max-width="350">
         <v-card>
           <v-card-title class="headline">Account Deactivation</v-card-title>
@@ -101,7 +101,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-row>
+    </v-row> -->
 
     <!-- Snackbar -->
     <v-row>
@@ -276,6 +276,7 @@ export default {
   created() {
     this.getRequisitions().then(requisitions => {
       this.requisitions = requisitions;
+      console.log("############################# ", requisitions);
     });
   },
   beforeMount() {},

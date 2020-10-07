@@ -228,10 +228,13 @@
                   <v-select
                     v-model="procurementMethod"
                     :disabled="!isOkayToInitialize"
-                    label="Procurement Type"
+                    label="Procurement Method"
                     :items="procurementMethods"
                     outlined
                     dense
+                    :error-messages="procurementMethodErrors"
+                    @change="$v.procurementMethod.$touch()"
+                    @blur="$v.procurementMethod.$touch()"
                   />
                 </v-row>
 
@@ -243,6 +246,9 @@
                     :items="procurementCategories"
                     outlined
                     dense
+                    :error-messages="procurementCategoryErrors"
+                    @change="$v.procurementCategory.$touch()"
+                    @blur="$v.procurementCategory.$touch()"
                   />
                 </v-row>
 
@@ -265,12 +271,16 @@
                           readonly
                           v-bind="attrs"
                           v-on="on"
+                          :error-messages="bidOpeningDateErrors"
+                          @change="$v.bidOpeningDate.$touch()"
+                          @blur="$v.bidOpeningDate.$touch()"
                         ></v-text-field>
                       </template>
                       <v-date-picker
                         v-model="bidOpeningDate"
                         no-title
                         @input="menuBidOpeningDate = false"
+                        :min="today"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
@@ -292,12 +302,16 @@
                           readonly
                           v-bind="attrs"
                           v-on="on"
+                          :error-messages="bidExpirationDateErrors"
+                          @change="$v.bidExpirationDate.$touch()"
+                          @blur="$v.bidExpirationDate.$touch()"
                         ></v-text-field>
                       </template>
                       <v-date-picker
                         v-model="bidExpirationDate"
                         no-title
                         @input="menuExpirationDate = false"
+                        :min="today"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
@@ -345,12 +359,7 @@
               @click="dialogInitializeProcurement = false"
               >Cancel</v-btn
             >
-            <v-btn
-              color="primary"
-              small
-              dark
-              @click="initializeProcurement"
-              loading
+            <v-btn color="primary" small dark @click="initializeProcurement"
               >Okay</v-btn
             >
           </v-card-actions>
@@ -385,21 +394,22 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-/*
-
 // Validation Library - Vuelidate
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 
-*/
-
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
-  // mixins: [validationMixin],
+  mixins: [validationMixin],
 
   // Form Validations
-  // validations: {},
+  validations: {
+    bidOpeningDate: { required },
+    bidExpirationDate: { required },
+    procurementCategory: { required },
+    procurementMethod: { required }
+  },
 
   // Props Received
   props: ["encodedRequisitionId"],
@@ -504,7 +514,10 @@ export default {
       "Other Services"
     ],
 
-    procurementMethodMap: new Map()
+    procurementMethodMap: new Map(),
+
+    today: "",
+    tomorrow: ""
   }),
 
   // Custom Methods and Functions
@@ -527,11 +540,16 @@ export default {
       });
     },
     showProcurementInitializationConfirmation() {
-      this.dialogInitializeProcurement = true;
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.dialogInitializeProcurement = true;
+      }
 
       // TODO Check Whether Requisition is met the Initialization Requirements
     },
     initializeProcurement() {
+      this.dialogInitializeProcurement = false;
+      this.loaderOverlay = true;
       let procurementData = {
         requisitionId: this.requisition.id,
         procurementMethod: this.procurementMethodMap.get(
@@ -540,16 +558,31 @@ export default {
         procurementCategory: this.procurementCategory,
         bidOpeningDate: this.bidOpeningDate,
         bidExpirationDate: this.bidExpirationDate,
-        assistantBursarId: this.$store.getters.employeeId
+        assistantBursarId: this.$store.getters.employeeId,
+        newStepValue: 3
       };
 
       this.$http
         .post("/api/admin/procurement/init", procurementData)
         .then(res => {
           console.log(res.status);
+          this.loaderOverlay = false;
+
+          // Snackbar Error
+          this.snackbar.text = "Procurement Initialized Successfully";
+          this.snackbar.color = "";
+          this.snackbar.timeout = 4000;
+          this.snackbar.show = true;
         })
         .catch(err => {
           console.log(err);
+          this.loaderOverlay = false;
+
+          // Snackbar Error
+          this.snackbar.text = "Something Went Wrong";
+          this.snackbar.color = "error";
+          this.snackbar.timeout = 4000;
+          this.snackbar.show = true;
         });
     },
     getInitialisationStatus(requisitionId) {
@@ -565,12 +598,27 @@ export default {
             reject(err);
           });
       });
+    },
+    setToday() {
+      let d = new Date();
+
+      this.today = `${String(d.getFullYear())}-${
+        String(d.getMonth() + 1).length < 2
+          ? "0" + String(d.getMonth() + 1)
+          : String(d.getMonth() + 1)
+      }-${
+        String(d.getDate() + 1).length < 2
+          ? "0" + String(d.getDate() + 1)
+          : String(d.getDate() + 1)
+      }`;
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
+    this.setToday();
+
     // Setting Up the Map
     this.procurementMethodMap.set("Direct Method", "DIM");
     this.procurementMethodMap.set("National Competitive Bidding", "NCB");
@@ -659,7 +707,37 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {}
+  computed: {
+    // Validation Rules
+    procurementMethodErrors() {
+      const errors = [];
+      if (!this.$v.procurementMethod.$dirty) return errors;
+      !this.$v.procurementMethod.required &&
+        errors.push("Please Select the Procurement Method");
+      return errors;
+    },
+    bidExpirationDateErrors() {
+      const errors = [];
+      if (!this.$v.bidExpirationDate.$dirty) return errors;
+      !this.$v.bidExpirationDate.required &&
+        errors.push("Please Select the Bid Expiration Date");
+      return errors;
+    },
+    procurementCategoryErrors() {
+      const errors = [];
+      if (!this.$v.procurementCategory.$dirty) return errors;
+      !this.$v.procurementCategory.required &&
+        errors.push("Please Select the Procurement Category");
+      return errors;
+    },
+    bidOpeningDateErrors() {
+      const errors = [];
+      if (!this.$v.bidOpeningDate.$dirty) return errors;
+      !this.$v.bidOpeningDate.required &&
+        errors.push("Please Select the Bid Opening Date");
+      return errors;
+    }
+  }
 };
 </script>
 

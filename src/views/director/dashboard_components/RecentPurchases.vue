@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-card>
       <!-- <v-card-title class="headline">Recently Purchased Products</v-card-title> -->
       <v-card-title class="text-center justify-center py-6">

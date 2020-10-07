@@ -128,7 +128,6 @@ export default {
         this.$store
           .dispatch("login", { email, password })
           .then(role => {
-            console.log("I'm Here");
             // Navigate to the Pages Based on User Role
             switch (role) {
               case "AB":
@@ -144,7 +143,7 @@ export default {
                 this.$router.push("/director");
                 break;
               case "SUP":
-                this.$router.push("/supplier");
+                this.$router.push("/supplier/procurements");
                 break;
               case "EMP":
                 this.$router.push("/employee");
@@ -154,6 +153,11 @@ export default {
                 break;
             }
             this.loaderLogin = false;
+
+            console.log(
+              "###################################",
+              this.$store.getters.user
+            );
           })
           .catch(err => {
             console.log(err);

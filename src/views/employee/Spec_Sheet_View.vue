@@ -1,35 +1,8 @@
 <template>
-  <v-container fluid class="px-0 py-0">
-    <v-row>
-      <v-col cols="2">
-        <v-card class="mb-4">
-          <v-container>
-            <v-list dense>
-              <v-subheader>PROCUREMENTS</v-subheader>
-              <v-list-item-group
-                v-model="item"
-                color="primary"
-              >
-                <v-list-item
-                  v-for="item in procs"
-                  :key="item.procurement_id"
-                  @click="updateSelected(item.procurement_id)"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.procurement_id"></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-container>
-        </v-card>
-      </v-col>
-
-      <v-col cols="10">
         <v-card class="mb-4">
           <v-container>
             <!-- Page Title -->
-            <v-row no-gutters>
+            <v-row>
               <h5 class="headline">Specification Sheet</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
@@ -59,6 +32,7 @@
                             dense
                             label="Procurement Name"
                             outlined
+                            disabled
                           ></v-text-field>
                       </v-col>
                     </v-row>
@@ -66,7 +40,7 @@
                 </v-container>        
               </v-card>
 
-              <v-card flat>
+              <!-- <v-card flat>
                 <v-card-text>
                   <v-select
                     v-model="steps"
@@ -74,7 +48,7 @@
                     label="Select number of items in procurement"
                   ></v-select>
                 </v-card-text>
-              </v-card>
+              </v-card> -->
               <v-stepper v-model="e1">
                 <v-stepper-header>
                   <template v-for="n in steps">
@@ -100,17 +74,18 @@
                     <v-card class="mb-12" >
                       <!--Add insert item logic here-->
 
-                      <v-row align="center">
+                       <v-row align="center">
                         <v-col cols="12">
                           <v-text-field
                             v-model="itemName"
                             dense
                             label="Item Name"
                             outlined
+                            disabled
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="4">
+                        <!--<v-col cols="4">
                           <v-text-field
                             v-model="feature"
                             dense
@@ -125,10 +100,10 @@
                             outlined
                             dense
                           />
-                        </v-col>
+                        </v-col> -->
                       </v-row>
 
-                      <v-btn
+                     <!-- <v-btn
                         class="ma-2"
                         depressed
                         large
@@ -143,7 +118,7 @@
                         color=""
                         @click="reset"
                         >Reset</v-btn
-                      >
+                      > -->
 
                       
                       <!-- </ValidationObserver> -->
@@ -173,11 +148,11 @@
                       </v-simple-table>
                     </v-card>
 
-                    <v-btn color="primary" @click="nextStep(n)">
+                    <!-- <v-btn color="primary" @click="nextStep(n)">
                       Continue
                     </v-btn>
 
-                    <v-btn text>Cancel</v-btn>
+                    <v-btn text>Cancel</v-btn> -->
                   </v-stepper-content>
                 </v-stepper-items>
               </v-stepper>
@@ -206,68 +181,6 @@
 
           </v-container>
         </v-card>
-        <v-row justify="center">
-          <v-dialog v-model="finalize" max-width="290">
-            <v-card>
-              <v-card-title class="headline">Confirm Request?</v-card-title>
-
-              <v-card-text>
-                By proceeding you are accepting to initialize a new procurement
-                process
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn type="submit" color="green darken-1" text @click="submit"
-                  >Proceed</v-btn
-                >
-
-                <v-btn color="red darken-1" text @click="finalize = false"
-                  >Cancel</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-row>
-        <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="290">
-            <v-card>
-              <v-card-title class="headline">Error</v-card-title>
-
-              <v-card-text>Please add Feature and Requirement</v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn color="red darken-1" text @click="dialog = false"
-                  >Ok</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-row>
-
-        <v-row justify="center">
-          <v-dialog v-model="dialog2" max-width="290">
-              <v-card>
-                <v-card-title class="headline">Error</v-card-title>
-
-                <v-card-text>Please add Feature and Requirements</v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-
-                  <v-btn color="red darken-1" text @click="dialog2 = false"
-                    >Ok</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
 </template>
 
 <script>

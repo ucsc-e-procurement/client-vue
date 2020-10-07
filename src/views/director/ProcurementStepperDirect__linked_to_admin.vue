@@ -4,12 +4,6 @@
       <v-col cols="12">
         <v-card flat>
           <v-container>
-            <!-- Page Title -->
-            <v-row no-gutters>
-              <h5 class="headline">Procurement {{ this.procurementId }}</h5>
-            </v-row>
-            <v-divider class="mt-1"></v-divider>
-
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
             <v-row class="justify-space-between">
               <v-col cols="12">

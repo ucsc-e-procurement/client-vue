@@ -5,18 +5,17 @@
         <v-card class="mb-4">
           <v-container>
             <v-list dense>
-              <v-subheader>PROCUREMENTS</v-subheader>
-              <v-list-item-group
-                v-model="item"
-                color="primary"
-              >
+              <v-subheader>PROCUREMENTS NEEDED ATTENTION</v-subheader>
+              <v-list-item-group v-model="item" color="primary">
                 <v-list-item
                   v-for="item in procs"
                   :key="item.procurement_id"
                   @click="updateSelected(item.procurement_id)"
                 >
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.procurement_id"></v-list-item-title>
+                    <v-list-item-title
+                      v-text="item.procurement_id"
+                    ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -38,33 +37,36 @@
 
             <!-- Info Card Row -->
             <div>
-
               <v-card flat>
                 <v-container>
                   <v-form>
                     <v-row align="center">
                       <v-col cols="12">
                         <v-text-field
-                            v-model="invitationNo"
-                            dense
-                            label="Procurement ID"
-                            outlined
-                            disabled
-                          ></v-text-field>
+                          v-model="invitationNo"
+                          dense
+                          label="Procurement ID"
+                          outlined
+                          disabled
+                        ></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row align="center">
                       <v-col cols="12">
                         <v-text-field
-                            v-model="procName"
-                            dense
-                            label="Procurement Name"
-                            outlined
-                          ></v-text-field>
+                          v-model="procName"
+                          dense
+                          label="Procurement Name"
+                          outlined
+                        ></v-text-field>
                       </v-col>
                     </v-row>
                   </v-form>
-                </v-container>        
+                </v-container>
+              </v-card>
+
+              <v-card>
+                <SpecView />
               </v-card>
 
               <v-card flat>
@@ -73,7 +75,6 @@
                     v-model="steps"
                     :items="[1, 2, 3, 4, 5]"
                     label="Select number of items in procurement"
-
                   ></v-select>
                 </v-card-text>
               </v-card>
@@ -84,7 +85,7 @@
                       :key="`${n}-step`"
                       :complete="e1 > n"
                       :step="n"
-               >
+                    >
                       Item {{ n }}
                     </v-stepper-step>
 
@@ -98,8 +99,7 @@
                     :key="`${n}-content`"
                     :step="n"
                   >
-
-                    <v-card class="mb-12" >
+                    <v-card class="mb-12">
                       <!--Add insert item logic here-->
 
                       <v-row align="center">
@@ -115,7 +115,6 @@
                         <v-col cols="4">
                           <v-text-field
                             v-model="feature"
-
                             dense
                             label="Feature"
                             outlined
@@ -123,16 +122,13 @@
                         </v-col>
                         <v-col cols="8">
                           <v-text-field
-                          
                             v-model="minRequirement"
-
                             label="Min Requirement"
                             outlined
                             dense
                           />
                         </v-col>
                       </v-row>
-
 
                       <v-btn
                         class="ma-2"
@@ -151,8 +147,6 @@
                         >Reset</v-btn
                       >
 
-                      
-
                       <!-- </ValidationObserver> -->
                       <v-simple-table
                         :dense="dense"
@@ -168,14 +162,9 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr
-
-                              v-for="item in tableData"
-                              :key="item.feature"
-                            >
+                            <tr v-for="item in tableData" :key="item.feature">
                               <td>{{ item.feature }}</td>
                               <td>{{ item.minrequirement }}</td>
-
                             </tr>
                           </tbody>
                         </template>
@@ -186,10 +175,11 @@
                       Continue
                     </v-btn>
 
-                    <v-btn text>Cancel</v-btn>
+                    <v-btn text @click="deleteProcData()">Cancel</v-btn>
                   </v-stepper-content>
                 </v-stepper-items>
               </v-stepper>
+             
             </div>
 
             <!-- <v-row>
@@ -212,7 +202,6 @@
                 </v-card>
               </v-col>
             </v-row> -->
-
           </v-container>
         </v-card>
         <v-row justify="center">
@@ -228,7 +217,11 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
 
-                <v-btn type="submit" color="green darken-1" text @click="submit"
+                <v-btn
+                  type="submit"
+                  color="green darken-1"
+                  text
+                  @click="submit(this.invitationNo)"
                   >Proceed</v-btn
                 >
 
@@ -240,7 +233,7 @@
           </v-dialog>
         </v-row>
         <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="290">
+          <v-dialog v-model="dialog" max-width="290">
             <v-card>
               <v-card-title class="headline">Error</v-card-title>
 
@@ -259,20 +252,20 @@
 
         <v-row justify="center">
           <v-dialog v-model="dialog2" max-width="290">
-              <v-card>
-                <v-card-title class="headline">Error</v-card-title>
+            <v-card>
+              <v-card-title class="headline">Error</v-card-title>
 
-                <v-card-text>Please add Feature and Requirements</v-card-text>
+              <v-card-text>Please add Feature and Requirements</v-card-text>
 
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+              <v-card-actions>
+                <v-spacer></v-spacer>
 
-                  <v-btn color="red darken-1" text @click="dialog2 = false"
-                    >Ok</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+                <v-btn color="red darken-1" text @click="dialog2 = false"
+                  >Ok</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-row>
       </v-col>
     </v-row>
@@ -282,6 +275,9 @@
 <script>
 // Componenets
 import axios from "axios";
+import firebase from "firebase";
+
+import SpecView from "./Spec_Sheet_View";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -310,13 +306,13 @@ export default {
   data: () => ({
     invitationNo: "",
     procName: "",
-    itemName:"",
-    feature:"",
-    minRequirement:"",
+    itemName: "",
+    feature: "",
+    minRequirement: "",
     featureList: [],
     minRequirementList: [],
     tableData: [],
-    // Dummy Data
+
     e1: 1,
 
     steps: 1,
@@ -327,6 +323,8 @@ export default {
     empid: "",
     procs: [],
 
+    // Dummy Data
+    testdata: "Test"
   }),
 
   watch: {
@@ -339,187 +337,132 @@ export default {
 
   // Custom Methods and Functions
   methods: {
+    //initialize a document
+    async initializeDoc(proc_id) {
+      var doc = firebase
+        .firestore()
+        .collection("ScheduleOfRequirements")
+        .add({
+          InvitationNo: proc_id,
+          Name: ""
+        });
+    },
 
-     async getBidData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+    //set items including featurelist and MinRequirements
+    async setItem() {
+      let docRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
-      this.fbData.push({
-        doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
-          .get()
-          .then(function(querySnapshot) {
-            let docArr;
+      await docRef
+        .where("InvitationNo", "==", this.invitationNo)
+        .get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            doc_id = doc.id;
+            //window.alert(doc_id);
+          });
+        })
+        .catch(function(error) {
+          console.log("Error getting documents: ", error);
+        });
 
-            querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
-              doc_id = doc.id;
-            });
+      await docRef
+        .doc("doc_id")
+        .collection("Items")
+        .add({
+          ItemName: this.itemName,
+          Features: this.featureList,
+          MinimumRequirement: this.minRequirementList
+        });
+    },
 
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
+    //  async fbTest(){
+    //   this.procs.forEach((element) =>{
+    //     //this.initializeDoc(element.procurement_id);
+    //     firebase.firestore().collection("test_col").add({
+    //       first: "Alan",
+    //       middle: "Mathison",
+    //       last: "Turing",
+    //       born: 1912,
+    //       lt: element.procurement_id
+    //     });
+    //     //console.log(element.procurement_id);
+    //   });
+    //  },
 
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
+    //Add name for procurement
+    async addProcName() {
+      let db = firebase.firestore();
+      let docRef = db.collection("ScheduleOfRequirements");
+      let doc_id;
+      await docRef
+        .where("InvitationNo", "==", this.invitationNo)
+        .get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            doc_id = doc.id;
+            window.alert(doc_id);
+          });
+        })
+        .catch(function(error) {
+          window.alert("Error getting documents: ", error);
+        });
 
-            return itemArr;
-          })
+      await docRef.document(doc_id).update({
+        Name: this.procName
       });
     },
 
-     async getProcData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+    //delete all data if cancelled.
+    async deleteProcData() {
+      let db = firebase.firestore();
+      let docRef = db.collection("ScheduleOfRequirements");
       let doc_id;
       this.fbData.push({
-        doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+        doc: await docRef
+          .where("InvitationNo", "==", this.invitationNo)
           .get()
           .then(function(querySnapshot) {
-            let docArr;
-
             querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
               doc_id = doc.id;
             });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
+            return;
           })
       });
-    },
+      await docRef.document(doc_id).delete();
 
+      //clear all data
+      this.reset();
 
-     async addProcData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
-      let doc_id;
-      this.fbData.push({
-        doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
-          .get()
-          .then(function(querySnapshot) {
-            let docArr;
-
-            querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
-              doc_id = doc.id;
-            });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
-          })
-      });
-    },
-
-     async deleteProcData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
-      let doc_id;
-      this.fbData.push({
-        doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
-          .get()
-          .then(function(querySnapshot) {
-            let docArr;
-
-            querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
-              doc_id = doc.id;
-            });
-
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            let iterator = 0;
-
-            querySnapshot.forEach(function(doc) {
-              itemArr.push(doc.data());
-              itemArr[iterator].bidderResponse = [];
-              for (const index in doc.data().Features) {
-                itemArr[iterator].bidderResponse.push("No");
-              }
-              console.log(itemArr[iterator]);
-              iterator++;
-            });
-
-            return itemArr;
-          })
-      });
+      //set stepper to 1
+      this.steps = 1;
     },
 
     nextStep(n) {
-      if (this.itemNull == true){
+      if (n == 1) {
+        this.initializeDoc(this.invitationNo);
+      }
+
+      if (this.itemNull == true) {
         this.dialog2 = true;
         return;
-      }
-      else if (n === this.steps) {
-         this.finalize = true;
+      } else if (n === this.steps) {
+        this.setItem(); //set item data
+        this.finalize = true;
       } else {
         this.e1 = n + 1;
+        this.setItem(); //set item data
         this.itemNull = true;
       }
-      //firestore function
       this.reset();
     },
 
+    //selecting proc
     updateSelected(invNo) {
       this.invitationNo = invNo;
+      // this.initializeDoc(invNo);
     },
 
+    //reset data in following states
     reset() {
       this.itemName = "";
       this.feature = "";
@@ -529,8 +472,22 @@ export default {
       this.tableData = [];
     },
 
+    //final proceed
+    submit(invitationNo) {
+      this.addProcName();
+      var removeIndex = this.procs
+        .map(function(item) {
+          return item.procurement_id;
+        })
+        .indexOf(invitationNo);
+      this.procs.splice(removeIndex, 1);
+      this.reset();
+      this.invitationNo = "";
+      window.location.href = "http://localhost:8080/employee";
+    },
+
     addFeatureRequirementSet() {
-      if(this.feature == "" || this.minRequirement == ""){
+      if (this.feature == "" || this.minRequirement == "") {
         this.dialog = true;
         return;
       }
@@ -548,10 +505,9 @@ export default {
   },
 
   // Life Cycle Hooks
-  beforeCreate() {},
-  created() {
+  beforeCreate() {
     //this.empid = this.$store.getters.user.employee_id
-    this.empid = "emp00004";
+    this.empid = "emp00006";
     axios
       .get(`http://localhost:5000/api/hod/procforspec/${this.empid}`)
       .then(response => {
@@ -559,8 +515,11 @@ export default {
       })
       .catch(error => console.log(error));
   },
+  created() {},
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.fbTest();
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},

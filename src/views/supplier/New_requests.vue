@@ -8,8 +8,8 @@
             <p class="text-h6">
               {{ item.category }}
             </p>
-            <div class="text--primary">Published Date : {{ item.date }}</div>
-            <div class="text--primary">Expiry Date : {{ item.deadline }}</div>
+            <div class="text--primary">Published Date : {{ ('0' + new Date(item.date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(item.date).getMonth()+1)).slice(-2) + ' - ' + new Date(item.date).getFullYear() }}</div>
+            <div class="text--primary">Expiry Date : {{ ('0' + new Date(item.deadline).getDate()).slice(-2) + ' - ' + ('0' + (new Date(item.deadline).getMonth()+1)).slice(-2) + ' - ' + new Date(item.deadline).getFullYear()}}</div>
           </v-card-text>
           <v-card-actions>
             <v-btn text color="blue darken-3" @click="openDialog(key)">
@@ -44,7 +44,7 @@
                     --- other details ---
                 </div> -->
           <p class="text--primary">
-            {{ newRequests[procurement].date }}
+            {{ ('0' + new Date(newRequests[procurement].date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(newRequests[procurement].date).getMonth()+1)).slice(-2) + ' - ' + new Date(newRequests[procurement].date).getFullYear() }}
           </p>
           <p class="text--primary">
             Quotation No: {{ newRequests[procurement].procurement_id }}
@@ -116,7 +116,7 @@
           >
           <v-btn color="grey darken-3" text @click="reject"
             >Not Interested</v-btn
-          >
+          > -->
           <v-btn color="blue darken-3" text @click="dialog = false"
             >Close</v-btn
           >
@@ -155,22 +155,12 @@ export default {
   // Data Variables and Values
   data: () => ({
     //
+    user: null,
     tab: null,
     dialog: false,
     procurement: null,
     tabs: ["New Requests", "On-Going", "Completed"],
-    newRequests: [
-      {
-        tenderNo: "UCSC/DIM/G/ENG/2020/0006",
-        publishedDate: "18-06-2020",
-        category: "Sports Goods",
-        expiryDate: "01-07-2020",
-        items: [
-          { name: "Bats", qty: "5" },
-          { name: "Balls", qty: "5" }
-        ]
-      }
-    ]
+    newRequests: null
     //fetched: null,
   }),
 
@@ -230,8 +220,9 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchRequests("sale@gamestreet.lk");
-    //this.fetchRequests(this.$store.getters.user.supplier_id)
+    // this.fetchRequests("sale@gamestreet.lk");
+    this.user = this.$store.getters.user.supplier_id
+    this.fetchRequests(this.user)
   },
   beforeUpdate() {},
   updated() {},

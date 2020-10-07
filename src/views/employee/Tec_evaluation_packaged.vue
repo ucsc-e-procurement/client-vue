@@ -115,10 +115,12 @@
           <v-divider class="mt-1"></v-divider>
           <br />
           <v-row no-gutters>
+            <v-spacer></v-spacer>
             <v-btn color="primary" @click="nextStep" rounded>
               Next
             </v-btn>
           </v-row>
+          <br/>
         </v-stepper-content>
 
         <v-stepper-content step="2">
@@ -156,6 +158,7 @@
               Next
             </v-btn>
           </v-row>
+          <br/>
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -214,6 +217,7 @@
               Next
             </v-btn>
           </v-row>
+          <br/>
         </v-stepper-content>
 
         <v-stepper-content step="4">
@@ -290,6 +294,7 @@
                     Next
                   </v-btn>
                 </v-row>
+                <br/>
               </v-stepper-content>
 
               <v-stepper-content step="5">
@@ -445,6 +450,7 @@
                     Next
                   </v-btn>
                 </v-row>
+                <br/>
               </v-stepper-content>
 
               <v-stepper-content step="6">
@@ -498,7 +504,27 @@
                       </template>
                     </v-col>
                   </v-row>
-                  <v-row no gutters>
+                  <v-col>
+                  <v-row v-if="tec_report_data">
+                    <v-alert
+                      v-if="tec_report_data.tec_recommended=='false'"
+                      dense
+                      outlined
+                      type="error"
+                    >
+                      Majority Recommendation <strong>NOT</strong> Recieved.
+                    </v-alert>
+                    <v-alert
+                      v-if="tec_report_data.tec_recommended=='true'"
+                      dense
+                      outlined
+                      type="success"
+                    >
+                      Majority Recommendation Recieved.
+                    </v-alert>
+                  </v-row>
+                  </v-col>
+                  <v-row no gutters v-if="user!='emp00001'">
                     <v-btn v-if="(user!=procurement.chairman && tec_report_data && !filled) || (user==procurement.chairman && !filled)" large class="mx-2" small color="success" @click="save">
                         SAVE
                     </v-btn>
@@ -510,6 +536,7 @@
                       Back
                     </v-btn>
                   </v-row>
+                  <br/>
               </v-stepper-content>
             </v-stepper>
         </v-form>   
@@ -623,6 +650,9 @@ export default {
         if (this.tec_report_data && this.tec_report_data.status == "saved") {
           //update
           var complete = true;
+          var agree =0;
+          var disagree = 0;
+          var recommended = false;
           this.tec_team.forEach((item, key) => {
             console.log(key, item);
             if (!this.tec_recommendation[key]) {
@@ -639,12 +669,29 @@ export default {
               complete = false;
             }
           });
+
+          if(complete){
+            this.tec_team.forEach((item, key) => {
+              if (this.tec_recommendation[key].decision == "agree") {
+                agree = agree + 1;
+              }
+              if (this.tec_recommendation[key].decision == "disagree") {
+                disagree = disagree + 1;
+              }
+            });
+
+            if(agree > disagree){
+              recommended = true;
+            }
+          }
+
           console.log("update tec report", this.tec_recommendation, complete);
           this.$http
             .post("/api/tec_team/update_tec_report", {
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               procurementId: this.procurement.procurement_id,
-              complete: complete
+              complete: complete,
+              recommended: recommended
             })
             .then(response => {
               console.log(response);
@@ -665,7 +712,8 @@ export default {
               ),
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               tecTeamId: this.procurement.tec_team_id,
-              procurementId: this.procurement.procurement_id
+              procurementId: this.procurement.procurement_id,
+              recommended: false
             })
             .then(response => {
               console.log(response);

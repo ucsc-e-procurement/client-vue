@@ -15,7 +15,14 @@
             <!-- Info Card Row -->
             <v-row class="justify-space-between">
               <v-col cols="12">
-                <procurement-count />
+                <!-- <procurement-count /> -->
+                <main-cards />
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <bid-calender />
               </v-col>
             </v-row>
 
@@ -55,9 +62,14 @@
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 // import InfoCard_A from "./components/InfoCard_A";
 import TestChart from "./components/Test_Chart";
-import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
+// import ProcurementCount_Cards from "./components/Anual_Procurements_Count";
+import Dashboard_Cards_A from "./components/Dashboard_Cards_A";
+
 import MonthlyProductRequisitionChart from "./analytics/Monthly_Product_Requisition_Chart";
 import AnnualCategoryWiseProcurementsCount from "./analytics/Annual_Category_Wise_Procurements_Chart";
+
+// Bid Opening Calender Component
+import BidCalender from "./components/Bid_Opening_Calender";
 
 /*
 
@@ -91,9 +103,11 @@ export default {
   components: {
     // "info-card": InfoCard_A,
     "test-chart": TestChart,
-    "procurement-count": ProcurementCount_Cards,
+    // "procurement-count": ProcurementCount_Cards,
     "monthly-product-requisitions": MonthlyProductRequisitionChart,
-    "annual-category-wise-procurements-count": AnnualCategoryWiseProcurementsCount
+    "annual-category-wise-procurements-count": AnnualCategoryWiseProcurementsCount,
+    "bid-calender": BidCalender,
+    "main-cards": Dashboard_Cards_A
   },
 
   // Data Variables and Values
