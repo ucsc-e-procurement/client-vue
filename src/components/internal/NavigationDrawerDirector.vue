@@ -38,7 +38,7 @@
           <v-badge
             color="blue"
             :content="
-              this.requisitionRequests.length + tecAppointmentRequests.length
+              this.notificationCount
             "
           >
             <v-icon>mdi-bell</v-icon>
@@ -98,8 +98,8 @@
 // Validation Library - Vuelidate
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-
 */
+import {bus} from "../../main"
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -119,7 +119,9 @@ export default {
   data: () => ({
     requisitionRequests: [],
     POApprovalRequests: [],
-    tecAppointmentRequests: []
+    tecAppointmentRequests: [],
+    approvalRequests: [],
+    notificationCount: 0,
   }),
 
   // Custom Methods and Functions
@@ -135,6 +137,7 @@ export default {
         .then(response => {
           // console.log(response)
           this.requisitionRequests = response.data;
+          this.notificationCount += response.data.length;
         })
         .catch(err => {
           console.log(err);
@@ -146,11 +149,24 @@ export default {
         .then(response => {
           //   console.log(response)
           this.tecAppointmentRequests = response.data;
+          this.notificationCount += response.data.length;
         })
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+    getApprovalRequests() {
+      this.$http
+        .get("/api/director/get_approval_requests")
+        .then(response => {
+          //   console.log(response)
+          this.approvalRequests = response.data;
+          this.notificationCount += response.data.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
 
   // Life Cycle Hooks
@@ -158,6 +174,10 @@ export default {
   created() {
     this.getRequisitionRequests();
     this.getTecTeamRequests();
+    this.getApprovalRequests();
+    bus.$on('notificationUpdated', payload => {
+      this.notificationCount -= 1;
+    });
   },
   beforeMount() {},
   mounted() {},

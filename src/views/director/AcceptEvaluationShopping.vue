@@ -19,7 +19,7 @@
                   :error-messages="errors"
                   outlined
                   required
-                  :readonly="step!=6"
+                  :readonly="step!=8"
                 ></v-text-field>
               </ValidationProvider>
             </v-col>
@@ -37,13 +37,13 @@
                   dense
                   outlined
                   required
-                  :readonly="step!=6"
+                  :readonly="step!=8"
                 ></v-select>
               </ValidationProvider>
             </v-col>
           </v-row>
           <v-row>
-            <v-btn color="success" class="mr-4 ml-4" @click="this.submit" v-if="this.step==6">
+            <v-btn color="success" class="mr-4 ml-4" @click="this.submit" v-if="this.step==8">
               Submit
             </v-btn>
           </v-row>
@@ -154,7 +154,7 @@ export default {
           directorRemarks: this.directorRemarks,
           directorRecommendation:
             this.directorApproval == "Approve" ? "Approved" : "Denied",
-          step: 7
+          step: 9
         })
         .then(response => {
           console.log(response);
@@ -170,7 +170,7 @@ export default {
       // this.$router.push({ path: `requests`})
     },
     checkIfEvaluated(){
-      if(this.step != 6){
+      if(this.step != 8){
         this.$http.get(
           `/api/director/get_evaluation_details?procId=${this.procurementId}`
         )
