@@ -279,6 +279,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   // Props Received
   props: [],
@@ -445,7 +447,6 @@ export default {
         form.append("official_email", this.formdata.official_email);
         form.append("web", this.formdata.web);
         form.append("business_reg_no", this.formdata.business_reg_no);
-        form.append("cert_copy", this.formdata.cert_copy);
         form.append("vat_reg_no", this.formdata.vat_reg_no);
         form.append("ictad_reg_no", this.formdata.ictad_reg_no);
         form.append("bank", this.formdata.bank);
@@ -461,16 +462,20 @@ export default {
         form.append("shroff", this.formdata.shroff);
         form.append("date", this.formdata.date);
         form.append("amount", this.formdata.amount);
-        form.append("payment", this.formdata.payment);
         form.append("payment_type", this.formdata.payment_type);
         form.append("user_state", this.user_state);
         this.$http.post("/api/supplier/registration", form).then(res => {
           if (res.data == "Successful") {
-            alert(
-              "You have successfully registered to our system. Await verification of your request."
-            );
+            let storageRef = firebase.storage().ref();
+            storageRef.child('supplier_certification/'+this.formdata.email).put(this.formdata.cert_copy).then(function(snapshot) {
+              console.log(snapshot);
+            });
+            storageRef.child('payment/'+this.formdata.date+this.formdata.email).put(this.formdata.payment).then(function(snapshot) {
+              console.log(snapshot);
+            });
+            alert("You have successfully registered to our system. Await verification of your request.");
             this.$router.push("/login");
-          } else console.log(res);
+          } else alert("Registration Unsuccessful. Try again later!")
         });
       }
     }
