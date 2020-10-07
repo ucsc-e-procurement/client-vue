@@ -36,7 +36,6 @@
           <ValidationProvider>
             <v-btn
               class="ma-2"
-              :disabled="!checkbox"
               depressed
               large
               color="primary"
@@ -45,7 +44,6 @@
             >
             <v-btn
               class="ma-2"
-              :disabled="!checkbox"
               depressed
               large
               color=""
@@ -56,7 +54,6 @@
             <v-row align="center">
               <v-col cols="8">
                 <v-autocomplete
-                  :disabled="!checkbox"
                   v-model="value"
                   :items="item_list"
                   dense
@@ -66,7 +63,6 @@
               </v-col>
               <v-col cols="4">
                 <v-text-field
-                  :disabled="!checkbox"
                   v-model="quantity"
                   type="number"
                   label="Quantity"
@@ -79,7 +75,6 @@
             </v-row>
             <!-- </ValidationObserver> -->
             <v-simple-table
-              :disabled="!checkbox"
               :dense="dense"
               :fixed-header="fixedHeader"
               :height="height"
@@ -336,7 +331,7 @@ export default {
         {
           this.checkbox ? (this.reorder = true) : (this.reorder = false);
         }
-        window.location.href = "http://localhost:8080/hod";
+        //window.location.href = "http://localhost:8080/hod";
 
         //creating requisition
         axios
@@ -385,9 +380,7 @@ export default {
           return;
         }
         axios
-          .post(`http://localhost:5000/api/hod/add_prod`, {
-            porduct_list: this.product_request
-          })
+          .post(`http://localhost:5000/api/hod/add_prod`, this.product_request)
           .then(response => {
             alert(response);
             //window.location.href = "http://localhost:8080/hod";
@@ -399,7 +392,7 @@ export default {
             // alert(JSON.stringify(error));
           });
         
-        //window.location.href = "http://localhost:8080/hod";
+        window.location.href = "http://localhost:8080/hod";
       });
     }
   }
