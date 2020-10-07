@@ -182,7 +182,7 @@ export default {
         value: "procurement_id"
       },
       { text: "Category", value: "category" },
-      { text: "Date Initiated", value: "date" },
+      // { text: "Date Initiated", value: "date" },
       { text: "Date Completed", value: "completed_date" },
       { text: "Actions", value: "controls", sortable: false }
     ],
