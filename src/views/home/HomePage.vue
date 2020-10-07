@@ -14,7 +14,7 @@
                         <v-divider></v-divider>
                         <v-col v-if="resultsArray.length == 0" cols="12">
                           <v-alert type="info" outlined border="left">
-                            On-going Procurements Are Not Available
+                            No Any On-going Procurements Available
                           </v-alert>
                         </v-col>
                         <v-col v-else cols="12">

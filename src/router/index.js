@@ -404,7 +404,7 @@ const routes = [
       {
         path: "",
         name: "default",
-        component: HomePage
+        component: Director_Dashboard
       },
       {
         path: "product_requisitions",
