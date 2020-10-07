@@ -655,6 +655,9 @@ export default {
         if (this.tec_report_data && this.tec_report_data.status == "saved") {
           //update
           var complete = true;
+          var agree =0;
+          var disagree = 0;
+          var recommended = false;
           this.tec_team.forEach((item, key) => {
             console.log(key, item);
             if (!this.tec_recommendation[key]) {
@@ -671,12 +674,29 @@ export default {
               complete = false;
             }
           });
+          
+          if(complete){
+            this.tec_team.forEach((item, key) => {
+              if (this.tec_recommendation[key].decision == "agree") {
+                agree = agree + 1;
+              }
+              if (this.tec_recommendation[key].decision == "disagree") {
+                disagree = disagree + 1;
+              }
+            });
+
+            if(agree > disagree){
+              recommended = true;
+            }
+          }
+
           console.log("update tec report", complete);
           this.$http
             .post("/api/tec_team/update_tec_report", {
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               procurementId: this.procurement.procurement_id,
-              complete: complete
+              complete: complete,
+              recommended: recommended
             })
             .then(response => {
               console.log(response);
@@ -697,7 +717,8 @@ export default {
               ),
               tecRecommendation: JSON.stringify(this.tec_recommendation),
               tecTeamId: this.procurement.tec_team_id,
-              procurementId: this.procurement.procurement_id
+              procurementId: this.procurement.procurement_id,
+              recommended: false
             })
             .then(response => {
               console.log(response);
