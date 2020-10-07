@@ -92,6 +92,24 @@
                     </v-col>
                   </v-row>
                 </v-alert>
+                <v-alert
+                  border="top"
+                  colored-border
+                  prominent
+                  type="warning"
+                  elevation="2"
+                  v-for="approvalRequest in this.approvalRequests"
+                  :key="approvalRequest.procurement_id"
+                >
+                  <v-row align="center">
+                    <v-col class="grow">Approve TEC Evaluation</v-col>
+                    <v-col class="shrink">
+                      <v-btn @click="manageTecAppointmentRequest(approvalRequest)"
+                        >Take action</v-btn
+                      >
+                    </v-col>
+                  </v-row>
+                </v-alert>
               </v-col>
             </v-row>
           </v-container>
@@ -111,8 +129,8 @@
 // Validation Library - Vuelidate
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-
 */
+import {bus} from "../../main";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -126,7 +144,8 @@ export default {
   data: () => ({
     requisitionRequests: [],
     POApprovalRequests: [],
-    tecAppointmentRequests: []
+    tecAppointmentRequests: [],
+    approvalRequests: []
   }),
 
   // Custom Methods and Functions
@@ -153,8 +172,20 @@ export default {
           console.log(err);
         });
     },
+    getApprovalRequests() {
+      this.$http
+        .get("/api/director/get_approval_requests")
+        .then(response => {
+          //   console.log(response)
+          this.approvalRequests = response.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     viewRequisitionRequest: function(event) {
       console.log(event);
+      bus.$emit('notificationUpdated', 1);
       this.$router.push({
         path: `requisition/view`,
         query: {
@@ -165,7 +196,7 @@ export default {
     manageTecAppointmentRequest: function(event) {
       console.log(event);
       var proc_id = event.procurement_id;
-
+      bus.$emit('notificationUpdated', 1);
       if (!event.procurement_method.includes("DIM")) {
         this.$router.push({
           path: `procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
@@ -191,6 +222,7 @@ export default {
   created() {
     this.getRequisitionRequests();
     this.getTecTeamRequests();
+    this.getApprovalRequests();
   },
   beforeMount() {},
   mounted() {},
