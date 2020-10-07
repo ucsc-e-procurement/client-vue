@@ -167,7 +167,6 @@ export default {
 
     // get ongoing procurements data
     getOngoingProcurementsData(id) {
-      this.dialog1 = true
       console.log("ids", id)
       this.$http
         .get(
