@@ -369,7 +369,7 @@ export default {
         .get(`/api/director/getemployees`)
         .then(response => {
           this.people = response.data;
-          this.people = this.people.filter(i => i.employee_id != 'emp00001' && i.employee_id != 'emp00004' && i.employee_id != 'emp00005');
+          this.people = this.people.filter(i => i.employee_id != 'emp00001');
           // console.log("wgewg", this.people);
         })
         .catch(err => {
@@ -418,7 +418,7 @@ export default {
           console.log(err);
         });
       this.dialog = false;
-      this.$emit("tecTeamUpdated", 4);
+      this.$emit("tecTeamUpdated", 3);
     }
   },
 

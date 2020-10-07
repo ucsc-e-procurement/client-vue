@@ -161,7 +161,7 @@ export default {
     onButtonClick: function(event) {
       var proc_id = event.procurementId;
 
-      if (event.procurement_method == "shopping") {
+      if (!event.procurement_method.includes("DIM")) {
         this.$router.push({
           path: `/director/procurements/shopping/${proc_id.replace(
             /[/]/g,

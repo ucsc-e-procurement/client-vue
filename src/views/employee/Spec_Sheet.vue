@@ -65,6 +65,10 @@
                 </v-container>
               </v-card>
 
+              <v-card>
+                <SpecView />
+              </v-card>
+
               <v-card flat>
                 <v-card-text>
                   <v-select
@@ -175,6 +179,7 @@
                   </v-stepper-content>
                 </v-stepper-items>
               </v-stepper>
+             
             </div>
 
             <!-- <v-row>
@@ -270,8 +275,9 @@
 <script>
 // Componenets
 import axios from "axios";
-
 import firebase from "firebase";
+
+import SpecView from "./Spec_Sheet_View";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -477,6 +483,7 @@ export default {
       this.procs.splice(removeIndex, 1);
       this.reset();
       this.invitationNo = "";
+      window.location.href = "http://localhost:8080/employee";
     },
 
     addFeatureRequirementSet() {

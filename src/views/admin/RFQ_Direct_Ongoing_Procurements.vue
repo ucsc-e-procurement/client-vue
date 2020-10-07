@@ -1,31 +1,52 @@
 <template>
   <v-container>
     <v-card flat>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Procurement ID</th>
-            <th>Category</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="result in resultsArray" :key="result" cols="12">
-            <td>{{ result.procurement_id }}</td>
-            <td>{{ result.category }}</td>
-            <td>
-              <v-btn
-                color="primary"
-                class="mb-4 mt-4"
-                @click="getSupplierList(result.procurement_id, result.category)"
-                >Select Supplier</v-btn
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <v-col v-if="resultsArray.length == 0" cols="12">
+        <v-alert type="info" outlined border="left">
+          Direct On-going Procurements Are Not Available
+        </v-alert>
+      </v-col>
+      <v-col v-else cols="12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Procurement ID</th>
+              <th>Category</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="result in resultsArray" :key="result" cols="12">
+              <td>{{ result.procurement_id }}</td>
+              <td>{{ result.category }}</td>
+              <td>
+                <v-btn
+                  color="primary"
+                  class="mb-4 mt-4"
+                  @click="
+                    getSupplierList(result.procurement_id, result.category)
+                  "
+                  >Select Supplier</v-btn
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <v-dialog v-model="dialog2" width="380">
+          <v-card>
+            <v-card-title><h4></h4></v-card-title>
+            <v-card-text
+              >There are no suppliers in this procurement category</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="dialog2 = false">OK</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
     </v-card>
-    <v-dialog v-model="dialog1" width="350">
+    <v-dialog class="dialog1" v-model="dialog1" width="300">
       <v-card>
         <v-card-title>
           <span class="headline mt-3">Suppliers List</span>
@@ -42,32 +63,47 @@
             <br /><br />
           </div>
           <br />
-          <v-text-field
-            class="deadline"
-            label="Deadline"
-            placeholder="YYYY/MM/DD"
-            outlined
-            v-model="deadline"
-          ></v-text-field>
+          <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="deadline"
+                class="deadline"
+                label="Select the deadline"
+                v-bind="attrs"
+                v-on="on"
+                outlined
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="deadline"
+              @input="menu2 = false"
+              :min="date"
+            ></v-date-picker>
+          </v-menu>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-row class="mb-3">
-              <v-btn
-                color="primary"
-                width="30%"
-                @click="
-                  sendRFQDirectOngoingProcurements(picked), (dialog1 = false)
-                "
-                >Send</v-btn
-              >
-              <v-btn
-                color="primary"
-                width="30%"
-                class="ml-3"
-                @click="(dialog1 = false), (picked = ''), (deadline = '')"
-                >Close</v-btn
-              >
-            </v-row>
+            <v-btn
+              color="primary"
+              width="25%"
+              @click="
+                sendRFQDirectOngoingProcurements(picked), (dialog1 = false)
+              "
+              >Send</v-btn
+            >
+            <v-btn
+              color="primary"
+              width="25%"
+              class="ml-3"
+              @click="(dialog1 = false), (picked = ''), (deadline = '')"
+              >Close</v-btn
+            >
           </v-card-actions>
         </v-container>
       </v-card>
@@ -106,12 +142,14 @@ export default {
   data: () => ({
     search: "",
     dialog1: false,
+    dialog2: false,
     resultsArray: [],
     resultsArray1: [],
     picked: "",
     procurementId: "",
     date: new Date().toISOString().substr(0, 10),
-    deadline: ""
+    deadline: "",
+    menu2: false
   }),
 
   // Custom Methods and Functions
@@ -134,13 +172,17 @@ export default {
       this.procurementId = procurementId;
       this.category = category;
       console.log("testCategory", this.category);
-      this.dialog1 = true;
       this.$http
         .get(
           `/api/admin/direct_ongoing_procurements/suppliers?category=${this.category}`
         )
         .then(response => {
           this.resultsArray1 = response.data;
+          if (this.resultsArray1.length == 0) {
+            this.dialog2 = true;
+          } else {
+            this.dialog1 = true;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -193,6 +235,9 @@ td {
   border-bottom: 1px solid #ddd;
 }
 .deadline {
-  width: 70%;
+  width: 90%;
+}
+.dialog1 {
+  overflow-x: hidden;
 }
 </style>
