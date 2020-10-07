@@ -376,7 +376,7 @@ export default {
 
         //adding products into product table
         if (this.product_request == []){
-          window.location.href = "http://localhost:8080/hod";
+          window.location.href = "http://" + window.location.host + "/hod";
           return;
         }
         axios
@@ -392,7 +392,7 @@ export default {
             // alert(JSON.stringify(error));
           });
         
-        window.location.href = "http://localhost:8080/hod";
+        window.location.href = "http://" + window.location.host + "/hod";
       });
     }
   }

@@ -2,7 +2,7 @@
   <v-container fluid class="px-0 py-0">
     <v-row align="center" justify="center">
       <v-col cols="12">
-        <v-stepper v-if="this.procurement.procurement_method == 'shopping'" v-model="step">
+        <v-stepper v-if="this.procurement.procurement_method == 'shopping' || this.procurement.procurement_method == 'NSP2'" v-model="step">
           <v-stepper-header>
             <v-stepper-step :complete="step > 1" step="1"></v-stepper-step>
             <v-divider></v-divider>
@@ -520,7 +520,7 @@
         </v-stepper>
 
         <!-- View for Direct method quotation submission -->
-        <v-container class="elevation-1" v-if="this.procurement.procurement_method == 'direct'">
+        <v-container class="elevation-1" v-if="this.procurement.procurement_method == 'DIM'">
           <v-row no-gutters>
             <h5 class="headline">Price Schedule</h5>
           </v-row>
@@ -944,16 +944,17 @@ export default {
     // Manufacture authorization pdf download
     downloadLetter() {
       this.$http.get("/api/supplier/price_schedule/get_file").then(res => {
-        if(res.data == "Successful") {
-          let bytes = new Uint8Array(res.data.data);
-          let blob = new Blob([bytes], { type: "application/pdf" });
-          let fileURL = window.URL.createObjectURL(blob);
-          let fileLink = document.createElement("a");
-          fileLink.href = fileURL;
-          fileLink.setAttribute("download", "manufacturer_auth.pdf");
-          document.body.appendChild(fileLink);
-          fileLink.click();
-        } else alert("Something went wrong with downloading the file. Try again later!");
+        if(res.data == "Unsuccessful") alert("Something went wrong with downloading the file. Try again later!");
+          else {
+            let bytes = new Uint8Array(res.data.data);
+            let blob = new Blob([bytes], { type: "application/pdf" });
+            let fileURL = window.URL.createObjectURL(blob);
+            let fileLink = document.createElement("a");
+            fileLink.href = fileURL;
+            fileLink.setAttribute("download", "manufacture_auth.pdf");
+            document.body.appendChild(fileLink);
+            fileLink.click();
+          }
       });
     },
 
@@ -962,7 +963,8 @@ export default {
       this.$http
         .get("/api/supplier/price_schedule/get_bid_guarantee")
         .then(res => {
-          if(res.data == "Successful") {
+          if(res.data == "Unsuccessful") alert("Something went wrong with downloading the file. Try again later!");
+          else {
             let bytes = new Uint8Array(res.data.data);
             let blob = new Blob([bytes], { type: "application/pdf" });
             let fileURL = window.URL.createObjectURL(blob);
@@ -971,7 +973,7 @@ export default {
             fileLink.setAttribute("download", "bid_guarantee.pdf");
             document.body.appendChild(fileLink);
             fileLink.click();
-          } else alert("Something went wrong with downloading the file. Try again later!");
+          }
         });
     },
 
@@ -1010,61 +1012,66 @@ export default {
       form.append("auth", this.manufacturerDoc);
       form.append("guarantee", this.bidGuarantee);
       form.append("extra", this.otherDoc);
-      
+
+      // get bid table next id
       this.$http
-        .get("/api/supplier/price_schedule/encryption_data", {
-          params: {
-            procurement_id: this.procurement.procurement_id,
-            items: this.items,
-            subTotal: this.subTotal,
-            total: this.total
-          }
-        })
-        .then(res => {
-          this.encrypted = res.data.encrypted;
-          // Get encrypted client key
+        .get("/api/supplier/price_schedule/next_increment").then(result => {
           this.$http
-            .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
-              clientKey: res.data.key, 
-              bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
+            .get("/api/supplier/price_schedule/encryption_data", {
+              params: {
+                procurement_id: this.procurement.procurement_id,
+                bid_id: result.data[0].AUTO_INCREMENT,
+                items: this.items,
+                subTotal: this.subTotal,
+                total: this.total
+              }
             })
             .then(res => {
-              // Save data in firebase
+              this.encrypted = res.data.encrypted;
+              // Get encrypted client key
               this.$http
-                .post("/api/supplier/price_schedule/update_firebase", {
-                  supplier_id: this.procurement.supplier_id,
-                  doc_id: this.doc_id,
-                  items: this.fbData[0].items,
-                  bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
-                  key: res.data.encryptedKey, 
-                  encrypted: this.encrypted
+                .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
+                  clientKey: res.data.key, 
+                  bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
                 })
                 .then(res => {
+                  // Save data in firebase
                   this.$http
-                    .post("/api/supplier/price_schedule/:procurement", form)
+                    .post("/api/supplier/price_schedule/update_firebase", {
+                      supplier_id: this.procurement.supplier_id,
+                      doc_id: this.doc_id,
+                      items: this.fbData[0].items,
+                      bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
+                      key: res.data.encryptedKey, 
+                      encrypted: this.encrypted
+                    })
                     .then(res => {
-                      if(res.data == "Successful") {
-                        // store images in firebase
-                      let storageRef = firebase.storage().ref();
-                      storageRef.child('man_auth/'+'bid0001').put(this.manufacturerDoc).then(function(snapshot) {
-                        console.log(snapshot);
-                      });
-                      if(this.bidGuarantee != null) {
-                        storageRef.child('bid_guarantee/'+'bid0001').put(this.bidGuarantee).then(function(snapshot) {
-                          console.log(snapshot);
+                      this.$http
+                        .post("/api/supplier/price_schedule/:procurement", form)
+                        .then(res => {
+                          if(res.data == "Successful") {
+                            // store images in firebase
+                          let storageRef = firebase.storage().ref();
+                          storageRef.child('man_auth/'+'bid0001').put(this.manufacturerDoc).then(function(snapshot) {
+                            console.log(snapshot);
+                          });
+                          if(this.bidGuarantee != null) {
+                            storageRef.child('bid_guarantee/'+'bid0001').put(this.bidGuarantee).then(function(snapshot) {
+                              console.log(snapshot);
+                            });
+                          }
+                          if(this.otherDoc != null) {
+                            storageRef.child('other/'+'bid0001').put(this.otherDoc).then(function(snapshot) {
+                              console.log(snapshot);
+                            });
+                          }
+                          alert('bid submission successful');
+                          this.$router.go(-1);
+                          } else alert ('Error in submitting bid. Please try again later!')
                         });
-                      }
-                      if(this.otherDoc != null) {
-                        storageRef.child('other/'+'bid0001').put(this.otherDoc).then(function(snapshot) {
-                          console.log(snapshot);
-                        });
-                      }
-                      alert('bid submission successful');
-                      this.$router.go(-1);
-                      } else alert ('Error in submitting bid. Please try again later!')
                     });
                 });
-            });
+            })
         })
     },
 
