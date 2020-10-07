@@ -252,7 +252,7 @@ export default {
       .catch(error => console.log(error));
     //getAllProducts();
     this.getCurrentDate();
-    this.getReqID();
+    
   },
   methods: {
 
@@ -280,6 +280,7 @@ export default {
         this.item_list.push(item);
       }
     },
+
     zeroFill( number, width ){
         width -= number.toString().length;
         if ( width > 0 ){
@@ -305,6 +306,7 @@ export default {
         this.dialog2 = true;
         return;
       }
+      this.getReqID();
       var obj = {};
       obj["requisition_id"] = this.requisition_id;
       obj["product_name"] = this.value;
@@ -363,7 +365,7 @@ export default {
         //incrementing index
         let new_id = this.req_seq + 1;
         axios
-          .post(`http://localhost:5000/api/hod/get_req_seq`, {
+          .post(`http://localhost:5000/api/hod/set_req_seq`, {
             id: new_id
           })
           .then(response => {
