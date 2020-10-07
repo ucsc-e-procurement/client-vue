@@ -89,23 +89,19 @@
                   </v-stepper-content>
 
                   <v-stepper-step
-                    :complete="procurementState > 6"
-                    :editable="procurementState > 6 ? true : false"
+                    :complete="procurementState >= 6"
                     step="6"
+                    :editable="true"
                     :edit-icon="procurementState > 6 ? '$complete' : '$edit'"
                     :complete-icon="procurementState > 6 ? '$edit' : '$edit'"
                     >Director Approval</v-stepper-step
                   >
                   <v-stepper-content step="6">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
-                    <v-btn color="primary" @click="stepperValue = 1"
-                      >Continue</v-btn
-                    >
-                    <v-btn text>Cancel</v-btn>
+                    <AcceptBidEvaluation
+                      :procurementId="this.procurementId"
+                      :stepVal="this.stepperValue"
+                      @bidEvaluationApproved="childUpdated"
+                    />
                   </v-stepper-content>
                 </v-stepper>
               </v-col>
@@ -127,6 +123,7 @@ import ProcurementMethod from "./ProcurementMethod";
 import Rfq from "./Rfq";
 import QuotationEvaluationDirect from "./QuotationEvaluationDirect";
 import DirectMethodRecommendation from "./DirectMethodRecommendation";
+import AcceptEvaluation from "./AcceptEvaluation";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -138,7 +135,8 @@ export default {
     ProcurementMethod: ProcurementMethod,
     RFQ: Rfq,
     QuotationEvaluationDirect: QuotationEvaluationDirect,
-    DirectMethodRecommendation: DirectMethodRecommendation
+    DirectMethodRecommendation: DirectMethodRecommendation,
+    AcceptBidEvaluation: AcceptEvaluation
   },
 
   // Data Variables and Values
@@ -169,9 +167,9 @@ export default {
           this.stepperValue = 12;
           this.isMounted = true;
 
-          // if(response.data[0].step == 3){
-          //   this.stepperValue = response.data[0].step;
-          // }
+          if (response.data[0].step == 6) {
+            this.stepperValue = response.data[0].step;
+          }
         })
         .catch(err => {
           console.log(err);
