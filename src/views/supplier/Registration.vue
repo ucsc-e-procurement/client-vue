@@ -379,7 +379,7 @@ export default {
       ],
       contact: [
         v => !!v || "Contact number is required",
-        v => v.length >= 9 || "Enter valid contact number"
+        v => v.length == 9 || "Enter valid contact number"
       ],
       password: [
         v => !!v || "Password is required",

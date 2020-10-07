@@ -474,7 +474,7 @@
                         placeholder="NIC number of authorized person"
                         outlined
                         dense
-                        :rules="[rules.general]"
+                        :rules="rules.nic"
                       />
                     </v-col>
                   </v-row>
@@ -758,7 +758,7 @@
                       placeholder="NIC number of authorized person"
                       outlined
                       dense
-                      :rules="[rules.general]"
+                      :rules="rules.nic"
                     />
                   </v-col>
                 </v-row>
@@ -831,7 +831,11 @@ export default {
     originalData: null,
     rules: {
       vat: v => !!v || "Vat Registration No. is required",
-      general: v => !!v || "This is required"
+      general: v => !!v || "This is required",
+      nic: [
+        v => !!v || "NIC number is required",
+        v => v.length == 10 || v.length == 12 || "Enter valid NIC number"
+      ],
     },
     items: [],
     menu: false,
