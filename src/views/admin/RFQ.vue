@@ -6,7 +6,7 @@
           <v-container>
             <!-- Page Title -->
             <v-row no-gutters>
-              <h5 class="headline">Request for Quatations</h5>
+              <h5 class="headline">Request for Quotations</h5>
             </v-row>
             <v-divider class="mt-1"></v-divider>
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->

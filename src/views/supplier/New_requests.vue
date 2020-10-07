@@ -114,9 +114,9 @@
           <v-btn color="green darken-3" text @click="gotoPriceSchedule"
             >Submit Bid</v-btn
           >
-          <v-btn color="grey darken-3" text @click="reject"
+          <!-- <v-btn color="grey darken-3" text @click="reject"
             >Not Interested</v-btn
-          >
+          > -->
           <v-btn color="blue darken-3" text @click="dialog = false"
             >Close</v-btn
           >

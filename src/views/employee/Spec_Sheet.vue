@@ -34,7 +34,7 @@
               <v-container>
                 <!-- Page Title -->
                 <v-row no-gutters>
-                  <h5 class="headline">Specification Sheet</h5>
+                  <h5 class="headline">Section I: Specification Sheet</h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
 
@@ -231,9 +231,7 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
-                  color="green darken-1"
-                  text
-                  @click="submit(this.invitationNo)"
+                  type="submit" color="green darken-1" text @click="finalize = false"
                   >Proceed</v-btn
                 >
 
@@ -466,6 +464,22 @@ export default {
     upload(n) {
       if (n == 1 && !this.initializedOnce) {
         this.initializeDoc(this.invitationNo);
+
+        axios
+        .post(`http://localhost:5000/api/hod/update_step`, {
+          procurement_id: this.invitationNo
+        })
+        .then(response => {
+          alert(response);
+          //window.location.href = "http://localhost:8080/hod";
+          // alert(JSON.stringify(response));
+        })
+        .catch(error => {
+          alert(error);
+          //window.location.href = "http://localhost:8080/hod";
+          // alert(JSON.stringify(error));
+        });
+
       }
 
       if (this.itemNull == true) {
@@ -513,7 +527,7 @@ export default {
         .indexOf(invitationNo);
       this.procs.splice(removeIndex, 1);
       this.reset();
-      this.invitationNo = "";
+      //this.invitationNo = "";
       this.initializedOnce = false;
 
       axios
@@ -531,7 +545,7 @@ export default {
           // alert(JSON.stringify(error));
         });
 
-      window.location.href = "http://localhost:8080/employee";
+      window.location.href = "http://"+ window.location.host +"/employee";
     },
 
     addFeatureRequirementSet() {

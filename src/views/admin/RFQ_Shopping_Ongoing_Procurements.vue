@@ -13,7 +13,7 @@
               <th>Procurement ID</th>
               <th>Category</th>
               <th></th>
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </thead>
           <tbody>
@@ -21,36 +21,58 @@
               <td>{{ result.procurement_id }}</td>
               <td>{{ result.category }}</td>
               <td>
-                <v-menu
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="deadline"
-                      class="deadline mt-6"
-                      label="Select the deadline"
-                      v-bind="attrs"
-                      v-on="on"
-                      outlined
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="deadline"
-                    @input="menu2 = false"
-                    :min="date"
-                  ></v-date-picker>
-                </v-menu>
+                <v-btn color="primary" class="mb-4 mt-4" @click="dialog3 = true">SELECT DEADLINE</v-btn>
               </td>
-              <td>
-                <v-btn color="primary" class="mb-4 mt-4" @click="openDialog()"
-                  >SEND RFQ</v-btn
-                >
-              </td>
+              <v-dialog v-model="dialog3" width="400">
+                <v-card>
+                  <v-card-title>
+                    <span class="headline mt-3">Select Deadline</span>
+                  </v-card-title>
+                  <v-container class="ml-3">
+                    <br />
+                    <v-menu
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="deadline"
+                          class="deadline"
+                          label="Select the deadline"
+                          v-bind="attrs"
+                          v-on="on"
+                          outlined
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="deadline"
+                        @input="menu2 = false"
+                        :min="date"
+                      ></v-date-picker>
+                    </v-menu>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="primary"
+                        width="25%"
+                        @click="openDialog()"                       
+                        >Send</v-btn
+                      >
+                      <v-btn
+                        color="primary"
+                        width="25%"
+                        class="ml-3"
+                        @click="dialog3 = false"
+                        >Close</v-btn
+                      >
+                    </v-card-actions>
+                  </v-container>
+                </v-card>
+              </v-dialog>             
               <v-dialog v-model="dialog1" width="500">
                 <v-card>
                   <v-card-title><h4>Send RFQ</h4></v-card-title>
@@ -124,7 +146,9 @@ export default {
     date: new Date().toISOString().substr(0, 10),
     dialog1: false,
     dialog2: false,
-    menu2: false
+    dialog3: false,
+    menu2: false,
+    deadline: null,
   }),
 
   // Custom Methods and Functions
@@ -168,7 +192,7 @@ export default {
           console.log(err);
         });
       this.$router.go();
-      this.dialog1 = false;
+      // this.dialog1 = false;
     }
   },
   // Life Cycle Hooks
@@ -199,5 +223,9 @@ td {
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #ddd;
+}
+
+.deadline {
+  width: 90%;
 }
 </style>

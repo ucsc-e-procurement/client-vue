@@ -474,7 +474,7 @@
                         placeholder="NIC number of authorized person"
                         outlined
                         dense
-                        :rules="[rules.general]"
+                        :rules="rules.nic"
                       />
                     </v-col>
                   </v-row>
@@ -758,7 +758,7 @@
                       placeholder="NIC number of authorized person"
                       outlined
                       dense
-                      :rules="[rules.general]"
+                      :rules="rules.nic"
                     />
                   </v-col>
                 </v-row>
@@ -831,12 +831,17 @@ export default {
     originalData: null,
     rules: {
       vat: v => !!v || "Vat Registration No. is required",
-      general: v => !!v || "This is required"
+      general: v => !!v || "This is required",
+      nic: [
+        v => !!v || "NIC number is required",
+        v => v.length == 10 || v.length == 12 || "Enter valid NIC number"
+      ],
     },
     items: [],
     menu: false,
     doc_id: null,
-    encrypted: null
+    encrypted: null,
+    increment: null
   }),
 
   // Custom Methods and Functions
@@ -1012,61 +1017,70 @@ export default {
       form.append("auth", this.manufacturerDoc);
       form.append("guarantee", this.bidGuarantee);
       form.append("extra", this.otherDoc);
-      
+      form.append("rfq_id", this.procurement.rfq_id);
+
+      // get bid table next id
       this.$http
-        .get("/api/supplier/price_schedule/encryption_data", {
-          params: {
-            procurement_id: this.procurement.procurement_id,
-            items: this.items,
-            subTotal: this.subTotal,
-            total: this.total
-          }
-        })
-        .then(res => {
-          this.encrypted = res.data.encrypted;
-          // Get encrypted client key
+        .get("/api/supplier/price_schedule/next_increment").then(result => {
+          this.increment = result.data[0].AUTO_INCREMENT;
           this.$http
-            .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
-              clientKey: res.data.key, 
-              bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
+            .get("/api/supplier/price_schedule/encryption_data", {
+              params: {
+                procurement_id: this.procurement.procurement_id,
+                bid_id: this.increment,
+                items: this.items,
+                subTotal: this.subTotal,
+                total: this.total
+              }
             })
             .then(res => {
-              // Save data in firebase
+              this.encrypted = res.data.encrypted;
+              // Get encrypted client key
               this.$http
-                .post("/api/supplier/price_schedule/update_firebase", {
-                  supplier_id: this.procurement.supplier_id,
-                  doc_id: this.doc_id,
-                  items: this.fbData[0].items,
-                  bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
-                  key: res.data.encryptedKey, 
-                  encrypted: this.encrypted
+                .post("https://us-central1-encryption-server.cloudfunctions.net/encrypt", {
+                  clientKey: res.data.key, 
+                  bidOpeningDate: this.fbData[0].doc.itvCR_11_1.deadlineDate
                 })
                 .then(res => {
+                  // Save data in firebase
                   this.$http
-                    .post("/api/supplier/price_schedule/:procurement", form)
+                    .post("/api/supplier/price_schedule/update_firebase", {
+                      supplier_id: this.procurement.supplier_id,
+                      doc_id: this.doc_id,
+                      items: this.fbData[0].items,
+                      bod: this.fbData[0].doc.itvCR_11_1.deadlineDate,
+                      key: res.data.encryptedKey, 
+                      encrypted: this.encrypted
+                    })
                     .then(res => {
                       if(res.data == "Successful") {
-                        // store images in firebase
-                      let storageRef = firebase.storage().ref();
-                      storageRef.child('man_auth/'+'bid0001').put(this.manufacturerDoc).then(function(snapshot) {
-                        console.log(snapshot);
-                      });
-                      if(this.bidGuarantee != null) {
-                        storageRef.child('bid_guarantee/'+'bid0001').put(this.bidGuarantee).then(function(snapshot) {
-                          console.log(snapshot);
-                        });
-                      }
-                      if(this.otherDoc != null) {
-                        storageRef.child('other/'+'bid0001').put(this.otherDoc).then(function(snapshot) {
-                          console.log(snapshot);
-                        });
-                      }
-                      alert('bid submission successful');
-                      this.$router.go(-1);
+                        this.$http
+                          .post("/api/supplier/price_schedule/:procurement", form)
+                          .then(res => {
+                            if(res.data == "Successful") {
+                              // store images in firebase
+                            let storageRef = firebase.storage().ref();
+                            storageRef.child('man_auth/'+this.increment).put(this.manufacturerDoc).then(function(snapshot) {
+                              console.log(snapshot);
+                            });
+                            if(this.bidGuarantee != null) {
+                              storageRef.child('bid_guarantee/'+this.increment).put(this.bidGuarantee).then(function(snapshot) {
+                                console.log(snapshot);
+                              });
+                            }
+                            if(this.otherDoc != null) {
+                              storageRef.child('other/'+this.increment).put(this.otherDoc).then(function(snapshot) {
+                                console.log(snapshot);
+                              });
+                            }
+                            alert('bid submission successful');
+                            this.$router.go(-1);
+                            } else alert ('Error in submitting bid. Please try again later!')
+                          });
                       } else alert ('Error in submitting bid. Please try again later!')
                     });
                 });
-            });
+            })
         })
     },
 
