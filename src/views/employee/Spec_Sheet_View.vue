@@ -186,6 +186,7 @@ export default {
           this.e1 = n + 1
       }
     },
+    
     reset() {
       this.itemName = "";
       this.feature = "";

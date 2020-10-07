@@ -55,7 +55,7 @@ import InitReq from "./InitReq";
 import ApprReq from "./ApprReq";
 import CompReq from "./CompReq";
 import TermReq from "./TermReq";
-//import Spec from "../employee/Spec_Sheet_View";
+// import Spec from "../employee/Spec_Sheet_View";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -79,7 +79,7 @@ export default {
   props: [],
 
   // Imported Components
-  components: { InitReq, ApprReq, CompReq, TermReq, },
+  components: { InitReq, ApprReq, CompReq, TermReq},
 
   // Data Variables and Values
   data() {
