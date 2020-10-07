@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-card flat>
+    <v-card flat v-if="ongoingProcurements">
       <template v-for="(item, key) in ongoingProcurements">
         <v-card :key="item.tenderNo" class="mx-auto" max-width="800" flat>
-          <br v-if="item.bid_status === 'approved'" />
-          <P v-if="item.bid_status === 'approved'">
+          <br v-if="item.bid_status === 'approved' && item.step === 9" />
+          <P v-if="item.bid_status === 'approved' && item.step === 9">
             <v-icon left color="green darken-3">mdi-check-circle</v-icon>
             APPROVED
           </P>
@@ -22,7 +22,7 @@
             <p class="text-h6">
               {{ item.category }}
             </p>
-            <div class="text--primary">Status : {{ item.bid_status }}</div>
+            <!-- <div class="text--primary">Status : {{ item.bid_status }}</div> -->
             <div class="text--primary">
               Bid Opening Date : {{ ('0' + new Date(item.bid_opening_date).getDate()).slice(-2) + ' - ' + ('0' + (new Date(item.bid_opening_date).getMonth()+1)).slice(-2) + ' - ' + new Date(item.bid_opening_date).getFullYear() }}
             </div>
