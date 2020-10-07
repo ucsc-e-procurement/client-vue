@@ -1,44 +1,89 @@
-
 <template>
-<v-container>
+  <v-container>
     <v-card flat>
-    <table class="table table-bordered">
-        <thead>
+      <v-col v-if="resultsArray.length == 0" cols="12">
+        <v-alert type="info" outlined border="left">
+          Shopping On-going Procurements Are Not Available
+        </v-alert>
+      </v-col>
+      <v-col v-else cols="12">
+        <table class="table table-bordered">
+          <thead>
             <tr>
-                <th>Procurement ID</th>
-                <th>Category</th>
-                <th></th>
-                <th></th>
+              <th>Procurement ID</th>
+              <th>Category</th>
+              <th></th>
+              <th></th>
             </tr>
-        </thead>  
-        <tbody>
+          </thead>
+          <tbody>
             <tr v-for="result in resultsArray" :key="result" cols="12">
-                <td>{{result.procurement_id}}</td>
-                <td>{{result.category}}</td>
-                <td>                
-                  <v-text-field
-                    class="deadline mt-6"
-                    label="Deadline"
-                    placeholder="YYYY/MM/DD"
-                    outlined
+              <td>{{ result.procurement_id }}</td>
+              <td>{{ result.category }}</td>
+              <td>
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="deadline"
+                      class="deadline mt-6"
+                      label="Select the deadline"
+                      v-bind="attrs"
+                      v-on="on"
+                      outlined
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
                     v-model="deadline"
-                  ></v-text-field>
-                </td>
-                <td>
-                  <v-btn color="primary" class="mb-4 mt-4" @click="sendRFQShoppingOngoingProcurements(result.procurement_id,result.category)">SEND RFQ</v-btn>
-                </td>
-            </tr> 
-        </tbody>           
-    </table>
+                    @input="menu2 = false"
+                    :min="date"
+                  ></v-date-picker>
+                </v-menu>
+              </td>
+              <td>
+                <v-btn color="primary" class="mb-4 mt-4" @click="dialog1 = true"
+                  >SEND RFQ</v-btn
+                >
+              </td>
+              <v-dialog v-model="dialog1" width="500">
+                <v-card>
+                  <v-card-title><h4>Send RFQ</h4></v-card-title>
+                  <v-card-text>Do you want to send RFQs?</v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="primary"
+                      @click.once="
+                        sendRFQShoppingOngoingProcurements(
+                          result.procurement_id,
+                          result.category
+                        );
+                        dialog1 = false;
+                      "
+                      >Yes
+                    </v-btn>
+                    <v-btn color="secondary" @click="dialog1 = false">No</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </tr>
+          </tbody>
+        </table>
+      </v-col>
     </v-card>
-</v-container>
-</template> 
+  </v-container>
+</template>
 
 <script>
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-
 
 /*
 
@@ -64,9 +109,11 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    search: '',
+    search: "",
     resultsArray: [],
     date: new Date().toISOString().substr(0, 10),
+    dialog1: false,
+    menu2: false
   }),
 
   // Custom Methods and Functions
@@ -74,12 +121,10 @@ export default {
     // get shopping ongoing procurements
     getShoppingOngoingProcurements() {
       this.$http
-        .get(
-          `/api/admin/shopping_ongoing_procurements`
-        )
+        .get(`/api/admin/shopping_ongoing_procurements`)
         .then(response => {
-          this.resultsArray = response.data; 
-          console.log("resultsArray",this.resultsArray)
+          this.resultsArray = response.data;
+          console.log("resultsArray", this.resultsArray);
         })
         .catch(err => {
           console.log(err);
@@ -87,10 +132,10 @@ export default {
     },
 
     // send rfq
-    sendRFQShoppingOngoingProcurements(procurementId,category) {
-      this.procurementId = procurementId
-      this.category = category
-      console.log("test1",this.date,this.deadline)
+    sendRFQShoppingOngoingProcurements(procurementId, category) {
+      this.procurementId = procurementId;
+      this.category = category;
+      console.log("test1", this.date, this.deadline);
       this.$http
         .post(
           `/api/admin/shopping_ongoing_procurements/suppliers/send_rfq?date=${this.date}&deadline=${this.deadline}&procurementId=${this.procurementId}&category=${this.category}`
@@ -101,8 +146,9 @@ export default {
         .catch(err => {
           console.log(err);
         });
-        this.$router.go()
-    },
+      this.$router.go();
+      this.dialog1 = false;
+    }
   },
   // Life Cycle Hooks
   beforeCreate() {},
@@ -122,13 +168,15 @@ export default {
 
 // Custom CSS Rules and Classes
 <style scoped>
-  table {
-    border-collapse: collapse;
-    width: 95%;
-    margin: 25px;
-  }
-  th, td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}</style>
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin: 25px;
+}
+th,
+td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+</style>

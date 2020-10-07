@@ -18,10 +18,10 @@
                 v-if="registrationStatus === 'VERIFIED'"
                 >Active</v-chip
               >
-              <v-chip color="error" small outlined class="mx-5" v-else
+              <v-chip color="error" small outlined class="" v-else
                 >Inactive</v-chip
               >
-              <v-btn small color="red darken-2" dark>Delete</v-btn>
+              <!-- <v-btn small color="red darken-2" dark>Delete</v-btn> -->
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
@@ -282,6 +282,29 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Dialog - Delete Confiramtion -->
+    <!-- <v-row justify="center">
+      <v-dialog v-model="dialogDeleteSupplier" persistent max-width="400">
+        <v-card>
+          <v-card-title class="headline">Supplier Delete Confirmation/v-card-title>
+          <v-card-text
+            >Do you really want to Delete this supplier Permenently ?
+            <br />
+            Note: This process cannot be
+            <strong>undone</strong>. Please make sure that the supplier
+            deletion is thoroughly required.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="" text @click="dialogDeleteSupplier = false" small
+              >Cancel</v-btn
+            >
+            <v-btn color="error" small @click="deleteSupplier">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row> -->
   </v-container>
 </template>
 
@@ -429,7 +452,9 @@ export default {
         align: "center"
         // divider: true
       }
-    ]
+    ],
+
+    dialogDeleteSupplier: true
   }),
 
   // Custom Methods and Functions
@@ -527,7 +552,9 @@ export default {
       this.$router
         .push(`/admin/supplier-registration/${btoa(registrationId)}`)
         .catch(() => {});
-    }
+    },
+
+    deleteSupplier() {}
   },
 
   // Life Cycle Hooks
