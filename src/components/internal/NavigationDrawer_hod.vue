@@ -71,7 +71,7 @@ export default {
   data: () => ({
     items: [
       { title: "Dashboard", icon: "mdi-view-dashboard", link: "/hod" },
-      { title: "Calender", icon: "mdi-calendar", link: "#" }
+      // { title: "Calender", icon: "mdi-calendar", link: "#" }
     ]
   }),
 
