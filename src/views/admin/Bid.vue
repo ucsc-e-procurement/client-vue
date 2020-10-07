@@ -330,6 +330,10 @@
         </v-card>
       </v-dialog>
     </v-row>
+    <!-- Fullscreen Overlay - Loader -->
+    <v-overlay :value="loaderOverlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -387,7 +391,7 @@ export default {
     // Dialogs
     dialogViewProduct: false,
     selectedProduct: {},
-
+    loaderOverlay: false,
     isLoaded: false
   }),
 
@@ -416,6 +420,7 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {},
   created() {
+    this.loaderOverlay = true;
     this.getBidById(atob(this.encodedBidId))
       .then(res => {
         console.log("Bid >>: ", res);
@@ -425,9 +430,11 @@ export default {
         });
 
         this.isLoaded = true;
+        this.loaderOverlay = false;
       })
       .catch(err => {
         this.isLoaded = true;
+        this.loaderOverlay = false;
 
         console.log(err);
       });

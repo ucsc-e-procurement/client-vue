@@ -61,7 +61,7 @@
                       small
                       icon
                       class="ml-5"
-                      @click="gotoProcurement(item)"
+                      @click="dialogDeleteUser = true"
                       ><v-icon color="red darken-2">mdi-delete</v-icon></v-btn
                     >
                   </template>
@@ -112,6 +112,39 @@
               :loading="loaderDeactivateUser"
               @click="deactivateUser(deactivatePointer)"
               >Deactivate</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+    <!-- Dialog Verify Deactivation -->
+    <v-row justify="center">
+      <v-dialog v-model="dialogDeleteUser" persistent max-width="350">
+        <v-card>
+          <v-card-title class="headline">Account Deletion</v-card-title>
+          <v-card-text
+            >Do you want to <strong>Delete</strong> this user account ?
+            <small
+              >Note: By deleting User, Account will be deleted permenently from
+              the system</small
+            >
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              :disabled="loaderDeactivateUser"
+              small
+              color=""
+              @click="dialogDeleteUser = false"
+              >Cancel</v-btn
+            >
+            <v-btn
+              small
+              color="red darken-2"
+              dark
+              :loading="loaderDeactivateUser"
+              >Delete</v-btn
             >
           </v-card-actions>
         </v-card>
@@ -258,6 +291,8 @@ export default {
       }
     ],
     search: "",
+
+    dialogDeleteUser: false,
 
     // Snackbar
     snackbar: {

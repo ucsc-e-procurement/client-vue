@@ -86,8 +86,8 @@ export default {
           this.chartData.datasets[0].data.push(obj.count);
           return;
         });
-        console.log(this.chartData.labels);
-        console.log(this.chartData.datasets);
+        console.log(">>", this.chartData.labels);
+        console.log(">>", this.chartData.datasets);
       })
       .catch();
   },
