@@ -2,6 +2,10 @@
   <v-container fluid class="px-0 py-0">
     <v-row no-gutters>
       <v-col cols="12">
+        <v-row>
+              <!-- <div class="cover"></div> -->
+              <v-img :src="require('../../assets/ucsc.jpg')" style="height:20%"></v-img>
+            </v-row>
         <v-card flat>
           <v-container>
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
@@ -9,8 +13,30 @@
               <v-spacer />
               <v-btn color="primary" @click="gotoLogin()">Login</v-btn>
             </v-row>
+            <!-- <v-row>
+              <v-img :src="require('../../assets/ucsc.jpg')" style="height=20%"></v-img>
+            </v-row> -->
+            <!-- <v-row style="height=20%"></v-row> -->
             <v-row class="justify-space-between">
-                <v-col cols="12">
+                <v-col cols="7">
+                  <h1 style="text-align:center">UCSC E-Procurement System</h1>
+                  <hr/><br/><br/>
+                  <p style="text-align:justify">Welcome to the E - Procurement system of University of Colombo School of Computing. Here you will find key information relating to business opportunities with the UCSC. <br/><br/>
+                  If you are interested in participating in a specific procurement opportunity, please use this system to register.</p>
+                  <br/><br/>
+                  <h3 style="text-align:center">Ethics in UCSC Procurement</h3>
+                  <br/><br/>
+                  <p style="text-align:justify">Ethical behavior is a requirement in UCSC procurement. The UCSC expends public funds and it is committed to ensuring all procurement actions stand-up to public scrutiny. 
+                    UCSC staff are responsible for protecting the integrity of the procurement process and maintaining fairness in treatment of all suppliers. 
+                    Suppliers must observe and act in accordance with the highest standards of ethics and professional conduct in their dealings with the UCSC. </p>
+
+                  <br/><br/>
+                  <h3 style="text-align:center">Important legal notice</h3>
+                  <br/><br/>
+                  <p style="text-align:justify">The UCSC reserves the right to accept or reject any bid, and to annul, in whole or in part, or to suspend the bidding process and reject all bids at any time prior to contract award, 
+                    without thereby incurring any liability to the affected bidder or bidders or any obligation to inform the affected bidder or bidders of the reasons for the UCSC's action.</p>
+                </v-col>
+                <v-col cols="5">
                   <v-card>
                     <v-card-title class="text-center justify-center py-6">
                         <h4 class="font-weight-bold">Ongoing Procurements</h4>
@@ -240,5 +266,16 @@ th, td {
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #ddd;
+}
+.cover {
+  width: 100%;
+  height: 30%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../../assets/ucsc.jpg") no-repeat center center;
+  background-size: cover;
+
+  /* transform: scale(1); */
 }
 </style>
