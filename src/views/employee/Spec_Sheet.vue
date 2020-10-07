@@ -171,7 +171,7 @@
                       </v-simple-table>
                     </v-card>
 
-                    <v-btn color="primary" @click="nextStep(n)">
+                    <v-btn color="primary" @click="upload(n)">
                       Continue
                     </v-btn>
 
@@ -218,7 +218,7 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
-                  type="submit"
+
                   color="green darken-1"
                   text
                   @click="submit(this.invitationNo)"
@@ -312,6 +312,7 @@ export default {
     featureList: [],
     minRequirementList: [],
     tableData: [],
+    item: "",
 
     e1: 1,
 
@@ -322,7 +323,7 @@ export default {
     itemNull: true,
     empid: "",
     procs: [],
-
+    initializedOnce: false,
     // Dummy Data
     testdata: "Test"
   }),
@@ -344,12 +345,13 @@ export default {
         .collection("ScheduleOfRequirements")
         .add({
           InvitationNo: proc_id,
-          Name: ""
+          Name: "Procurement Name"
         });
+      this.initializedOnce = true;
     },
 
     //set items including featurelist and MinRequirements
-    async setItem() {
+    async setItem(item, features, minreq) {
       let docRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
       await docRef
@@ -358,18 +360,22 @@ export default {
         .then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc_id = doc.id;
-            //window.alert(doc_id);
+            console.log(doc_id);
           });
         })
         .catch(function(error) {
           console.log("Error getting documents: ", error);
         });
 
+      console.log(item);
+      console.log(this.features);
+      console.log(this.minreq);
+
       await docRef
-        .doc("doc_id")
+        .doc(doc_id)
         .collection("Items")
         .add({
-          ItemName: this.itemName,
+          ItemName: item,
           Features: this.featureList,
           MinimumRequirement: this.minRequirementList
         });
@@ -391,8 +397,7 @@ export default {
 
     //Add name for procurement
     async addProcName() {
-      let db = firebase.firestore();
-      let docRef = db.collection("ScheduleOfRequirements");
+      let docRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
       await docRef
         .where("InvitationNo", "==", this.invitationNo)
@@ -400,15 +405,15 @@ export default {
         .then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc_id = doc.id;
-            window.alert(doc_id);
+            console.log(doc_id);
           });
         })
         .catch(function(error) {
-          window.alert("Error getting documents: ", error);
+          console.log("Error getting documents: ", error);
         });
 
-      await docRef.document(doc_id).update({
-        Name: this.procName
+      await docRef.doc(doc_id).upadate({
+        Name: "name"
       });
     },
 
@@ -431,29 +436,36 @@ export default {
       await docRef.document(doc_id).delete();
 
       //clear all data
+      this.initializedOnce = false;
       this.reset();
 
       //set stepper to 1
       this.steps = 1;
     },
 
-    nextStep(n) {
-      if (n == 1) {
+    upload(n){
+      if (n == 1 && !this.initializedOnce) {
         this.initializeDoc(this.invitationNo);
       }
 
       if (this.itemNull == true) {
         this.dialog2 = true;
         return;
-      } else if (n === this.steps) {
-        this.setItem(); //set item data
+      }
+      let item = this.itemName;
+      this.setItem(item, this.featureList, this.minRequirementList); //set item data 
+      this.nextStep(n);
+      
+      this.reset();
+    },
+
+    nextStep(n) {
+      if (n === this.steps) {
         this.finalize = true;
       } else {
         this.e1 = n + 1;
-        this.setItem(); //set item data
         this.itemNull = true;
       }
-      this.reset();
     },
 
     //selecting proc
@@ -467,13 +479,13 @@ export default {
       this.itemName = "";
       this.feature = "";
       this.minRequirement = "";
-      this.featureList = [];
-      this.minRequirementList = [];
       this.tableData = [];
+     
     },
 
     //final proceed
     submit(invitationNo) {
+      console.log(invitationNo);
       this.addProcName();
       var removeIndex = this.procs
         .map(function(item) {
@@ -483,6 +495,23 @@ export default {
       this.procs.splice(removeIndex, 1);
       this.reset();
       this.invitationNo = "";
+      this.initializedOnce = false;
+
+      axios
+          .post(`http://localhost:5000/api/hod/update_step`, {
+            procurement_id: this.invitationNo
+          })
+          .then(response => {
+            alert(response);
+            //window.location.href = "http://localhost:8080/hod";
+            // alert(JSON.stringify(response));
+          })
+          .catch(error => {
+            alert(error);
+            //window.location.href = "http://localhost:8080/hod";
+            // alert(JSON.stringify(error));
+          });
+
       window.location.href = "http://localhost:8080/employee";
     },
 

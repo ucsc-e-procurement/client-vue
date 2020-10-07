@@ -35,6 +35,11 @@
                 <!--terminated-->
                 <TermReq />
               </v-col>
+              <v-col cols="6">
+                <v-card flat>
+                  <Spec />
+                </v-card>
+              </v-col>
             </v-row>
             <v-row class="justify-space-between"></v-row>
           </v-container>
@@ -50,6 +55,7 @@ import InitReq from "./InitReq";
 import ApprReq from "./ApprReq";
 import CompReq from "./CompReq";
 import TermReq from "./TermReq";
+import Spec from "../employee/Spec_Sheet_View";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -73,7 +79,7 @@ export default {
   props: [],
 
   // Imported Components
-  components: { InitReq, ApprReq, CompReq, TermReq },
+  components: { InitReq, ApprReq, CompReq, TermReq, Spec},
 
   // Data Variables and Values
   data() {
