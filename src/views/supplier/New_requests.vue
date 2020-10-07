@@ -116,7 +116,7 @@
           >
           <v-btn color="grey darken-3" text @click="reject"
             >Not Interested</v-btn
-          > -->
+          >
           <v-btn color="blue darken-3" text @click="dialog = false"
             >Close</v-btn
           >
@@ -199,8 +199,12 @@ export default {
         }
       })
         .then(res => {
-          console.log(res)
-          this.$router.go();
+          if(res.data = "Successful"){
+            alert("This bid has been rejected successfully!");
+            this.$router.go();
+          } else {
+            alert("Server error. Try again later!");
+          }
         })
     },
 

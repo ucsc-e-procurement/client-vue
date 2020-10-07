@@ -473,11 +473,9 @@ export default {
             storageRef.child('payment/'+this.formdata.date+this.formdata.email).put(this.formdata.payment).then(function(snapshot) {
               console.log(snapshot);
             });
-            alert(
-              "You have successfully registered to our system. Await verification of your request."
-            );
+            alert("You have successfully registered to our system. Await verification of your request.");
             this.$router.push("/login");
-          } else console.log(res);
+          } else alert("Registration Unsuccessful. Try again later!")
         });
       }
     }

@@ -2,7 +2,7 @@
   <v-container fluid class="px-0 py-0">
     <v-row align="center" justify="center">
       <v-col cols="12">
-        <v-stepper v-model="step" v-if="this.procurement.procurement_method == 'direct'">
+        <v-stepper v-if="this.procurement.procurement_method == 'shopping'" v-model="step">
           <v-stepper-header>
             <v-stepper-step :complete="step > 1" step="1"></v-stepper-step>
             <v-divider></v-divider>
@@ -520,7 +520,7 @@
         </v-stepper>
 
         <!-- View for Direct method quotation submission -->
-        <v-container class="elevation-1" v-if="this.procurement.procurement_method == 'shopping'">
+        <v-container class="elevation-1" v-if="this.procurement.procurement_method == 'direct'">
           <v-row no-gutters>
             <h5 class="headline">Price Schedule</h5>
           </v-row>
@@ -777,10 +777,10 @@
               </v-form>
             </v-col>
           </v-row>
+          <v-btn color="primary mt-3" @click="submitQuotation"
+            >Submit Quotation</v-btn
+          > 
         </v-container>
-        <v-btn color="primary mt-3" @click="submitQuotation"
-          >Submit Quotation</v-btn
-        >
       </v-col>
     </v-row>
   </v-container>
@@ -846,7 +846,7 @@ export default {
       let doc_id;
       this.fbData.push({
         doc: await invRef
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2020/001")
+          .where("InvitationNo", "==", this.procurement.procurement_id)
           .get()
           .then(function(querySnapshot) {
             let docArr;
@@ -885,6 +885,7 @@ export default {
     // Price schedule table creation
     createTable() {
       let products = JSON.parse(this.procurement.products);
+      console.log(this.procurement.procurement_method)
       this.originalData = null;
       for (const index in products) {
         this.items.push({
@@ -943,14 +944,16 @@ export default {
     // Manufacture authorization pdf download
     downloadLetter() {
       this.$http.get("/api/supplier/price_schedule/get_file").then(res => {
-        let bytes = new Uint8Array(res.data.data);
-        let blob = new Blob([bytes], { type: "application/pdf" });
-        let fileURL = window.URL.createObjectURL(blob);
-        let fileLink = document.createElement("a");
-        fileLink.href = fileURL;
-        fileLink.setAttribute("download", "manufacturer_auth.pdf");
-        document.body.appendChild(fileLink);
-        fileLink.click();
+        if(res.data == "Successful") {
+          let bytes = new Uint8Array(res.data.data);
+          let blob = new Blob([bytes], { type: "application/pdf" });
+          let fileURL = window.URL.createObjectURL(blob);
+          let fileLink = document.createElement("a");
+          fileLink.href = fileURL;
+          fileLink.setAttribute("download", "manufacturer_auth.pdf");
+          document.body.appendChild(fileLink);
+          fileLink.click();
+        } else alert("Something went wrong with downloading the file. Try again later!");
       });
     },
 
@@ -959,14 +962,16 @@ export default {
       this.$http
         .get("/api/supplier/price_schedule/get_bid_guarantee")
         .then(res => {
-          let bytes = new Uint8Array(res.data.data);
-          let blob = new Blob([bytes], { type: "application/pdf" });
-          let fileURL = window.URL.createObjectURL(blob);
-          let fileLink = document.createElement("a");
-          fileLink.href = fileURL;
-          fileLink.setAttribute("download", "bid_guarantee.pdf");
-          document.body.appendChild(fileLink);
-          fileLink.click();
+          if(res.data == "Successful") {
+            let bytes = new Uint8Array(res.data.data);
+            let blob = new Blob([bytes], { type: "application/pdf" });
+            let fileURL = window.URL.createObjectURL(blob);
+            let fileLink = document.createElement("a");
+            fileLink.href = fileURL;
+            fileLink.setAttribute("download", "bid_guarantee.pdf");
+            document.body.appendChild(fileLink);
+            fileLink.click();
+          } else alert("Something went wrong with downloading the file. Try again later!");
         });
     },
 
@@ -1037,7 +1042,8 @@ export default {
                   this.$http
                     .post("/api/supplier/price_schedule/:procurement", form)
                     .then(res => {
-                      // store images in firebase
+                      if(res.data == "Successful") {
+                        // store images in firebase
                       let storageRef = firebase.storage().ref();
                       storageRef.child('man_auth/'+'bid0001').put(this.manufacturerDoc).then(function(snapshot) {
                         console.log(snapshot);
@@ -1054,6 +1060,7 @@ export default {
                       }
                       alert('bid submission successful');
                       this.$router.go(-1);
+                      } else alert ('Error in submitting bid. Please try again later!')
                     });
                 });
             });
