@@ -81,6 +81,7 @@ export default {
   created() {
     this.getData(2020)
       .then(data => {
+        console.log("Data: ", data);
         data.map(obj => {
           this.chartData.labels.push(obj.month);
           this.chartData.datasets[0].data.push(obj.count);

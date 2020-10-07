@@ -435,7 +435,11 @@ export default {
             : String(date.getDate())
         }`;
         console.log("New DateString: ", dateStr);
-        this.isLoaded = true;
+
+        console.log(
+          "########################## ",
+          `payment/${dateStr}${res.email}`
+        );
         return storageRef
           .child(`payment/${dateStr}${res.email}`)
           .getDownloadURL();
@@ -443,6 +447,7 @@ export default {
       .then(url => {
         console.log("URL: ", url);
         this.registration.payment = url;
+        this.isLoaded = true;
       })
       .catch(err => {
         this.isLoaded = true;
