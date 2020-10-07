@@ -142,7 +142,7 @@ export default {
       },
       { text: "Category", value: "category" },
       { text: "Status", value: "procurement_status" },
-      { text: "Date Initiated", value: "date" },
+      // { text: "Date Initiated", value: "date" },
       { text: "Actions", value: "controls", sortable: false }
     ],
     procurements: []

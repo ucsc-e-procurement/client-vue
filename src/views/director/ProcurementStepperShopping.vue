@@ -114,11 +114,11 @@
                   </v-stepper-content>
 
                   <v-stepper-step
-                    :complete="procurementState > 6"
-                    :editable="procurementState > 6 ? true : false"
+                    :complete="procurementState > 7"
+                    :editable="procurementState > 7 ? true : false"
                     step="6"
-                    :edit-icon="procurementState > 6 ? '$complete' : '$edit'"
-                    :complete-icon="procurementState > 6 ? '$edit' : '$edit'"
+                    :edit-icon="procurementState > 7 ? '$complete' : '$edit'"
+                    :complete-icon="procurementState > 7 ? '$edit' : '$edit'"
 
                     >Tec Evaluation Report</v-stepper-step
 
@@ -129,11 +129,11 @@
                     :tec_team_id="this.tec_team_id"
                     :requisition_id="this.requisition_id"
                     :type="this.bidType"
-                    v-if="isMounted && procurementState > 6" 
+                    v-if="isMounted && procurementState > 7" 
                     />
                   </v-stepper-content>
 
-                  <v-stepper-step
+                  <!-- <v-stepper-step
                     :complete="procurementState > 7"
 
                     step="7"
@@ -153,12 +153,12 @@
                       >Continue</v-btn
                     >
                     <v-btn text>Cancel</v-btn>
-                  </v-stepper-content>
+                  </v-stepper-content> -->
 
                   <v-stepper-step
 
-                    :complete="procurementState > 8"
-                    :editable="procurementState > 8 ? true : false"
+                    :complete="procurementState >= 8"
+                    :editable="true"
                     step="8"
 
                     :edit-icon="procurementState > 8 ? '$complete' : '$edit'"
@@ -166,15 +166,7 @@
                     >Director Approval</v-stepper-step
                   >
                   <v-stepper-content step="8">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
-                    <v-btn color="primary" @click="stepperValue = 1"
-                      >Continue</v-btn
-                    >
-                    <v-btn text>Cancel</v-btn>
+                    <AcceptEvaluationShopping :procurementId='this.procurementId' :stepVal='this.stepperValue' @bidEvaluationApproved="childUpdated" />
                   </v-stepper-content>
 
                   <!-- <v-stepper-step :complete="procurementState > 10" :editable="procurementState > 10 ? true : false" step="10" :edit-icon="procurementState > 10 ? '$complete' : '$edit' "  :complete-icon="procurementState > 10 ? '$edit' : '$edit' ">Product Acquisition</v-stepper-step>
@@ -206,6 +198,7 @@ import TechTeam from "./TechTeam";
 // import BidOpeningTeam from "./BidOpeningTeam";
 import Rfq from "./Rfq";
 import TecEvaluation from "./TecEvaluation";
+import AcceptEvaluationShopping from "./AcceptEvaluationShopping";
 
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
@@ -220,7 +213,8 @@ export default {
     ProcurementMethod: ProcurementMethod,
     TechTeam: TechTeam,
     RFQ: Rfq,
-    TecEvaluation: TecEvaluation
+    TecEvaluation: TecEvaluation,
+    AcceptEvaluationShopping: AcceptEvaluationShopping
   },
 
   // Data Variables and Values
@@ -256,7 +250,7 @@ export default {
           this.stepperValue = 12;
           this.isMounted = true;
           //  || response.data[0].step == 4
-          if (response.data[0].step == 3) {
+          if (response.data[0].step == 3 || response.data[0].step == 8) {
             this.stepperValue = response.data[0].step;
           }
         })

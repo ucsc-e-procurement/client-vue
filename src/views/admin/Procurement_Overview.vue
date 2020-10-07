@@ -8,12 +8,22 @@
             <v-row no-gutters>
               <h5 class="headline">Procurement Overview</h5>
               <v-spacer />
+
               <h5 class="headline">{{ procurementId }}</h5>
+
+              <v-chip v-if="isLoaded" color="primary" outlined class="ml-5">{{
+                procurement.procurement_method === "DIM"
+                  ? "Direct Method"
+                  : "Shopping Method"
+              }}</v-chip>
             </v-row>
             <v-divider class="mt-1"></v-divider>
 
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
-            <v-row>
+            <v-row v-if="procurement.procurement_method === 'DIM'">
+              <procurement-overview-direct-method />
+            </v-row>
+            <v-row v-else>
               <v-col cols="12">
                 <v-stepper v-model="e6" vertical>
                   <v-stepper-step :complete="e6 > 1" step="1">
@@ -65,7 +75,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
+                    <v-btn color="primary" @click="e6 = 5">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
@@ -78,7 +88,7 @@
                       class="mb-12"
                       height="200px"
                     ></v-card>
-                    <v-btn color="primary" @click="e6 = 1">Next</v-btn>
+                    <v-btn color="primary" @click="e6 = 6">Next</v-btn>
                     <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
@@ -86,13 +96,13 @@
                     >Tec Evaluation Report</v-stepper-step
                   >
                   <v-stepper-content step="6">
-                    <v-card
-                      color="grey lighten-1"
-                      class="mb-12"
-                      height="200px"
-                    ></v-card>
+                    <TecEvaluation
+                      :procurement_id="procurementId"
+                      :tec_team_id="procurement.tec_team_id"
+                      :requisition_id="procurement.requisition_id"
+                      :type="procurement.bid_type"
+                    />
                     <v-btn color="primary" @click="e6 = 1">Next</v-btn>
-                    <v-btn text>Cancel</v-btn>
                   </v-stepper-content>
 
                   <v-stepper-step step="7">Recommendation</v-stepper-step>
@@ -135,6 +145,11 @@ import ProductRequisition from "./components/ProcurementOverview_Product_Requisi
 import ProcurementInitialization from "./components/ProcurementOverview_Initialization";
 import ProcurementTechTeam from "./components/ProcurementOverview_TechTeam";
 
+import TecEvaluation from "./TecEvaluation";
+
+// Import from Tharinda
+import ProcurementOverview_DirecMethod from "../director/ProcurementStepperDirect__linked_to_admin";
+
 /*
 
 // Validation Library - Vuelidate
@@ -158,7 +173,10 @@ export default {
   components: {
     "product-requisition": ProductRequisition,
     "procurement-initialization": ProcurementInitialization,
-    "tech-team": ProcurementTechTeam
+    "tech-team": ProcurementTechTeam,
+    TecEvaluation: TecEvaluation,
+    // Tharinda's Component
+    "procurement-overview-direct-method": ProcurementOverview_DirecMethod
   },
 
   // Data Variables and Values
