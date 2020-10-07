@@ -5,51 +5,55 @@
         <v-card flat>
           <v-container>
             <!-- ------------------------------------------------------- Page Content ---------------------------------------------------------------- -->
+            <v-row no-gutters>
+              <v-spacer />
+              <v-btn color="primary" @click="gotoLogin()">Login</v-btn>
+            </v-row>
             <v-row class="justify-space-between">
                 <v-col cols="12">
-                    <v-card>
-                        <v-card-title class="text-center justify-center py-6">
-                            <h4 class="font-weight-bold ">Ongoing Procurements</h4>
-                        </v-card-title>
-                        <v-divider></v-divider>
-                        <v-col v-if="resultsArray.length == 0" cols="12">
-                          <v-alert type="info" outlined border="left">
-                            No Any On-going Procurements Available
-                          </v-alert>
-                        </v-col>
-                        <v-col v-else cols="12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Procurement ID</th>
-                                    <th>Category</th>
-                                    <th>Date initialised</th>
-                                    <th></th>
-                                </tr>
-                            </thead>  
-                            <tbody>
-                                <tr v-for="result in resultsArray" :key="result" cols="12">
-                                    <td>{{result.procurement_id}}</td>
-                                    <td>{{result.category}}</td>
-                                    <td>{{result.bid_opening_date}}</td>
-                                    <td><v-btn color="primary" class="mb-4 mt-4" @click="getOngoingProcurementsData(result.procurement_id)">View</v-btn></td>
-                                </tr> 
-                            </tbody>           
-                        </table>
-                        <v-dialog v-model="dialog2" width="300">
-                          <v-card>
-                            <v-card-title><h4></h4></v-card-title>
-                            <v-card-text
-                              >There are no bids for this procurement</v-card-text
-                            >
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="primary" @click="dialog2 = false">OK</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
-                        </v-col>
-                    </v-card>
+                  <v-card>
+                    <v-card-title class="text-center justify-center py-6">
+                        <h4 class="font-weight-bold">Ongoing Procurements</h4>
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-col v-if="resultsArray.length == 0" cols="12">
+                      <v-alert type="info" outlined border="left">
+                        No Any On-going Procurements Available
+                      </v-alert>
+                    </v-col>
+                    <v-col v-else cols="12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Procurement ID</th>
+                                <th>Category</th>
+                                <th>Date initialised</th>
+                                <th></th>
+                            </tr>
+                        </thead>  
+                        <tbody>
+                            <tr v-for="result in resultsArray" :key="result" cols="12">
+                                <td>{{result.procurement_id}}</td>
+                                <td>{{result.category}}</td>
+                                <td>{{result.bid_opening_date}}</td>
+                                <td><v-btn color="primary" class="mb-4 mt-4" @click="getOngoingProcurementsData(result.procurement_id)">View</v-btn></td>
+                            </tr> 
+                        </tbody>           
+                    </table>
+                    <v-dialog v-model="dialog2" width="300">
+                      <v-card>
+                        <v-card-title><h4></h4></v-card-title>
+                        <v-card-text
+                          >There are no bids for this procurement</v-card-text
+                        >
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="primary" @click="dialog2 = false">OK</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    </v-col>
+                  </v-card>
                 </v-col>
             </v-row>
             <v-dialog v-model="dialog1" width="750">
@@ -145,6 +149,13 @@ export default {
 
   // Custom Methods and Functions
   methods: {
+    // go to login page
+    gotoLogin() {
+      this.$router.push({
+        path: `login/`
+      });
+    },
+
     // get ongoing procurements
     getOngoingProcurements() {
       this.$http
@@ -176,7 +187,7 @@ export default {
           console.log("id", id)
           this.resultsArray1 = response.data; 
           console.log("resultsarray1",this.resultsArray1)
-          if (this.resultsArray1.length == 0) {
+          if (this.resultsArray1 == 0) {
             this.dialog2 = true;
           } 
           else {
