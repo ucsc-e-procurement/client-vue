@@ -12,6 +12,12 @@
                             <h4 class="font-weight-bold ">Ongoing Procurements</h4>
                         </v-card-title>
                         <v-divider></v-divider>
+                        <v-col v-if="resultsArray.length == 0" cols="12">
+                          <v-alert type="info" outlined border="left">
+                            On-going Procurements Are Not Available
+                          </v-alert>
+                        </v-col>
+                        <v-col v-else cols="12">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -30,6 +36,19 @@
                                 </tr> 
                             </tbody>           
                         </table>
+                        <v-dialog v-model="dialog2" width="300">
+                          <v-card>
+                            <v-card-title><h4></h4></v-card-title>
+                            <v-card-text
+                              >There are no bids for this procurement</v-card-text
+                            >
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="primary" @click="dialog2 = false">OK</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                        </v-col>
                     </v-card>
                 </v-col>
             </v-row>
@@ -118,7 +137,8 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-      dialog1 : false,
+      dialog1: false,
+      dialog2: false,
       resultsArray: [],
       resultsArray1: []
   }),
@@ -155,19 +175,24 @@ export default {
         )
         .then(response => {
           console.log("id", id)
-          console.log(this.dialog1)
           this.resultsArray1 = response.data; 
           console.log("resultsarray1",this.resultsArray1)
-            this.resultsArray1.forEach(element => {
-                if(element.bids) {
-                    element.bids = JSON.parse(element.bids)
-                    element.bids = element.bids.reduce((r, a) => {
-                        console.log("a", a);
-                        console.log('r', r);
-                        r[a.product_id] = [...r[a.product_id] || [], a];
-                        return r;
-                }, {})
-            }
+          if (this.resultsArray1.length == 0) {
+            this.dialog2 = true;
+          } 
+          else {
+            this.dialog1 = true;
+          }
+          this.resultsArray1.forEach(element => {
+              if(element.bids) {
+                  element.bids = JSON.parse(element.bids)
+                  element.bids = element.bids.reduce((r, a) => {
+                      console.log("a", a);
+                      console.log('r', r);
+                      r[a.product_id] = [...r[a.product_id] || [], a];
+                      return r;
+              }, {})
+          }
         });
         })
         .catch(err => {

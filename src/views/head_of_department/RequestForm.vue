@@ -36,7 +36,6 @@
           <ValidationProvider>
             <v-btn
               class="ma-2"
-              :disabled="!checkbox"
               depressed
               large
               color="primary"
@@ -45,7 +44,6 @@
             >
             <v-btn
               class="ma-2"
-              :disabled="!checkbox"
               depressed
               large
               color=""
@@ -56,7 +54,6 @@
             <v-row align="center">
               <v-col cols="8">
                 <v-autocomplete
-                  :disabled="!checkbox"
                   v-model="value"
                   :items="item_list"
                   dense
@@ -66,7 +63,6 @@
               </v-col>
               <v-col cols="4">
                 <v-text-field
-                  :disabled="!checkbox"
                   v-model="quantity"
                   type="number"
                   label="Quantity"
@@ -79,7 +75,6 @@
             </v-row>
             <!-- </ValidationObserver> -->
             <v-simple-table
-              :disabled="!checkbox"
               :dense="dense"
               :fixed-header="fixedHeader"
               :height="height"
@@ -210,44 +205,93 @@ export default {
       procurement_type: "",
       product_request: [],
       products: [],
-      item_list: [
-        "Canon laser printer DM-1000X",
-        "Canon digital scanner NP-3200T",
-        "Canon DM-1000X printer toner",
-        "30GSM A4 standard quality paper",
-        "60GSM A4 printer quality paper"
-      ],
+      item_list: [],
       value: "",
-      quantity: 1
+      quantity: 1,
+      req_seq: 0, //last updated sequance
+      requisition_id: "",
+      current_date: ""
     };
   },
   created() {
     axios
-      .get(`${baseURL}/api/hod/dir_empid`)
+      .get(`http://localhost:5000/api/hod/dir_empid`)
       .then(response => {
         this.director_id = response.data[0].employee_id;
+        //console.log(this.director_id);
       })
       .catch(error => console.log(error));
     axios
-      .get(`${baseURL}/api/hod/db_empid`)
+      .get(`http://localhost:5000/api/hod/db_empid`)
       .then(response => {
         this.deputy_bursar_id = response.data[0].employee_id;
+        //console.log(this.deputy_bursar_id);
       })
       .catch(error => console.log(error));
     axios
-      .get(`${baseURL}/api/hod/products`)
+      .get(`http://localhost:5000/api/hod/get_req_seq`)
       .then(response => {
-        this.products = response.data[0].employee_id;
+        this.req_seq = response.data[0].id;
+        console.log(this.req_seq);
+      })
+      .catch(error => console.log(error));
+    axios
+      .get(`http://localhost:5000/api/hod/products`)
+      .then(response => {
+        this.products = response.data;
+        this.products.forEach((value, index) =>{
+          console.log(value.product_name);
+          this.item_list.push(value.product_id + ': [' + value.product_name + ']')
+        });
       })
       .catch(error => console.log(error));
     //getAllProducts();
+    this.getCurrentDate();
+    
   },
   methods: {
+
+    getCurrentDate(){
+      var today = new Date();
+      var dd = today.getDate();
+
+      var mm = today.getMonth()+1; 
+      var yyyy = today.getFullYear();
+      if(dd<10) 
+      {
+          dd='0'+dd;
+      } 
+
+      if(mm<10) 
+      {
+          mm='0'+mm;
+      }
+      var final = yyyy+'-'+mm+'-'+dd;
+      this.current_date = final;
+    },
+
     getAllProducts() {
       for (const item of this.products.product_name) {
         this.item_list.push(item);
       }
     },
+
+    zeroFill( number, width ){
+        width -= number.toString().length;
+        if ( width > 0 ){
+          return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+        }
+        return number + ""; // always return a string
+      },
+
+    getReqID(){
+       var str1 = "2020/";
+      var next = this.req_seq + 1;
+      var str2 = this.zeroFill(next, 7);
+      this.requisition_id = str1.concat(str2);
+      console.log(this.requisition_id);
+    },
+
     reset() {
       this.product_request = [];
       this.value = "";
@@ -257,10 +301,15 @@ export default {
         this.dialog2 = true;
         return;
       }
+      this.getReqID();
       var obj = {};
+      obj["requisition_id"] = this.requisition_id;
       obj["product_name"] = this.value;
       obj["qnty"] = this.quantity;
       this.product_request.push(obj);
+      console.log(this.product_request);
+      this.value = "";
+      this.quantity = 1;
     },
     submit() {
       this.$refs.observer.validate().then(success => {
@@ -282,11 +331,14 @@ export default {
         {
           this.checkbox ? (this.reorder = true) : (this.reorder = false);
         }
-        window.location.href = "http://localhost:8080/hod";
+        //window.location.href = "http://localhost:8080/hod";
 
+        //creating requisition
         axios
-          .post(`${baseURL}/api/hod/create_req`, {
+          .post(`http://localhost:5000/api/hod/create_req`, {
+            requisition_id: this.requisition_id,
             description: this.descript,
+            date: this.current_date,
             procurement_type: this.procurement_type,
             head_of_division_id: this.head_of_division_id,
             director_id: this.director_id,
@@ -296,14 +348,50 @@ export default {
           })
           .then(response => {
             alert(response);
-            window.location.href = "http://localhost:8080/hod";
+            //window.location.href = "http://localhost:8080/hod";
+             console.log(JSON.stringify(response));
+          })
+          .catch(error => {
+            alert(error);
+            //window.location.href = "http://localhost:8080/hod";
+            console.log(JSON.stringify(error));
+          });
+
+        //incrementing index
+        let new_id = this.req_seq + 1;
+        axios
+          .post(`http://localhost:5000/api/hod/set_req_seq`, {
+            id: new_id
+          })
+          .then(response => {
+            alert(response);
+            //window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(response));
           })
           .catch(error => {
             alert(error);
-            window.location.href = "http://localhost:8080/hod";
+            //window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(error));
           });
+
+        //adding products into product table
+        if (this.product_request == []){
+          window.location.href = "http://localhost:8080/hod";
+          return;
+        }
+        axios
+          .post(`http://localhost:5000/api/hod/add_prod`, this.product_request)
+          .then(response => {
+            alert(response);
+            //window.location.href = "http://localhost:8080/hod";
+            // alert(JSON.stringify(response));
+          })
+          .catch(error => {
+            alert(error);
+            //window.location.href = "http://localhost:8080/hod";
+            // alert(JSON.stringify(error));
+          });
+        
         window.location.href = "http://localhost:8080/hod";
       });
     }

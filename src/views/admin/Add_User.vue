@@ -278,10 +278,10 @@ export default {
       });
     },
     createUser() {
-      this.isCreating = true;
       console.log("Create Invoked");
       this.$v.employee.$touch();
       if (!this.$v.employee.$invalid) {
+        this.isCreating = true;
         let tempData = { ...this.employee };
         tempData.name = this.title + this.employee.name;
         tempData.role = this.mapRoleIdToRole.get(this.employee.role);

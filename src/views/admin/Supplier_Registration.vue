@@ -226,7 +226,7 @@
       </v-dialog>
     </v-row>
 
-    <!-- Dialog - Verification Confiramtion -->
+    <!-- Dialog - Denial Confiramtion -->
     <v-row justify="center">
       <v-dialog v-model="dialogDenySupplier" persistent max-width="400">
         <v-card>
