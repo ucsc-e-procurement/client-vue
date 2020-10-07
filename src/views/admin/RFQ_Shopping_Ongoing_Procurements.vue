@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-card flat>
       <v-col v-if="resultsArray.length == 0" cols="12">
         <v-alert type="info" outlined border="left">

@@ -17,7 +17,7 @@ import Admin_Requisitions from "../views/admin/Requisitions.vue";
 import Admin_View_Requisition from "../views/admin/View_Requisition.vue";
 import RFQ from "../views/admin/RFQ.vue";
 // import Add_Signature from "../views/admin/Add_Signature.vue";
-import Add_Signature from "../views/admin/Add_Signature.vue";
+// import Add_Signature from "../views/admin/Add_Signature.vue";
 import Bidding_Doc_Data_Sheet from "../views/admin/components/Bidding_Doc_Data_Sheet.vue";
 import Admin_Add_User from "../views/admin/Add_User.vue";
 import Admin_View_Suppliers from "../views/admin/Suppliers.vue";
@@ -55,8 +55,7 @@ import Employee_spec_sheet from "../views/employee/Spec_Sheet.vue";
 
 import Employee_Procurement from "../views/employee/Tec_team_procurment.vue";
 import Employee_Tec_teams from "../views/employee/Tec_team_teams.vue";
-import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
-
+// import Employee_Bid_Opening_Team from "../views/employee/Bid_Opening_Team.vue";
 
 // Director
 import Director from "../views/director/Director.vue";
@@ -190,7 +189,7 @@ const routes = [
       {
         path: "rfq",
         name: "RFQ",
-        component: RFQ,
+        component: RFQ
       },
       // {
       //   path: "signature/add",
@@ -300,7 +299,7 @@ const routes = [
         path: "reports",
         name: "d_rep",
         component: Director_Reports
-      },
+      }
     ]
   },
 
