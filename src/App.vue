@@ -13,7 +13,7 @@
       <!-- <v-app-bar-nav-icon
         @click.stop="navDrawerInternal = !navDrawerInternal"
       ></v-app-bar-nav-icon> -->
-      <v-toolbar-title>UCSC E-Procurement (Internal)</v-toolbar-title>
+      <v-toolbar-title>UCSC E-Procurement</v-toolbar-title>
       <v-spacer />
 
       <v-menu transition="slide-x-transition" bottom right offset-y>

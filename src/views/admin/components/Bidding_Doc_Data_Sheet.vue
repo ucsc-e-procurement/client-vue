@@ -593,14 +593,13 @@ export default {
   // validations: {},
 
   // Props Received
-  props: [],
+  props: ["procurementId", "sorId"],
 
   // Imported Components
   components: {},
 
   // Data Variables and Values
   data: () => ({
-    procurementId: "UCSC/NSP2/G/ENG/2020/0000002",
     datasheet: {
       itvCR_1_1: {
         purchaser: "University of Colombo School of Computing",
@@ -738,7 +737,7 @@ export default {
         //                       Change This to Dynamic
         // ################################################################################
         db.collection("ScheduleOfRequirements")
-          .doc("nzeQSViDCYS9mRpM9oXA")
+          .doc(this.sorId)
           .update(datasheet)
           .then(() => {
             // resolve();

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="pa-0" >
     <v-card>
       <!-- <v-card-title class="headline">Recently Purchased Products</v-card-title> -->
       <v-card-title class="text-center justify-center py-6">
@@ -57,6 +57,7 @@ export default {
         .get("/api/director/get_recent_products")
         .then(response => {
           console.log(response);
+          response.data.forEach(i => i.delivery_date = new Date(i.delivery_date).toJSON().slice(0, 10));
           this.recentPurchases = response.data;
           this.isMounted = true;
         })
