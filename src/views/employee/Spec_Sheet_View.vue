@@ -116,7 +116,8 @@ export default {
             querySnapshot.forEach(function(doc) {
             this.procName = doc.data().Name;
             doc_id = doc.id;
-            console.log(doc_id);
+            this.$store.state.sorId = doc.id;
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>", this.$store.state.sorId);
           });
         })
         .catch(function(error) {
@@ -186,6 +187,7 @@ export default {
           this.e1 = n + 1
       }
     },
+
     reset() {
       this.itemName = "";
       this.feature = "";

@@ -127,7 +127,7 @@ const routes = [
         name: "default",
         component: Admin_Dashboard,
         meta: {
-          requiresAuth: false
+          requiresAuth: true
         }
       },
       {

@@ -165,6 +165,14 @@ export default {
             this.isLoginError = true;
           });
       }
+    },
+    getActivationStatus() {
+      this.$http
+        .get()
+        .then()
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
 

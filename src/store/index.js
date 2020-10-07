@@ -12,7 +12,8 @@ export default new Vuex.Store({
     status: "",
     token: localStorage.getItem("token") || "",
     user: {},
-    internal: null
+    internal: null,
+    sorId: ""
   },
   /*
    * Mutators are used to change the state of a vuex store

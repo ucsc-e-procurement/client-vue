@@ -464,7 +464,7 @@ export default {
     upload(n) {
       if (n == 1 && !this.initializedOnce) {
         this.initializeDoc(this.invitationNo);
-                
+
         axios
         .post(`http://localhost:5000/api/hod/update_step`, {
           procurement_id: this.invitationNo
@@ -527,7 +527,7 @@ export default {
         .indexOf(invitationNo);
       this.procs.splice(removeIndex, 1);
       this.reset();
-      this.invitationNo = "";
+      //this.invitationNo = "";
       this.initializedOnce = false;
 
       axios

@@ -731,13 +731,13 @@ export default {
         let db = firebsase.firestore();
 
         let datasheet = { ...this.datasheet };
-
+        console.log("<<<<<<<<<<<<<<<<<<<<<< ", this.$store.state.sorId);
         // TODO
         // ################################################################################
         //                       Change This to Dynamic
         // ################################################################################
         db.collection("ScheduleOfRequirements")
-          .doc(this.sorId)
+          .doc(this.$store.state.sorId)
           .update(datasheet)
           .then(() => {
             // resolve();
