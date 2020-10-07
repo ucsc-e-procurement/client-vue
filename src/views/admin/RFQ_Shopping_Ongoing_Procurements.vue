@@ -3,7 +3,7 @@
     <v-card flat>
       <v-col v-if="resultsArray.length == 0" cols="12">
         <v-alert type="info" outlined border="left">
-          Shopping On-going Procurements Are Not Available
+          No Any Shopping On-going Procurements Available
         </v-alert>
       </v-col>
       <v-col v-else cols="12">
@@ -47,7 +47,7 @@
                 </v-menu>
               </td>
               <td>
-                <v-btn color="primary" class="mb-4 mt-4" @click="dialog1 = true"
+                <v-btn color="primary" class="mb-4 mt-4" @click="openDialog()"
                   >SEND RFQ</v-btn
                 >
               </td>
@@ -69,6 +69,16 @@
                       >Yes
                     </v-btn>
                     <v-btn color="secondary" @click="dialog1 = false">No</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+              <v-dialog v-model="dialog2" width="380">
+                <v-card>
+                  <v-card-title><h4>Error</h4></v-card-title>
+                  <v-card-text>Please enter the deadline</v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click="dialog2 = false">OK</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -113,6 +123,7 @@ export default {
     resultsArray: [],
     date: new Date().toISOString().substr(0, 10),
     dialog1: false,
+    dialog2: false,
     menu2: false
   }),
 
@@ -129,6 +140,16 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+
+    // open dialogs
+    openDialog() {
+      if (this.deadline == null){
+        this.dialog2 = true
+      }
+      else{
+        this.dialog1 = true
+      }
     },
 
     // send rfq

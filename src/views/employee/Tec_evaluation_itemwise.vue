@@ -508,8 +508,28 @@
                       </template>
                     </v-col>
                   </v-row>
+                  <v-col>
+                  <v-row v-if="tec_report_data && procurement.step>7">
+                    <v-alert
+                      v-if="tec_report_data.tec_recommended=='false'"
+                      dense
+                      outlined
+                      type="error"
+                    >
+                      Majority Recommendation <strong>NOT</strong> Recieved.
+                    </v-alert>
+                    <v-alert
+                      v-if="tec_report_data.tec_recommended=='true'"
+                      dense
+                      outlined
+                      type="success"
+                    >
+                      Majority Recommendation Recieved.
+                    </v-alert>
+                  </v-row>
+                  </v-col>
                   <v-row no gutters v-if="user!='emp00001'">
-                    <v-btn v-if="(user!=procurement.chairman && tec_report_data && !filled) || (user==procurement.chairman && !filled)" large class="mx-2" small color="success" @click="save">
+                    <v-btn v-if="(user!=procurement.chairman && tec_report_data && !filled) || (user==procurement.chairman && !filled)" large class="mx-2" small color="success"  @click="openDialog">
                         SAVE
                     </v-btn>
                    </v-row>
@@ -524,6 +544,32 @@
         </v-stepper-content>
       </v-stepper>
     </v-form>
+    <v-dialog
+      v-model="dialog"
+      max-width="350"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Confirm Changes
+        </v-card-title>
+
+        <v-card-text>
+          Changes cannot be updated later. Are you sure you want to save the changes?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="save">
+            SAVE
+          </v-btn>
+
+          <v-btn color="grey darken-1" text @click="dialog = false">
+            CANCEL
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
   <!-- </v-card> -->
 </template>
@@ -565,7 +611,8 @@ export default {
     row: [],
     tec_recommendation: [],
     rules: { required: value => !!value || "Required." },
-    stepperStep: 1
+    stepperStep: 1,
+    dialog: false
   }),
 
   // Custom Methods and Functions
@@ -648,9 +695,17 @@ export default {
       console.log("on change tec approval", this.row);
     },
 
+    openDialog() {
+      var valid = this.$refs.form.validate();
+      if(valid){
+        this.dialog = true;
+      }
+    },
+
     save() {
       var valid = this.$refs.form.validate();
       if (valid) {
+        this.dialog = false;
         console.log("valid");
         if (this.tec_report_data && this.tec_report_data.status == "saved") {
           //update

@@ -1,9 +1,9 @@
 <template>
-  <v-container class="pa-0">
+  <v-container>
     <v-card flat>
       <v-col v-if="resultsArray.length == 0" cols="12">
         <v-alert type="info" outlined border="left">
-          Direct On-going Procurements Are Not Available
+          No Any Direct On-going Procurements Available
         </v-alert>
       </v-col>
       <v-col v-else cols="12">
@@ -34,7 +34,7 @@
         </table>
         <v-dialog v-model="dialog2" width="380">
           <v-card>
-            <v-card-title><h4></h4></v-card-title>
+            <v-card-title><h4>Error</h4></v-card-title>
             <v-card-text
               >There are no suppliers in this procurement category</v-card-text
             >
@@ -46,6 +46,16 @@
         </v-dialog>
       </v-col>
     </v-card>
+    <v-dialog v-model="dialog3" width="380">
+      <v-card>
+        <v-card-title><h4>Error</h4></v-card-title>
+        <v-card-text>Please enter the deadline</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="dialog3 = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog class="dialog1" v-model="dialog1" width="300">
       <v-card>
         <v-card-title>
@@ -113,45 +123,36 @@
 
 <script>
 // Componenets
-
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-
 /*
-
 // Validation Library - Vuelidate
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-
 */
-
 /* Note: When Declaring Variables, always think about how Form Validation Rules are applied */
 export default {
   // Mixins
   // mixins: [validationMixin],
-
   // Form Validations
   // validations: {},
-
   // Props Received
   props: [],
-
   // Imported Components
   components: {},
-
   // Data Variables and Values
   data: () => ({
     search: "",
     dialog1: false,
     dialog2: false,
+    dialog3: false,
     resultsArray: [],
     resultsArray1: [],
     picked: "",
     procurementId: "",
     date: new Date().toISOString().substr(0, 10),
-    deadline: "",
-    menu2: false
+    menu2: false,
+    deadline: ""
   }),
-
   // Custom Methods and Functions
   methods: {
     // get direct ongoing procurements
@@ -166,7 +167,6 @@ export default {
           console.log(err);
         });
     },
-
     // get list of suppliers
     getSupplierList(procurementId, category) {
       this.procurementId = procurementId;
@@ -191,6 +191,11 @@ export default {
 
     // send rfq
     sendRFQDirectOngoingProcurements(supplierId) {
+      if (this.deadline == null) {
+        this.dialog3 = true;
+      } else {
+        this.dialog1 = true;
+      }
       console.log("procurement_id", this.procurementId, this.deadline);
       console.log("supplier_id", supplierId);
       this.$http

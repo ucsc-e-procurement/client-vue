@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid class="px-0 py-0">
-    <v-row no-gutters>
+  <v-container fluid class="px-0 py-0" >
+    <v-row no-gutters v-if="(this.$route.query.unlocked && this.requisition && this.procurement && this.tec_team && this.bid_data && this.spec_data) || (!this.$route.query.unlocked && this.requisition && this.procurement)">
       <v-col cols="12">
         <v-card flat>
           <v-container>
@@ -84,6 +84,16 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-col  v-else align="center" justify="center">
+    <div class="text-center">
+      <v-progress-circular
+      :size="70"
+      :width="7"
+      color="primary"
+      indeterminate
+    ></v-progress-circular>
+    </div> 
+    </v-col>
   </v-container>
 </template>
 
