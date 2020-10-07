@@ -89,13 +89,13 @@ const routes = [
   {
     path: "",
     name: "home",
-    component: Home
-  },
-  {
-    path: "/home_page",
-    name: "homePage",
     component: HomePage
   },
+  // {
+  //   path: "/home_page",
+  //   name: "homePage",
+  //   component: HomePage
+  // },
   {
     path: "/login",
     name: "login",

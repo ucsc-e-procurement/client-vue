@@ -58,6 +58,7 @@
 <script>
 // Componenets
 import axios from "axios";
+import firebase from "firebase";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -84,10 +85,8 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    invitationNo: "",
+    invitationNo: "UCSC/NSP1/G/ENG/2020/0000023",
     procName: "",
-    itemName:"",
-    feature:"",
     minRequirement:"",
     featureList: [],
     minRequirementList: [],
@@ -107,33 +106,36 @@ export default {
 
   // Custom Methods and Functions
   methods: {
-     async getBidData() {
-      let invRef = firebase.firestore().collection("ScheduleOfRequirements");
+    async getBidData() {
+      let docRef = firebase.firestore().collection("ScheduleOfRequirements");
       let doc_id;
-      this.fbData.push({
-        doc: await invRef
-          .where("InvitationNo", "==", this.invitationNo)
-          .get()
-          .then(function(querySnapshot) {
-            let docArr;
-
+      await docRef
+        .where("InvitationNo", "==", this.invitationNo)
+        .get()
+        .then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-              docArr = doc.data();
-              doc_id = doc.id;
-            });
+            this.procName = doc.data().Name;
+            doc_id = doc.id;
+            console.log(doc_id);
+          });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
 
-            return docArr;
-          }),
-        items: await invRef
-          .doc(doc_id)
-          .collection("Items")
-          .get()
-          .then(function(querySnapshot) {
-            let itemArr = [];
-            console.log(itemArr);
-            return itemArr;
-          })
-      });
+        await docRef
+        .doc(doc_id)
+        .collection("Items")
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+               this.featureList = doc.data().Features
+               this.minRequirementList = doc.data().MinimumRequirement
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
     },
 
     
