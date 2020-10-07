@@ -321,6 +321,31 @@
                       />
                       <v-btn @click="addEvaluationFactor">Add</v-btn>
                     </v-row>
+                    <v-row no-gutters class="my-n5">
+                      <v-col cols="12">
+                        <v-card class="pt-2 pb-1 pl-4" outlined>
+                          <v-radio-group
+                            v-model="rbOption"
+                            row
+                            class="ma-0 py-0 ml-n1"
+                            @change="changeStatement_itv_16"
+                          >
+                            <v-radio
+                              label="Evaluate As Packaged Basis (as a Lot)"
+                              value="packaged"
+                            ></v-radio>
+                            <v-radio
+                              label="Evaluate as Item-wise"
+                              value="items"
+                            ></v-radio>
+                          </v-radio-group>
+                          <v-card-subtitle class="px-0 py-0"
+                            >Note: The statement will be added automatically
+                            into the list</v-card-subtitle
+                          >
+                        </v-card>
+                      </v-col>
+                    </v-row>
                     <v-row no-gutters>
                       <v-col cols="12">
                         <v-list dense shaped>
@@ -575,6 +600,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
+    procurementId: "UCSC/NSP2/G/ENG/2020/0000002",
     datasheet: {
       itvCR_1_1: {
         purchaser: "University of Colombo School of Computing",
@@ -626,6 +652,7 @@ export default {
     // Section 16
     listItem_16: null,
     statement: "",
+    rbOption: "packaged",
 
     // Dialogs
     dialogDeleteEvaluationFactor: false,
@@ -638,6 +665,8 @@ export default {
       color: "",
       timeout: 4000
     }
+
+    //
   }),
 
   // Custom Methods and Functions
@@ -682,6 +711,21 @@ export default {
       this.dialogDeleteDocumentDescription = true;
       this.deletePointer = index;
     },
+    updateBidType(procurementId, bidType) {
+      return new Promise((resolve, reject) => {
+        this.$http
+          .post("/api/admin/bid/bid-type", {
+            procurement_id: procurementId,
+            bid_type: bidType
+          })
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    },
 
     saveDatasheet() {
       return new Promise((resolve, reject) => {
@@ -689,24 +733,64 @@ export default {
 
         let datasheet = { ...this.datasheet };
 
+        // TODO
+        // ################################################################################
+        //                       Change This to Dynamic
+        // ################################################################################
         db.collection("ScheduleOfRequirements")
           .doc("nzeQSViDCYS9mRpM9oXA")
           .update(datasheet)
           .then(() => {
-            resolve();
-            console.log("Updated");
+            // resolve();
+            console.log("Firebase Updated");
+            return this.updateBidType(this.procurementId, this.rbOption);
+          })
+          .then(res => {
+            console.log("MySQL Updated");
+            // Update Procurement Table --> Bid Type
+            resolve(res);
           })
           .catch(err => {
             reject(err);
             console.log(err);
           });
       });
+    },
+    changeStatement_itv_16() {
+      if (
+        this.datasheet.itvCR_16.evaluationFactors.includes(
+          "The bids will be evaluated as lot basis. Bidder shall not be allowed to quote part of the bid."
+        )
+      ) {
+        this.datasheet.itvCR_16.evaluationFactors.splice(
+          this.datasheet.itvCR_16.evaluationFactors.indexOf(
+            "The bids will be evaluated as lot basis. Bidder shall not be allowed to quote part of the bid."
+          ),
+          1
+        );
+      } else {
+        this.datasheet.itvCR_16.evaluationFactors.splice(
+          this.datasheet.itvCR_16.evaluationFactors.indexOf(
+            "The bid may be evaluated as Item-Wise. And packaging will not be concidered as a requirement"
+          ),
+          1
+        );
+      }
+      this.datasheet.itvCR_16.evaluationFactors.push(
+        this.rbOption === "packaged"
+          ? "The bids will be evaluated as lot basis. Bidder shall not be allowed to quote part of the bid."
+          : "The bid may be evaluated as Item-Wise. And packaging will not be concidered as a requirement."
+      );
     }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    this.datasheet.itvCR_16.evaluationFactors.push(
+      "The bids will be evaluated as lot basis. Bidder shall not be allowed to quote part of the bid."
+    );
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
