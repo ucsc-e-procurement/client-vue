@@ -67,6 +67,7 @@ export default {
             `api/admin-analytics/monthly-product-requisition-count?year=${year}`
           )
           .then(res => {
+            console.log("+++++++++++++++++++++++ ", res.data);
             resolve(res.data);
           })
           .catch(err => {
@@ -89,13 +90,14 @@ export default {
         });
         console.log(">>", this.chartData.labels);
         console.log(">>", this.chartData.datasets);
+        this.renderChart(this.chartData, this.options);
       })
-      .catch();
+      .catch(err => {
+        console.log(err);
+      });
   },
   beforeMount() {},
-  mounted() {
-    this.renderChart(this.chartData, this.options);
-  },
+  mounted() {},
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},
