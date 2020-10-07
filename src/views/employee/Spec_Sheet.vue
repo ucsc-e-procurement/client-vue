@@ -512,7 +512,7 @@ export default {
   // Life Cycle Hooks
   beforeCreate() {
      //this.empid = this.$store.getters.user.employee_id
-    this.empid = "emp00006";
+    this.empid = "emp00004";
     axios
       .get(`http://localhost:5000/api/hod/procforspec/${this.empid}`)
       .then(response => {
