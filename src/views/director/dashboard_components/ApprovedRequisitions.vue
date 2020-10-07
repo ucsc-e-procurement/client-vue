@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-row v-if="approvedRequisitions.length > 0">
       <v-card>
         <v-card-title

@@ -22,19 +22,27 @@
                 <br/>
                 <Calendar />
                 <v-row>
-                  <v-col cols="6">
+                  <!-- <v-col cols="6">
                     <ChartLastYearProcurements />
                   </v-col>
                   <v-col cols="6">
                     <ChartLastYearProcurements />
+                  </v-col> -->
+                  <v-col cols="12">
+                    <monthly-product-requisitions :height="150" />
                   </v-col>
                 </v-row>
               </v-col>
               <v-col cols="4">
                   <approvedRequisitions />
+                  <br/>
                 <v-row>
                   <infoCardThisMonth />
                 </v-row>
+                <!-- <br/> -->
+                <!-- <v-row> -->
+                  <!-- <annual-category-wise-procurements-count :height="200" /> -->
+                <!-- </v-row> -->
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -55,13 +63,15 @@
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
-  import Requisition from "./Requisition"
-  import InfoCardThisYear from "./dashboard_components/InfoCardThisYear"
-  import RecentPurchases from "./dashboard_components/RecentPurchases"
-  import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions"
-  import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth"
-  import ChartLastYearProcurements from "./dashboard_components/ChartLastYearProcurements"
-  import Calendar from "./dashboard_components/Calendar"
+  import Requisition from "./Requisition";
+  import InfoCardThisYear from "./dashboard_components/InfoCardThisYear";
+  import RecentPurchases from "./dashboard_components/RecentPurchases";
+  import ApprovedRequisitions from "./dashboard_components/ApprovedRequisitions";
+  import InfoCardThisMonth from "./dashboard_components/InfoCardThisMonth";
+  import ChartLastYearProcurements from "./dashboard_components/ChartLastYearProcurements";
+  import Calendar from "./dashboard_components/Calendar";
+  import MonthlyProductRequisitionChart from "../admin/analytics/Monthly_Product_Requisition_Chart";
+  import AnnualCategoryWiseProcurementsCount from "../admin/analytics/Annual_Category_Wise_Procurements_Chart";
 
 /*
 
@@ -98,7 +108,9 @@ export default {
     approvedRequisitions: ApprovedRequisitions,
     infoCardThisMonth: InfoCardThisMonth,
     ChartLastYearProcurements: ChartLastYearProcurements,
-    Calendar: Calendar
+    Calendar: Calendar,
+    "monthly-product-requisitions": MonthlyProductRequisitionChart,
+    "annual-category-wise-procurements-count": AnnualCategoryWiseProcurementsCount,
   },
 
   // Data Variables and Values

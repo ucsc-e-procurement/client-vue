@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-card>
       <v-card-title class="text-center justify-center">
         <h4 class="font-weight-bold ">This Month</h4>
