@@ -374,10 +374,12 @@ export default {
       await docRef
         .where("InvitationNo", "==", this.invitationNo)
         .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
+        .then((querySnapshot)  => {
+          console.log("==============================================");
+          querySnapshot.forEach((doc) => {
             doc_id = doc.id;
-            console.log(doc_id);
+            this.$store.state.sorId = doc.id;
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>", this.$store.state.sorId);
           });
         })
         .catch(function(error) {

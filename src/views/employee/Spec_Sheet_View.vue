@@ -116,8 +116,6 @@ export default {
             querySnapshot.forEach(function(doc) {
             this.procName = doc.data().Name;
             doc_id = doc.id;
-            this.$store.state.sorId = doc.id;
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>", this.$store.state.sorId);
           });
         })
         .catch(function(error) {

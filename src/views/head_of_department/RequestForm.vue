@@ -232,7 +232,7 @@ export default {
       .get(`http://localhost:5000/api/hod/get_req_seq`)
       .then(response => {
         this.req_seq = response.data[0].id;
-        console.log(this.req_seq);
+        //console.log(this.req_seq);
       })
       .catch(error => console.log(error));
     axios
@@ -240,7 +240,7 @@ export default {
       .then(response => {
         this.products = response.data;
         this.products.forEach((value, index) =>{
-          console.log(value.product_name);
+          //console.log(value.product_name);
           this.item_list.push(value.product_id + ': [' + value.product_name + ']')
         });
       })
@@ -289,7 +289,7 @@ export default {
       var next = this.req_seq + 1;
       var str2 = this.zeroFill(next, 7);
       this.requisition_id = str1.concat(str2);
-      console.log(this.requisition_id);
+      //console.log(this.requisition_id);
     },
 
     reset() {
@@ -307,7 +307,7 @@ export default {
       obj["product_name"] = this.value;
       obj["qnty"] = this.quantity;
       this.product_request.push(obj);
-      console.log(this.product_request);
+      //console.log(this.product_request);
       this.value = "";
       this.quantity = 1;
     },
@@ -364,12 +364,12 @@ export default {
             id: new_id
           })
           .then(response => {
-            alert(response);
+            //alert(response);
             //window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(response));
           })
           .catch(error => {
-            alert(error);
+            //(error);
             //window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(error));
           });
@@ -382,12 +382,12 @@ export default {
         axios
           .post(`http://localhost:5000/api/hod/add_prod`, this.product_request)
           .then(response => {
-            alert(response);
+            //alert(response);
             //window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(response));
           })
           .catch(error => {
-            alert(error);
+            //alert(error);
             //window.location.href = "http://localhost:8080/hod";
             // alert(JSON.stringify(error));
           });
