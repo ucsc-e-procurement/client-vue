@@ -17,37 +17,15 @@
                   <h5 class="headline">Activity</h5>
                 </v-row>
                 <v-divider class="mt-1"></v-divider>
-                <v-banner two-line>
+                <v-banner two-line v-for="activity in this.activities" :key="activity.procurement_id">
                   <v-avatar slot="icon" color="deep-purple accent-4" size="40">
                     <v-icon icon="mdi-lock" color="white">
                       mdi-lock
                     </v-icon>
                   </v-avatar>
-                  UCSC/NSP1/G/ENG/2020/0000030 | Procurement Initialized
+                  {{activity.procurement_id}} | On-Going Procurement
                   <template v-slot:actions>
-                    <v-btn text color="deep-purple accent-4">View</v-btn>
-                  </template>
-                </v-banner>
-                <v-banner two-line>
-                  <v-avatar slot="icon" color="deep-purple accent-4" size="40">
-                    <v-icon icon="mdi-lock" color="white">
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
-                  UCSC/NSP1/G/ENG/2020/0000030 | Tec Report Created
-                  <template v-slot:actions>
-                    <v-btn text color="deep-purple accent-4">View</v-btn>
-                  </template>
-                </v-banner>
-                <v-banner two-line>
-                  <v-avatar slot="icon" color="deep-purple accent-4" size="40">
-                    <v-icon icon="mdi-lock" color="white">
-                      mdi-lock
-                    </v-icon>
-                  </v-avatar>
-                  UCSC/NSP1/G/ENG/2020/0000030 | PO Generated
-                  <template v-slot:actions>
-                    <v-btn text color="deep-purple accent-4">View</v-btn>
+                    <v-btn text color="deep-purple accent-4" @click="manageActivity(activity)">View</v-btn>
                   </template>
                 </v-banner>
               </v-col>
@@ -96,7 +74,7 @@
                   border="top"
                   colored-border
                   prominent
-                  type="warning"
+                  type="success"
                   elevation="2"
                   v-for="approvalRequest in this.approvalRequests"
                   :key="approvalRequest.procurement_id"
@@ -145,7 +123,8 @@ export default {
     requisitionRequests: [],
     POApprovalRequests: [],
     tecAppointmentRequests: [],
-    approvalRequests: []
+    approvalRequests: [],
+    activities: []
   }),
 
   // Custom Methods and Functions
@@ -193,6 +172,26 @@ export default {
         }
       });
     },
+    manageActivity: function(event) {
+      var proc_id = event.procurement_id;
+      if (!event.procurement_method.includes("DIM")) {
+        this.$router.push({
+          path: `procurements/shopping/${proc_id.replace(/[/]/g, "")}`,
+          query: {
+            proc_id: event.procurement_id,
+            stepper: event.step
+          }
+        });
+      } else {
+        this.$router.push({
+          path: `procurements/direct/${proc_id.replace(/[/]/g, "")}`,
+          query: {
+            proc_id: event.procurement_id,
+            stepper: event.step
+          }
+        });
+      }
+    },
     manageTecAppointmentRequest: function(event) {
       console.log(event);
       var proc_id = event.procurement_id;
@@ -214,7 +213,18 @@ export default {
           }
         });
       }
-    }
+    },
+    getActivity() {
+      this.$http
+        .get("/api/director/get_activity")
+        .then(response => {
+            console.log(response)
+          this.activities = response.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
 
   // Life Cycle Hooks
@@ -223,6 +233,7 @@ export default {
     this.getRequisitionRequests();
     this.getTecTeamRequests();
     this.getApprovalRequests();
+    this.getActivity();
   },
   beforeMount() {},
   mounted() {},

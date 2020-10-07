@@ -61,7 +61,7 @@ export default {
       let doc_id;
       this.spec_data = {
         data: await ref
-          .where("InvitationNo", "==", "UCSC/SP/ADMTC/2019/099")
+          .where("InvitationNo", "==", this.procurement_id)
           .get()
           .then(function(querySnapshot) {
             let doc;
