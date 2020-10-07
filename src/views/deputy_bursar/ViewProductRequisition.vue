@@ -61,7 +61,7 @@
             color="primary"
             width="30%"
             x-large
-            @click="dialog1 = true"
+            @click="openDialog()"
             :disabled="denied"
             >Approve</v-btn
           >
@@ -94,7 +94,17 @@
               <v-btn color="secondary" @click="dialog1 = false">No</v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+          </v-dialog>
+          <v-dialog v-model="dialog3" width="380">
+            <v-card>
+              <v-card-title><h4>Error</h4></v-card-title>
+              <v-card-text>Please select the fund type</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click="dialog3 = false">OK</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         <v-alert type="success" v-model="alert1" class="text-md-center">
           Thank You! Your response has been submitted successfully.
         </v-alert>
@@ -170,6 +180,7 @@ export default {
   data: () => ({
     dialog1: false,
     dialog2: false,
+    dialog3: false,
     alert1: false,
     description: "",
     procurement_type: "",
@@ -212,6 +223,16 @@ export default {
         });
     },
 
+    // open dialogs
+    openDialog() {
+      if (this.selectedFundType == null){
+        this.dialog3 = true
+      }
+      else{
+        this.dialog1 = true
+      }
+    },
+
     // approve the product requisition
     approveRequisition() {
       this.$http
@@ -220,7 +241,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          this.$router.push("/deputy_bursar");
+          this.$router.push("/deputy_bursar/product_requisitions");
         })
         .catch(err => {
           console.log(err);
@@ -235,6 +256,7 @@ export default {
         )
         .then(response => {
           console.log(response, this.remarks);
+          this.$router.push("/deputy_bursar/product_requisitions");
         })
         .catch(err => {
           console.log(err);
