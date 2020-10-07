@@ -72,7 +72,10 @@ export default {
     items: [
       { title: "Dashboard", icon: "mdi-view-dashboard", link: "/hod" },
       // { title: "Calender", icon: "mdi-calendar", link: "#" }
-    ]
+    ],
+    role: "",
+
+    user: null
   }),
 
   // Custom Methods and Functions
@@ -86,9 +89,13 @@ export default {
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+     this.user = this.$store.getters.user;
+  },
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.role = this.$store.getters.userRole;
+  },
   beforeUpdate() {},
   updated() {},
   beforeDestroy() {},
