@@ -87,6 +87,7 @@
                                 <th>Quantity</th>
                                 <th>Unit price</th>
                                 <th>total with VAT</th>
+                                <th>Status</th>
                             </tr>
                         </thead>  
                         <tbody>
@@ -95,6 +96,7 @@
                                 <td>{{product.qty}}</td> 
                                 <td>{{product.unit_price}}</td>
                                 <td>{{product.total_with_vat}}</td>
+                                <td>{{product.bid_status}}</td>
                             </tr>          
                         </tbody>           
                     </table>

@@ -246,6 +246,8 @@ export default {
       this.$http
         .get("/api/director/procurements")
         .then(response => {
+          
+          response.data.forEach(i => i.bid_opening_date = new Date(i.bid_opening_date).toJSON().slice(0, 10))
           console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response);
           this.ongoingProcurements = response.data.filter(
             item => item.status == "on-going"

@@ -142,7 +142,7 @@ export default {
       },
       { text: "Category", value: "category" },
       { text: "Status", value: "procurement_status" },
-      // { text: "Date Initiated", value: "date" },
+      { text: "Bid Opened Date", value: "bid_opening_date" },
       { text: "Actions", value: "controls", sortable: false }
     ],
     procurements: []
@@ -203,6 +203,7 @@ export default {
           }
         })
         .then(response => {
+          response.data.forEach(i => i.bid_opening_date = new Date(i.bid_opening_date).toJSON().slice(0, 10))
           console.log(response.data);
           this.procurements = response.data;
           this.procurements.forEach(element => {
