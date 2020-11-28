@@ -1,0 +1,2 @@
+    Direct
+requisition -> db recommendation -> director approval -> method selection -> procurement initialization -> send rfq -> get bid -> open bid -> bid evaluation -> generate po

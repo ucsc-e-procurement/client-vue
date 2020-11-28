@@ -13,7 +13,7 @@
 // Componenets
 
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
-import NavigationDrawer_Internal from "../head_of_department/NavigationDrawer";
+import NavigationDrawer_Internal from "../../components/internal/NavigationDrawer_hod";
 /*
 
 // Validation Library - Vuelidate
@@ -38,7 +38,7 @@ export default {
 
   // Data Variables and Values
   data: () => ({
-    navDrawerInternal: true,
+    navDrawerInternal: true
   }),
 
   // Custom Methods and Functions
@@ -55,7 +55,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 

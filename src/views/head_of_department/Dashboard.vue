@@ -21,20 +21,25 @@
             <v-row class="justify-space-between">
               <v-col cols="6">
                 <!--initialized-->
-                <InitProc />
+                <InitReq />
               </v-col>
               <v-col cols="6">
                 <!--approved-->
-                <ApprProc />
+                <ApprReq />
               </v-col>
               <v-col cols="6">
                 <!--completed-->
-                <CompProc />
+                <CompReq />
               </v-col>
               <v-col cols="6">
                 <!--terminated-->
-                <TermProc />
+                <TermReq />
               </v-col>
+              <!-- <v-col cols="6">
+                <v-card flat>
+                  <Spec />
+                </v-card>
+              </v-col> -->
             </v-row>
             <v-row class="justify-space-between"></v-row>
           </v-container>
@@ -46,10 +51,11 @@
 
 <script>
 // Componenets
-import InitProc from "./InitProc";
-import ApprProc from "./ApprProc";
-import CompProc from "./CompProc";
-import TermProc from "./TermProc";
+import InitReq from "./InitReq";
+import ApprReq from "./ApprReq";
+import CompReq from "./CompReq";
+import TermReq from "./TermReq";
+// import Spec from "../employee/Spec_Sheet_View";
 // import NoInternet_Offline from "../../components/NoInternet_Offline.vue";
 
 /*
@@ -73,12 +79,12 @@ export default {
   props: [],
 
   // Imported Components
-  components: { InitProc, ApprProc, CompProc, TermProc },
+  components: { InitReq, ApprReq, CompReq, TermReq},
 
   // Data Variables and Values
   data() {
     return {
-      deptName: "Engineering Division", //needs to be retrieved from store
+      deptName: "Engineering Division" //needs to be retrieved from store
     };
   },
   // Custom Methods and Functions
@@ -90,12 +96,14 @@ export default {
       if (event) {
         alert(event.target.tagName);
       }
-    },
+    }
   },
 
   // Life Cycle Hooks
   beforeCreate() {},
-  created() {},
+  created() {
+    console.log(window.location.host);
+  },
   beforeMount() {},
   mounted() {},
   beforeUpdate() {},
@@ -104,7 +112,7 @@ export default {
   destroyed() {},
 
   // Computed Properties
-  computed: {},
+  computed: {}
 };
 </script>
 

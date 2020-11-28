@@ -13,6 +13,7 @@ export default new Vuex.Store({
     token: localStorage.getItem("token") || "",
     user: {},
     internal: null,
+    sorId: ""
   },
   /*
    * Mutators are used to change the state of a vuex store
@@ -22,7 +23,7 @@ export default new Vuex.Store({
       state.status = "loading";
     },
     authSuccess(state, data) {
-      console.log("State::::::::::::::", state, data);
+      //console.log("State::::::::::::::", state, data);
 
       state.status = "success";
       state.token = data.token;
@@ -36,9 +37,9 @@ export default new Vuex.Store({
       state.token = "";
     },
     setInternal(state, internalState) {
-      console.log("Setting Internal State: ", internalState);
+      //console.log("Setting Internal State: ", internalState);
       state.internal = internalState;
-    },
+    }
   },
   /*
    * Actions are used to commit mutations to the vuex store
@@ -51,9 +52,9 @@ export default new Vuex.Store({
         // Sending HTTP request to the server
         axios
           .post(`${baseURL}/api/auth/login`, user)
-          .then((res) => {
+          .then(res => {
             console.log("Res ", res.data);
-            if (res.data.status === 200) {
+            if (res.status === 200) {
               const token = res.data.token;
 
               // Storing the Token in the Local Storage
@@ -65,7 +66,7 @@ export default new Vuex.Store({
               ] = `Bearer ${token}`;
 
               const decodedJWTtoken = jwtDecode(token);
-              console.log("Decoded ::::::::::::", decodedJWTtoken.user);
+              //console.log("Decoded ::::::::::::", decodedJWTtoken.user);
               commit("authSuccess", { token, user: decodedJWTtoken.user });
               commit(
                 "setInternal",
@@ -79,7 +80,7 @@ export default new Vuex.Store({
               reject(res.data.error_message);
             }
           })
-          .catch((err) => {
+          .catch(err => {
             commit("authError");
             localStorage.removeItem("token");
             reject(err);
@@ -89,7 +90,7 @@ export default new Vuex.Store({
 
     // Logout Handler
     logout({ commit }) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit("logout");
         localStorage.removeItem("token");
         delete axios.defaults.headers.common["authorization"];
@@ -112,7 +113,7 @@ export default new Vuex.Store({
           reject(error);
         }
       });
-    },
+    }
   },
   modules: {},
 
@@ -123,9 +124,17 @@ export default new Vuex.Store({
    * sensitive information.
    */
   getters: {
-    isLoggedIn: (state) => !!state.token,
-    authStatus: (state) => state.status,
-    userRole: (state) => state.user.user_role,
-    isInternal: (state) => state.internal,
-  },
+    // isLoggedIn: state => !!state.token,
+    authStatus: state => state.status,
+    // userRole: state => state.user.user_role,
+    // isInternal: state => state.internal,
+    userId: state => state.user.user_id,
+    employeeId: state => state.user.employee_id,
+    user: state => state.user,
+
+    // Development Purposes Only - ByPass Login
+    isLoggedIn: () => true,
+    isInternal: () => true,
+    userRole: () => "AB"
+  }
 });
